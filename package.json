@@ -2,6 +2,10 @@
   "name": "with-tailwind",
   "private": true,
   "scripts": {
+    "ai:start": "ollama serve",
+    "ai:pull": "ollama pull qwen2.5-coder:7b-instruct && ollama pull qwen2.5-coder:3b-instruct",
+    "ai:pull-full": "ollama pull qwen2.5-coder:7b-instruct && ollama pull qwen2.5-coder:3b-instruct && ollama pull qwen2.5-coder:14b-instruct",
+    "ai:setup": "powershell -ExecutionPolicy Bypass -File ./start-ollama.ps1",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
@@ -24,6 +28,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "espree": "^10.4.0",
     "globals": "^16.2.0",
+    "plop": "^4.0.1",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "turbo": "^2.5.4"
