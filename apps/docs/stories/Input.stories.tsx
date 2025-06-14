@@ -1,6 +1,6 @@
+import { Input, InputProps } from '@repo/ui/design-system/base-components/Input/index';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { useEffect, useState } from 'react';
-import { Input, InputProps } from './Input';
 
 const meta: Meta<typeof Input> = {
   title: 'Design System/Base Components/Input',
