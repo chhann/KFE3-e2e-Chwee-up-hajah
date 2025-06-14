@@ -1,5 +1,5 @@
+import { typography, typographyUtils } from '@repo/ui/design-system/design-tokens/index';
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { typography, typographyUtils } from './typography';
 
 const meta: Meta = {
   title: 'Design System/Design Tokens/Typography',

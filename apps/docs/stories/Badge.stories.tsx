@@ -1,5 +1,5 @@
+import { Badge } from '@repo/ui/design-system/base-components/Badge/index';
 import type { StoryObj, Meta } from '@storybook/nextjs';
-import Badge from './Badge';
 
 const meta = {
   component: Badge,

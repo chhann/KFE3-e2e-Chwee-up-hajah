@@ -1,6 +1,6 @@
+import { colors, colorUtils } from '@repo/ui/design-system/design-tokens/index';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 // 같은 폴더에 있으니 ./ 사용
-import { colors, colorUtils } from './colors';
 
 const meta: Meta = {
   title: 'Design System/Design Tokens/Colors',

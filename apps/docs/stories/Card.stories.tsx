@@ -1,5 +1,5 @@
+import { Card } from '@repo/ui/design-system/base-components/Card/index';
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import Card from './Card';
 
 const meta = {
   title: 'Design System/Base Components/Card',

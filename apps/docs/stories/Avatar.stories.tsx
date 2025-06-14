@@ -1,5 +1,5 @@
+import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import Avatar from './Avatar';
 
 const meta = {
   title: 'Design System/Base Components/Avatar',
