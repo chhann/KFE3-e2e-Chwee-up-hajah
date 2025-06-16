@@ -8,7 +8,7 @@ export interface BadgeProps {
 
 const Badge = ({ children, variant, className = '', ...props }: BadgeProps) => {
   const variantClasses = {
-    best: 'bg-[var(--color-red-500)] text-white',
+    best: 'bg-[var(--color-primary-500)] text-white',
     urgent: 'bg-[var(--color-yellow-500)] text-white',
   };
 
