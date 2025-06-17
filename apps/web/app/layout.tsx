@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
+import { Noto_Sans_KR } from 'next/font/google'
 import './globals.css';
+import '@repo/ui/styles';
 
-const geist = Geist({ subsets: ['latin'] });
+const notoSansKR = Noto_Sans_KR({
+  subsets: ['latin'], // korean 추가!
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-noto-sans-kr',
+})
 
 export const metadata: Metadata = {
   title: 'Create Turborepo',
@@ -11,8 +16,10 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
-      <body className={geist.className}>{children}</body>
+    <html lang="ko" className={notoSansKR.variable}>
+      <body className={notoSansKR.className}> {/* 이렇게 하거나 */}
+        {children}
+      </body>
     </html>
   );
 };
