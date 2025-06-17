@@ -1,7 +1,4 @@
 /* packages/ui/src/theme.css */
-/* 구글 폰트 임포트 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap');
-
 @theme {
   /* Primary Colors */
   --color-primary-900: #302749;
@@ -35,7 +32,7 @@
   --color-disabled-text: #656565;
 
   /* Font Family */
-  --font-family-primary: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-family-primary: var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
 /* @theme 밖으로 이동 */
@@ -49,7 +46,6 @@
   body {
     font-family: var(--font-family-primary);
     color: var(--color-neutral-100);
-    background-color: var(--color-neutral-0);
     line-height: 1.6;
   }
 
