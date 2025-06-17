@@ -1,6 +1,9 @@
 'use client';
 
+import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
+import Link from 'next/link';
 
 export interface LoginFormProps {
   email: string;
@@ -21,8 +24,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">로그인</h2>
-      <form onSubmit={onSubmit}>
+      <h2 className="text-2xl text-center font-bold mb-4 ">로그인</h2>
+      <form onSubmit={onSubmit} className="flex flex-col space-y-4">
+        {/* 이메일 입력 필드 */}
         <Input
           type="email"
           value={email}
@@ -31,6 +35,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           required
           error={error.includes('이메일') ? error : undefined}
         />
+
+        {/* 비밀번호 입력 필드 */}
         <Input
           type="password"
           value={password}
@@ -39,42 +45,56 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           required
           error={error.includes('비밀번호') ? error : undefined}
         />
-        <div className="flex items-center justify-between mt-4">
-          <label className="flex items-center">
-            <input type="checkbox" className="mr-2" />
-            로그인 상태 유지
-          </label>
-          <a href="#" className="text-blue-500 hover:underline">
-            비밀번호를 잊으셨나요?
-          </a>
-        </div>
+        {/* 에러 메시지 표시 */}
         {error && <p className="text-red-500 mt-2">{error}</p>}
-        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded mt-4 w-full">
-          로그인
-        </button>
-        <p className="mt-4 text-center">
-          <span className="text-gray-500">다른 계정으로 로그인:</span>
+
+        {/* 비밀번호 찾기 링크 */}
+        <div className="justify-between text-sm text-gray-500 text-center">
+          <Link href="/reset-password" className="text-gray-500 hover:underline">
+            비밀번호를 잊으셨나요?
+          </Link>
+        </div>
+
+        {/* 로그인 버튼 */}
+        <Button
+          children="로그인"
+          className="w-full"
+          variants="primary"
+          size="md"
+          disabled={!email || !password}
+        />
+      </form>
+
+      {/* 소셜 로그인 버튼들 */}
+      <p className="mt-4 text-center">
+        <div className="text-gray-500 text-center">다른 계정으로 로그인</div>
+        <div className="flex justify-center items-center mt-4 space-x-3">
+          {/* 구글, 애플, 페이스북 아이콘을 Avatar로 표시 */}
           {['구글', '애플', '페이스북'].map((platform) => (
-            <button
+            <Avatar
               key={platform}
-              type="button"
-              className="ml-2 text-blue-500 hover:underline"
+              alt={platform}
+              name={platform}
+              size="sm"
+              className="inline-block align-middle"
               onClick={() => {
                 onChangeEmail({ target: { value: '' } } as any); // 간단한 초기화
                 onChangePassword({ target: { value: '' } } as any);
               }}
-            >
-              {platform}
-            </button>
+              src={`/images/${platform.toLowerCase()}.png`} // 예시 이미지 경로
+              style={{ marginLeft: '8px', cursor: 'pointer' }}
+            />
           ))}
-        </p>
-      </form>
-      <p className="mt-4 text-center">
-        계정이 없으신가요?{' '}
-        <a href="#" className="text-blue-500 hover:underline">
-          회원가입
-        </a>
+        </div>
       </p>
+
+      <p className="mt-12 text-center">
+        계정이 없으신가요?{' '}
+        <Link href="/signup" className="text-gray-500 hover:underline">
+          회원가입
+        </Link>
+      </p>
+      <div className="mt-12 text-center text-gray-500"></div>
     </div>
   );
 };
