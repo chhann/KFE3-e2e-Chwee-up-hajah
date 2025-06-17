@@ -3,14 +3,15 @@ export interface ButtonProps {
   className?: string;
   variants: 'primary' | 'secondary' | 'transparent' | 'outline' | 'custom';
   size?: 'lg' | 'thinLg' | 'md' | 'thinMd' | 'sm';
+  disabled?: boolean;
 }
 const Button = ({
   children,
   variants,
   size = 'sm',
   className = '',
-  ...props
-}: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+  disabled = false,
+}: ButtonProps) => {
   const variantsClasses = {
     primary:
       'bg-[var(--color-primary-500)] text-white hover:bg-[var(--color-primary-200)] font-medium rounded-lg',
@@ -27,14 +28,14 @@ const Button = ({
     sm: 'text-xs px-4 py-2',
   };
   const disabledClasses =
-    'disabled:bg-[var(--color-disabled-text)] disabled:text-[var(--color-disabled-text)] disabled:cursor-not-allowed';
+    'disabled:bg-[var(--color-disabled-bg)] disabled:text-[var(--color-disabled-text)] disabled:cursor-not-allowed';
   const combinedClassName =
     variants === 'custom'
       ? `${className} ${sizeClasses[size]} ${disabledClasses}`
       : `${variantsClasses[variants]} ${sizeClasses[size]} ${disabledClasses} ${className} cursor-pointer`;
 
   return (
-    <button className={combinedClassName} {...props}>
+    <button className={combinedClassName} disabled={disabled}>
       {children}
     </button>
   );
