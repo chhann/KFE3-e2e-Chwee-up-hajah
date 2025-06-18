@@ -24,8 +24,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl text-center font-bold mb-4 ">로그인</h2>
+      <h2 className="text-2xl text-center font-bold mb-4 mt">로그인</h2>
       <form onSubmit={onSubmit} className="flex flex-col space-y-4">
+        <span className="mt-6"></span>
         {/* 이메일 입력 필드 */}
         <Input
           type="email"
@@ -33,6 +34,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           onChange={onChangeEmail}
           placeholder="이메일 주소"
           required
+          leftIcon="email"
           error={error.includes('이메일') ? error : undefined}
         />
 
@@ -43,6 +45,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           onChange={onChangePassword}
           placeholder="비밀번호"
           required
+          leftIcon="password"
           error={error.includes('비밀번호') ? error : undefined}
         />
         {/* 에러 메시지 표시 */}
@@ -66,7 +69,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </form>
 
       {/* 소셜 로그인 버튼들 */}
-      <p className="mt-4 text-center">
+      <div className="mt-4 text-center">
         <div className="text-gray-500 text-center">다른 계정으로 로그인</div>
         <div className="flex justify-center items-center mt-4 space-x-3">
           {/* 구글, 애플, 페이스북 아이콘을 Avatar로 표시 */}
@@ -86,7 +89,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             />
           ))}
         </div>
-      </p>
+      </div>
 
       <p className="mt-12 text-center">
         계정이 없으신가요?{' '}
