@@ -33,14 +33,8 @@ const LoginPage = () => {
     try {
       const userId = await LoginService.login(email, password);
       console.log(`Login success: ${userId}`);
-
-      if (email === 'admin@example.com') {
-        router.push('/admin/dashboard');
-      } else {
-        router.push('/user/dashboard');
-      }
     } catch (err: any) {
-      setError(err.message || '로그인 중 오류가 발생했습니다.');
+      setError(err.message);
     }
   };
 

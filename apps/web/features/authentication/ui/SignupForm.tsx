@@ -20,7 +20,7 @@ type SignupFormProps = {
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeusername: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeUsername: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddress: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddressDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -30,24 +30,30 @@ type SignupFormProps = {
 };
 
 const SignupForm = ({
-  email,
-  password,
-  confirmPassword,
-  username,
-  address,
-  addressDetail,
-  formError,
-  fieldErrors,
-  onChangeEmail,
-  onChangePassword,
-  onChangePasswordConfirm,
-  onChangeusername,
-  onChangeAddress,
-  onChangeAddressDetail,
-  onSubmit,
-  onEmailDuplicateCheck,
-  onUsernameDuplicateCheck,
-  onAddressSearch,
+    email,
+    password,
+    confirmPassword,
+    username,
+    address,
+    addressDetail,
+    fieldErrors,
+    formError,
+    isSubmitting,
+    isCheckingEmail,
+    isCheckingUsername,
+    emailCheckStatus,
+    usernameCheckStatus,
+    onChangeEmail,
+    onChangePassword,
+    onChangePasswordConfirm,
+    onChangeUsername,
+    onChangeAddress,
+    onChangeAddressDetail,
+    onSubmit,
+    onEmailDuplicateCheck,
+    onUsernameDuplicateCheck,
+    onAddressSearch,
+    resetErrors,
 }: SignupFormProps) => {
   return (
     <div>
@@ -64,6 +70,7 @@ const SignupForm = ({
               placeholder="이메일"
               required
               error={fieldErrors.email}
+              success={emailCheckStatus === 'success' ? '사용 가능한 이메일입니다.' : undefined}
             />
             <Button
               type="button" // 폼 제출 방지
@@ -109,10 +116,11 @@ const SignupForm = ({
             <Input
               type="text"
               value={username}
-              onChange={onChangeusername}
+              onChange={onChangeUsername}
               placeholder="닉네임"
               required
               error={fieldErrors.username}
+              success={usernameCheckStatus === 'success' ? '사용 가능한 닉네임입니다.' : undefined}
             />
             <Button
               type="button" // 폼 제출 방지

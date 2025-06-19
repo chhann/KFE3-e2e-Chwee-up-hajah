@@ -3,6 +3,8 @@ import { useCallback, useState } from 'react';
 import { AuthService } from '../api/authService';
 import type { UseSignupReturn, ValidationErrors } from './types';
 
+type CheckStatus = '' | 'success' | 'error';
+
 const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
   if (typeof error === 'string') return error;
@@ -16,7 +18,7 @@ export const useSignup = (): UseSignupReturn => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [username, setusername] = useState('');
+  const [username, setUsername] = useState('');
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
 
@@ -25,10 +27,10 @@ export const useSignup = (): UseSignupReturn => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
-  const [isCheckingusername, setIsCheckingusername] = useState(false);
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
 
-  const [emailChecked, setEmailChecked] = useState(false);
-  const [usernameChecked, setusernameChecked] = useState(false);
+  const [emailCheckStatus, setEmailCheckStatus] = useState<CheckStatus>('');
+  const [usernameCheckStatus, setUsernameCheckStatus] = useState<CheckStatus>('');
 
   const resetErrors = useCallback(() => {
     setFormError('');
@@ -48,63 +50,54 @@ export const useSignup = (): UseSignupReturn => {
     setFormError('');
   }, []);
 
-  const onChangeEmail = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
-      setEmailChecked(false);
-      clearFieldError('email');
-    },
-    [clearFieldError]
-  );
+  // -------------------
+  // Input 핸들러
+  // -------------------
+  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setEmailCheckStatus('');
+    clearFieldError('email');
+  }, [clearFieldError]);
 
-  const onChangePassword = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value);
-      clearFieldError('password');
-    },
-    [clearFieldError]
-  );
+  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    clearFieldError('password');
+  }, [clearFieldError]);
 
-  const onChangePasswordConfirm = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setConfirmPassword(e.target.value);
-      clearFieldError('confirmPassword');
-    },
-    [clearFieldError]
-  );
+  const onChangePasswordConfirm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+    clearFieldError('confirmPassword');
+  }, [clearFieldError]);
 
-  const onChangeusername = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setusername(e.target.value);
-      setusernameChecked(false);
-      clearFieldError('username');
-    },
-    [clearFieldError]
-  );
+  const onChangeUsername = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+    setUsernameCheckStatus('');
+    clearFieldError('username');
+  }, [clearFieldError]);
 
-  const onChangeAddress = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setAddress(e.target.value);
-      clearFieldError('address');
-    },
-    [clearFieldError]
-  );
+  const onChangeAddress = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value);
+    clearFieldError('address');
+  }, [clearFieldError]);
 
   const onChangeAddressDetail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setAddressDetail(e.target.value);
   }, []);
 
+  // -------------------
+  // 중복 확인 로직
+  // -------------------
   const onEmailDuplicateCheck = useCallback(async (): Promise<boolean> => {
     clearSpecificFieldErrors(['email']);
     setIsCheckingEmail(true);
 
     try {
       await AuthService.checkEmailDuplicate(email);
-      setEmailChecked(true);
+      setEmailCheckStatus('success');
       return true;
     } catch (error) {
-      const message = getErrorMessage(error);
-      setFieldErrors((prev) => ({ ...prev, email: message }));
+      setFieldErrors((prev) => ({ ...prev, email: getErrorMessage(error) }));
+      setEmailCheckStatus('error');
       return false;
     } finally {
       setIsCheckingEmail(false);
@@ -113,18 +106,18 @@ export const useSignup = (): UseSignupReturn => {
 
   const onUsernameDuplicateCheck = useCallback(async (): Promise<boolean> => {
     clearSpecificFieldErrors(['username']);
-    setIsCheckingusername(true);
+    setIsCheckingUsername(true);
 
     try {
       await AuthService.checkUsernameDuplicate(username);
-      setusernameChecked(true);
+      setUsernameCheckStatus('success');
       return true;
     } catch (error) {
-      const message = getErrorMessage(error);
-      setFieldErrors((prev) => ({ ...prev, username: message }));
+      setFieldErrors((prev) => ({ ...prev, username: getErrorMessage(error) }));
+      setUsernameCheckStatus('error');
       return false;
     } finally {
-      setIsCheckingusername(false);
+      setIsCheckingUsername(false);
     }
   }, [username, clearSpecificFieldErrors]);
 
@@ -137,6 +130,9 @@ export const useSignup = (): UseSignupReturn => {
     console.log('주소 검색:', address);
   }, [address, clearSpecificFieldErrors]);
 
+  // -------------------
+  // 회원가입
+  // -------------------
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault();
@@ -145,6 +141,9 @@ export const useSignup = (): UseSignupReturn => {
       setIsSubmitting(true);
 
       try {
+        const emailChecked = emailCheckStatus === 'success';
+        const usernameChecked = usernameCheckStatus === 'success';
+
         if (!emailChecked || !usernameChecked) {
           const newFieldErrors: ValidationErrors = {};
           if (!emailChecked) newFieldErrors.email = '이메일 중복 확인을 해주세요.';
@@ -178,22 +177,12 @@ export const useSignup = (): UseSignupReturn => {
         });
 
         if (result.needsVerification) {
-          // 이메일 인증이 필요한 경우
           alert('가입 확인 이메일을 발송했습니다. 이메일을 확인 후 로그인해주세요.');
           router.push('/login');
         } else {
-          // 바로 로그인된 경우
           router.push('/dashboard');
         }
 
-        if (result.needsVerification) {
-          // 이메일 인증이 필요한 경우
-          alert('가입 확인 이메일을 발송했습니다. 이메일을 확인 후 로그인해주세요.');
-          router.push('/login');
-        } else {
-          // 바로 로그인된 경우
-          router.push('/dashboard');
-        }
       } catch (error) {
         const message = getErrorMessage(error);
         if (message.includes('이메일')) {
@@ -208,16 +197,10 @@ export const useSignup = (): UseSignupReturn => {
       }
     },
     [
-      email,
-      password,
-      confirmPassword,
-      username,
-      address,
-      addressDetail,
-      emailChecked,
-      usernameChecked,
-      resetErrors,
-      router,
+      email, password, confirmPassword, username,
+      address, addressDetail,
+      emailCheckStatus, usernameCheckStatus,
+      resetErrors, router, isSubmitting,
     ]
   );
 
@@ -232,11 +215,13 @@ export const useSignup = (): UseSignupReturn => {
     formError,
     isSubmitting,
     isCheckingEmail,
-    isCheckingusername,
+    isCheckingUsername,
+    emailCheckStatus,
+    usernameCheckStatus,
     onChangeEmail,
     onChangePassword,
     onChangePasswordConfirm,
-    onChangeusername,
+    onChangeUsername,
     onChangeAddress,
     onChangeAddressDetail,
     onSubmit,
