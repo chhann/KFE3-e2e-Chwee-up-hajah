@@ -13,9 +13,9 @@ const meta = {
 
 ## 주요 기능
 - ✅ Next.js Image 컴포넌트 기반 최적화
-- ✅ Fallback 아바타 자동 생성
+- ✅ Fallback 아바타 자동 생성 (이미지 미지정 시 name 또는 alt 기반)
 - ✅ 접근성 지원 (alt 속성 필수)
-- ✅ 다양한 크기 지원
+- ✅ 다양한 크기 지원 (sm, md, lg, xl)
 - ✅ 디자인 시스템 컬러 적용
         `,
       },
@@ -43,13 +43,19 @@ const meta = {
       control: { type: 'text' },
       description: '사용자 이름 (Fallback 생성용)',
     },
-    priority: {
-      control: { type: 'boolean' },
-      description: '이미지 로딩 우선순위',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
+    className: {
+      control: { type: 'text' },
+      description: '추가 CSS 클래스',
     },
+    onImageError: {
+      action: 'onImageError',
+      description: '이미지 로드 실패 시 콜백',
+    },
+  },
+  args: {
+    alt: '김철수',
+    name: '김철수',
+    size: 'md',
   },
 } satisfies Meta<typeof Avatar>;
 
@@ -71,7 +77,7 @@ export const WithImage: Story = {
     src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     alt: '사용자 프로필',
     size: 'lg',
-    priority: true,
+    name: '사용자 프로필',
   },
 };
 
@@ -121,6 +127,7 @@ export const MultipleUsers: Story = {
       <Avatar
         src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt="실제 사용자"
+        name="실제 사용자"
         size="lg"
       />
     </div>
