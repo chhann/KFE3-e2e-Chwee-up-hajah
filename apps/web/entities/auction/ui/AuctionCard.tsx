@@ -10,6 +10,9 @@ interface AuctionCardProps extends CardProps {
   bidCount: number;
 }
 const AuctionCard = ({
+  title,
+  locationName,
+  imageSrc,
   badgeVariant,
   bidStartPrice,
   bidCurrentPrice,
@@ -20,10 +23,10 @@ const AuctionCard = ({
   return (
     <div className="border-neutral-20 w-full rounded-lg border p-4 shadow-md">
       <Card
-        imageSrc="./favicon.ico"
+        imageSrc={imageSrc}
         badgeVariant={badgeVariant}
-        title="파비콘"
-        locationName="서울시 강남구"
+        title={title}
+        locationName={locationName}
         endTime={new Date(Date.now() + 1000 * 60 * 60 * 24 * 2)}
       />
       {/* 제목 및 입찰 내용 */}
