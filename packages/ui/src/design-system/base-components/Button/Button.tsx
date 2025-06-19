@@ -1,16 +1,20 @@
 export interface ButtonProps {
   children: React.ReactNode;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
   variants: 'primary' | 'secondary' | 'transparent' | 'outline' | 'custom';
   size?: 'lg' | 'thinLg' | 'md' | 'thinMd' | 'sm';
   disabled?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 const Button = ({
   children,
   variants,
+  type = 'button',
   size = 'sm',
   className = '',
   disabled = false,
+  onClick,
 }: ButtonProps) => {
   const variantsClasses = {
     primary:
@@ -35,7 +39,7 @@ const Button = ({
       : `${variantsClasses[variants]} ${sizeClasses[size]} ${disabledClasses} ${className} cursor-pointer`;
 
   return (
-    <button className={combinedClassName} disabled={disabled}>
+    <button type={type} className={combinedClassName} disabled={disabled} onClick={onClick}>
       {children}
     </button>
   );

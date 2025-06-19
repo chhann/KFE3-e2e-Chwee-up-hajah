@@ -23,8 +23,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onChangePassword,
 }) => {
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl text-center font-bold mb-4 mt">로그인</h2>
+    <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md">
+      <h2 className="mt mb-4 text-center text-2xl font-bold">로그인</h2>
       <form onSubmit={onSubmit} className="flex flex-col space-y-4">
         <span className="mt-6"></span>
         {/* 이메일 입력 필드 */}
@@ -35,7 +35,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           placeholder="이메일 주소"
           required
           leftIcon="email"
-          error={error.includes('이메일') ? error : undefined}
         />
 
         {/* 비밀번호 입력 필드 */}
@@ -46,14 +45,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           placeholder="비밀번호"
           required
           leftIcon="password"
-          error={error.includes('비밀번호') ? error : undefined}
         />
         {/* 에러 메시지 표시 */}
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {error && <p className="mt-2 text-red-500">{error}</p>}
 
         {/* 비밀번호 찾기 링크 */}
-        <div className="justify-between text-sm text-gray-500 text-center">
-          <Link href="/reset-password" className="text-gray-500 hover:underline">
+        <div className="justify-between text-center text-sm text-gray-500">
+          <Link href="/reset_password" className="text-gray-500 hover:underline">
             비밀번호를 잊으셨나요?
           </Link>
         </div>
@@ -62,6 +60,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <Button
           children="로그인"
           className="w-full"
+          type="submit"
           variants="primary"
           size="md"
           disabled={!email || !password}
@@ -70,8 +69,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
       {/* 소셜 로그인 버튼들 */}
       <div className="mt-4 text-center">
-        <div className="text-gray-500 text-center">다른 계정으로 로그인</div>
-        <div className="flex justify-center items-center mt-4 space-x-3">
+        <div className="text-center text-gray-500">다른 계정으로 로그인</div>
+        <div className="mt-4 flex items-center justify-center space-x-3">
           {/* 구글, 애플, 페이스북 아이콘을 Avatar로 표시 */}
           {['구글', '애플', '페이스북'].map((platform) => (
             <Avatar
