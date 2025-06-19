@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { forwardRef } from 'react';
 import { cn } from '../../../utils/cn'; // 클래스명 유틸리티 함수
 
@@ -9,7 +8,6 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   alt: string;
   size?: 'sm' | 'md' | 'lg' | 'xl'; // 아바타 크기
   name?: string;
-  priority?: boolean; // 이미지 로딩 우선순위
   onImageError?: () => void; // 이미지 로드 실패 시 콜백
 }
 
@@ -34,7 +32,7 @@ const AVATAR_SIZES = {
 } as const;
 
 const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
-  ({ src, alt, size = 'md', name, priority = false, onImageError, className, ...props }, ref) => {
+  ({ src, alt, size = 'md', name, onImageError, className, ...props }, ref) => {
     // Fallback 아바타 생성 함수
     const generateFallbackAvatar = (seedName: string) => {
       return `https://api.dicebear.com/7.x/thumbs/svg?seed=${encodeURIComponent(seedName)}`;
@@ -60,17 +58,15 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         )}
         {...props}
       >
-        <Image
+        <img
           src={imageSrc}
           alt={alt}
           width={sizeConfig.pixels}
           height={sizeConfig.pixels}
-          priority={priority}
-          className="object-cover size-full"
+          className="size-full object-cover"
           onError={onImageError}
           // 이미지 최적화 설정
           sizes={`${sizeConfig.pixels}px`}
-          quality={85}
         />
       </div>
     );
