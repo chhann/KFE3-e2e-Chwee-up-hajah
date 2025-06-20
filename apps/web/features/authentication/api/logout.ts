@@ -1,5 +1,5 @@
 // features/authentication/api/logout.ts
-import { createClient } from '../../../lib/supabase/client';
+import { createClient } from '../../../lib/supabase/server';
 
 /**
  * Supabase를 통해 현재 세션을 로그아웃 처리합니다.
@@ -7,7 +7,7 @@ import { createClient } from '../../../lib/supabase/client';
  */
 export class LogoutService {
   static async logout(): Promise<void> {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { error } = await supabase.auth.signOut();
 

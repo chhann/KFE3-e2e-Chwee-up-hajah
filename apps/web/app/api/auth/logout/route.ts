@@ -1,17 +1,47 @@
 // app/api/auth/logout/route.ts
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers'; // Next.js 13+ App Router
 import { NextResponse } from 'next/server';
-import { LogoutService } from '../../../../features/authentication/api/logout';
 
-/**
- * Supabase 세션 로그아웃 API
- */
 export async function POST() {
-  try {
-    await LogoutService.logout();
+  const cookieStore = await cookies();
+  const response = NextResponse.json({ message: '로그아웃 완료' });
 
-    // 쿠키는 서버 측에서 직접 삭제하지 않기 때문에 클라이언트에서 처리
-    return NextResponse.json({ message: '로그아웃 완료' });
-  } catch (error: any) {
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get: (name: string) => {
+          const cookie = cookieStore.get(name);
+          return cookie?.value;
+        },
+        set: (name: string, value: string, options?: { maxAge?: number }) => {
+          response.cookies.set({
+            name,
+            value,
+            httpOnly: true,
+            path: '/',
+            maxAge: options?.maxAge,
+          });
+        },
+        remove: (name: string) => {
+          response.cookies.set({
+            name,
+            value: '',
+            maxAge: 0,
+            path: '/',
+          });
+        },
+      },
+    }
+  );
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  return response;
 }

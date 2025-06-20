@@ -1,12 +1,13 @@
-// app/api/auth/me/route.ts
 import { NextResponse } from 'next/server';
-import { MeService } from '../../../../features/authentication/api/me';
+import { createClient } from '../../../../lib/supabase/server';
 
 export async function GET() {
-  try {
-    const user = await MeService.getCurrentUser();
-    return NextResponse.json({ user });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 401 });
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data.user) {
+    return NextResponse.json({ user: null });
   }
+
+  return NextResponse.json({ user: data.user });
 }

@@ -1,5 +1,5 @@
 // lib/validators/duplicateCheck.ts
-import { createClient } from '../supabase/client';
+import { createClient } from '../supabase/server';
 
 export async function checkEmailDuplicate(email: string) {
   const supabase = await createClient();
