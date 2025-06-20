@@ -1,7 +1,7 @@
 import { FaRegClock } from 'react-icons/fa6';
-import { MdLocationPin } from 'react-icons/md';
 import { getTimeLeftString } from '../../../utils/getTimeLeftString';
 import { Badge } from '../Badge';
+import { LocationInfo } from '../LocationInfo';
 export interface CardProps {
   imageSrc: string;
   badgeVariant?: 'best' | 'urgent';
@@ -25,10 +25,7 @@ const Card = ({ imageSrc, badgeVariant, title, locationName, endTime }: CardProp
           )}
         </div>
         <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-1">
-            <MdLocationPin className="text-[var(--color-red-500)]" />
-            <div className="text-neutral-70">{locationName}</div>
-          </div>
+          <LocationInfo locationName={locationName} />
           <div className="text-neutral-70 flex items-center gap-1">
             <FaRegClock />
             {leftTime}
