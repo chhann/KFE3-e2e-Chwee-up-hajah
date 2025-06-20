@@ -9,7 +9,7 @@
   ],
   "exports": {
     "./theme": "./src/theme.css",
-   "./styles": "./dist/index.css",
+    "./styles": "./dist/index.css",
     "./*": "./src/*.ts"
   },
   "license": "MIT",
@@ -29,6 +29,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
+    "swiper": "^11.2.8",
     "tailwind-merge": "^3.3.0"
   },
   "peerDependencies": {
