@@ -32,13 +32,17 @@ export interface UseSignupReturn {
   // Loading state
   isSubmitting: boolean;
   isCheckingEmail: boolean;
-  isCheckingusername: boolean;
+  isCheckingUsername: boolean; 
+
+  // check state
+  emailCheckStatus: 'idle' | 'checking' | 'success' | 'error';
+  usernameCheckStatus: 'idle' | 'checking' | 'success' | 'error';
 
   // Form handlers
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeusername: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeUsername: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddress: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddressDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
 

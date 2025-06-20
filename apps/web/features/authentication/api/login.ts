@@ -1,11 +1,9 @@
-// apps/web/features/authentication/api/login.ts
-import { supabase } from '../../../lib/supabase/supabase';
+// features/authentication/api/login.ts
+import { createClient } from '../../../utils/supabase/client';
 
 export class LoginService {
   static async login(email: string, password: string): Promise<string> {
-    if (!email.trim() || !password.trim()) {
-      throw new Error('이메일과 비밀번호를 모두 입력해주세요.');
-    }
+    const supabase = createClient();
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -13,35 +11,33 @@ export class LoginService {
     });
 
     if (error) {
-      if (error.message.includes('Invalid login credentials')) {
-        throw new Error('이메일 또는 비밀번호가 올바르지 않습니다.');
-      }
-      throw new Error(`로그인 실패: ${error.message}`);
+      throw new Error(error.message);
     }
 
-    if (!data.session) {
-      throw new Error('세션이 생성되지 않았습니다.');
+    if (!data.user) {
+      throw new Error('로그인에 실패했습니다.');
     }
 
-    return data.user.id; // 로그인 성공 시 사용자 ID 반환
+    return data.user.id;
   }
 
   static async logout(): Promise<void> {
+    const supabase = createClient();
     const { error } = await supabase.auth.signOut();
-
+    
     if (error) {
-      throw new Error('로그아웃 중 오류가 발생했습니다.');
+      throw new Error(error.message);
     }
   }
 
-  static async getCurrentUser(): Promise<string | null> {
-    const { data, error } = await supabase.auth.getUser();
-
+  static async getCurrentUser() {
+    const supabase = createClient();
+    const { data: { user }, error } = await supabase.auth.getUser();
+    
     if (error) {
-      console.error('현재 사용자 조회 실패:', error.message);
-      return null;
+      throw new Error(error.message);
     }
-
-    return data.user?.id ?? null;
+    
+    return user;
   }
 }
