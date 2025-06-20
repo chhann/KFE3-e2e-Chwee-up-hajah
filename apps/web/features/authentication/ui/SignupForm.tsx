@@ -1,63 +1,44 @@
+'use client';
+
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import Link from 'next/link';
+import type { UseSignupReturn } from '../../../features/authentication/model/types'; // 커스텀 훅 타입 임포트
 
-type SignupFormProps = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  username: string;
-  address: string;
-  addressDetail: string;
-  formError: string;
-  fieldErrors: {
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-    username?: string;
-    address?: string;
-  };
-  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeUsername: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeAddress: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeAddressDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onEmailDuplicateCheck: () => Promise<boolean>;
-  onUsernameDuplicateCheck: () => Promise<boolean>;
-  onAddressSearch: () => void;
-};
-
+/**
+ * 회원가입 폼 컴포넌트
+ * - 상태와 로직은 useSignup 훅으로부터 props로 전달받음
+ */
 const SignupForm = ({
-    email,
-    password,
-    confirmPassword,
-    username,
-    address,
-    addressDetail,
-    fieldErrors,
-    formError,
-    isSubmitting,
-    isCheckingEmail,
-    isCheckingUsername,
-    emailCheckStatus,
-    usernameCheckStatus,
-    onChangeEmail,
-    onChangePassword,
-    onChangePasswordConfirm,
-    onChangeUsername,
-    onChangeAddress,
-    onChangeAddressDetail,
-    onSubmit,
-    onEmailDuplicateCheck,
-    onUsernameDuplicateCheck,
-    onAddressSearch,
-    resetErrors,
-}: SignupFormProps) => {
+  email,
+  password,
+  confirmPassword,
+  username,
+  address,
+  addressDetail,
+  fieldErrors,
+  formError,
+  isSubmitting,
+  isCheckingEmail,
+  isCheckingUsername,
+  emailCheckStatus,
+  usernameCheckStatus,
+  onChangeEmail,
+  onChangePassword,
+  onChangePasswordConfirm,
+  onChangeUsername,
+  onChangeAddress,
+  onChangeAddressDetail,
+  onSubmit,
+  onEmailDuplicateCheck,
+  onUsernameDuplicateCheck,
+  onAddressSearch,
+  resetErrors,
+}: UseSignupReturn) => {
   return (
-    <div>
+    <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md">
       <h2 className="mb-4 text-center text-2xl font-bold">회원가입</h2>
+
       <form onSubmit={onSubmit} className="space-y-4">
         {/* 이메일 입력 및 중복 확인 */}
         <div>
@@ -73,18 +54,18 @@ const SignupForm = ({
               success={emailCheckStatus === 'success' ? '사용 가능한 이메일입니다.' : undefined}
             />
             <Button
-              type="button" // 폼 제출 방지
+              type="button"
               children="중복 확인"
               className="whitespace-nowrap"
               variants="primary"
               size="md"
-              disabled={!email}
+              disabled={!email || isCheckingEmail}
               onClick={onEmailDuplicateCheck}
             />
           </div>
         </div>
 
-        {/* 비밀번호 입력 필드 */}
+        {/* 비밀번호 */}
         <div>
           <span className="text-sm text-gray-500">비밀번호</span>
           <Input
@@ -97,6 +78,7 @@ const SignupForm = ({
           />
         </div>
 
+        {/* 비밀번호 확인 */}
         <div>
           <span className="text-sm text-gray-500">비밀번호 확인</span>
           <Input
@@ -123,18 +105,18 @@ const SignupForm = ({
               success={usernameCheckStatus === 'success' ? '사용 가능한 닉네임입니다.' : undefined}
             />
             <Button
-              type="button" // 폼 제출 방지
+              type="button"
               children="중복 확인"
               className="whitespace-nowrap"
               variants="primary"
               size="md"
-              disabled={!username}
+              disabled={!username || isCheckingUsername}
               onClick={onUsernameDuplicateCheck}
             />
           </div>
         </div>
 
-        {/* 주소 입력 및 검색 */}
+        {/* 주소 */}
         <div>
           <span className="text-sm text-gray-500">주소</span>
           <div className="flex items-start space-x-2">
@@ -142,11 +124,12 @@ const SignupForm = ({
               type="text"
               value={address}
               onChange={onChangeAddress}
-              placeholder=""
+              placeholder="주소를 입력해주세요"
               required={false}
+              error={fieldErrors.address}
             />
             <Button
-              type="button" // 폼 제출 방지
+              type="button"
               children="검색"
               className="whitespace-nowrap"
               variants="primary"
@@ -156,6 +139,7 @@ const SignupForm = ({
           </div>
         </div>
 
+        {/* 상세 주소 */}
         <div>
           <span className="text-sm text-gray-500">상세 주소</span>
           <Input
@@ -163,7 +147,7 @@ const SignupForm = ({
             value={addressDetail}
             onChange={onChangeAddressDetail}
             placeholder="상세 주소"
-            required
+            required={false}
           />
         </div>
 
@@ -172,12 +156,12 @@ const SignupForm = ({
 
         {/* 회원가입 버튼 */}
         <Button
-          type="submit" // 명시적으로 submit 타입 지정
+          type="submit"
           children="회원가입"
           className="w-full"
           variants="primary"
           size="md"
-          disabled={!email || !username || !address}
+          disabled={isSubmitting || !email || !username || !password || !confirmPassword}
         />
 
         <p className="mt-12 text-center">
