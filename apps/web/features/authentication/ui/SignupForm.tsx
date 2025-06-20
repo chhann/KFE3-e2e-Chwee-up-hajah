@@ -2,168 +2,191 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import Link from 'next/link';
 
-// SignupForm.tsx
 type SignupFormProps = {
   email: string;
   password: string;
   confirmPassword: string;
-  nickname: string;
+  username: string;
   address: string;
+  addressDetail: string;
   formError: string;
   fieldErrors: {
     email?: string;
     password?: string;
     confirmPassword?: string;
-    nickname?: string;
+    username?: string;
     address?: string;
   };
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeNickname: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeUsername: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddress: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddressDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onDuplicateCheck: (field: 'email' | 'nickname' | 'address') => void;
+  onEmailDuplicateCheck: () => Promise<boolean>;
+  onUsernameDuplicateCheck: () => Promise<boolean>;
+  onAddressSearch: () => void;
 };
 
 const SignupForm = ({
-  email,
-  password,
-  confirmPassword,
-  nickname,
-  address,
-  formError,
-  fieldErrors,
-  onChangeEmail,
-  onChangePassword,
-  onChangePasswordConfirm,
-  onChangeNickname,
-  onChangeAddress,
-  onChangeAddressDetail,
-  onSubmit,
-  onDuplicateCheck,
+    email,
+    password,
+    confirmPassword,
+    username,
+    address,
+    addressDetail,
+    fieldErrors,
+    formError,
+    isSubmitting,
+    isCheckingEmail,
+    isCheckingUsername,
+    emailCheckStatus,
+    usernameCheckStatus,
+    onChangeEmail,
+    onChangePassword,
+    onChangePasswordConfirm,
+    onChangeUsername,
+    onChangeAddress,
+    onChangeAddressDetail,
+    onSubmit,
+    onEmailDuplicateCheck,
+    onUsernameDuplicateCheck,
+    onAddressSearch,
+    resetErrors,
 }: SignupFormProps) => {
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl text-center font-bold mb-4">회원가입</h2>
-      <form onSubmit={onSubmit} className="whitespace-nowrap space-y-4">
+    <div>
+      <h2 className="mb-4 text-center text-2xl font-bold">회원가입</h2>
+      <form onSubmit={onSubmit} className="space-y-4">
         {/* 이메일 입력 및 중복 확인 */}
-        <span className="text-sm text-gray-500">이메일 주소</span>
-        <div className="flex items-center space-x-2">
+        <div>
+          <span className="text-sm text-gray-500">이메일 주소</span>
+          <div className="mt-1 flex items-start space-x-2">
+            <Input
+              type="email"
+              value={email}
+              onChange={onChangeEmail}
+              placeholder="이메일"
+              required
+              error={fieldErrors.email}
+              success={emailCheckStatus === 'success' ? '사용 가능한 이메일입니다.' : undefined}
+            />
+            <Button
+              type="button" // 폼 제출 방지
+              children="중복 확인"
+              className="whitespace-nowrap"
+              variants="primary"
+              size="md"
+              disabled={!email}
+              onClick={onEmailDuplicateCheck}
+            />
+          </div>
+        </div>
+
+        {/* 비밀번호 입력 필드 */}
+        <div>
+          <span className="text-sm text-gray-500">비밀번호</span>
           <Input
-            type="email"
-            value={email}
-            onChange={onChangeEmail}
-            placeholder=""
-            error={fieldErrors.email}
-          />
-          <Button
-            children="중복 확인"
-            className=""
-            variants="primary"
-            size="md"
-            disabled={!email}
+            type="password"
+            value={password}
+            onChange={onChangePassword}
+            placeholder="비밀번호"
+            required
+            error={fieldErrors.password}
           />
         </div>
-      </form>
 
-      {/* 비밀번호 입력 필드 */}
-      <span className="text-sm text-gray-500">비밀번호</span>
-      <Input
-        type="password"
-        value={password}
-        onChange={onChangePassword}
-        placeholder="비밀번호"
-        required
-        error={fieldErrors.password ? fieldErrors.password : undefined}
-      />
+        <div>
+          <span className="text-sm text-gray-500">비밀번호 확인</span>
+          <Input
+            type="password"
+            value={confirmPassword}
+            onChange={onChangePasswordConfirm}
+            placeholder="비밀번호 확인"
+            required
+            error={fieldErrors.confirmPassword}
+          />
+        </div>
 
-      <span className="text-sm text-gray-500">비밀번호 확인</span>
-      <Input
-        type="password"
-        value={confirmPassword}
-        onChange={onChangePasswordConfirm}
-        placeholder="비밀번호 확인"
-        required
-        error={fieldErrors.confirmPassword ? fieldErrors.confirmPassword : undefined}
-      />
+        {/* 닉네임 입력 및 중복 확인 */}
+        <div>
+          <span className="text-sm text-gray-500">닉네임</span>
+          <div className="flex items-start space-x-2">
+            <Input
+              type="text"
+              value={username}
+              onChange={onChangeUsername}
+              placeholder="닉네임"
+              required
+              error={fieldErrors.username}
+              success={usernameCheckStatus === 'success' ? '사용 가능한 닉네임입니다.' : undefined}
+            />
+            <Button
+              type="button" // 폼 제출 방지
+              children="중복 확인"
+              className="whitespace-nowrap"
+              variants="primary"
+              size="md"
+              disabled={!username}
+              onClick={onUsernameDuplicateCheck}
+            />
+          </div>
+        </div>
 
-      {/* 에러 메시지 표시 */}
-      {fieldErrors.password && <p className="text-red-500 mt-2">{fieldErrors.password}</p>}
+        {/* 주소 입력 및 검색 */}
+        <div>
+          <span className="text-sm text-gray-500">주소</span>
+          <div className="flex items-start space-x-2">
+            <Input
+              type="text"
+              value={address}
+              onChange={onChangeAddress}
+              placeholder=""
+              required={false}
+            />
+            <Button
+              type="button" // 폼 제출 방지
+              children="검색"
+              className="whitespace-nowrap"
+              variants="primary"
+              size="md"
+              onClick={onAddressSearch}
+            />
+          </div>
+        </div>
 
-      {/* 닉네임 입력 및 중복 확인 */}
-      <span className="text-sm text-gray-500">닉네임</span>
-      <form className="mt-4">
-        <div className="flex items-center space-x-2">
+        <div>
+          <span className="text-sm text-gray-500">상세 주소</span>
           <Input
             type="text"
-            value={nickname}
-            onChange={onChangeNickname}
-            placeholder="닉네임"
+            value={addressDetail}
+            onChange={onChangeAddressDetail}
+            placeholder="상세 주소"
             required
-            error={fieldErrors.nickname ? fieldErrors.nickname : undefined}
-          />
-          <Button
-            children="중복 확인"
-            className="whitespace-nowrap"
-            variants="primary"
-            size="md"
-            disabled={!nickname}
           />
         </div>
-      </form>
 
-      {/* 주소 입력 및 중복 확인 */}
-      <form className="mt-4 space-y-2">
-        {/* 레이블 */}
-        <span className="text-sm text-gray-500">주소</span>
+        {/* 전체 폼 에러 메시지 */}
+        {formError && <p className="text-center text-sm text-red-500">{formError}</p>}
 
-        {/* 주소 입력 + 검색 버튼 */}
-        <div className="flex items-center space-x-2">
-          <Input
-            type="text"
-            value={nickname}
-            onChange={onChangeAddress}
-            placeholder=""
-            required
-            error={fieldErrors.address ? fieldErrors.address : undefined}
-          />
-          <Button children="검색" className="whitespace-nowrap" variants="primary" size="md" />
-        </div>
-
-        {/* 상세 주소 입력 */}
-        <Input
-          type="text"
-          value={nickname}
-          onChange={onChangeAddressDetail}
-          placeholder="상세 주소"
-          required
-          error={fieldErrors.address ? fieldErrors.address : undefined}
-        />
-      </form>
-
-      {/* 에러 메시지 */}
-      {formError && <p className="text-red-500 text-sm">{formError}</p>}
-
-      {/* 회원가입 버튼 */}
-      <form onSubmit={onSubmit} className="mt-4">
+        {/* 회원가입 버튼 */}
         <Button
+          type="submit" // 명시적으로 submit 타입 지정
           children="회원가입"
           className="w-full"
           variants="primary"
           size="md"
-          disabled={!email || !nickname || !address}
-        ></Button>
-      </form>
+          disabled={!email || !username || !address}
+        />
 
-      <p className="mt-12 text-center">
-        계정이 있으신가요?{' '}
-        <Link href="/signup" className="text-gray-500 hover:underline">
-          로그인
-        </Link>
-      </p>
-      <div className="mt-12 text-center text-gray-500"></div>
+        <p className="mt-12 text-center">
+          계정이 있으신가요?{' '}
+          <Link href="/login" className="text-gray-500 hover:underline">
+            로그인
+          </Link>
+        </p>
+      </form>
     </div>
   );
 };

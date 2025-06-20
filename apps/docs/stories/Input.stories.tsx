@@ -94,3 +94,14 @@ export const Disabled: Story = {
     disabled: true,
   },
 };
+
+export const WithSuccess: Story = {
+  render: (args) => <InputWithState {...args} />,
+  args: {
+    label: 'Email',
+    placeholder: 'Enter your email',
+    type: 'text',
+    value: 'valid@email.com',
+    success: '사용 가능한 이메일입니다.',
+  },
+};
