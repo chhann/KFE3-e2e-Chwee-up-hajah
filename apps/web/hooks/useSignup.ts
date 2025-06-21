@@ -1,10 +1,20 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { AuthService } from '../api/authService';
-import type { UseSignupReturn, ValidationErrors } from './types';
+import { AuthService } from '../features/authentication/api/authService';
+import type { UseSignupReturn, ValidationErrors } from '../features/authentication/model/types';
 
-type CheckStatus = '' | 'success' | 'error';
+/**
+ * 중복 확인 상태 타입
+ * '': 초기 상태
+ * 'checking': 확인 중
+ * 'success': 성공
+ * 'error': 실패
+ */
+type CheckStatus = '' | 'checking' | 'success' | 'error';
 
+/**
+ * 오류 객체에서 메시지를 안전하게 추출하는 유틸리티 함수
+ */
 const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
   if (typeof error === 'string') return error;
@@ -12,9 +22,21 @@ const getErrorMessage = (error: unknown): string => {
   return '알 수 없는 오류가 발생했습니다.';
 };
 
+/**
+ * 회원가입 폼 관리를 위한 커스텀 훅
+ *
+ * 주요 기능:
+ * - 폼 상태 관리 (입력값, 오류, 로딩 상태)
+ * - 이메일/사용자명 중복 확인
+ * - 폼 유효성 검사
+ * - 회원가입 처리
+ *
+ * @returns 회원가입 완료
+ */
 export const useSignup = (): UseSignupReturn => {
   const router = useRouter();
 
+  // 폼 입력 상태
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,25 +44,41 @@ export const useSignup = (): UseSignupReturn => {
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
 
+  // 오류 상태
   const [fieldErrors, setFieldErrors] = useState<ValidationErrors>({});
   const [formError, setFormError] = useState('');
 
+  // 로딩 상태
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
 
+  // 중복 확인 상태
   const [emailCheckStatus, setEmailCheckStatus] = useState<CheckStatus>('');
   const [usernameCheckStatus, setUsernameCheckStatus] = useState<CheckStatus>('');
 
+  // -------------------
+  // 오류 관리 함수들
+  // -------------------
+
+  /**
+   * 모든 오류 메시지를 초기화
+   */
   const resetErrors = useCallback(() => {
     setFormError('');
     setFieldErrors({});
   }, []);
 
+  /**
+   * 특정 필드의 오류 메시지를 제거
+   */
   const clearFieldError = useCallback((field: keyof ValidationErrors) => {
     setFieldErrors((prev) => ({ ...prev, [field]: '' }));
   }, []);
 
+  /**
+   * 여러 필드의 오류 메시지를 제거
+   */
   const clearSpecificFieldErrors = useCallback((fields: (keyof ValidationErrors)[]) => {
     setFieldErrors((prev) => {
       const newErrors = { ...prev };
@@ -51,34 +89,67 @@ export const useSignup = (): UseSignupReturn => {
   }, []);
 
   // -------------------
-  // Input 핸들러
+  // 입력 변경 핸들러들
   // -------------------
-  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailCheckStatus('');
-    clearFieldError('email');
-  }, [clearFieldError]);
 
-  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    clearFieldError('password');
-  }, [clearFieldError]);
+  /**
+   * 이메일 입력 변경 핸들러
+   * 입력값 변경 시 중복 확인 상태와 오류 메시지 초기화
+   */
+  const onChangeEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+      setEmailCheckStatus('');
+      clearFieldError('email');
+    },
+    [clearFieldError]
+  );
 
-  const onChangePasswordConfirm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
-    clearFieldError('confirmPassword');
-  }, [clearFieldError]);
+  /**
+   * 비밀번호 입력 변경 핸들러
+   */
+  const onChangePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+      clearFieldError('password');
+    },
+    [clearFieldError]
+  );
 
-  const onChangeUsername = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-    setUsernameCheckStatus('');
-    clearFieldError('username');
-  }, [clearFieldError]);
+  /**
+   * 비밀번호 확인 입력 변경 핸들러
+   */
+  const onChangePasswordConfirm = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setConfirmPassword(e.target.value);
+      clearFieldError('confirmPassword');
+    },
+    [clearFieldError]
+  );
 
-  const onChangeAddress = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value);
-    clearFieldError('address');
-  }, [clearFieldError]);
+  /**
+   * 사용자명 입력 변경 핸들러
+   * 입력값 변경 시 중복 확인 상태와 오류 메시지 초기화
+   */
+  const onChangeUsername = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUsername(e.target.value);
+      setUsernameCheckStatus(''); // 중복 확인 상태 초기화
+      clearFieldError('username');
+    },
+    [clearFieldError]
+  );
+
+  /**
+   * 주소 입력 변경 핸들러
+   */
+  const onChangeAddress = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setAddress(e.target.value);
+      clearFieldError('address');
+    },
+    [clearFieldError]
+  );
 
   const onChangeAddressDetail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setAddressDetail(e.target.value);
@@ -87,9 +158,15 @@ export const useSignup = (): UseSignupReturn => {
   // -------------------
   // 중복 확인 로직
   // -------------------
+
+  /**
+   * 이메일 중복 확인 처리
+   * @returns 중복 확인 성공 여부
+   */
   const onEmailDuplicateCheck = useCallback(async (): Promise<boolean> => {
     clearSpecificFieldErrors(['email']);
     setIsCheckingEmail(true);
+    setEmailCheckStatus('checking');
 
     try {
       await AuthService.checkEmailDuplicate(email);
@@ -104,9 +181,14 @@ export const useSignup = (): UseSignupReturn => {
     }
   }, [email, clearSpecificFieldErrors]);
 
+  /**
+   * 사용자명 중복 확인 처리
+   * @returns 중복 확인 성공 여부
+   */
   const onUsernameDuplicateCheck = useCallback(async (): Promise<boolean> => {
     clearSpecificFieldErrors(['username']);
     setIsCheckingUsername(true);
+    setUsernameCheckStatus('checking');
 
     try {
       await AuthService.checkUsernameDuplicate(username);
@@ -121,6 +203,10 @@ export const useSignup = (): UseSignupReturn => {
     }
   }, [username, clearSpecificFieldErrors]);
 
+  /**
+   * 주소 검색 처리
+   * 현재 콘솔 로그만 출력하는 플레이스 홀더
+   */
   const onAddressSearch = useCallback(() => {
     clearSpecificFieldErrors(['address']);
     if (!address.trim()) {
@@ -131,16 +217,27 @@ export const useSignup = (): UseSignupReturn => {
   }, [address, clearSpecificFieldErrors]);
 
   // -------------------
-  // 회원가입
+  // 회원가입 처리
   // -------------------
+
+  /**
+   * 회원가입 폼 제출 처리
+   *
+   * 처리 순서:
+   *  1. 중복 확인 완료 여부 검사
+   *  2. 폼 데이터 유효성 검사
+   *  3. 회원가입 API 호출
+   *  4. 성공 시 적절한 페이지로 이동
+   */
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault();
-      if (isSubmitting) return;
+      if (isSubmitting) return; // 이중 제출 방지
       resetErrors();
       setIsSubmitting(true);
 
       try {
+        // 1. 중복 확인 완료 여부 검사
         const emailChecked = emailCheckStatus === 'success';
         const usernameChecked = usernameCheckStatus === 'success';
 
@@ -153,6 +250,7 @@ export const useSignup = (): UseSignupReturn => {
           return;
         }
 
+        // 2. 폼 데이터 유효성 검사
         const validationErrors = AuthService.validateSignupData({
           email,
           password,
@@ -168,6 +266,7 @@ export const useSignup = (): UseSignupReturn => {
           return;
         }
 
+        // 3. 회원가입 API 호출
         const result = await AuthService.signup({
           email,
           password,
@@ -176,14 +275,15 @@ export const useSignup = (): UseSignupReturn => {
           addressDetail,
         });
 
+        // 4. 성공 시 적절한 페이지로 이동
         if (result.needsVerification) {
           alert('가입 확인 이메일을 발송했습니다. 이메일을 확인 후 로그인해주세요.');
           router.push('/login');
         } else {
           router.push('/dashboard');
         }
-
       } catch (error) {
+        // 오류 처리: 오류 메시지에 따라 적절한 필드에 표시
         const message = getErrorMessage(error);
         if (message.includes('이메일')) {
           setFieldErrors((prev) => ({ ...prev, email: message }));
@@ -197,37 +297,60 @@ export const useSignup = (): UseSignupReturn => {
       }
     },
     [
-      email, password, confirmPassword, username,
-      address, addressDetail,
-      emailCheckStatus, usernameCheckStatus,
-      resetErrors, router, isSubmitting,
+      email,
+      password,
+      confirmPassword,
+      username,
+      address,
+      addressDetail,
+      emailCheckStatus,
+      usernameCheckStatus,
+      resetErrors,
+      router,
+      isSubmitting,
     ]
   );
 
+  // -------------------
+  // 훅 반환값
+  // -------------------
   return {
+    // 폼 상태
     email,
     password,
     confirmPassword,
     username,
     address,
     addressDetail,
+
+    // 오류 상태
     fieldErrors,
     formError,
+
+    // 로딩 상태
     isSubmitting,
     isCheckingEmail,
     isCheckingUsername,
+
+    // 중복 확인 상태
     emailCheckStatus,
     usernameCheckStatus,
+
+    // 폼 입력 핸들러
     onChangeEmail,
     onChangePassword,
     onChangePasswordConfirm,
     onChangeUsername,
     onChangeAddress,
     onChangeAddressDetail,
+
+    // 액션 핸들러
     onSubmit,
     onEmailDuplicateCheck,
     onUsernameDuplicateCheck,
     onAddressSearch,
+
+    // 유틸리티
     resetErrors,
   };
 };
