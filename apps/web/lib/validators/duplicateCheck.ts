@@ -4,7 +4,7 @@ async function getUserData(userId: string) {
   // 커서를 이 줄에 두고 Tab 또는 Ctrl+L
 }
 
-import { createClient } from '../supabase/server';
+import { createClient } from '../../app/server';
 
 export async function checkEmailDuplicate(email: string) {
   const supabase = await createClient();

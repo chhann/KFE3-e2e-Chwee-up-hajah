@@ -12,7 +12,7 @@
     - 서버는 단순히 Supabase와 통신하는 역할
 */
 
-import { createClient } from '../../../lib/supabase/client';
+import { createClient } from '../../../app/client';
 
 /**
  * 로그인 관련 서버 사이드 서비스
