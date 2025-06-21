@@ -1,4 +1,9 @@
 // lib/validators/duplicateCheck.ts
+
+async function getUserData(userId: string) {
+  // 커서를 이 줄에 두고 Tab 또는 Ctrl+L
+}
+
 import { createClient } from '../supabase/server';
 
 export async function checkEmailDuplicate(email: string) {
@@ -10,7 +15,7 @@ export async function checkEmailDuplicate(email: string) {
   }
 
   const { data, error } = await supabase
-    .from('user_profiles')
+    .from('user')
     .select('email')
     .eq('email', email.trim())
     .maybeSingle();
@@ -36,7 +41,7 @@ export async function checkUsernameDuplicate(username: string) {
   }
 
   const { data, error } = await supabase
-    .from('user_profiles')
+    .from('user')
     .select('username')
     .eq('username', cleaned)
     .maybeSingle();

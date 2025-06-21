@@ -161,6 +161,7 @@ const SignupForm = ({
           className="w-full"
           variants="primary"
           size="md"
+          error={fieldErrors.email ?? ''}
           disabled={isSubmitting || !email || !username || !password || !confirmPassword}
         />
 
