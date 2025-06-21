@@ -1,103 +1,85 @@
-// middeware.ts
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+// middleware.ts
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
+/**
+ * Next.js 미들웨어 함수
+ * - 요청마다 Supabase 세션 정보를 확인하여 인증/비인증 경로를 제어
+ */
 export async function middleware(request: NextRequest) {
-  
-  // 응답 객체 생성
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
+  // 응답 객체 초기화
+  const supabaseResponse = NextResponse.next();
 
-  // 서버용 Supabase 클라이언트 생성
+  // Supabase 서버 클라이언트 생성(SSR 대응 + 쿠키 직접 제어)
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        // 요청에서 모든 쿠키 읽기
-        getAll() {
-          return request.cookies.getAll()
-        },
-        // 응답에 쿠키 설정
-        setAll(cookiesToSet) {
+        // 요청의 모든 쿠키를 가져오는 함수
+        getAll: () => request.cookies.getAll(),
+
+        // 응답에 쿠키를 설정하는 함수
+        setAll: (cookiesToSet) => {
           cookiesToSet.forEach(({ name, value, options }) => {
-            // 요청 객체에도 쿠키 생성 (다음 미들웨어를 위해)
-            request.cookies.set(name, value)
-            // 응답 객체에도 생성 (브라우저로 전송하기 위해)
-            supabaseResponse.cookies.set(name, value, options)
-          })
+            supabaseResponse.cookies.set(name, value, options);
+          });
         },
       },
     }
-  )
+  );
 
-  
   try {
-    // 세션 확인 및 쿠키 동기화
-    const { data: { session }, error } = await supabase.auth.getSession()
-    
+    // 현재 세션 정보 가져오기
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+
+    // 인증 관련 에러가 발생하면 토큰 삭제
     if (error) {
-      console.warn('Middleware auth error:', error)
-
-      // 세션 에러 시 auth 쿠키 삭제
-      supabaseResponse.cookies.delete('sb-access-token')
-      supabaseResponse.cookies.delete('sb-refresh-token')
-
-      // 인증 오류 시 로그인 페이지로 리다이렉트할 수도 있음
-      // return NextResponse.redirect(new URL('/login', request.url))
+      console.warn('Middleware auth error:', error);
+      supabaseResponse.cookies.delete('sb-access-token');
+      supabaseResponse.cookies.delete('sb-refresh-token');
     }
 
-    // 세션이 있을 때 추가적인 검증이나 리다이렉트 로직(Navigator Lock 해결)
-    if (session) {
-      // 이 호출이 쿠키를 자동으로 동기화함
-      await supabase.auth.getUser()
-      console.log('✔️ Session validated for user:', session.user.email)
-    }
+    // 로그인, 회원가입 등 인증 페이지 경로 판별
+    const isAuthRoute =
+      request.nextUrl.pathname.startsWith('/login') ||
+      request.nextUrl.pathname.startsWith('/signup');
 
-    // 라우트 가드 로직
-    const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || 
-                        request.nextUrl.pathname.startsWith('/signup')
+    // 대시보드, 프로필 등 보호된 페이지 경로 판별
+    const isProtectedRoute =
+      request.nextUrl.pathname.startsWith('/dashboard') ||
+      request.nextUrl.pathname.startsWith('/profile');
 
-    const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard') ||
-                             request.nextUrl.pathname.startsWith('/profile')
-
+    // 보호된 페이지에 접근하려는데 로그인되어 있지 않으면 로그인 페이지로 리디렉션
     if (isProtectedRoute && !session) {
-      // const loginUrl = new URL('/login', request.url)
-      // loginUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
-      // return NextResponse.redirect(loginUrl)
-
-      console.log('🚫 Protected route accessed without session, redirecting to login')
-      return NextResponse.redirect(new URL('/login', request.url))
+      return NextResponse.redirect(new URL('/login', request.url));
     }
 
+    // 로그인/회원가입 페이지에 접근하려는데 이미 로그인된 경우 대시보드로 리디렉션
     if (isAuthRoute && session) {
-      console.log('🔄 Authenticated user accessing auth route, redirecting to dashboard')
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
-
   } catch (error) {
-    console.warn('💥 Middleware session check failed:', error)
+    // 예외 발생 시 (예: 네트워크, Supabase 오류 등)
+    console.warn('Middleware session check failed:', error);
 
-    // 심각한 에러 시 로그인으로 리다이렉트
+    // 보호된 페이지 요청이라면 로그인 페이지로 리디렉션
     if (request.nextUrl.pathname.startsWith('/dashboard')) {
-      return NextResponse.redirect(new URL('/login', request.url))
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
-  return supabaseResponse
+  // 기본 응답 반환 (인증 상태에 따라 처리 완료된 경우)
+  return supabaseResponse;
 }
 
+/**
+ * 미들웨어가 동작할 경로를 지정하는 설정
+ * - 정적 파일, API, 이미지 등의 경로는 제외
+ */
 export const config = {
-  matcher: [
-    /*
-     * 다음 경로들을 제외한 모든 요청에 미들웨어 적용:
-     * - api routes (API 라우트는 별도 처리)
-     * - _next/static (정적 파일)
-     * - _next/image (이미지 최적화)
-     * - favicon.ico (파비콘)
-     * - 이미지 파일들
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
-}
+  matcher: ['/((?!api|_next/|favicon.ico).*)'],
+};

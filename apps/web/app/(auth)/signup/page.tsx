@@ -1,7 +1,7 @@
 'use client';
 
-import { useSignup } from '../../../features/authentication/model/useSignup';
 import SignupForm from '../../../features/authentication/ui/SignupForm';
+import { useSignup } from '../../../hooks/useSignup';
 
 const SignupPage = () => {
   const signupProps = useSignup();

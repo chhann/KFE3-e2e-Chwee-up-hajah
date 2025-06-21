@@ -1,118 +1,196 @@
-import { create } from 'zustand'
-import { User, Session } from '@supabase/supabase-js'
-import { createClient } from '@/utils/supabase/client'
+// stores/signupStore.ts
+import { create } from 'zustand';
+import { createClient } from '../lib/supabase/client';
+import { SignupInput, SignupSchema } from '../lib/validators/auth';
 
-interface AuthState {
-  user: User | null
-  session: Session | null
-  loading: boolean
-  initialized: boolean
-  error: string | null
-  setUser: (user: User | null) => void
-  setSession: (session: Session | null) => void
-  setLoading: (loading: boolean) => void
-  initialize: () => Promise<void>
-  signOut: () => Promise<void>
-  refreshSession: () => Promise<void>
+/**
+ * 회원가입 상태 및 액션을 정의하는 Zustand 스토어 인터페이스
+ */
+interface SignupState {
+  // 회원가입 폼 상태
+  form: {
+    /** 이메일 입력값 */
+    email: string;
+    /** 비밀번호 입력값 */
+    password: string;
+    /** 비밀번호 확인 입력값 */
+    confirmPassword: string;
+    /** 닉네임/사용자명 입력값 */
+    username: string;
+    /** 주소 입력값 */
+    address: string;
+    /** 상세 주소 입력값 */
+    addressDetail: string;
+  };
+
+  // 각 필드별 오류 메시지 (유효성 검사 실패 시)
+  errors: Partial<Record<keyof SignupInput, string[]>>;
+
+  // 전체 폼에 대한 에러 메시지
+  formError: string | null;
+
+  // 로딩 상태 (회원가입 처리 중)
+  loading: boolean;
+
+  // 회원가입 성공 여부
+  success: boolean;
+
+  // 액션 메시지 정의
+
+  /** 폼 전체를 업데이트  */
+  setForm: (form: Partial<SignupState['form']>) => void;
+
+  /** 필드별 에러 메시지 설정 */
+  setErrors: (errors: Partial<Record<keyof SignupInput, string[]>>) => void;
+
+  /** 폼 전체 에러 메시지 설정 */
+  setFormError: (error: string | null) => void;
+
+  /** 로딩 상태 설정 */
+  setLoading: (loading: boolean) => void;
+
+  /** 회원가입 성공 상태 설정 */
+  setSuccess: (success: boolean) => void;
+
+  /** 특정 필드 값 업데이트 및 해당 필드 에러 초기화 */
+  updateField: (key: keyof SignupInput, value: string) => void;
+
+  /** 입력값 유효성 검사 */
+  validate: () => boolean;
+
+  /** 회원가입 처리 (Supabase API 호출 포함) */
+  signUp: () => Promise<void>;
+
+  /** 상태 초기화 */
+  reset: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
-  session: null,
-  loading: true,
-  initialized: false,
-  error: null,
+/** 초기 폼 값 정의 */
+const initialForm = {
+  email: '',
+  password: '',
+  confirmPassword: '',
+  username: '',
+  address: '',
+  addressDetail: '',
+};
 
-  setUser: (user) => set({ user }),
-  setSession: (session) => set({ session }),
+/**
+ * 회원가입 전용 Zustand 스토어 정의
+ */
+export const useSignupStore = create<SignupState>()((set, get) => ({
+  // 초기 상태 설정
+  form: initialForm,
+  errors: {},
+  formError: null,
+  loading: false,
+  success: false,
+
+  /** 폼 전체 값 설정 (부분 업데이트 가능) */
+  setForm: (form) => set((state) => ({ form: { ...state.form, ...form } })),
+
+  /** 필드별 오류 설정 */
+  setErrors: (errors) => set({ errors }),
+
+  /** 폼 전체 오류 메시지 설정 */
+  setFormError: (formError) => set({ formError }),
+
+  /** 로딩 상태 설정 */
   setLoading: (loading) => set({ loading }),
-  setError: (error) => set({ error }),
 
-  // 클라이언ㅌ 사이드 초기화
-  initialize: async () => {
-    if (get().initialized) return
+  /** 성공 여부 설정 */
+  setSuccess: (success) => set({ success }),
 
-    try {
-      const supabase = createClient()
-    
-    // 현재 세션 확인(쿠키에서)
-    const { data: { session }, error } = await supabase.auth.getSession()
-    
-    if(error) {
-        console.error('Session initialization error:', error)
-        set({ error: error.message })
+  /** 개별 필드 값 업데이트 및 해당 필드 에러 제거 */
+  updateField: (key, value) => {
+    set((state) => ({
+      form: { ...state.form, [key]: value },
+      errors: { ...state.errors, [key]: undefined }, // 해당 필드 에러 제거
+      formError: null,
+    }));
+  },
+
+  /** 폼 유효성 검사 실행 (Zod 기반) */
+  validate: () => {
+    const { form } = get();
+    const result = SignupSchema.safeParse(form);
+
+    if (!result.success) {
+      // 유효성 검사 실패 시 에러 정보 저장
+      const fieldErrors = result.error.flatten().fieldErrors;
+      set({ errors: fieldErrors, formError: null });
+      return false;
     }
 
-    set({
-      session,
-      user: session?.user ?? null,
-      loading: false,
-      initialized: true,
-      error: null
-    })
+    // 유효성 통과
+    set({ errors: {}, formError: null });
+    return true;
+  },
 
-    // 실시간 인증 상태 변경 리스너
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event)
-      
+  /** Supabase를 통한 회원가입 처리 */
+  signUp: async () => {
+    const { form, validate } = get();
+
+    // 유효성 검사 실패 시 중단
+    if (!validate()) return;
+
+    set({ loading: true, formError: null, success: false });
+
+    try {
+      const supabase = createClient();
+
+      // Supabase 회원가입 API 호출
+      const { data, error } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: {
+            username: form.username,
+            address: form.address,
+            address_detail: form.addressDetail,
+          },
+        },
+      });
+
+      // 에러 발생 시 처리
+      if (error) {
+        console.error('Signup error:', error);
+        set({
+          formError: error.message || '회원가입에 실패했습니다.',
+          loading: false,
+        });
+        return;
+      }
+
+      // 회원가입 성공 처리
       set({
-        session,
-        user: session?.user ?? null,
+        success: true,
         loading: false,
-        error: null
-      })
+        formError: null,
+        form: initialForm, // 폼 초기화
+        errors: {},
+      });
 
-      
-      // 로그인 성공 시 미들웨어가 쿠키를 업데이트하도록 페이지 새로고침 트리거
-      if (event === 'SIGNED_IN') {
-        // 이렇게 하면 미들웨어가 새로운 세션을 감지하고 쿠기 동기화
-         window.location.href = '/dashboard'
+      // 이메일 인증 필요 시 안내 메시지
+      if (data.user && !data.session) {
+        alert('가입 성공! 이메일을 확인하여 계정을 활성화해주세요.');
       }
-
-      // 로그아웃 시 로그인 페이지로 이동
-      if (event === 'SIGNED_OUT') {
-          window.location.href = '/login'
-      }
-    }) } catch (error) {
-      console.error('Auth initialization failed:', error)
-      set({ 
-        loading: false, 
-        initialized: true,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      })
-    }
-  },
-
-  refreshSession: async () => {
-    try {
-      const supabase = createClient()
-      const { data: { session }, error } = await supabase.auth.refreshSession()
-      
-      if (error) throw error
-      
+    } catch (error) {
+      console.error('Signup failed:', error);
       set({
-        session,
-        user: session?.user ?? null,
-        error: null
-      })
-    } catch (error) {
-      console.error('Session refresh failed:', error)
-      set({ error: error instanceof Error ? error.message : 'Refresh failed' })
+        loading: false,
+        formError: error instanceof Error ? error.message : '회원가입 중 오류가 발생했습니다.',
+      });
     }
   },
 
-  signOut: async () => {
-    try {
-      const supabase = createClient()
-      const { error } = await supabase.auth.signOut()
-      
-      if (error) throw error
-      
-      set({ user: null, session: null, error: null })
-      window.location.href = '/login'
-    } catch (error) {
-      console.error('Sign out failed:', error)
-      set({ error: error instanceof Error ? error.message : 'Sign out failed' })
-    }
-  }
-}))
+  /** 상태 초기화 */
+  reset: () =>
+    set({
+      form: initialForm,
+      errors: {},
+      formError: null,
+      loading: false,
+      success: false,
+    }),
+}));
