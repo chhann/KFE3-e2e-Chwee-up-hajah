@@ -1,6 +1,6 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
+import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 import Link from 'next/link';
-import { FaMapMarkerAlt } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
 
 import { UserProfileType } from '../types';
@@ -39,10 +39,7 @@ export const UserProfileCard = ({ user }: UserProfileCardProps) => {
           </header>
           <address className="mb-1 text-xs not-italic">{user.email}</address>
 
-          <div className="flex items-center justify-start text-xs">
-            <FaMapMarkerAlt className="mr-1 size-4 text-pink-500" />
-            <span>{user.location}</span>
-          </div>
+          <LocationInfo locationName={user.location} />
         </div>
       </div>
 
