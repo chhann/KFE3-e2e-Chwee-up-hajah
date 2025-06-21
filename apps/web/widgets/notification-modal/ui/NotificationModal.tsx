@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 
 import { IoMdClose } from 'react-icons/io';
@@ -6,6 +8,9 @@ import { RiAuctionLine } from 'react-icons/ri';
 
 import { NotificationListItem } from './NotificationListItem';
 import { NotificationSection } from './NotificationSection';
+
+// 깃허브 드래프트 , 이슈 생성 closedby="any" 속성 사용 시 eslint not found 오류. 동작은 함
+// 모달 공통 컴포넌트로 만들기 모달 zustand 상태 관리
 
 export const NotificationModal = ({
   dialogRef,
@@ -20,14 +25,15 @@ export const NotificationModal = ({
             <h2 id="notification-title" className="text-lg font-semibold text-gray-900">
               알림
             </h2>
-            <button
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full hover:bg-gray-200"
+            <Button
+              variants="transparent"
+              size="sm"
               aria-label="알림창 닫기"
-              autoFocus
+              className="rounded-full hover:bg-gray-200"
               onClick={() => dialogRef.current?.close()}
             >
               <IoMdClose className="size-5" />
-            </button>
+            </Button>
           </header>
 
           <div className="border-1 mb-4 border-[var(--color-neutral-20)]" />
