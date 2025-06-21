@@ -29,7 +29,7 @@ export const ChatRoomItem = ({ room, currentUserId }: Props) => {
   return (
     <li
       className="group relative h-[93px] w-full cursor-pointer overflow-hidden rounded-[6px] border border-white/10 bg-[#BEAFFC] px-4 py-3 shadow-[0_6px_12px_-2px_rgba(0,0,0,0.2)] backdrop-blur-sm transition active:bg-[#7251F8]"
-      onClick={() => router.push(`/chat-room/${room.room_id}`)}
+      onClick={() => router.push(`/chat/${room.room_id}`)}
     >
       <div className="flex h-full flex-col justify-between">
         {/* 상단: 상품명, 닉네임 */}
