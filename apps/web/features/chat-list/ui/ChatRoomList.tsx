@@ -1,7 +1,8 @@
 'use client';
 
-import { useChatRooms } from '../../../entities/chat/model/useChatRooms';
-import { ChatRoomItem } from '../../../entities/chat/ui/ChatRoomItem';
+import { useChatRooms } from '../model/useChatRooms';
+
+import { ChatRoomItem } from './ChatRoomItem';
 
 export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
   const { data: chatRooms, isLoading, isError, error } = useChatRooms(currentUserId);
