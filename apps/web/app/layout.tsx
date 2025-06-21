@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
-import './globals.css';
+
+import { Providers } from './providers';
+
 import '@repo/ui/styles';
+import './globals.css';
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
@@ -17,7 +20,9 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="ko" className={notoSansKR.variable}>
-      <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>{children}</body>
+      <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 };

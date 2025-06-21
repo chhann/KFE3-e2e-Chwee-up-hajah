@@ -3,7 +3,7 @@ import { Card, CardProps } from '@repo/ui/design-system/base-components/Card/ind
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 import { IoPersonOutline } from 'react-icons/io5';
 
-interface AuctionCardProps extends CardProps {
+export interface AuctionCardProps extends CardProps {
   badgeVariant?: 'best' | 'urgent';
   bidStartPrice: number;
   bidCurrentPrice: number;
