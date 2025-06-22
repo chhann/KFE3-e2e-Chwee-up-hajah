@@ -83,7 +83,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                 onChangeEmail({ target: { value: '' } } as any); // 간단한 초기화
                 onChangePassword({ target: { value: '' } } as any);
               }}
-              src={`/images/${platform.toLowerCase()}.png`} // 예시 이미지 경로
+              src={`/images/avatar.png`} // 예시 이미지 경로
               style={{ marginLeft: '8px', cursor: 'pointer' }}
             />
           ))}
