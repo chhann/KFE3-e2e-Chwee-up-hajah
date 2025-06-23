@@ -1,5 +1,5 @@
 // features/authentication/api/logout.ts
-import { createClient } from '../../../lib/supabase/server';
+import { createClient } from '../../../app/server';
 
 /**
  * Supabase를 통해 현재 세션을 로그아웃 처리합니다.

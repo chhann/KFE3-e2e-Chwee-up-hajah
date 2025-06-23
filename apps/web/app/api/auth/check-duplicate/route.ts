@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '../../../../lib/supabase/server';
+import { createClient } from '../../../server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
       // 데이터 베이스 중복 확인
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user')
         .select('email')
         .eq('email', value.trim())
         .maybeSingle();
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
       // 데이터 베이스 중복 확인
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user')
         .select('username')
         .eq('username', cleaned)
         .maybeSingle();

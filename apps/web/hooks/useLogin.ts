@@ -3,7 +3,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { LoginService } from '../features/authentication/api/login';
 
 export const useLogin = () => {
   const router = useRouter();
@@ -29,7 +28,16 @@ export const useLogin = () => {
       setError('');
 
       try {
-        await LoginService.login(email, password);
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || '로그인 실패');
+
         router.push('/dashboard'); // 로그인 성공 시 대시보드로 이동
       } catch (err: any) {
         setError(err.message || '로그인에 실패했습니다.');

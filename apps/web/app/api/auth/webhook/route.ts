@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '../../../../lib/supabase/server';
+import { createClient } from '../../../server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
       // 임시 데이터에서 프로필 정보 가져오기 또는 기본값 설정
       // 실제로는 별도 테이블이나 Redis 등에서 임시 저장된 데이터를 가져와야 함
-      const { error } = await supabase.from('user_profiles').insert({
+      const { error } = await supabase.from('user').insert({
         id: payload.record.id,
         email: payload.record.email,
         username: `user_${payload.record.id.slice(0, 8)}`, // 임시 username
