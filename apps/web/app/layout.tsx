@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
+import { DarkModeToggle } from './(test)/toggle';
 
 import { Providers } from './providers';
 
@@ -21,6 +22,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="ko" className={notoSansKR.variable}>
       <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
+        <DarkModeToggle />
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -1,2 +1,84 @@
 @import 'tailwindcss';
 @import '@repo/ui/theme';
+
+/* 기존 CSS 변수들 (라이트 모드) */
+:root {
+  /* Primary Colors */
+  --color-primary-900: #302749;
+  --color-primary-800: #372d84;
+  --color-primary-700: #4534b0;
+  --color-primary-600: #444ae2;
+  --color-primary-500: #7251f8;
+  --color-primary-400: #8e74f9;
+  --color-primary-300: #a18afa;
+  --color-primary-200: #beaffc;
+  --color-primary-100: #d3c9fd;
+  --color-primary-50: #eeeeff;
+
+  /* Neutral Colors */
+  --color-neutral-100: #1f1f1f;
+  --color-neutral-80: #444444;
+  --color-neutral-70: #656565;
+  --color-neutral-60: #8f8f8f;
+  --color-neutral-40: #8f8f8f;
+  --color-neutral-30: #8f8f8f;
+  --color-neutral-20: #e8e8e8;
+  --color-neutral-10: #f4f4f7;
+  --color-neutral-0: #ffffff;
+
+  /* Status Colors */
+  --color-red-500: #ef4444;
+  --color-yellow-500: #eab308;
+
+  /* Disabled States */
+  --color-disabled-bg: #f1eefe;
+  --color-disabled-text: #656565;
+
+  /* Font Family */
+  --font-family-primary: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+}
+
+/* 다크모드 CSS 변수 */
+[data-theme='dark'],
+.dark {
+  /* Primary Colors - 다크모드에서는 더 밝은 톤 사용 */
+  --color-primary-900: #eeeeff;
+  --color-primary-800: #d3c9fd;
+  --color-primary-700: #beaffc;
+  --color-primary-600: #a18afa;
+  --color-primary-500: #8e74f9;
+  --color-primary-400: #7251f8;
+  --color-primary-300: #444ae2;
+  --color-primary-200: #4534b0;
+  --color-primary-100: #372d84;
+  --color-primary-50: #302749;
+
+  /* Neutral Colors - 다크모드 반전 */
+  --color-neutral-100: #ffffff;
+  --color-neutral-80: #e5e5e5;
+  --color-neutral-70: #b3b3b3;
+  --color-neutral-60: #8f8f8f;
+  --color-neutral-40: #666666;
+  --color-neutral-30: #4d4d4d;
+  --color-neutral-20: #333333;
+  --color-neutral-10: #1a1a1a;
+  --color-neutral-0: #0f0f0f;
+
+  /* Status Colors - 다크모드에서 더 부드러운 톤 */
+  --color-red-500: #f87171;
+  --color-yellow-500: #fbbf24;
+
+  /* Disabled States */
+  --color-disabled-bg: #2a2a2a;
+  --color-disabled-text: #666666;
+}
+
+/* 기본 body 스타일 */
+body {
+  font-family: var(--font-family-primary);
+  color: var(--color-neutral-100);
+  background-color: var(--color-neutral-0);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
