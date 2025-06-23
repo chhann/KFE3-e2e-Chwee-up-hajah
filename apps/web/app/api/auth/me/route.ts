@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '../../../server';
+import { createSSRClient } from '../../../server';
 
 export async function GET() {
-  const supabase = await createClient();
+  const supabase = await createSSRClient();
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {

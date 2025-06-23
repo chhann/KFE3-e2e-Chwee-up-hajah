@@ -12,7 +12,7 @@
     - 서버는 단순히 Supabase와 통신하는 역할
 */
 
-import { createClient } from '../../../app/server';
+import { createSSRClient } from '../../../app/server';
 
 /**
  * 로그인 관련 서버 사이드 서비스
@@ -36,7 +36,7 @@ export class LoginService {
    */
   static async login(email: string, password: string): Promise<string> {
     // Supabase 서버 클라이언트 생성
-    const supabase = await createClient();
+    const supabase = await createSSRClient();
 
     // Supabase Auth로 로그인 시도
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -73,7 +73,7 @@ export class LoginService {
    */
   static async logout(): Promise<void> {
     // Supabase 서버 클라이언트 생성
-    const supabase = await createClient();
+    const supabase = await createSSRClient();
 
     // 현재 사용자 세션 종료
     const { error } = await supabase.auth.signOut();
@@ -103,7 +103,7 @@ export class LoginService {
    */
   static async getCurrentUser() {
     // supabase 서버 클라이언트 생성
-    const supabase = await createClient();
+    const supabase = await createSSRClient();
 
     // 현재 세션의 사용자 정보 조회
     const {

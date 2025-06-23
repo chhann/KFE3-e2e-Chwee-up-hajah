@@ -1,7 +1,7 @@
-import { createClient } from './server'; // ✅ 경로 수정
+import { createSSRClient } from './server'; // ✅ 경로 수정
 
 export async function getCurrentUser() {
-  const supabase = await createClient(); // ✅ await 추가
+  const supabase = await createSSRClient(); // ✅ await 추가
 
   const {
     data: { user },

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Server Component용
 // SSR 단계에서 호출되어 쿠키를 이용해 유저 상태/데이터를 "읽기 전용"으로 가져오는 용도로 사용
-export async function createClient() {
+export async function createSSRClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
@@ -16,13 +16,7 @@ export async function createClient() {
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options);
-            });
-          } catch (error) {
-            console.warn('Cookie setting failed in server component:', error);
-          }
+          // SSR 환경에서 호출될 일이 없움. 아무것도 안함.
         },
       },
     }
