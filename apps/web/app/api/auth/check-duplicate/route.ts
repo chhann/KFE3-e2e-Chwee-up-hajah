@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '../../../server';
+import { createSSRClient } from '../../../server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 서버용 supabase 클라이언트 생성
-    const supabase = await createClient();
+    const supabase = await createSSRClient();
 
     // 타입별 검증 로직
     if (type === 'email') {
