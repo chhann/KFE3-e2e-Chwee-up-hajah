@@ -1,3 +1,4 @@
+// callback/page.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -30,7 +31,7 @@ const AuthCallbackPage = () => {
 
           // 이메일 인증 후 프로필 생성이 필요한지 확인
           const { data: profile } = await supabase
-            .from('user_profiles')
+            .from('user')
             .select('id')
             .eq('id', session.user.id)
             .single();
@@ -64,7 +65,7 @@ const AuthCallbackPage = () => {
       if (event === 'SIGNED_IN' && session) {
         // 프로필 확인 후 적절한 페이지로 리다이렉션
         const { data: profile } = await supabase
-          .from('user_profiles')
+          .from('user')
           .select('id')
           .eq('id', session.user.id)
           .single();

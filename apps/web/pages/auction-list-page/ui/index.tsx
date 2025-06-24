@@ -1,7 +1,7 @@
 'use client';
 
 import { Category } from '@repo/ui/design-system/base-components/Category/index';
-import { MdLocationPin } from 'react-icons/md';
+import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
 import { categories, mockListings } from '../../../mock/auction';
 import { AuctionListings } from '../../../widgets/auction-listings';
@@ -11,8 +11,7 @@ export const AuctionListPage = () => {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-between p-1">
       <div className="mr-auto flex items-center gap-1">
-        <MdLocationPin className="text-[var(--color-red-500)]" />
-        <div className="text-neutral-70">{locationName}</div>
+        <LocationInfo locationName={locationName}></LocationInfo>
       </div>
       <Category categories={categories} />
       <select

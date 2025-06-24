@@ -42,3 +42,15 @@ export const categories = [
   { title: '가구' },
   { title: '사무용품' },
 ];
+export const auctionMockData = {
+  auctionName: '빈티지시계 - 한정판',
+  currentBidCost: 110000,
+  startBidCost: 50000,
+  remainingTime: '2일 3시간 15분',
+  bidUnit: 5000, // 입찰 단위 비용 (예: 5,000원)
+};
+export const mockBids = [
+  { id: 1, bidder: '닉앤쥬디', price: 40000, timestamp: '2025-03-02T14:23:42' },
+  { id: 2, bidder: '닉앤쥬디', price: 35000, timestamp: '2025-03-02T14:20:00' },
+  { id: 3, bidder: '닉앤쥬디', price: 30000, timestamp: '2025-03-02T14:10:00' },
+];

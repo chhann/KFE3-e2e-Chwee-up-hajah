@@ -1,0 +1,1 @@
+export { AuctionAddPage } from './ui';

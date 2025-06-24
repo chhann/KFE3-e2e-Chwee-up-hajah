@@ -1,17 +1,6 @@
-import Link from 'next/link';
-
-import { Navigation, NavigationItem, UserProfileType } from '../../../widgets/profile';
+import { user } from '../../../mock/user';
+import { Navigation, NavigationItem } from '../../../widgets/profile';
 import { UserProfileCard } from '../../../widgets/profile/ui/UserProfileCard';
-
-const user: UserProfileType = {
-  id: '1',
-  name: '닉앤주디',
-  email: 'nick@and.com',
-  location: '강남역 도붕구 1번 출구 의자',
-  temperature: 53,
-  credits: 5000,
-  profileImageUrl: '/images/avatar.png',
-};
 
 export const ProfilePage = () => {
   const pointItems: NavigationItem[] = [

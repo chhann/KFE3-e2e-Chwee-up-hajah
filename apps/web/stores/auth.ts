@@ -1,6 +1,5 @@
 // stores/signupStore.ts
 import { create } from 'zustand';
-import { createClient } from '../lib/supabase/client';
 import { SignupInput, SignupSchema } from '../lib/validators/auth';
 
 /**
@@ -131,55 +130,50 @@ export const useSignupStore = create<SignupState>()((set, get) => ({
   signUp: async () => {
     const { form, validate } = get();
 
-    // 유효성 검사 실패 시 중단
     if (!validate()) return;
 
     set({ loading: true, formError: null, success: false });
 
     try {
-      const supabase = createClient();
-
-      // Supabase 회원가입 API 호출
-      const { data, error } = await supabase.auth.signUp({
-        email: form.email,
-        password: form.password,
-        options: {
-          data: {
-            username: form.username,
-            address: form.address,
-            address_detail: form.addressDetail,
-          },
-        },
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+          username: form.username,
+          address: form.address,
+          addressDetail: form.addressDetail,
+        }),
       });
 
-      // 에러 발생 시 처리
-      if (error) {
-        console.error('Signup error:', error);
+      const result = await response.json();
+
+      if (!response.ok) {
         set({
-          formError: error.message || '회원가입에 실패했습니다.',
+          formError: result.error || '회원가입에 실패했습니다.',
+          errors: result.errors || {},
           loading: false,
         });
         return;
       }
 
-      // 회원가입 성공 처리
       set({
         success: true,
         loading: false,
         formError: null,
-        form: initialForm, // 폼 초기화
+        form: initialForm,
         errors: {},
       });
 
-      // 이메일 인증 필요 시 안내 메시지
-      if (data.user && !data.session) {
+      if (result.needsVerification) {
         alert('가입 성공! 이메일을 확인하여 계정을 활성화해주세요.');
       }
     } catch (error) {
       console.error('Signup failed:', error);
       set({
         loading: false,
-        formError: error instanceof Error ? error.message : '회원가입 중 오류가 발생했습니다.',
+        formError: '회원가입 중 오류가 발생했습니다.',
       });
     }
   },
