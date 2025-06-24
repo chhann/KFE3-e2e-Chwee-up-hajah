@@ -4,10 +4,10 @@ async function getUserData(userId: string) {
   // 커서를 이 줄에 두고 Tab 또는 Ctrl+L
 }
 
-import { createClient } from '../../app/server';
+import { createSSRClient } from '../../app/server';
 
 export async function checkEmailDuplicate(email: string) {
-  const supabase = await createClient();
+  const supabase = await createSSRClient();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
@@ -27,7 +27,7 @@ export async function checkEmailDuplicate(email: string) {
 }
 
 export async function checkUsernameDuplicate(username: string) {
-  const supabase = await createClient();
+  const supabase = await createSSRClient();
 
   const cleaned = username.trim();
 
