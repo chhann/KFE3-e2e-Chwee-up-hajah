@@ -1,18 +1,25 @@
-import Link from 'next/link';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import { useModalStore } from '../../../stores/modal';
 
-export const Header = ({ onNotificationClick }: { onNotificationClick: () => void }) => {
+export const Header = () => {
+  const { setOpenModal } = useModalStore();
+
   return (
-    <header className="text-neutral-70 flex h-[68px] items-center justify-end gap-6 px-4 text-sm">
-      <button
-        type="button"
-        onClick={onNotificationClick}
-        className="m-0 cursor-pointer border-none bg-transparent p-0"
+    <header className="text-neutral-70 flex h-[68px] cursor-pointer items-center justify-end">
+      <Button
+        variants="transparent"
+        size="thinMd"
+        onClick={() => setOpenModal('notification')}
+        className="px-0"
       >
         <h2>알림</h2>
-      </button>
-      <Link href="/">
+      </Button>
+      <Button size="thinMd" variants="transparent" onClick={() => setOpenModal('location')}>
         <h2>내 위치</h2>
-      </Link>
+      </Button>{' '}
+      <Button size="thinMd" variants="transparent" onClick={() => setOpenModal('auth')}>
+        <h2>내 위치</h2>
+      </Button>
     </header>
   );
 };
