@@ -19,7 +19,7 @@ export const LocationModal = () => {
 
   return (
     <Modal className="pt-15 items-start">
-      <ModalContent className="bg-neutral-40 h-content w-[340px] p-4 pb-0 text-white">
+      <ModalContent className="h-content w-[340px] bg-neutral-500 p-4 pb-0 text-white">
         <ModalHeader onClose={closeModal} />
         <ItemBadge className="text-white">
           <IoShieldCheckmarkSharp className="mr-1 size-5 text-green-500" />

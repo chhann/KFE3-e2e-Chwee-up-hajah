@@ -2,7 +2,7 @@
 
 import { Footer } from '../../widgets/footer';
 import { Header } from '../../widgets/header';
-import { LocationModal, LocationPermissionModal, NotificationModal } from '../../widgets/modal';
+import { LocationModal, NotificationModal } from '../../widgets/modal';
 
 interface Props {
   children: React.ReactNode;
@@ -14,7 +14,6 @@ const layout = ({ children }: Props) => {
       <Header />
       <NotificationModal />
       <LocationModal />
-      <LocationPermissionModal />
       <div className="flex-1 overflow-y-auto px-4">{children}</div>
       <Footer />
     </div>

@@ -47,7 +47,7 @@ const ModalHeader = ({ title, onClose, className }: ModalHeaderProps) => {
 
 const ModalFooter = ({ children, className = '', props }: Props) => {
   return (
-    <div className={cn('flex flex-col-reverse', className)} {...props}>
+    <div className={cn('flex', className)} {...props}>
       {children}
     </div>
   );
@@ -61,7 +61,7 @@ interface ModalCloseButtonProps {
 const ModalCloseButton = ({ onClose, className = '' }: ModalCloseButtonProps) => {
   return (
     <Button
-      variants="transparent"
+      variants="ghost"
       aria-label="알림창 닫기"
       size="thinMd"
       className={cn('absolute right-2 top-2 px-1 py-1 hover:bg-gray-200', className)}
