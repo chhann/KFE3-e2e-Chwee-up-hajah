@@ -64,6 +64,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           variants="primary"
           size="md"
           disabled={!email || !password}
+          onClick={onSubmit}
         />
       </form>
 

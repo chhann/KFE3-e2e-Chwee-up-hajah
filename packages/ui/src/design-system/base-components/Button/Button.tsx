@@ -2,11 +2,12 @@ export interface ButtonProps {
   children: React.ReactNode;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
-  variants: 'primary' | 'secondary' | 'transparent' | 'outline' | 'custom';
+  variants: 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
   size?: 'lg' | 'thinLg' | 'md' | 'thinMd' | 'sm';
   disabled?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent) => void;
 }
+
 const Button = ({
   children,
   variants,
@@ -16,27 +17,32 @@ const Button = ({
   disabled = false,
   onClick,
 }: ButtonProps) => {
-  const variantsClasses = {
+  const variantClasses = {
     primary:
-      'bg-[var(--color-primary-500)] text-white hover:bg-[var(--color-primary-200)] font-medium rounded-lg',
+      'bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] hover:bg-[var(--button-primary-bg-hover)] active:bg-[var(--button-primary-bg-active)] font-medium rounded-lg transition-colors duration-150',
     secondary:
-      'bg-[var(--color-primary-200)] text-white hover:bg-[var(--color-primary-500)] font-medium rounded-lg',
-    transparent: 'bg-transparent text-[var(--color-disabled-text)] font-medium rounded-lg',
-    outline: 'border border-[var(--color-primary-500)] font-medium rounded-xl',
+      'bg-[var(--button-secondary-bg)] text-[var(--button-secondary-text)] hover:bg-[var(--button-secondary-bg-hover)] active:bg-[var(--button-secondary-bg-active)] font-medium rounded-lg transition-colors duration-150',
+    outline:
+      'bg-[var(--button-outline-bg)] text-[var(--button-outline-text)] border border-[var(--button-outline-border)] hover:bg-[var(--button-outline-bg-hover)] font-medium rounded-lg transition-colors duration-150',
+    ghost:
+      'bg-[var(--button-ghost-bg)] text-[var(--button-ghost-text)] hover:bg-[var(--button-ghost-bg-hover)] font-medium rounded-lg transition-colors duration-150',
   };
+
   const sizeClasses = {
-    lg: 'text-base w-full py-5',
-    thinLg: 'text-base w-full py-1',
+    lg: 'text-base w-full py-5 px-6',
+    thinLg: 'text-base w-full py-2 px-6',
     md: 'text-sm px-8 py-3',
-    thinMd: 'text-sm px-8 py-1',
+    thinMd: 'text-sm px-8 py-2',
     sm: 'text-xs px-4 py-2',
   };
+
   const disabledClasses =
-    'disabled:bg-[var(--color-disabled-bg)] disabled:text-[var(--color-disabled-text)] disabled:cursor-not-allowed';
+    'disabled:bg-[var(--button-disabled-bg)] disabled:text-[var(--button-disabled-text)] disabled:cursor-not-allowed disabled:opacity-60';
+
   const combinedClassName =
     variants === 'custom'
       ? `${className} ${sizeClasses[size]} ${disabledClasses}`
-      : `${variantsClasses[variants]} ${sizeClasses[size]} ${disabledClasses} ${className} cursor-pointer`;
+      : `${variantClasses[variants]} ${sizeClasses[size]} ${disabledClasses} ${className} cursor-pointer`;
 
   return (
     <button type={type} className={combinedClassName} disabled={disabled} onClick={onClick}>
