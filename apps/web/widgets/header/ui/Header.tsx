@@ -1,14 +1,22 @@
-import Link from 'next/link';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import { useModalStore } from '../../../stores/modal';
 
 export const Header = () => {
+  const { setOpenModal } = useModalStore();
+
   return (
-    <header className="text-neutral-70 flex h-[68px] items-center justify-end gap-6 px-4 text-sm">
-      <Link href="/">
+    <header className="text-neutral-70 flex h-[68px] cursor-pointer items-center justify-end">
+      <Button
+        variants="ghost"
+        size="thinMd"
+        onClick={() => setOpenModal('notification')}
+        className="px-0"
+      >
         <h2>알림</h2>
-      </Link>
-      <Link href="/">
+      </Button>
+      <Button size="thinMd" variants="ghost" onClick={() => setOpenModal('location')}>
         <h2>내 위치</h2>
-      </Link>
+      </Button>{' '}
     </header>
   );
 };
