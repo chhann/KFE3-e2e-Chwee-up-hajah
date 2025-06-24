@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 
 const getToday = () => {
   const today = new Date();
@@ -12,14 +11,24 @@ const addDays = (dateStr: string, days: number): string => {
   return date.toISOString().split('T')[0] as string;
 };
 
-export const AuctionDateSelector = () => {
-  const today = getToday();
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(today);
+interface AuctionDateSelectorProps {
+  startDate: string;
+  endDate: string;
+  setStartDate: (date: string) => void;
+  setEndDate: (date: string) => void;
+}
 
-  // 종료일은 시작일~시작일+5까지만 허용 (당일만 선택도 가능)
-  const minEndDate = startDate;
-  const maxEndDate = startDate ? addDays(startDate, 5) : '';
+export const AuctionDateSelector = ({
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+}: AuctionDateSelectorProps) => {
+  const today = getToday();
+  // baseDate는 항상 string이 되도록 보장
+  const baseDate = startDate;
+  const minEndDate = baseDate;
+  const maxEndDate = addDays(baseDate, 5);
 
   return (
     <div className="flex gap-4">
@@ -32,10 +41,9 @@ export const AuctionDateSelector = () => {
           onChange={(e) => {
             const newStart = e.target.value;
             setStartDate(newStart);
-            const safeEndDate = endDate as string;
-            if (safeEndDate < newStart) {
+            if (endDate < newStart) {
               setEndDate(newStart);
-            } else if (safeEndDate > addDays(newStart, 5)) {
+            } else if (endDate > addDays(newStart, 5)) {
               setEndDate(addDays(newStart, 5));
             }
           }}
