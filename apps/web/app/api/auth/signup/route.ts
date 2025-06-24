@@ -1,6 +1,5 @@
 // app/api/auth/signup/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { uuidv4 } from 'zod/v4';
 import { SignupServerSchema } from '../../../../lib/validators/auth';
 import { adminClient } from '../../../admin';
 import { createApiClient } from '../../../server';
@@ -39,11 +38,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error?.message ?? '회원가입 실패' }, { status: 400 });
     }
 
-    const userId = data.user.id ?? uuidv4(); // 안전 장치
-
     // 2. 사용자 메타데이터를 별도의 `user` 테이블에 삽입
     const { error: insertError } = await adminClient.from('user').insert({
-      user_id: userId,
+      user_id: data.user.id,
       password,
       email,
       score: 0,
