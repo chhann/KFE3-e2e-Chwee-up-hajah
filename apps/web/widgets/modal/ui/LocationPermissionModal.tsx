@@ -1,5 +1,4 @@
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import { Item, ItemContent, ItemFooter } from '@repo/ui/design-system/base-components/Item/index';
 import { Modal, ModalContent } from '@repo/ui/design-system/base-components/Modal/index';
 
 import { useModalStore } from '../../../stores/modal';
@@ -8,7 +7,7 @@ import { ModalFooter } from '../../../../../packages/ui/src/design-system/base-c
 export const LocationPermissionModal = () => {
   const { isModalOpen, closeModal } = useModalStore();
 
-  if (!isModalOpen('auth')) return null;
+  if (!isModalOpen('permission')) return null;
 
   return (
     <Modal>
