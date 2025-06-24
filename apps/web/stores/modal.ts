@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type ModalType = 'notification' | 'location' | 'auth' | null;
+type ModalType = 'notification' | 'location' | 'permission' | null;
 
 interface ModalStore {
   openModal: ModalType;
