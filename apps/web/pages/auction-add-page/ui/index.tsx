@@ -153,7 +153,7 @@ export const AuctionAddPage = () => {
             <div className="my-1 ml-1 text-xs text-red-500">{fieldErrors.auctionDescription}</div>
           )}
         </div>
-        <Button variants="primary" type="submit" onClick={() => console.log(sellerId)}>
+        <Button variants="primary" type="submit">
           경매 등록
         </Button>
       </section>
