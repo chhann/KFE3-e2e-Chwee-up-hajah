@@ -1,4 +1,4 @@
-import { Product } from '../../../widgets/productList/types';
+import { Product } from '../../../widgets/product-section/types';
 
 interface ProductCardProps {
   item: Product;

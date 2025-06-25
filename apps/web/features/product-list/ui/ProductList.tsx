@@ -3,7 +3,7 @@ import 'swiper/css';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Product } from '../../../widgets/productList/types';
+import { Product } from '../../../widgets/product-section/types';
 
 import { ProductCard } from './ProductCard';
 
@@ -24,7 +24,7 @@ export const ProductList = ({ items, direction }: ProductListProps) => {
           className="shadow-[5px_5px_10px_rgba(0,0,0,0.08)]"
         >
           {items.map((item) => (
-            <SwiperSlide key={item.id} className="!h-[211px] !w-[140px]">
+            <SwiperSlide key={item.id} className="h-[211px]">
               <ProductCard item={item} layout="horizontal" />
             </SwiperSlide>
           ))}

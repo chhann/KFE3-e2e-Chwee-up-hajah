@@ -21,8 +21,6 @@ export const ProductSection = ({
   }
 
   return (
-    <div className={className}>
       <ProductList items={products} direction={direction} />
-    </div>
   );
 };

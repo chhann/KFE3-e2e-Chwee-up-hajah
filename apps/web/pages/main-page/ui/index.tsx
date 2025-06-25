@@ -6,7 +6,7 @@ import { useProductList } from '../../../entities/productList/model/useProductLi
 import { categories } from '../../../mock/auction';
 import { ImageBanner } from '../../../widgets/image-banner';
 import { SectionHeader } from '../../../widgets/product-section-header/ui/SectionHeader';
-import { ProductSection } from '../../../widgets/productList/ui/ProductSection';
+import { ProductSection } from '../../../widgets/product-section/ui/ProductSection';
 
 export const MainPage = () => {
   const { data: popularProducts, isLoading: isPopularLoading } = useProductList('popular');
