@@ -8,8 +8,17 @@ const supabase = createClient(
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { name, category, description, start_price, start_time, end_time, thumbnail, images } =
-    body;
+  const {
+    seller_id,
+    name,
+    category,
+    description,
+    start_price,
+    start_time,
+    end_time,
+    thumbnail,
+    images,
+  } = body;
 
   try {
     const { data: productData, error: productError } = await supabase
@@ -23,7 +32,7 @@ export async function POST(req: NextRequest) {
     const { error: auctionError } = await supabase.from('auction').insert([
       {
         product_id: productData.product_id,
-        seller_id: 'd84bcad5-020a-49e9-8c93-f8cc42c840f7', // 실제로는 인증 유저에서 받아야 함
+        seller_id,
         start_price,
         current_price: start_price,
         start_time,
@@ -37,7 +46,11 @@ export async function POST(req: NextRequest) {
       },
     ]);
 
-    if (auctionError) throw auctionError;
+    if (auctionError) {
+      // auction insert 실패 시 product 롤백
+      await supabase.from('product').delete().eq('product_id', productData.product_id);
+      throw auctionError;
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
