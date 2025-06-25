@@ -33,7 +33,7 @@ export const AuctionDetailPage = () => {
   };
   return (
     <main className="flex w-full flex-col items-center justify-center gap-2.5" role="main">
-      <ImageBanner images={imageFiles} height={230} />
+      <ImageBanner images={imageFiles} height={230}/>
       <h1 className="text-neutral-70 mr-auto mt-5 font-semibold">{auctionName}</h1>
       <AuctionDetailCard
         currentBidCost={currentBidCost}

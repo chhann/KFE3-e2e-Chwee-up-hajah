@@ -14,7 +14,7 @@ const ChatPage = () => {
 
   const roomId = params.roomId;
 
-  const senderId = '9a21a88a-94f1-4a4b-b0f6-aaa111111111';
+  const senderId = '3b12f91e-f14c-4d34-9a5b-bbb222222222';
   // 3b12f91e-f14c-4d34-9a5b-bbb222222222 영희 구매
   // 9a21a88a-94f1-4a4b-b0f6-aaa111111111 철수 판매
 
