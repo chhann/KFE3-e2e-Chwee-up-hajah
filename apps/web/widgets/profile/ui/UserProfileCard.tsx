@@ -1,15 +1,12 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
+import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { IoSettingsOutline } from 'react-icons/io5';
 
-import { UserProfileType } from '../types';
+type UserMetadata = NonNullable<User['user_metadata']>;
 
-interface UserProfileCardProps {
-  user: UserProfileType;
-}
-
-export const UserProfileCard = ({ user }: UserProfileCardProps) => {
+export const UserProfileCard = ({ user }: { user: UserMetadata }) => {
   return (
     <section
       className="mb-7 rounded-[6px] bg-[var(--color-primary-50)] px-[18px] py-4"
@@ -19,9 +16,8 @@ export const UserProfileCard = ({ user }: UserProfileCardProps) => {
         사용자 프로필 정보
       </h2>
 
-      <div className="flex items-center">
+      <div className="flex items-center gap-6">
         <Avatar
-          className="mr-4"
           src={user.profileImageUrl}
           alt={`${user.name} 프로필 이미지`}
           name={user.name || '사용자'}
@@ -29,9 +25,9 @@ export const UserProfileCard = ({ user }: UserProfileCardProps) => {
         />
 
         {/* ==================== UserProfileInfo  ==================== */}
-        <div className="grow">
+        <div className="w-[220px]">
           <header className="flex items-center justify-between">
-            <h3 className="mb-1 text-sm font-semibold">{user.name}</h3>
+            <h3 className="mb-1 text-sm font-semibold">{user.username}</h3>
 
             <Link href="/">
               <IoSettingsOutline className="size-4" aria-hidden="true" />
@@ -39,7 +35,7 @@ export const UserProfileCard = ({ user }: UserProfileCardProps) => {
           </header>
           <address className="mb-1 text-xs not-italic">{user.email}</address>
 
-          <LocationInfo locationName={user.location} />
+          <LocationInfo address={user.address} addressDetail={user.addressDetail} />
         </div>
       </div>
 
@@ -50,12 +46,10 @@ export const UserProfileCard = ({ user }: UserProfileCardProps) => {
           크레딧 정보
         </h3>
 
-        <span className="text-sm" aria-label="?????????">
-          {user.temperature}°C
-        </span>
+        <span className="text-sm">--{user.temperature}°C</span>
 
         <div className="flex items-center text-sm">
-          <span className="mr-1 text-lg font-semibold">{user.credits?.toLocaleString()}</span>
+          <span className="mr-1 text-lg font-semibold">--{user.credits?.toLocaleString()}</span>
           <span>크레딧</span>
         </div>
       </div>
