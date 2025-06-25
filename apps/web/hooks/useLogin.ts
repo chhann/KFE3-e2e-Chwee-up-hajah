@@ -3,21 +3,22 @@
 
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { LoginService } from '../features/authentication/api/login';
+import { useAuthStore } from '../stores/auth';
 
 export const useLogin = () => {
   const router = useRouter();
+  const login = useAuthStore((state) => state.login); // zustand의 login 액션
+  const error = useAuthStore((state) => state.error);
 
+  // 이메일과 비밀번호 상태
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  // 이메일 변경
+  // input 상태 변경 핸들러
   const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }, []);
 
-  // 비밀번호 변경
   const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   }, []);
@@ -26,16 +27,15 @@ export const useLogin = () => {
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setError('');
+      await login(email, password); // zustand의 login 호출
 
-      try {
-        await LoginService.login(email, password);
-        router.push('/dashboard'); // 로그인 성공 시 대시보드로 이동
-      } catch (err: any) {
-        setError(err.message || '로그인에 실패했습니다.');
+      // 상태에서 isAuthenticated 검사 후 대시보드 이동
+      const { isAuthenticated } = useAuthStore.getState();
+      if (isAuthenticated) {
+        router.push('/dashboard');
       }
     },
-    [email, password, router]
+    [email, password, login, router]
   );
 
   return {

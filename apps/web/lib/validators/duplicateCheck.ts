@@ -1,8 +1,13 @@
 // lib/validators/duplicateCheck.ts
-import { createClient } from '../supabase/server';
+
+async function getUserData(userId: string) {
+  // 커서를 이 줄에 두고 Tab 또는 Ctrl+L
+}
+
+import { createSSRClient } from '../../app/server';
 
 export async function checkEmailDuplicate(email: string) {
-  const supabase = await createClient();
+  const supabase = await createSSRClient();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
@@ -10,7 +15,7 @@ export async function checkEmailDuplicate(email: string) {
   }
 
   const { data, error } = await supabase
-    .from('user_profiles')
+    .from('user')
     .select('email')
     .eq('email', email.trim())
     .maybeSingle();
@@ -22,7 +27,7 @@ export async function checkEmailDuplicate(email: string) {
 }
 
 export async function checkUsernameDuplicate(username: string) {
-  const supabase = await createClient();
+  const supabase = await createSSRClient();
 
   const cleaned = username.trim();
 
@@ -36,7 +41,7 @@ export async function checkUsernameDuplicate(username: string) {
   }
 
   const { data, error } = await supabase
-    .from('user_profiles')
+    .from('user')
     .select('username')
     .eq('username', cleaned)
     .maybeSingle();

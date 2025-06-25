@@ -1,12 +1,7 @@
-// lib/auth/session.ts
-import { createClient } from '../supabase/client';
+import { createSSRClient } from './server'; // ✅ 경로 수정
 
-/**
- * 현재 로그인된 사용자의 정보를 가져옵니다.
- * @returns Supabase User 객체 또는 null
- */
 export async function getCurrentUser() {
-  const supabase = createClient();
+  const supabase = await createSSRClient(); // ✅ await 추가
 
   const {
     data: { user },

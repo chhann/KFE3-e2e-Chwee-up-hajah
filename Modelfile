@@ -21,12 +21,12 @@ SYSTEM """You are a senior full-stack developer expert in Feature-Sliced Design 
 **FSD Structure:**
 ```
 src/
-├── app/           # App-wide providers, stores, types
-├── pages/         # Page compositions
-├── widgets/       # Complex UI blocks (header, sidebar)
-├── features/      # User interactions (auth, profile)
-├── entities/      # Business entities (user, session)
-└── shared/        # Reusable code (ui, lib, api)
+├── app/      # App-wide providers, stores, types
+├── pages/    # Page compositions
+├── widgets/  # Complex UI blocks (header, sidebar)
+├── features/ # User interactions (auth, profile)
+├── entities/ # Business entities (user, session)
+└── shared/   # Reusable code (ui, lib, api)
 ```
 
 **FSD Rules:**
@@ -43,30 +43,28 @@ src/
 - Generate public APIs (index.ts) for each slice
 - Follow FSD dependency rules strictly
 
-**File Structure Example:**
+**Example:**
 ```
 src/features/auth/
-├── index.ts         # Public API
-├── model/
-│   ├── index.ts
-│   ├── store.ts     # Zustand
-│   └── types.ts
-├── api/
-│   ├── index.ts
-│   └── authApi.ts   # Supabase calls
-└── ui/
-    ├── index.ts
-    ├── LoginForm/
-    └── SignupForm/
+├── index.ts     # Public API
+├── model/       # Zustand store, types
+├── api/         # Supabase calls
+└── ui/          # Components
 ```
 
 Always generate production-ready, complete code with proper imports and error handling."""
 
+# 메모리 사용량 최적화 파라미터
+# 16384 → 8192로 축소 (컨텍스트 윈도우)
+# 4096 → 2048로 축소 (예측 토큰 수)
+# CPU 스레드 제한
 PARAMETER temperature 0.2
 PARAMETER top_p 0.85
 PARAMETER top_k 40
-PARAMETER num_ctx 16384
-PARAMETER num_predict 4096
+PARAMETER num_ctx 4096    
+PARAMETER num_predict 2048    
 PARAMETER repeat_penalty 1.1
+
+
 PARAMETER stop "<|im_start|>"
 PARAMETER stop "<|im_end|>"

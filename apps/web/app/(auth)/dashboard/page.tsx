@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useAuthStore } from '../../../stores/auth';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -20,7 +21,10 @@ export default function DashboardPage() {
         return;
       }
 
-      router.replace('/'); // 로그아웃 후 메인 페이지 또는 login/signup 등으로 리디렉션
+      const state = useAuthStore.getState();
+      state.logout();
+
+      router.replace('/'); // 로그아웃 후 메인 페이지
     } catch (err) {
       alert('로그아웃 중 오류 발생');
     } finally {
@@ -28,10 +32,23 @@ export default function DashboardPage() {
     }
   };
 
+  // 상태를 콘솔로 출력하는 함수
+  const handleTest = () => {
+    const state = useAuthStore.getState();
+    console.log('useAuthStore state:', state);
+  };
+
   return (
     <main className="mx-auto mt-20 max-w-xl px-4">
       <h1 className="mb-4 text-2xl font-bold">대시보드</h1>
       <p className="mb-6">로그인된 사용자만 접근 가능한 페이지입니다.</p>
+
+      <button
+        onClick={handleTest}
+        className="mb-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+      >
+        상태 확인
+      </button>
 
       <button
         onClick={handleLogout}
