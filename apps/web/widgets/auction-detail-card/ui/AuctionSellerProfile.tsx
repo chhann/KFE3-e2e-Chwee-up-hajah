@@ -1,10 +1,10 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
-import { UserProfileType } from '../../profile';
+import { AuctionDetail } from '../../../types/db';
 
 interface AuctionSellerProfileProps {
-  user: UserProfileType;
+  user: AuctionDetail['seller'];
 }
 
 export const AuctionSellerProfile = ({ user }: AuctionSellerProfileProps) => {
@@ -14,18 +14,20 @@ export const AuctionSellerProfile = ({ user }: AuctionSellerProfileProps) => {
       <div className="flex items-center">
         <Avatar
           className="mr-4"
-          src={user.profileImageUrl}
-          alt={`${user.name} 프로필 이미지`}
-          name={user.name || '사용자'}
+          src={user.avatar}
+          alt={`${user.username} 프로필 이미지`}
+          name={user.username || '사용자'}
           size="lg"
         />
         <div className="grow">
           <header className="flex items-center justify-between">
-            <h3 className="mb-1 text-sm font-semibold">{user.name}</h3>
+            <h3 className="mb-1 text-sm font-semibold">{user.username}</h3>
           </header>
-          <div className="mb-1 text-xs not-italic">온도 {user.temperature} · 판매 10</div>
+          <div className="mb-1 text-xs not-italic">
+            온도 {user.score} · 판매 {user.selling_auction?.length || 0}
+          </div>
 
-          <LocationInfo locationName={user.location} />
+          <LocationInfo locationName={user.address} />
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 'use client';
-import { AuctionDetailPage } from '../../../../pages/auction-detail-page';
+import { AuctionDetailPage } from '../../../../../pages/auction-detail-page';
 
 const page = () => {
   return <AuctionDetailPage />;

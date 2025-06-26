@@ -1,15 +1,17 @@
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 
+import { Bid } from '../../../types/db';
+
 // 입찰 데이터 타입 정의
-type Bid = {
-  id: number;
-  bidder: string;
-  price: number;
-  timestamp: string;
-};
+// type Bid = {
+//   id: number;
+//   bidder: string;
+//   price: number;
+//   timestamp: string;
+// };
 
 export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
-  const dateObj = new Date(bid.timestamp);
+  const dateObj = new Date(bid.bid_time);
   const dateStr = dateObj.toLocaleDateString('en-US', {
     year: 'numeric',
     month: '2-digit',
@@ -29,9 +31,9 @@ export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
         <span>{timeStr}</span>
       </div>
       <div className="flex items-center">
-        <span>{bid.bidder}</span>
+        <span>{bid.bidder_id}</span>
         <span className="mx-1">·</span>
-        <span className="font-semibold">{formatPriceNumber(bid.price)}원</span>
+        <span className="font-semibold">{formatPriceNumber(bid.bid_price)}원</span>
       </div>
     </div>
   );
