@@ -7,9 +7,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 export interface CategoryProps {
   categories: { title: string }[];
   className?: string;
+  onCategoryClick?: (cat: string) => void;
 }
 
-export default function Category({ categories, className }: CategoryProps) {
+export default function Category({ categories, className, onCategoryClick }: CategoryProps) {
   return (
     <div className={`w-full ${className ?? ''}`}>
       <Swiper
@@ -21,7 +22,10 @@ export default function Category({ categories, className }: CategoryProps) {
       >
         {categories.map((item, i) => (
           <SwiperSlide key={i}>
-            <div className="flex w-[58px] flex-col items-center justify-center text-center">
+            <div
+              className="flex w-[58px] cursor-pointer flex-col items-center justify-center text-center"
+              onClick={() => onCategoryClick?.(item.title)}
+            >
               <div className="border-primary-200 bg-primary-50 flex h-[58px] w-[58px] items-center justify-center rounded-full border-2">
                 <MdLocationPin className="h-6 w-6 text-gray-500" />
               </div>
