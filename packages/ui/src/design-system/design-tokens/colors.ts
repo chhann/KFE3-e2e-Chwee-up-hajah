@@ -15,7 +15,7 @@ export const colors = {
     300: 'var(--color-primary-300)', // #a18afa
     200: 'var(--color-primary-200)', // #beaffc
     100: 'var(--color-primary-100)', // #d3c9fd
-    50: 'var(--color-primary-50)', // #eeeeff
+    50: 'var(--color-primary-50)', // #f1eefe
   },
 
   // Neutral Colors (회색조 - 텍스트, 배경, 보더용)

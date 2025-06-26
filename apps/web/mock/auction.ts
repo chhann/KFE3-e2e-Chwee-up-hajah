@@ -35,6 +35,7 @@ export const mockListings = [
 ];
 
 export const categories = [
+  { title: '전체' },
   { title: '가전' },
   { title: '스포츠용품' },
   { title: '취미' },

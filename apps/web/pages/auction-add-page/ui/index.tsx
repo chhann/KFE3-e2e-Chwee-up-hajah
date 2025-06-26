@@ -13,6 +13,7 @@ import { ProductDescriptionInput } from '../../../entities/auction/ui/ProductDes
 import { useCreateAuction } from '../../../hooks/useCreateAuction';
 import { auctionAddSchema } from '../../../lib/validators/auctionAddSchema';
 import { categories } from '../../../mock/auction';
+import { useAuthStore } from '../../../stores/auth';
 import {
   handleDateChange,
   handleInputChange,
@@ -38,6 +39,8 @@ export const AuctionAddPage = () => {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const createAuctionMutation = useCreateAuction();
+
+  const sellerId = useAuthStore((state) => state.userId);
 
   // 등록 버튼 클릭 시 유효성 검사 및 서버 전송
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,6 +68,7 @@ export const AuctionAddPage = () => {
     }
     // 서버 전송 로직 (react-query mutation)
     const payload = {
+      seller_id: sellerId,
       name: auctionName,
       category: auctionCategory,
       description: auctionDescription,

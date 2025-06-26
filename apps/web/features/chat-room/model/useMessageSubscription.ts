@@ -26,7 +26,7 @@ export const useMessageSubscription = ({
         .order('sent_at', { ascending: true });
 
       if (data) {
-        onInitialMessages(data);
+        onInitialMessages(data); // 상태업데이트
       }
 
       // 구독 시작
@@ -39,6 +39,7 @@ export const useMessageSubscription = ({
               event: 'INSERT',
               schema: 'public',
               table: 'message',
+              filter: `room_id=eq.${roomId}`,
             },
             (payload) => {
               const msg = payload.new as Message;
