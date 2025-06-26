@@ -1,10 +1,18 @@
-import { ProfilePage } from '../../../pages/profile-page';
+import { redirect } from 'next/navigation';
+import { getProfile } from '../../../features/profile/api/getProfile';
+import { ProfilePageClient } from '../../../pages/profile-page/ui/client';
 import { getCurrentUser } from '../../session';
 
 const Page = async () => {
-  const user = await getCurrentUser();
+  const userData = await getCurrentUser();
 
-  return <ProfilePage user={user!.user_metadata} />;
+  if (!userData) {
+    redirect('/login');
+  }
+
+  const userProfile = await getProfile(userData?.id!);
+
+  return <ProfilePageClient initialUser={userProfile} />;
 };
 
 export default Page;

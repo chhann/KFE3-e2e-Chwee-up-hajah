@@ -1,11 +1,10 @@
 export interface UserProfileType {
-  id: string;
-  name: string;
+  user_id: string;
+  username: string;
   email: string;
-  location: string;
-  temperature: number;
-  credits: number;
-  profileImageUrl: string;
+  address: string;
+  address_detail: string;
+  // credit, 온도 추가
 }
 
 export interface NavigationItem {

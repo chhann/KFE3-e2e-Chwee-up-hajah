@@ -1,11 +1,7 @@
-import { User } from '@supabase/supabase-js';
-
-import { Navigation, NavigationItem } from '../../../widgets/profile';
+import { Navigation, NavigationItem, UserProfileType } from '../../../widgets/profile';
 import { UserProfileCard } from '../../../widgets/profile/ui/UserProfileCard';
 
-type UserMetadata = NonNullable<User['user_metadata']>;
-
-export const ProfilePage = ({ user }: { user: UserMetadata }) => {
+export const ProfilePage = ({ user }: { user: UserProfileType }) => {
   const pointItems: NavigationItem[] = [
     { label: '충전내역', href: '/1' },
     { label: '사용내역', href: '/2' },

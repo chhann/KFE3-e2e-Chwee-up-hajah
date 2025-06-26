@@ -1,12 +1,11 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
-import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { IoSettingsOutline } from 'react-icons/io5';
 
-type UserMetadata = NonNullable<User['user_metadata']>;
+import { UserProfileType } from '../types';
 
-export const UserProfileCard = ({ user }: { user: UserMetadata }) => {
+export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
   return (
     <section
       className="mb-7 rounded-[6px] bg-[var(--color-primary-50)] px-[18px] py-4"
@@ -18,9 +17,9 @@ export const UserProfileCard = ({ user }: { user: UserMetadata }) => {
 
       <div className="flex items-center gap-6">
         <Avatar
-          src={user.profileImageUrl}
-          alt={`${user.name} 프로필 이미지`}
-          name={user.name || '사용자'}
+          src={''}
+          alt={`${user.username} 프로필 이미지`}
+          name={user.username || '사용자'}
           size="lg"
         />
 
@@ -35,7 +34,7 @@ export const UserProfileCard = ({ user }: { user: UserMetadata }) => {
           </header>
           <address className="mb-1 text-xs not-italic">{user.email}</address>
 
-          <LocationInfo address={user.address} addressDetail={user.addressDetail} />
+          <LocationInfo address={user.address} addressDetail={user['address_detail']} />
         </div>
       </div>
 
@@ -46,10 +45,10 @@ export const UserProfileCard = ({ user }: { user: UserMetadata }) => {
           크레딧 정보
         </h3>
 
-        <span className="text-sm">--{user.temperature}°C</span>
+        <span className="text-sm">--°C</span>
 
         <div className="flex items-center text-sm">
-          <span className="mr-1 text-lg font-semibold">--{user.credits?.toLocaleString()}</span>
+          <span className="mr-1 text-lg font-semibold">--</span>
           <span>크레딧</span>
         </div>
       </div>
