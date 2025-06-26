@@ -4,7 +4,7 @@ import { Badge } from '../Badge';
 import { LocationInfo } from '../LocationInfo';
 export interface CardProps {
   imageSrc: string;
-  badgeVariant?: 'best' | 'urgent';
+  badgeVariant?: 'best' | 'urgent' | null;
   title: string;
   locationName: string;
   endTime: Date | string;
@@ -12,7 +12,8 @@ export interface CardProps {
 
 const Card = ({ imageSrc, badgeVariant, title, locationName, endTime }: CardProps) => {
   const leftTime = getTimeLeftString(endTime);
-  const badgeTitle = badgeVariant === 'best' ? '인기' : '마감임박';
+  const badgeTitle =
+    badgeVariant === 'best' ? '인기' : badgeVariant === 'urgent' ? '마감임박' : null;
   return (
     <div>
       <section>
@@ -24,7 +25,7 @@ const Card = ({ imageSrc, badgeVariant, title, locationName, endTime }: CardProp
             </Badge>
           )}
         </div>
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between">
           <LocationInfo locationName={locationName} />
           <div className="text-neutral-70 flex items-center gap-1">
             <FaRegClock />
