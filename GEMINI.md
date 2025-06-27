@@ -71,9 +71,41 @@
 - **스타일링**: Tailwind의 임의 값 구문을 사용하여 `packages/ui/src/theme.css`의 테마 변수를 항상 사용하는 것을 선호합니다.
 - **커밋**: `.github/.gitmessage.txt`에 정의된 컨벤셔널 커밋 메시지 형식을 따릅니다.
 - **테스팅**:
-    - **UI 컴포넌트**: `packages/ui`의 UI 컴포넌트는 `apps/docs` 내 Storybook 환경에서 시각적으로 테스트되고 문서화됩니다.
-    - **단위/통합 테스트**: 애플리케이션 로직(예: `hooks`, `lib`, `stores`, `entities`, `features`의 비즈니스 로직)에 대한 단위 및 통합 테스트 작성을 강력히 권장합니다. (`apps/docs`에서 볼 수 있듯이 Vitest 사용을 고려하십시오.)
-    - 커밋하기 전에 `pnpm lint` 및 `pnpm check-types`를 실행하여 코드 품질을 보장합니다.
+    프로젝트의 안정성과 품질을 보장하기 위해 다양한 수준의 테스트를 수행합니다.
+
+    - **UI 컴포넌트 테스트 (Storybook)**:
+        - `packages/ui`의 UI 컴포넌트는 `apps/docs` 내 Storybook 환경에서 시각적으로 테스트되고 문서화됩니다.
+        - 이는 컴포넌트의 외형과 기본적인 상호작용을 독립적으로 확인하는 데 중점을 둡니다.
+
+    - **단위/통합 테스트 (Vitest)**:
+        - **현재 상태**: 현재 프로젝트에는 애플리케이션 로직에 대한 단위/통합 테스트 코드가 거의 존재하지 않습니다. `apps/web/pages/chatpage.test.tsx`는 Pages Router 기반의 레거시 테스트 코드입니다.
+        - **목표**: `hooks`, `lib`, `stores`, `entities`, `features` 등 애플리케이션의 핵심 비즈니스 로직에 대한 단위 및 통합 테스트 작성을 강력히 권장합니다.
+        - **도구**: `apps/docs`에서 사용되는 Vitest를 `apps/web`에서도 활용하여 테스트를 작성합니다.
+        - **테스트 전략 및 우선순위 (권장 단계)**:
+            1.  **`apps/web`에 Vitest 설치 및 설정:**
+                *   `apps/web` 디렉토리로 이동하여 Vitest를 개발 의존성으로 설치합니다.
+                    ```bash
+                    cd apps/web
+                    pnpm add -D vitest @vitest/coverage-v8
+                    ```
+                *   `apps/web` 디렉토리 내에 `vitest.config.ts` 파일을 생성하고, `apps/docs`의 설정을 참고하여 `apps/web`에 맞게 구성합니다.
+                *   `apps/web/package.json`에 테스트 실행 스크립트를 추가합니다 (예: `"test": "vitest"`).
+            2.  **`stores` (Zustand)에 대한 단위 테스트 작성:**
+                *   `apps/web/stores/auth.ts`와 같은 Zustand 스토어 파일에 대해 단위 테스트를 작성합니다.
+                *   네트워크 요청 등 외부 의존성을 모의(mock) 처리하여 스토어의 로직 자체를 검증합니다.
+            3.  **`lib` (유틸리티, 유효성 검사기)에 대한 단위 테스트 작성:**
+                *   `apps/web/lib/utils/` 또는 `apps/web/lib/validators/`와 같은 디렉토리에 있는 순수 함수나 유틸리티 함수에 대한 단위 테스트를 작성합니다.
+            4.  **`hooks`에 대한 단위 테스트 작성:**
+                *   `apps/web/hooks/` 디렉토리에 있는 커스텀 훅에 대한 단위 테스트를 작성합니다.
+            5.  **`features` 및 `entities`에 대한 통합 테스트 작성:**
+                *   `apps/web/features/` 및 `apps/web/entities/` 디렉토리에 있는 복잡한 기능이나 엔티티 간의 상호작용에 대한 통합 테스트를 작성합니다.
+
+    - **E2E (End-to-End) 테스트**:
+        - **목표**: 사용자가 애플리케이션과 상호작용하는 방식과 동일하게, 애플리케이션의 전체 흐름을 처음부터 끝까지 테스트합니다. 프론트엔드, 백엔드, 데이터베이스 등 모든 시스템 구성 요소가 실제 환경처럼 함께 작동하는지 검증합니다.
+        - **필요성**: 단위/통합 테스트가 개별 로직의 정확성을 보장한다면, E2E 테스트는 실제 사용자 시나리오에서 시스템 전체가 예상대로 동작하는지 확인하여 최종 사용자 경험을 보장합니다.
+        - **도구**: Playwright 또는 Cypress와 같은 전용 E2E 테스트 프레임워크를 사용하여 사용자 시나리오 기반의 테스트 코드를 작성합니다.
+
+    - **코드 품질 검증**: 커밋하기 전에 `pnpm lint` 및 `pnpm check-types`를 실행하여 코드 품질과 타입 안정성을 보장합니다.
 
 ## 6. 프로젝트 상호작용 방법
 
