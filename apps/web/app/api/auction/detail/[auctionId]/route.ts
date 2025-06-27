@@ -16,7 +16,7 @@ export async function GET(req: NextRequest, { params }: { params: { auctionId: s
         *,
         product:product_id (*),
         seller:seller_id (username, address),
-        bids:auction_id (*)
+        bids:auction_id (*, user:bidder_id (username))
       `
       )
       .eq('auction_id', auctionId)

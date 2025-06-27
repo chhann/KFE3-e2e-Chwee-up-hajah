@@ -2,6 +2,7 @@ export type Bid = {
   bid_id: string;
   auction_id: string;
   bidder_id: string;
+  user?: { username: string };
   bid_price: number;
   bid_time: string;
 };

@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { useParams } from 'next/navigation';
 
+import { useAuctionBid } from '../../../hooks/useAuctionBid';
 import { useAuctionDetail } from '../../../hooks/useAuctionDetail';
+import { useAuthStore } from '../../../stores/auth';
 import {
   AuctionDescriptionCard,
   AuctionDetailCard,
@@ -22,6 +24,8 @@ export const AuctionDetailPage = () => {
         ? params.auctionId[0]
         : undefined;
   const { data, isLoading, error } = useAuctionDetail(auctionId ?? '');
+  const { mutate } = useAuctionBid();
+  const bidderId = useAuthStore((state) => state.userId);
 
   const bidUnit = 5000;
   const currentBidCost = data?.current_price ?? 0;
@@ -68,6 +72,20 @@ export const AuctionDetailPage = () => {
     setBidCost((prev: number) => prev + bidUnit);
   };
 
+  const sendBid = () => {
+    if (data.seller_id === bidderId) {
+      return alert('본인의 경매에는 입찰할 수 없습니다.');
+    }
+    if (!auctionId || !bidderId) {
+      return alert('경매 ID 또는 입찰자 ID가 없습니다.');
+    }
+    mutate({
+      auctionId,
+      bidderId,
+      bidPrice: bidCost,
+    });
+  };
+
   return (
     <main className="flex w-full flex-col items-center justify-center gap-2.5" role="main">
       <ImageBanner images={imageFiles} height={230} />
@@ -81,6 +99,7 @@ export const AuctionDetailPage = () => {
         bidCost={bidCost}
         onMinus={minusBidCost}
         onPlus={plusBidCost}
+        onClick={sendBid}
       />
       <AuctionSellerProfile user={seller} />
       <AuctionDescriptionCard bids={bids} description={product.description} />
