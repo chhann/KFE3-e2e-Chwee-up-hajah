@@ -5,7 +5,7 @@ This project is built with the following core technologies and principles:
 ## Frontend
 
 - **Framework**: Next.js 15+ (React 18+)
-- **Styling**: Tailwind CSS (configured in `packages/tailwind-config`)
+- **Styling**: Tailwind CSS (configured in `packages/tailwind-config`). Design tokens are defined as CSS variables in `packages/ui/src/theme.css` and should be utilized in Tailwind CSS classes using arbitrary value syntax (e.g., `bg-[var(--color-primary-500)]`).
 - **State Management**: Zustand
 - **Data Fetching**: Tanstack Query
 - **PWA**: Progressive Web App capabilities are integrated.
@@ -28,6 +28,7 @@ This project is built with the following core technologies and principles:
 ## Development Guidelines
 
 - **Conventions**: Adhere to existing code style, naming conventions, and architectural patterns found in the codebase.
+- **Theme Variables**: When applying styles, prefer using the CSS variables defined in `packages/ui/src/theme.css` via Tailwind's arbitrary value syntax (e.g., `text-[var(--text-primary)]`, `border-[var(--border-primary)]`).
 - **Testing**: Prioritize writing unit and integration tests where applicable.
 - **Code Quality**: Ensure code is clean, readable, and maintainable. Run linters and type checkers before committing.
 - **Performance**: Optimize for performance, especially in critical paths.

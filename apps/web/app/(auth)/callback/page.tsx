@@ -91,7 +91,7 @@ const AuthCallbackPage = () => {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-[var(--color-primary-600)]"></div>
           <div>로그인 인증 중입니다...</div>
         </div>
       </div>
@@ -102,8 +102,8 @@ const AuthCallbackPage = () => {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="mb-2 text-red-500">{error}</div>
-          <div className="text-sm text-gray-500">잠시 후 로그인 페이지로 이동합니다...</div>
+          <div className="mb-2 text-[var(--color-error-500)]">{error}</div>
+          <div className="text-sm text-[var(--color-neutral-500)]">잠시 후 로그인 페이지로 이동합니다...</div>
         </div>
       </div>
     );
