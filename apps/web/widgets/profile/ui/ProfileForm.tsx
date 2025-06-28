@@ -31,6 +31,7 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
       <h1 className="mb-3 text-base font-semibold">내 정보 수정</h1>
       <ProfileAvatarUpload
         id={user.user_id}
+        username={user.username}
         prevUrl={user.avatar}
         avatarUrl={avatarUrl}
         setAvatarUrl={setAvatarUrl}
