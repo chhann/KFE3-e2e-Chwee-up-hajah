@@ -27,7 +27,7 @@ export const AuctionSellerProfile = ({ user }: AuctionSellerProfileProps) => {
             온도 {user.score} · 판매 {user.selling_auction?.length || 0}
           </div>
 
-          <LocationInfo locationName={user.address} />
+          <LocationInfo address={user.address} />
         </div>
       </div>
     </section>
