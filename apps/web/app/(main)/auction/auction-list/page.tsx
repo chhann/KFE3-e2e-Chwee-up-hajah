@@ -19,7 +19,7 @@ const Page = () => {
   const mappedList = (auctionList || []).map((item) => ({
     id: item.auction_id,
     bidStartPrice: item.start_price,
-    bidCurrentPrice: item.current_price,
+    bidCurrentPrice: item.current_price,  
     bidCount: item.bid_count,
     status: item.status,
     imageSrc: item.thumbnail,
