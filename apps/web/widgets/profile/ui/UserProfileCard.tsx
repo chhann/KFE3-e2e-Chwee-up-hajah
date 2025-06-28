@@ -17,7 +17,7 @@ export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
 
       <div className="flex items-center gap-6">
         <Avatar
-          src={''}
+          src={user.avatar}
           alt={`${user.username} 프로필 이미지`}
           name={user.username || '사용자'}
           size="lg"

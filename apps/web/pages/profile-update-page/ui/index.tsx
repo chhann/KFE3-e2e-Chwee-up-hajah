@@ -9,9 +9,12 @@ import { useUpdateProfile } from '../../../hooks/profile/useUpdateProfile';
 import { profileSchema } from '../../../lib/validators/profileSchema';
 import { UserProfileType } from '../../../widgets/profile';
 
+import { AvatarUpload } from './AvatarUpload';
+
 type ProfileFormType = z.infer<typeof profileSchema>;
 
 export const ProfileForm = ({ user }: { user: UserProfileType }) => {
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user.avatar);
   const [enteredValues, setEnteredValues] = useState({
     username: user.username,
     address: user.address,
@@ -40,6 +43,7 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
       username,
       address,
       addressDetail,
+      avatarUrl,
     });
 
     if (!result.success) {
@@ -48,14 +52,20 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
       return;
     }
 
-    updateProfileMutation.mutate({ id, username, address, addressDetail });
+    updateProfileMutation.mutate({ id, username, address, addressDetail, avatarUrl });
   };
 
   return (
     <main className="text-neutral-70" role="main">
       <h1 className="mb-3 text-base font-semibold">내 정보 수정</h1>
-      <section>
-        <form onSubmit={handleSubmit}>
+      <AvatarUpload
+        id={user.user_id}
+        prevUrl={user.avatar}
+        avatarUrl={avatarUrl}
+        setAvatarUrl={setAvatarUrl}
+      />
+      <form onSubmit={handleSubmit}>
+        <section className="mt-4 flex w-full max-w-md flex-col gap-4">
           <div className="flex flex-col">
             <Input
               label="닉네임"
@@ -63,7 +73,11 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
               value={enteredValues.username}
               onChange={(event) => handleInputChange('username', event.target.value)}
             />
-            {fieldErrors?.username && <p>{fieldErrors.username._errors[0]}</p>}
+            {fieldErrors?.username && (
+              <div className="my-1 ml-1 text-xs text-red-500">
+                {fieldErrors.username._errors[0]}
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
             <Input label="이메일" value={user.email} disabled />
@@ -74,7 +88,9 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
               value={enteredValues.address}
               onChange={(event) => handleInputChange('address', event.target.value)}
             />
-            {fieldErrors?.address && <p>{fieldErrors.address._errors[0]}</p>}
+            {fieldErrors?.address && (
+              <div className="my-1 ml-1 text-xs text-red-500">{fieldErrors.address._errors[0]}</div>
+            )}
           </div>
           <div className="flex flex-col">
             <Input
@@ -86,8 +102,8 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
           <Button variants="primary" type="submit" disabled={updateProfileMutation.isPending}>
             {updateProfileMutation.isPending ? '제출 중...' : '정보 변경'}
           </Button>
-        </form>
-      </section>
+        </section>
+      </form>
     </main>
   );
 };

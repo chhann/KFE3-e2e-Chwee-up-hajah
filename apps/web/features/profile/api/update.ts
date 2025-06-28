@@ -5,11 +5,13 @@ export const updateProfile = async ({
   username,
   address,
   addressDetail,
+  avatarUrl,
 }: {
   id: string;
   username?: string;
   address?: string;
   addressDetail?: string;
+  avatarUrl?: string;
 }) => {
   const { data, error } = await supabase
     .from('user')
@@ -17,6 +19,7 @@ export const updateProfile = async ({
       username,
       address,
       address_detail: addressDetail,
+      avatar: avatarUrl,
     })
     .eq('user_id', id)
     .select();

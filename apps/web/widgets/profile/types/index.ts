@@ -4,6 +4,7 @@ export interface UserProfileType {
   email: string;
   address: string;
   address_detail: string;
+  avatar?: string;
   // credit, 온도 추가
 }
 
