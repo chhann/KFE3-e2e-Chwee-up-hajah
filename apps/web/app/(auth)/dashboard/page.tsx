@@ -40,7 +40,7 @@ export default function DashboardPage() {
       <button
         onClick={handleLogout}
         disabled={loading}
-        className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50"
+        className="rounded bg-[var(--color-error-500)] px-4 py-2 text-[var(--text-inverse)] hover:bg-[var(--color-error-600)] disabled:opacity-50"
       >
         {loading ? '로그아웃 중...' : '로그아웃'}
       </button>
