@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 
-import { Message } from '../../../app/api/chat/types';
-import { supabase } from '../../../lib/supabase/supabase';
+import { Message } from '@/app/api/chat/types';
+import { supabase } from '@/lib/supabase/supabase';
 
 export const useMessageSubscription = ({
   roomId,

@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
-import { Avatar } from '../../../../../packages/ui/src/design-system/base-components/Avatar/index';
-import { Message, User } from '../../../app/api/chat/types';
-import { supabase } from '../../../lib/supabase/supabase';
+import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
+
 import { useMessages } from '../model/useFetchMessages';
 import { useMessageSubscription } from '../model/useMessageSubscription';
+
+import { Message, User } from '@/app/api/chat/types';
+import { supabase } from '@/lib/supabase/supabase';
 
 export const ChatMessages = ({
   roomId,

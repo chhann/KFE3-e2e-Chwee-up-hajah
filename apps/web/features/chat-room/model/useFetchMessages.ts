@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchMessages } from '../../../entities/chat/api/fetchMessages';
+import { fetchMessages } from '@/app/api/chat/room/fetchMessages';
 
 export const useMessages = (roomId: string) => {
   return useQuery({
