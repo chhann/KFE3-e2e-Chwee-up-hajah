@@ -1,7 +1,7 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 import Link from 'next/link';
-import { IoSettingsOutline } from 'react-icons/io5';
+import { IoChevronForward, IoSettingsOutline } from 'react-icons/io5';
 
 import { UserProfileType } from '../types';
 
@@ -26,9 +26,14 @@ export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
         {/* ==================== UserProfileInfo  ==================== */}
         <div className="w-[220px]">
           <header className="flex items-center justify-between">
-            <h3 className="mb-1 text-sm font-semibold">{user.username}</h3>
+            <div className="mb-1 flex items-center justify-start">
+              <h3 className="mr-1 text-sm font-semibold">{user.username}</h3>
+              <Link href="/profile/update">
+                <IoChevronForward className="text-neutral-500" />
+              </Link>
+            </div>
 
-            <Link href="/">
+            <Link href="#">
               <IoSettingsOutline className="size-4" aria-hidden="true" />
             </Link>
           </header>
