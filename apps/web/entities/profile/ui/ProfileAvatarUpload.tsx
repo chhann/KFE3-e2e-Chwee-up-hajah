@@ -12,7 +12,12 @@ interface AvatarUploadProps {
   setAvatarUrl: (value: string | undefined) => void;
 }
 
-export const AvatarUpload = ({ id, prevUrl, avatarUrl, setAvatarUrl }: AvatarUploadProps) => {
+export const ProfileAvatarUpload = ({
+  id,
+  prevUrl,
+  avatarUrl,
+  setAvatarUrl,
+}: AvatarUploadProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
 
   const imageClick = () => {
@@ -24,33 +29,21 @@ export const AvatarUpload = ({ id, prevUrl, avatarUrl, setAvatarUrl }: AvatarUpl
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const fileExt = file.name.split('.').pop();
+      const filePath = `${id}.${fileExt}`;
 
-      try {
-        // 기존 파일들 삭제
-        const { data: existingFiles } = await supabase.storage.from('avatars').list('', {
-          search: id,
+      const { data, error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true,
         });
 
-        if (existingFiles && existingFiles.length > 0) {
-          const filesToDelete = existingFiles.map((file) => file.name);
-          await supabase.storage.from('avatars').remove(filesToDelete);
-        }
-
-        // 고정된 파일명으로 새 파일 업로드
-        const filePath = `${id}.${fileExt}`;
-        const { data, error: uploadError } = await supabase.storage
-          .from('avatars')
-          .upload(filePath, file);
-
-        if (uploadError) {
-          throw uploadError;
-        }
-
-        const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(data.path);
-        setAvatarUrl(`${urlData.publicUrl}?t=${Date.now()}`); // 캐시 방지
-      } catch (error) {
-        console.error('파일 업로드 중 오류:', error);
+      if (uploadError) {
+        throw uploadError;
       }
+
+      const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(data.path);
+      setAvatarUrl(urlData.publicUrl + '?t=' + Date.now()); // 쿼리 파라미터로 캐시 무력화
     }
   };
 

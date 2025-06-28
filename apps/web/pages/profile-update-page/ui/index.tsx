@@ -5,11 +5,10 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import { z, ZodFormattedError } from 'zod';
 
+import { ProfileAvatarUpload } from '../../../entities/profile/ui/ProfileAvatarUpload';
 import { useUpdateProfile } from '../../../hooks/profile/useUpdateProfile';
 import { profileSchema } from '../../../lib/validators/profileSchema';
 import { UserProfileType } from '../../../widgets/profile';
-
-import { AvatarUpload } from './AvatarUpload';
 
 type ProfileFormType = z.infer<typeof profileSchema>;
 
@@ -58,7 +57,7 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
   return (
     <main className="text-neutral-70" role="main">
       <h1 className="mb-3 text-base font-semibold">내 정보 수정</h1>
-      <AvatarUpload
+      <ProfileAvatarUpload
         id={user.user_id}
         prevUrl={user.avatar}
         avatarUrl={avatarUrl}
