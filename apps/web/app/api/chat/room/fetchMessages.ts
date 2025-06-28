@@ -1,6 +1,6 @@
-// entities/chat/api/fetchMessages.ts
-import { supabase } from '../../../lib/supabase/supabase';
-import { Message } from '../types';
+import { Message } from './../types';
+
+import { supabase } from '@/lib/supabase/supabase';
 
 export const fetchMessages = async (roomId: string): Promise<Message[]> => {
   const { data, error } = await supabase

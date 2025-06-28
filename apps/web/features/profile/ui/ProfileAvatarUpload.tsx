@@ -3,10 +3,11 @@ import { useRef } from 'react';
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { FaCamera } from 'react-icons/fa6';
 
-import { supabase } from '../../../lib/supabase/supabase';
+import { supabase } from '@/lib/supabase/supabase';
 
 interface AvatarUploadProps {
   id: string;
+  username: string;
   prevUrl?: string;
   avatarUrl?: string;
   setAvatarUrl: (value: string | undefined) => void;
@@ -14,6 +15,7 @@ interface AvatarUploadProps {
 
 export const ProfileAvatarUpload = ({
   id,
+  username,
   prevUrl,
   avatarUrl,
   setAvatarUrl,
@@ -53,8 +55,8 @@ export const ProfileAvatarUpload = ({
         <input ref={imageRef} type="file" accept="image/*" hidden onChange={handleImageChange} />
         <Avatar
           src={avatarUrl || prevUrl}
-          alt="프로필 이미지"
-          name="사용자"
+          alt={username}
+          name={username}
           size="xxl"
           className="relative"
         />

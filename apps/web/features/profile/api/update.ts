@@ -1,4 +1,4 @@
-import { supabase } from '../../../lib/supabase/supabase';
+import { supabase } from '@/lib/supabase/supabase';
 
 export const updateProfile = async ({
   id,

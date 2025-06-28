@@ -1,20 +1,20 @@
 'use client';
+
 import { useState } from 'react';
 
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
-import { z, ZodFormattedError } from 'zod';
+import { ZodFormattedError } from 'zod';
 
-import { ProfileAvatarUpload } from '../../../entities/profile/ui/ProfileAvatarUpload';
-import { useUpdateProfile } from '../../../hooks/profile/useUpdateProfile';
-import { profileSchema } from '../../../lib/validators/profileSchema';
-import { UserProfileType } from '../../../widgets/profile';
+import { UserProfileType } from '@/widgets/profile';
+import { handleInputChange, handleSubmit, ProfileFormType } from '@/features/profile/model/handlers';
+import { ProfileAvatarUpload } from '@/features/profile/ui/ProfileAvatarUpload';
 
-type ProfileFormType = z.infer<typeof profileSchema>;
+import { useUpdateProfile } from '@/hooks/profile/useUpdateProfile';
 
 export const ProfileForm = ({ user }: { user: UserProfileType }) => {
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user.avatar);
-  const [enteredValues, setEnteredValues] = useState({
+  const [enteredValues, setEnteredValues] = useState<ProfileFormType>({
     username: user.username,
     address: user.address,
     addressDetail: user['address_detail'],
@@ -26,51 +26,30 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
 
   const updateProfileMutation = useUpdateProfile();
 
-  const handleInputChange = (identifier: string, value: string) => {
-    setEnteredValues((preValues) => ({
-      ...preValues,
-      [identifier]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const id = user['user_id'];
-    const { username, address, addressDetail } = enteredValues;
-
-    const result = profileSchema.safeParse({
-      username,
-      address,
-      addressDetail,
-      avatarUrl,
-    });
-
-    if (!result.success) {
-      const formatted = result.error.format();
-      setFieldErrors(formatted);
-      return;
-    }
-
-    updateProfileMutation.mutate({ id, username, address, addressDetail, avatarUrl });
-  };
-
   return (
     <main className="text-neutral-70" role="main">
       <h1 className="mb-3 text-base font-semibold">내 정보 수정</h1>
       <ProfileAvatarUpload
         id={user.user_id}
+        username={user.username}
         prevUrl={user.avatar}
         avatarUrl={avatarUrl}
         setAvatarUrl={setAvatarUrl}
       />
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={(e) =>
+          handleSubmit(e, user, enteredValues, avatarUrl, setFieldErrors, updateProfileMutation)
+        }
+      >
         <section className="mt-4 flex w-full max-w-md flex-col gap-4">
           <div className="flex flex-col">
             <Input
               label="닉네임"
               placeholder={user.username}
               value={enteredValues.username}
-              onChange={(event) => handleInputChange('username', event.target.value)}
+              onChange={(event) =>
+                handleInputChange('username', event.target.value, setEnteredValues)
+              }
             />
             {fieldErrors?.username && (
               <div className="my-1 ml-1 text-xs text-red-500">
@@ -85,7 +64,9 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
             <Input
               label="주소"
               value={enteredValues.address}
-              onChange={(event) => handleInputChange('address', event.target.value)}
+              onChange={(event) =>
+                handleInputChange('address', event.target.value, setEnteredValues)
+              }
             />
             {fieldErrors?.address && (
               <div className="my-1 ml-1 text-xs text-red-500">{fieldErrors.address._errors[0]}</div>
@@ -95,7 +76,9 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
             <Input
               label="상세주소"
               value={enteredValues.addressDetail}
-              onChange={(event) => handleInputChange('addressDetail', event.target.value)}
+              onChange={(event) =>
+                handleInputChange('addressDetail', event.target.value, setEnteredValues)
+              }
             />
           </div>
           <Button variants="primary" type="submit" disabled={updateProfileMutation.isPending}>

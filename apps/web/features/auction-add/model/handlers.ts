@@ -1,5 +1,3 @@
-// auction-add-page/model/handlers.ts
-
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 export const handleInputChange = (
