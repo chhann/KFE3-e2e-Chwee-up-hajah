@@ -1,8 +1,7 @@
-import { user } from '../../../mock/user';
-import { Navigation, NavigationItem } from '../../../widgets/profile';
+import { Navigation, NavigationItem, UserProfileType } from '../../../widgets/profile';
 import { UserProfileCard } from '../../../widgets/profile/ui/UserProfileCard';
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ user }: { user: UserProfileType }) => {
   const pointItems: NavigationItem[] = [
     { label: '충전내역', href: '/1' },
     { label: '사용내역', href: '/2' },

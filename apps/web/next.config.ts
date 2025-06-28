@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
+import withPWA from 'next-pwa';
 
 const nextConfig: NextConfig = {
+  
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -9,4 +11,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const pwaConfig = withPWA({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+})(nextConfig);
+
+export default pwaConfig;

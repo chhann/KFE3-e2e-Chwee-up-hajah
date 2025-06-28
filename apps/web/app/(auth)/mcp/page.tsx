@@ -142,7 +142,7 @@ ${prefix}`,
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl rounded-lg bg-gray-900 p-4 text-white">
+    <div className="mx-auto w-full max-w-6xl rounded-lg bg-[var(--color-neutral-900)] p-4 text-[var(--color-neutral-0)]">
       <div className="mb-4">
         <h1 className="mb-2 flex items-center gap-2 text-2xl font-bold">
           ⚡ AI 코드 자동완성 에디터
@@ -156,12 +156,12 @@ ${prefix}`,
               value={apiUrl}
               onChange={handleApiUrlChange}
               placeholder="올라마 서버 URL"
-              className="rounded border border-gray-600 bg-gray-800 px-3 py-1 text-sm text-white"
+              className="rounded border border-[var(--color-neutral-600)] bg-[var(--color-neutral-800)] px-3 py-1 text-sm text-[var(--color-neutral-0)]"
             />
             <button
               onClick={testConnection}
               disabled={isLoading}
-              className="rounded bg-blue-600 px-3 py-1 text-sm transition-colors hover:bg-blue-700 disabled:bg-gray-600"
+              className="rounded bg-[var(--color-primary-600)] px-3 py-1 text-sm transition-colors hover:bg-[var(--color-primary-700)] disabled:bg-[var(--color-neutral-600)]"
               type="button"
             >
               연결 테스트
@@ -170,13 +170,13 @@ ${prefix}`,
 
           <div className="flex items-center gap-2">
             {isLoading && <span className="animate-spin">🔄</span>}
-            <span className="text-sm text-gray-300">{status}</span>
+            <span className="text-sm text-[var(--color-neutral-300)]">{status}</span>
           </div>
         </div>
 
-        <div className="mb-4 text-sm text-gray-400">
+        <div className="mb-4 text-sm text-[var(--color-neutral-400)]">
           💡 <strong>사용법:</strong> 코드를 작성하다가{' '}
-          <kbd className="rounded bg-gray-700 px-2 py-1 font-mono">Tab</kbd> 키를 누르면 AI가 코드를
+          <kbd className="rounded bg-[var(--color-neutral-700)] px-2 py-1 font-mono">Tab</kbd> 키를 누르면 AI가 코드를
           자동완성합니다.
           <br />
           🎯 <strong>모델:</strong> deepseek-coder:6.7b
@@ -188,7 +188,7 @@ ${prefix}`,
         value={code}
         onChange={handleCodeChange}
         onKeyDown={handleKeyDown}
-        className="h-96 w-full resize-none rounded border border-gray-700 bg-gray-800 p-4 font-mono text-sm text-green-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="h-96 w-full resize-none rounded border border-[var(--color-neutral-700)] bg-[var(--color-neutral-800)] p-4 font-mono text-sm text-[var(--color-success-500)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)]"
         style={{
           fontFamily: 'Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
           fontSize: '14px',
@@ -199,11 +199,11 @@ ${prefix}`,
         placeholder="여기에 코드를 작성하고 Tab 키를 누르세요..."
       />
 
-      <div className="mt-4 text-xs text-gray-500">
+      <div className="mt-4 text-xs text-[var(--color-neutral-500)]">
         <p className="mb-2">
           🔧 <strong>설치 방법:</strong>
         </p>
-        <div className="rounded bg-gray-800 px-3 py-2 font-mono">
+        <div className="rounded bg-[var(--color-neutral-800)] px-3 py-2 font-mono">
           <div>ollama serve</div>
           <div>ollama pull deepseek-coder:6.7b</div>
         </div>

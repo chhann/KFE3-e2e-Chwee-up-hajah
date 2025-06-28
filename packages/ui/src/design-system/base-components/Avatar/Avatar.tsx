@@ -6,7 +6,7 @@ import { cn } from '../../../utils/cn'; // 클래스명 유틸리티 함수
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   src?: string; // 프로필 이미지 URL
   alt: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl'; // 아바타 크기
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl'; // 아바타 크기
   name?: string;
   onImageError?: () => void; // 이미지 로드 실패 시 콜백
 }
@@ -28,6 +28,10 @@ const AVATAR_SIZES = {
   xl: {
     container: 'size-12',
     pixels: 48,
+  },
+  xxl: {
+    container: 'size-18',
+    pixels: 72,
   },
 } as const;
 
