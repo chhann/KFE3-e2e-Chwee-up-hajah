@@ -1,4 +1,4 @@
-import AuctionCard from '../entities/auction/ui/AuctionCard';
+import AuctionCard from '../features/auction/ui/AuctionCard';
 
 const Page = () => {
   return (

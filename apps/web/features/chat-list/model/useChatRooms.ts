@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchChatRooms } from '../../../entities/chat/api/fetchChatRooms';
+import { fetchChatRooms } from '../../../app/api/chat/list/fetchChatRooms';
 
 export const useChatRooms = (userId: string) => {
   return useQuery({

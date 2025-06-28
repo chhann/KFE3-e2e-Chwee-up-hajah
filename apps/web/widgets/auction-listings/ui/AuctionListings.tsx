@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import AuctionCard, { AuctionCardProps } from '../../../entities/auction/ui/AuctionCard';
+import AuctionCard, { AuctionCardProps } from '../../../features/auction/ui/AuctionCard';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
@@ -14,7 +14,7 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
       {/* 경매 아이템 목록 */}
       <div className="space-y-4">
         {listData.map((item) => (
-          <Link href={`/auction/${item.id}`} key={item.id} className="block">
+          <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
             <AuctionCard
               key={item.id}
               imageSrc={item.imageSrc}

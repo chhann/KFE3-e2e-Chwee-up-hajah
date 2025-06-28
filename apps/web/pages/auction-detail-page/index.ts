@@ -1,1 +1,0 @@
-export { AuctionDetailPage } from './ui';
