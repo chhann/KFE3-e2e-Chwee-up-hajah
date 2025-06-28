@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation';
 
-import { getProfile } from '../../../../features/profile/api/getProfile';
-import { ProfileForm } from '../../../../pages/profile-update-page/ui';
-import { getCurrentUser } from '../../../session';
+import { ProfileForm } from '@/widgets/profile/ui/ProfileForm';
+
+import { getProfile } from '@/features/profile/api/getProfile';
+
+import { getCurrentUser } from '@/app/session';
 
 const Page = async () => {
   const userData = await getCurrentUser();

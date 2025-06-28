@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import AuctionCard, { AuctionCardProps } from '../../../entities/auction/ui/AuctionCard';
+import AuctionCard, { AuctionCardProps } from '../../../features/auction/ui/AuctionCard';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;

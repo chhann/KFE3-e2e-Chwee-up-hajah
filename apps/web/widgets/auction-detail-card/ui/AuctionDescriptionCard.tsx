@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-import { AuctionBidHistoryCard } from '../../../entities/auction/ui/AuctionBidHistoryCard';
+import { AuctionBidHistoryCard } from '../../../features/auction/ui/AuctionBidHistoryCard';
 
 // 메인 컴포넌트
 type Bid = {

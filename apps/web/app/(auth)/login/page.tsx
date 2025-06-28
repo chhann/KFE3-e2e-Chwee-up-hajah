@@ -5,7 +5,7 @@ import LoginForm from '../../../features/authentication/ui/LoginForm';
 import { useLogin } from '../../../hooks/useLogin';
 import { useAuthStore } from '../../../stores/auth';
 
-export default function LoginPage() {
+const LoginPage = () => {
   const { email, password, error, onChangeEmail, onChangePassword, onSubmit } = useLogin();
 
   // 상태를 콘솔로 출력하는 함수
@@ -34,4 +34,6 @@ export default function LoginPage() {
       </button>
     </div>
   );
-}
+};
+
+export default LoginPage;

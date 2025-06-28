@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getTimeRemaining } from '../../../lib/utils/time';
-import { Product } from '../../../widgets/product-section/types';
-import { fetchProductList, SortOption } from '../api/fetchProductList';
+import { fetchProductList, SortOption } from '../../app/api/product/fetchProductList';
+import { getTimeRemaining } from '../../lib/utils/time';
+import { Product } from '../../widgets/product-section/types';
 
 export const useProductList = (sort: SortOption) => {
   return useQuery<Product[]>({
@@ -27,7 +27,6 @@ export const useProductList = (sort: SortOption) => {
     staleTime: 1000 * 60 * 1, // 1분
   });
 };
-
 
 // 경매가 종료되지 않은 것만
 // .filter((item) => getTimeRemaining(item.end_time)?.total > 0)

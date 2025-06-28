@@ -1,5 +1,4 @@
-// entities/chat/api/sendMessage.ts
-import { supabase } from '../../../lib/supabase/supabase';
+import { supabase } from '@/lib/supabase/supabase';
 
 export const sendMessage = async ({
   roomId,
