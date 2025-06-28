@@ -28,7 +28,7 @@ export default function LoginPage() {
       {/* 상태 출력용 버튼 */}
       <button
         onClick={handleTest}
-        className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        className="rounded bg-[var(--color-primary-500)] px-4 py-2 text-[var(--color-neutral-0)] hover:bg-[var(--color-primary-600)]"
       >
         상태 테스트
       </button>
