@@ -12,6 +12,8 @@ import {
 } from '@/widgets/auction-detail-card';
 import { ImageBanner } from '@/widgets/image-banner';
 
+import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+
 import { useAuctionBid } from '@/hooks/useAuctionBid';
 import { useAuctionDetail } from '@/hooks/useAuctionDetail';
 import { useRealtimeBids } from '@/hooks/useRealTimeBid';
@@ -138,13 +140,7 @@ const Page = () => {
       />
       <AuctionSellerProfile user={seller} />
       <AuctionDescriptionCard bids={displayBids} description={product.description} />
-      {data.status === 'end' && (
-        <div className="pointer-events-auto absolute inset-0 z-10 bg-black/50">
-          <div className="absolute inset-0 flex items-center justify-center text-white">
-            <p className="text-lg font-bold">경매가 종료되었습니다.</p>
-          </div>
-        </div>
-      )}
+      {data.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
     </main>
   );
 };
