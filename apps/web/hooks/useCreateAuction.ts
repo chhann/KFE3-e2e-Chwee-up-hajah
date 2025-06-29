@@ -38,7 +38,7 @@ export function useCreateAuction() {
       router.push('/');
     },
     onError: (error) => {
-      alert('전송 실패');
+      alert('전송 실패' + error.message);
     },
   });
 }

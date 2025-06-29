@@ -2,20 +2,19 @@
 import { useState } from 'react';
 
 import { AuctionBidHistoryCard } from '../../../features/auction/ui/AuctionBidHistoryCard';
+import { Bid } from '../../../types/db';
 
-// 메인 컴포넌트
-type Bid = {
-  id: number;
-  bidder: string;
-  price: number;
-  timestamp: string;
-};
-
-export const AuctionDescriptionCard = ({ bids }: { bids: Bid[] }) => {
+export const AuctionDescriptionCard = ({
+  bids,
+  description,
+}: {
+  bids: Bid[];
+  description: string;
+}) => {
   const [tab, setTab] = useState('description');
 
   const sortedBids = [...bids].sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    (a, b) => new Date(b.bid_time).getTime() - new Date(a.bid_time).getTime()
   );
 
   return (
@@ -36,14 +35,18 @@ export const AuctionDescriptionCard = ({ bids }: { bids: Bid[] }) => {
       </div>
 
       {tab === 'description' ? (
-        <div className="min-h-36 text-gray-700">
-          이 상품은 고급 소재로 제작된 한정판 아이템입니다. 품질과 희소성을 자랑합니다.
-        </div>
+        <div className="min-h-36 whitespace-pre-line text-center text-gray-700">{description}</div>
       ) : (
         <div>
-          {sortedBids.map((bid) => (
-            <AuctionBidHistoryCard key={bid.id} bid={bid} />
-          ))}
+          {sortedBids.length === 0 ? (
+            <div className="py-6 text-center text-gray-500">
+              아직 입찰자가 없습니다.
+              <br />
+              첫번째 입찰자가 되어보세요!
+            </div>
+          ) : (
+            sortedBids.map((bid) => <AuctionBidHistoryCard key={bid.bid_id} bid={bid} />)
+          )}
         </div>
       )}
     </div>

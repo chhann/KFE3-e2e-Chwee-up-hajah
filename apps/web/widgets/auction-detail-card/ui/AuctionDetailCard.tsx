@@ -13,6 +13,7 @@ interface AuctionDetailCardProps {
   bidCost: number;
   onMinus: () => void;
   onPlus: () => void;
+  onClick: () => void;
 }
 
 export const AuctionDetailCard = ({
@@ -24,6 +25,7 @@ export const AuctionDetailCard = ({
   bidCost,
   onMinus,
   onPlus,
+  onClick,
 }: AuctionDetailCardProps) => {
   return (
     <section className="border-neutral-30 bg-neutral-0 flex w-full max-w-md flex-col items-center justify-center rounded-lg border p-4">
@@ -46,7 +48,7 @@ export const AuctionDetailCard = ({
         <p>최소입찰가 : {formatPriceNumber(minBidCost)}원</p>
         <p>입찰 단위 : {formatPriceNumber(bidUnit)}원</p>
       </div>
-      <Button variants="primary" size="thinLg" className="mt-2">
+      <Button variants="primary" size="thinLg" className="mt-2" onClick={onClick}>
         입찰하기
       </Button>
     </section>

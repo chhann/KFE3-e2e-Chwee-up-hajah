@@ -29,14 +29,10 @@ export const ImageBanner = ({
       modules={[Navigation, Pagination, Autoplay]}
       className="bg-neutral-40 w-full rounded-md border-none"
     >
-      {images.map((file) => (
-        <SwiperSlide key={file}>
+      {images.map((image) => (
+        <SwiperSlide key={image}>
           <div className={`flex w-full items-center justify-center`}>
-            <img
-              src={`/mock-image/${file}`}
-              alt={file}
-              className="h-auto w-full max-w-full object-contain"
-            />
+            <img src={image} alt={image} className="h-auto w-full max-w-full object-contain" />
           </div>
         </SwiperSlide>
       ))}
