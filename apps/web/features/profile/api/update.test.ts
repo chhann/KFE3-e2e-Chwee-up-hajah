@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { updateProfile } from './update';
 import { supabase } from '@/lib/supabase/supabase';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { updateProfile } from './updateProfile';
 
 // Mock Supabase client
 vi.mock('@/lib/supabase/supabase', () => ({

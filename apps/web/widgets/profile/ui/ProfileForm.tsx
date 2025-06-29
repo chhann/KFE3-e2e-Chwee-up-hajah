@@ -7,7 +7,12 @@ import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import { ZodFormattedError } from 'zod';
 
 import { UserProfileType } from '@/widgets/profile';
-import { handleInputChange, handleSubmit, ProfileFormType } from '@/features/profile/model/handlers';
+
+import {
+  handleInputChange,
+  handleSubmit,
+  ProfileFormType,
+} from '@/features/profile/model/handlers';
 import { ProfileAvatarUpload } from '@/features/profile/ui/ProfileAvatarUpload';
 
 import { useUpdateProfile } from '@/hooks/profile/useUpdateProfile';
