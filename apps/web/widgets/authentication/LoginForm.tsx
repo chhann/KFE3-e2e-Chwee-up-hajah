@@ -25,7 +25,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   return (
     <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md">
       <h2 className="mt mb-4 text-center text-2xl font-bold">로그인</h2>
-      <form onSubmit={onSubmit} className="flex flex-col space-y-4">
+      <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
         <span className="mt-6"></span>
         {/* 이메일 입력 필드 */}
         <Input
@@ -64,7 +64,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           variants="primary"
           size="md"
           disabled={!email || !password}
-          onClick={onSubmit}
         />
       </form>
 

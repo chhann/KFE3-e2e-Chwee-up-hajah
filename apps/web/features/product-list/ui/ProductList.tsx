@@ -35,11 +35,15 @@ export const ProductList = ({ items, direction }: ProductListProps) => {
 
   return (
     <div className="flex flex-col gap-3">
-      {items.map((item) => (
-        <div key={item.id} className="w-full">
-          <ProductCard item={item} />
-        </div>
-      ))}
+      {items.length > 0 ? (
+        items.map((item) => (
+          <div key={item.id} className="w-full">
+            <ProductCard item={item} />
+          </div>
+        ))
+      ) : (
+        <p>No products available.</p>
+      )}
     </div>
   );
 };
