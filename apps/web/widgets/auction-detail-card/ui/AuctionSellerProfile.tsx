@@ -1,7 +1,7 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
-import { AuctionDetail } from '../../../types/db';
+import { AuctionDetail } from '@/types/db';
 
 interface AuctionSellerProfileProps {
   user: AuctionDetail['seller'];

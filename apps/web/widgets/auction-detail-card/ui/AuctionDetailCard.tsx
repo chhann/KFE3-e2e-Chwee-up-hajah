@@ -11,6 +11,7 @@ interface AuctionDetailCardProps {
   minBidCost: number;
   bidUnit: number;
   bidCost: number;
+  isProgressing?: boolean;
   onMinus: () => void;
   onPlus: () => void;
   onClick: () => void;
@@ -23,6 +24,7 @@ export const AuctionDetailCard = ({
   minBidCost,
   bidUnit,
   bidCost,
+  isProgressing,
   onMinus,
   onPlus,
   onClick,
@@ -36,11 +38,11 @@ export const AuctionDetailCard = ({
         <p className="text-xs text-red-500">남은 시간 : {remainingTime}</p>
       </div>
       <div className="text-neutral-70 my-6 flex items-center gap-5 font-bold">
-        <Button variants="outline" onClick={onMinus}>
+        <Button variants="outline" onClick={onMinus} disabled={!isProgressing}>
           <FaMinus />
         </Button>
         {formatPriceNumber(bidCost)}원
-        <Button variants="outline" onClick={onPlus}>
+        <Button variants="outline" onClick={onPlus} disabled={!isProgressing}>
           <FaPlus />
         </Button>
       </div>
@@ -48,7 +50,13 @@ export const AuctionDetailCard = ({
         <p>최소입찰가 : {formatPriceNumber(minBidCost)}원</p>
         <p>입찰 단위 : {formatPriceNumber(bidUnit)}원</p>
       </div>
-      <Button variants="primary" size="thinLg" className="mt-2" onClick={onClick}>
+      <Button
+        variants="primary"
+        size="thinLg"
+        className="mt-2"
+        onClick={onClick}
+        disabled={!isProgressing}
+      >
         입찰하기
       </Button>
     </section>

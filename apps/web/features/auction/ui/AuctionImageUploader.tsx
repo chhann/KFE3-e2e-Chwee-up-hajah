@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 
-import { supabase } from '../../../lib/supabase/supabase';
+import { supabase } from '@/lib/supabase/supabase';
 
 interface AuctionImageUploaderProps {
   images: string[];

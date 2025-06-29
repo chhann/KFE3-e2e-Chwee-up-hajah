@@ -1,8 +1,9 @@
 'use client';
 import { useState } from 'react';
 
-import { AuctionBidHistoryCard } from '../../../features/auction/ui/AuctionBidHistoryCard';
-import { Bid } from '../../../types/db';
+import { AuctionBidHistoryCard } from '@/features/auction/ui/AuctionBidHistoryCard';
+
+import { Bid } from '@/types/db';
 
 export const AuctionDescriptionCard = ({
   bids,
