@@ -56,7 +56,7 @@ export const ProfileAvatarUpload = ({
   return (
     <div className="flex justify-center">
       <div className="relative inline-flex">
-        <input ref={imageRef} type="file" accept="image/*" hidden onChange={handleImageChange} />
+        <input ref={imageRef} type="file" accept="image/*" hidden onChange={handleImageChange} data-testid="file-input" />
         <Avatar
           src={avatarUrl || prevUrl}
           alt={username}
@@ -66,6 +66,8 @@ export const ProfileAvatarUpload = ({
         />
         <p
           onClick={imageClick}
+          role="button"
+          aria-label="camera"
           className="border-3 absolute -right-[7px] bottom-0 inline-block cursor-pointer rounded-full border-solid border-white bg-neutral-500 p-1"
         >
           <FaCamera className="size-3.5 text-white" />
