@@ -46,51 +46,55 @@ export const ChatMessages = ({
   });
   return (
     <div className="flex flex-col gap-3 px-4 py-3">
-      {messages.map((msg) => {
-        const isMine = msg.sender_id === currentUserId;
-        const user = users[msg.sender_id];
+      {messages.length === 0 ? (
+        <p className="text-center text-gray-500">No messages yet.</p>
+      ) : (
+        messages.map((msg) => {
+          const isMine = msg.sender_id === currentUserId;
+          const user = users[msg.sender_id];
 
-        return (
-          <div
-            key={msg.message_id}
-            className={`flex items-end ${isMine ? 'justify-end' : 'justify-start'}`}
-          >
-            {!isMine && user && (
-              <Avatar
-                src={user.avatar ?? undefined}
-                alt=""
-                size="sm"
-                name={user.nickname}
-                className="mr-2"
-              />
-            )}
-
+          return (
             <div
-              className={`max-w-[70%] rounded-xl px-4 py-2 text-sm leading-tight shadow-sm ${
-                isMine
-                  ? 'rounded-br-none bg-[#BEAFFC] text-white'
-                  : 'rounded-bl-none bg-gray-200 text-black'
-              }`}
+              key={msg.message_id}
+              className={`flex items-end ${isMine ? 'justify-end' : 'justify-start'}`}
             >
-              {msg.content}
+              {!isMine && user && (
+                <Avatar
+                  src={user.avatar ?? undefined}
+                  alt=""
+                  size="sm"
+                  name={user.nickname}
+                  className="mr-2"
+                />
+              )}
+
               <div
-                className={`mt-1 text-[10px] ${
-                  isMine ? 'text-right text-white' : 'text-right text-gray-500'
+                className={`max-w-[70%] rounded-xl px-4 py-2 text-sm leading-tight shadow-sm ${
+                  isMine
+                    ? 'rounded-br-none bg-[#BEAFFC] text-white'
+                    : 'rounded-bl-none bg-gray-200 text-black'
                 }`}
               >
-                {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {msg.content}
+                <div
+                  className={`mt-1 text-[10px] ${
+                    isMine ? 'text-right text-white' : 'text-right text-gray-500'
+                  }`}
+                >
+                  {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </div>
               </div>
-            </div>
 
-            {isMine && user && (
-              <Avatar src={user.avatar ?? undefined} alt="" size="sm" name="Me" className="ml-2" />
-            )}
-          </div>
-        );
-      })}
+              {isMine && user && (
+                <Avatar src={user.avatar ?? undefined} alt="" size="sm" name="Me" className="ml-2" />
+              )}
+            </div>
+          );
+        })
+      )}
     </div>
   );
 };
