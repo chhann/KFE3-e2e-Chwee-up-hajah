@@ -82,6 +82,9 @@ const Page = () => {
   const remainingTime = getTimeLeftString(data.end_time);
 
   const minusBidCost = () => {
+    if (data.status === 'ready') {
+      return alert('경매가 시작되지 않았습니다. 입찰을 진행할 수 없습니다.');
+    }
     setIsUserChanged(true);
     setBidCost((prev: number) => {
       const newCostNumber = prev - bidUnit;
@@ -92,11 +95,18 @@ const Page = () => {
   };
 
   const plusBidCost = () => {
+    if (data.status === 'ready') {
+      return alert('경매가 시작되지 않았습니다. 입찰을 진행할 수 없습니다.');
+    }
+
     setIsUserChanged(true);
     setBidCost((prev: number) => prev + bidUnit);
   };
 
   const sendBid = () => {
+    if (data.status === 'ready') {
+      return alert('경매가 시작되지 않았습니다. 입찰을 진행할 수 없습니다.');
+    }
     if (data.seller_id === bidderId) {
       return alert('본인의 경매에는 입찰할 수 없습니다.');
     }
@@ -111,7 +121,7 @@ const Page = () => {
   };
 
   return (
-    <main className="flex w-full flex-col items-center justify-center gap-2.5" role="main">
+    <main className="relative flex w-full flex-col items-center justify-center gap-2.5" role="main">
       <ImageBanner images={imageFiles} height={230} />
       <h1 className="text-neutral-70 mr-auto mt-5 font-semibold">{auctionName}</h1>
       <AuctionDetailCard
@@ -121,12 +131,20 @@ const Page = () => {
         minBidCost={minBidCostNumber}
         bidUnit={bidUnit}
         bidCost={bidCost}
+        isProgressing={data.status === 'in progress'}
         onMinus={minusBidCost}
         onPlus={plusBidCost}
         onClick={sendBid}
       />
       <AuctionSellerProfile user={seller} />
       <AuctionDescriptionCard bids={displayBids} description={product.description} />
+      {data.status === 'end' && (
+        <div className="pointer-events-auto absolute inset-0 z-10 bg-black/50">
+          <div className="absolute inset-0 flex items-center justify-center text-white">
+            <p className="text-lg font-bold">경매가 종료되었습니다.</p>
+          </div>
+        </div>
+      )}
     </main>
   );
 };
