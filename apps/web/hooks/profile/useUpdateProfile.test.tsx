@@ -1,10 +1,9 @@
-import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { renderHook, waitFor } from '@testing-library/react';
+import React from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { updateProfile } from '../../features/profile/api/updateProfile';
 import { useUpdateProfile } from './useUpdateProfile';
-import { updateProfile } from '../../features/profile/api/update';
-import { useRouter } from 'next/navigation';
 
 // Mock next/navigation
 const mockPush = vi.fn();

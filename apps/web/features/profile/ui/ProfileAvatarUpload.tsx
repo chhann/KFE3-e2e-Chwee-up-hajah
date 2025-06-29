@@ -40,7 +40,6 @@ export const ProfileAvatarUpload = ({
       const { data, error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file, {
-          cacheControl: '3600',
           upsert: true,
         });
 
@@ -56,7 +55,14 @@ export const ProfileAvatarUpload = ({
   return (
     <div className="flex justify-center">
       <div className="relative inline-flex">
-        <input ref={imageRef} type="file" accept="image/*" hidden onChange={handleImageChange} data-testid="file-input" />
+        <input
+          ref={imageRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleImageChange}
+          data-testid="file-input"
+        />
         <Avatar
           src={avatarUrl || prevUrl}
           alt={username}
