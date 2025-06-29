@@ -1,9 +1,11 @@
 import Link from 'next/link';
 
-import AuctionCard, { AuctionCardProps } from '../../../features/auction/ui/AuctionCard';
+import AuctionCard, { AuctionCardProps } from '@/features/auction/ui/AuctionCard';
+import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
+  status: string; // 경매 상태
 }
 
 export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
@@ -14,19 +16,22 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
       {/* 경매 아이템 목록 */}
       <div className="space-y-4">
         {listData.map((item) => (
-          <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
-            <AuctionCard
-              key={item.id}
-              imageSrc={item.imageSrc}
-              badgeVariant={item.badgeVariant}
-              title={item.title}
-              locationName={item.locationName}
-              endTime={item.endTime}
-              bidStartPrice={item.bidStartPrice}
-              bidCurrentPrice={item.bidCurrentPrice}
-              bidCount={item.bidCount}
-            />
-          </Link>
+          <section key={item.id} className="relative">
+            <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
+              <AuctionCard
+                key={item.id}
+                imageSrc={item.imageSrc}
+                badgeVariant={item.badgeVariant}
+                title={item.title}
+                locationName={item.locationName}
+                endTime={item.endTime}
+                bidStartPrice={item.bidStartPrice}
+                bidCurrentPrice={item.bidCurrentPrice}
+                bidCount={item.bidCount}
+              />
+            </Link>
+            {item.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
+          </section>
         ))}
       </div>
 
