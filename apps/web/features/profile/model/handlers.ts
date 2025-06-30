@@ -2,16 +2,8 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import type { ZodFormattedError } from 'zod';
 
-import type { UserProfileType } from '@/widgets/profile';
-
 import { profileSchema } from '@/lib/validators/profileSchema';
-
-export type ProfileFormType = {
-  username: string;
-  address: string;
-  addressDetail: string;
-  avatarUrl?: string;
-};
+import { ProfileFormType, UserProfileType } from '@/types/profile';
 
 export function handleInputChange(
   identifier: string,
