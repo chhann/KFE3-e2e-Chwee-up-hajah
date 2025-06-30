@@ -63,9 +63,10 @@ jobs:
 
       - name: Discord Notification
         if: always() # 이전 단계의 성공/실패 여부와 관계없이 항상 실행
-        uses: tsick/discord-webhook@v1.0.0
+        uses: peaceiris/actions-discord-notify@v1 # 액션 변경
         with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }} # 웹훅 ID
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }} # 웹훅 토큰
           message: |
             ${{ job.status == 'success' && '✅ Cypress E2E Tests Passed!' || '❌ Cypress E2E Tests Failed!' }}
             Repository: ${{ github.repository }}
