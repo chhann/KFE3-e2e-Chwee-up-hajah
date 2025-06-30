@@ -1,7 +1,13 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from 'eslint-plugin-storybook';
+import baseConfig from '@repo/eslint-config/base';
+import nextConfig from '@repo/eslint-config/next';
+import reactInternalConfig from '@repo/eslint-config/react-internal';
 
-import { nextJsConfig } from '@repo/eslint-config/next-js';
-
-/** @type {import("eslint").Linter.Config} */
-export default nextJsConfig;
+export default [
+  ...baseConfig,
+  ...nextConfig,
+  ...reactInternalConfig,
+  {
+    // apps/docs 고유의 설정 (필요시 추가)
+    // 예: files, rules 등
+  },
+];
