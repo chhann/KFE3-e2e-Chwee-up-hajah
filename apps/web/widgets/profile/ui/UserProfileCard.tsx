@@ -3,7 +3,7 @@ import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInf
 import Link from 'next/link';
 import { IoSettingsOutline } from 'react-icons/io5';
 
-import { UserProfileType } from '../types';
+import { UserProfileType } from '@/types/profile';
 
 export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
   return (

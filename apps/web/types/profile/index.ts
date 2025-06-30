@@ -5,8 +5,13 @@ export interface UserProfileType {
   address: string;
   address_detail: string;
   avatar?: string;
-  // credit, 온도 추가
 }
+
+export type ProfileFormType = {
+  username: string;
+  address: string;
+  addressDetail: string;
+};
 
 export interface NavigationItem {
   label: string;

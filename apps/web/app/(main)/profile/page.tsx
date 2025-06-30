@@ -1,10 +1,11 @@
 import { redirect } from 'next/navigation';
 
-import { Navigation, NavigationItem, UserProfileCard } from '@/widgets/profile'; // UserProfileType import 추가
+import { Navigation, UserProfileCard } from '@/widgets/profile'; // UserProfileType import 추가
 
 import { getProfile } from '@/features/profile/api/getProfile';
 
 import { getCurrentUser } from '@/app/session';
+import { NavigationItem } from '@/types/profile';
 
 const pointItems: NavigationItem[] = [
   { label: '충전내역', href: '/1' },
