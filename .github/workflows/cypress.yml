@@ -1,0 +1,74 @@
+name: Cypress E2E Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev # dev 브랜치 추가
+  pull_request:
+    branches:
+      - main
+      - dev # dev 브랜치 추가
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # 프로젝트의 Node.js 버전에 맞게 조정
+          cache: 'pnpm' # pnpm 캐시 사용 설정
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Next.js app
+        run: pnpm build --filter=web # apps/web 애플리케이션 빌드
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: pnpm dev --filter=web # Next.js 개발 서버 시작
+          wait-on: 'http://localhost:3001' # 서버가 시작될 때까지 기다림
+          project: apps/web # Cypress 프로젝트 경로 지정
+          record: true # Cypress Cloud에 기록 활성화
+          parallel: false # 초기 설정 단계에서는 false로 두는 것이 좋습니다.
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }} # GitHub Secret에서 키 주입
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Discord Notification
+        if: always() # 이전 단계의 성공/실패 여부와 관계없이 항상 실행
+        uses: tsick/discord-webhook@v1.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: |
+            ${{ job.status == 'success' && '✅ Cypress E2E Tests Passed!' || '❌ Cypress E2E Tests Failed!' }}
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
