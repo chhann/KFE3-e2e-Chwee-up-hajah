@@ -1,10 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { adminClient } from '@/app/admin';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -21,7 +17,7 @@ export async function POST(req: NextRequest) {
   } = body;
 
   try {
-    const { data: productData, error: productError } = await supabase
+    const { data: productData, error: productError } = await adminClient
       .from('product')
       .insert([{ name, category, description }])
       .select()
@@ -29,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     if (productError) throw productError;
 
-    const { error: auctionError } = await supabase.from('auction').insert([
+    const { error: auctionError } = await adminClient.from('auction').insert([
       {
         product_id: productData.product_id,
         seller_id,
@@ -48,7 +44,7 @@ export async function POST(req: NextRequest) {
 
     if (auctionError) {
       // auction insert 실패 시 product 롤백
-      await supabase.from('product').delete().eq('product_id', productData.product_id);
+      await adminClient.from('product').delete().eq('product_id', productData.product_id);
       throw auctionError;
     }
 
