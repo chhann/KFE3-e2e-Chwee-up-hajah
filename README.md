@@ -1,4 +1,4 @@
-# KFE3-e2e-Chwee-up-hajah 프로젝트 시스템 프롬프트
+# KFE3-e2e-Chwee-up-hajah 프로젝트 시스템 가이트
 
 이 문서는 KFE3-e2e-Chwee-up-hajah 프로젝트의 구조, 기술, 개발 가이드라인에 대한 상세한 개요를 제공합니다.
 

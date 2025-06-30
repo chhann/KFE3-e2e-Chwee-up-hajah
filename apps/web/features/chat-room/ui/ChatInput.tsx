@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useSendMessage } from '../model/useSendMessage';
+import { useSendMessage } from '../../../hooks/chat/useSendMessage';
 
 export const ChatInput = ({ roomId, senderId }: { roomId: string; senderId: string }) => {
   const [message, setMessage] = useState('');
@@ -20,11 +20,19 @@ export const ChatInput = ({ roomId, senderId }: { roomId: string; senderId: stri
     );
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
     <div className="flex gap-2 p-2">
       <input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
         placeholder="메시지를 입력하세요"
       />
