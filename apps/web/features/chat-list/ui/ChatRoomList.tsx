@@ -1,11 +1,11 @@
 'use client';
 
-import { useChatRooms } from '../model/useChatRooms';
-
 import { ChatRoomItem } from './ChatRoomItem';
 
+import { useChatList } from '@/hooks/chat/useChatList';
+
 export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
-  const { data: chatRooms, isLoading, isError, error } = useChatRooms(currentUserId);
+  const { data: chatRooms, isLoading, isError, error } = useChatList(currentUserId);
 
   if (isLoading) return <div className="p-4">로딩 중...</div>;
   if (isError) return <div className="p-4 text-red-500">에러: {error.message}</div>;

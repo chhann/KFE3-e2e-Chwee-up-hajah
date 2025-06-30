@@ -1,4 +1,3 @@
-// features/chatRooms/ui/ChatRoomItem.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
