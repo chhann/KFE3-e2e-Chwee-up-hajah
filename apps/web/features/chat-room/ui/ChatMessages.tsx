@@ -106,14 +106,23 @@ export const ChatMessages = ({
               {msg.content}
 
               <div
-                className={`mt-1 text-[10px] ${
-                  isMine ? 'text-right text-white' : 'text-right text-gray-500'
+                className={`max-w-[70%] rounded-xl px-4 py-2 text-sm leading-tight shadow-sm ${
+                  isMine
+                    ? 'rounded-br-none bg-[#BEAFFC] text-white'
+                    : 'rounded-bl-none bg-gray-200 text-black'
                 }`}
               >
-                {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {msg.content}
+                <div
+                  className={`mt-1 text-[10px] ${
+                    isMine ? 'text-right text-white' : 'text-right text-gray-500'
+                  }`}
+                >
+                  {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </div>
               </div>
 
               {/* ✅ 안 읽은 내 메시지일 경우에만 읽음 표시 */}

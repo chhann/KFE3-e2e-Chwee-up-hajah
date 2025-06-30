@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { Navigation, NavigationItem, UserProfileCard } from '@/widgets/profile';
+import { Navigation, NavigationItem, UserProfileCard } from '@/widgets/profile'; // UserProfileType import 추가
 
 import { getProfile } from '@/features/profile/api/getProfile';
 
@@ -29,7 +29,7 @@ const Page = async () => {
   return (
     <main className="text-neutral-70" role="main">
       <h1 className="mb-3 text-base font-semibold">프로필</h1>
-      <UserProfileCard user={userProfile} />
+      <UserProfileCard user={userProfile!} />
 
       <section className="mb-7" aria-labelledby="point-management-title">
         <h2 id="point-management-title" className="mb-3 text-base font-semibold">

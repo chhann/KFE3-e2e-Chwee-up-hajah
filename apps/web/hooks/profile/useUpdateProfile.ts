@@ -1,20 +1,29 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { updateProfile } from '../../features/profile/api/update';
+import { updateProfile } from '@/features/profile/api/updateProfile';
+
+interface UpdateProfileParams {
+  id: string;
+  username?: string;
+  address?: string;
+  addressDetail?: string;
+  avatarUrl?: string;
+}
 
 export const useUpdateProfile = () => {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: updateProfile,
+    mutationFn: (params: UpdateProfileParams) => updateProfile(params),
     onSuccess: () => {
-      alert('프로필 정보가 수정되었습니다.');
       router.refresh();
+      alert('프로필 정보가 성공적으로 업데이트되었습니다.');
       router.push('/profile');
     },
-    onError: () => {
-      alert('오류가 발생했습니다. 다시 시도해주세요.');
+    onError: (error) => {
+      console.error('Profile update failed:', error);
+      alert(`프로필 업데이트 실패: ${error.message}`);
     },
   });
 };

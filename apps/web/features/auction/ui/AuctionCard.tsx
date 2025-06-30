@@ -22,7 +22,7 @@ const AuctionCard = ({
   const startPrice = formatPriceNumber(bidStartPrice);
   const currentPrice = formatPriceNumber(bidCurrentPrice);
   return (
-    <div className="border-neutral-20 w-full rounded-lg border p-4 shadow-md">
+    <div className="border-neutral-20 relative w-full rounded-lg border p-4 shadow-md">
       <Card
         imageSrc={imageSrc}
         badgeVariant={badgeVariant}

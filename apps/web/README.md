@@ -26,3 +26,39 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Testing
+
+This project uses [Vitest](https://vitest.dev/) for unit and integration testing.
+
+### Setup
+
+1.  **Install dependencies:**
+
+    ```bash
+    pnpm install
+    ```
+
+2.  **Configuration files:**
+
+    *   `vitest.config.ts`: The main configuration file for Vitest.
+    *   `vitest.setup.ts`: A setup file for Vitest to import necessary libraries like `@testing-library/jest-dom`.
+
+### Running Tests
+
+To run the tests, use the following command:
+
+```bash
+pnpm test
+```
+
+### Test Structure
+
+Tests are located in the same directory as the files they are testing, with the `.test.ts` or `.test.tsx` extension.
+
+Currently, tests are implemented for the following parts of the application:
+
+*   **Stores (`stores/`):** Tests for Zustand stores (e.g., `auth.store.ts`).
+*   **Utilities (`lib/utils/`):** Tests for utility functions (e.g., `time.ts`).
+*   **Validators (`lib/validators/`):** Tests for Zod validation schemas (e.g., `auth.ts`).
+*   **Hooks (`hooks/`):** Tests for custom React hooks (e.g., `useLogin.ts`).
