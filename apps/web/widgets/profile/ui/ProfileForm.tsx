@@ -10,10 +10,15 @@ import { handleInputChange, handleSubmit } from '@/features/profile/model/handle
 import { ProfileAvatarUpload } from '@/features/profile/ui/ProfileAvatarUpload';
 
 import { useUpdateProfile } from '@/hooks/profile/useUpdateProfile';
+import { getCacheBustingUrl } from '@/lib/utils/avatar';
 import { ProfileFormType, UserProfileType } from '@/types/profile';
 
 export const ProfileForm = ({ user }: { user: UserProfileType }) => {
-  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user.avatar);
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | undefined>(
+    getCacheBustingUrl(user.avatar)
+  );
+
   const [enteredValues, setEnteredValues] = useState<ProfileFormType>({
     username: user.username,
     address: user.address,
@@ -24,21 +29,30 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
     undefined
   );
 
+  const handleFileSelect = (file: File | undefined) => {
+    setSelectedFile(file);
+    if (file) {
+      // 파일이 선택되면  미리보기 URL을 생성하고 ProfileForm의 상태를 업데이트합니다.
+      setAvatarPreviewUrl(URL.createObjectURL(file));
+    } else {
+      // 파일 선택이 취소되면 여기서 기존 DB URL로 ProfileForm의 상태를 복원합니다.
+      setAvatarPreviewUrl(getCacheBustingUrl(user.avatar));
+    }
+  };
+
   const updateProfileMutation = useUpdateProfile();
 
   return (
     <main className="text-neutral-70" role="main">
       <h1 className="mb-3 text-base font-semibold">내 정보 수정</h1>
       <ProfileAvatarUpload
-        id={user.user_id}
         username={user.username}
-        prevUrl={user.avatar}
-        avatarUrl={avatarUrl}
-        setAvatarUrl={setAvatarUrl}
+        avatarUrl={avatarPreviewUrl}
+        onFileSelect={handleFileSelect}
       />
       <form
         onSubmit={(e) =>
-          handleSubmit(e, user, enteredValues, avatarUrl, setFieldErrors, updateProfileMutation)
+          handleSubmit(e, user, enteredValues, selectedFile, setFieldErrors, updateProfileMutation)
         }
       >
         <section className="mt-4 flex w-full max-w-md flex-col gap-4">
