@@ -1,21 +1,26 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchProductList, SortOption } from '../../app/api/product/fetchProductList';
-import { getTimeRemaining } from '../../lib/utils/time';
-import { Product } from '../../widgets/product-section/types';
+import { Product } from '@/widgets/product-section/types';
+
+import { fetchProductList, SortOption } from '@/features/product-list/model/fetchProductList';
+
+import { getTimeRemaining } from '@/lib/utils/time';
+import { RawProduct } from '@/types/productsList';
 
 export const useProductList = (sort: SortOption) => {
   return useQuery<Product[]>({
     queryKey: ['productList', sort],
     queryFn: async () => {
-      const raw = await fetchProductList(sort);
+      const raw: RawProduct[] = await fetchProductList(sort); // 👈 여기 타입 지정
 
       const mapped = raw.map((item) => ({
         id: item.auction_id,
         title: item.product_name,
         price: item.current_price,
         image: item.thumbnail,
-        distance: '5km', // 추후 위치 계산
+        distance: '5km', // TODO: 위치 계산 추가 예정
         timeLeft:
           getTimeRemaining(item.end_time)?.total > 0
             ? `${getTimeRemaining(item.end_time).hours}시간 ${getTimeRemaining(item.end_time).minutes}분`
@@ -24,9 +29,6 @@ export const useProductList = (sort: SortOption) => {
 
       return mapped;
     },
-    staleTime: 1000 * 60 * 1, // 1분
+    staleTime: 1000 * 60 * 1,
   });
 };
-
-// 경매가 종료되지 않은 것만
-// .filter((item) => getTimeRemaining(item.end_time)?.total > 0)
