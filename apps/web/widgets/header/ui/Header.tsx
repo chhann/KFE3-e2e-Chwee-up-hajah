@@ -9,6 +9,7 @@ import { useModalStore } from '../../../stores/modal';
 export const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
+
   const { setOpenModal } = useModalStore();
 
   const noBackButtonRoutes = ['/main'];

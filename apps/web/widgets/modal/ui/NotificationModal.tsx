@@ -1,9 +1,5 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-} from '@repo/ui/design-system/base-components/Modal/index';
-import { useModalStore } from '../../../stores/modal';
+'use client';
+
 import {
   Item,
   ItemBadge,
@@ -11,8 +7,15 @@ import {
   ItemFooter,
   ItemTitle,
 } from '@repo/ui/design-system/base-components/Item/index';
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+} from '@repo/ui/design-system/base-components/Modal/index';
 import { IoAlertCircleOutline } from 'react-icons/io5';
 import { RiAuctionLine } from 'react-icons/ri';
+
+import { useModalStore } from '../../../stores/modal';
 
 // 타입 정의
 interface NotificationItem {
