@@ -1,14 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 
 import { useMessages } from '@/hooks/chat/useMessages';
 import { useMessagesAsRead } from '@/hooks/chat/useMessagesAsRead';
-import { MessageWithSender, SenderInfo } from '@/types/chat';
-
-import { useMessageSubscription } from '../../../hooks/chat/useMessageSubscription';
+import { subscribeToMessages } from '@/hooks/chat/useMessageSubscription';
+import { Message, MessageWithSender } from '@/types/chat';
 
 export const ChatMessages = ({
   roomId,
@@ -20,59 +19,75 @@ export const ChatMessages = ({
   const [messages, setMessages] = useState<MessageWithSender[]>([]);
   const { data } = useMessages(roomId);
   const { mutate: markAsRead } = useMessagesAsRead();
+  const subscriptionRef = useRef<() => void | null>(null);
 
-  // fetch 후 메시지 저장
+  // 최초 fetch된 메시지 세팅
   useEffect(() => {
     if (data) setMessages(data);
   }, [data]);
 
-  // 기존 메시지에서 유저 정보만 추출
-  // 메시지의 sender 정보를 매핑
-  const userMap: Record<string, SenderInfo> = useMemo(() => {
-    const map: Record<string, SenderInfo> = {};
-    messages.forEach((m) => {
-      map[m.sender_id] = {
-        sender_name: m.sender_name,
-        sender_avatar: m.sender_avatar,
-        sender_address: m.sender_address,
-        sender_address_detail: m.sender_address_detail,
-        sender_score: m.sender_score,
-      };
-    });
-    return map;
-  }, [messages]);
-
-  // 실시간 메시지 수신
-  useMessageSubscription({
-    roomId,
-    onMessageInsert: (msg) => {
-      const sender = userMap[msg.sender_id];
-      if (sender) {
-        const fullMessage: MessageWithSender = { ...msg, ...sender };
-        setMessages((prev) => [...prev, fullMessage]);
+  // onMessageInsert 콜백
+  const onMessageInsert = useCallback((msg: Message) => {
+    setMessages((prev) => {
+      const sender = prev.find((m) => m.sender_id === msg.sender_id);
+      if (!sender) {
+        console.warn('[onMessageInsert] sender info not found for', msg.sender_id);
+        return prev;
       }
-    },
-    onMessageUpdate: (updatedMsg) => {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.message_id === updatedMsg.message_id
-            ? { ...msg, is_read: updatedMsg.is_read } // 필요한 필드만 업데이트
-            : msg
-        )
-      );
-    },
-  });
 
-  // 읽음 상태 업데이트
+      const fullMessage: MessageWithSender = {
+        ...msg,
+        sender_name: sender.sender_name,
+        sender_avatar: sender.sender_avatar,
+        sender_address: sender.sender_address,
+        sender_address_detail: sender.sender_address_detail,
+        sender_score: sender.sender_score,
+      };
+
+      return [...prev, fullMessage];
+    });
+  }, []);
+
+  // onMessageUpdate 콜백
+  const onMessageUpdate = useCallback((updatedMsg: Message) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.message_id === updatedMsg.message_id ? { ...msg, is_read: updatedMsg.is_read } : msg
+      )
+    );
+  }, []);
+
+  // ✅ 구독은 메시지가 한번 로드된 이후 roomId에만 의존하여 실행 (단, 구독 중복 방지)
   useEffect(() => {
-    const unreadMessageIds = messages
-      .filter((msg) => msg.sender_id !== currentUserId && !msg.is_read)
-      .map((msg) => msg.message_id);
+    if (!data || data.length === 0 || subscriptionRef.current) return;
 
-    if (unreadMessageIds.length > 0) {
-      markAsRead(unreadMessageIds); // 읽음 처리 API 호출
+    console.log('[ChatMessages] subscribing to realtime only once');
+
+    subscriptionRef.current = subscribeToMessages({
+      roomId,
+      onMessageInsert: (msg) => {
+        console.log('[Realtime] INSERT received:', msg);
+        onMessageInsert(msg);
+      },
+      onMessageUpdate: (msg) => {
+        console.log('[Realtime] UPDATE received:', msg);
+        onMessageUpdate(msg);
+      },
+    });
+
+    // cleanup 등록하지 않음 (페이지 생명주기 유지 목적)
+  }, [roomId, onMessageInsert, onMessageUpdate, data]);
+
+  // 읽음 처리
+  useEffect(() => {
+    const unreadIds = messages
+      .filter((m) => m.sender_id !== currentUserId && !m.is_read)
+      .map((m) => m.message_id);
+
+    if (unreadIds.length > 0) {
+      markAsRead(unreadIds);
     }
-  }, [messages, currentUserId]); // markAsRead는 일부러 넣지 않음
+  }, [messages, currentUserId]);
 
   return (
     <div className="flex flex-col gap-3 px-4 py-3">
@@ -84,7 +99,6 @@ export const ChatMessages = ({
             key={msg.message_id}
             className={`flex items-end ${isMine ? 'justify-end' : 'justify-start'}`}
           >
-            {/* 상대방 프로필 */}
             {!isMine && (
               <Avatar
                 src={msg.sender_avatar ?? undefined}
@@ -95,7 +109,6 @@ export const ChatMessages = ({
               />
             )}
 
-            {/* 메시지 박스 */}
             <div
               className={`relative max-w-[70%] rounded-xl px-4 py-2 text-sm leading-tight shadow-sm ${
                 isMine
@@ -104,34 +117,22 @@ export const ChatMessages = ({
               }`}
             >
               {msg.content}
-
               <div
-                className={`max-w-[70%] rounded-xl px-4 py-2 text-sm leading-tight shadow-sm ${
-                  isMine
-                    ? 'rounded-br-none bg-[#BEAFFC] text-white'
-                    : 'rounded-bl-none bg-gray-200 text-black'
+                className={`mt-1 text-[10px] ${
+                  isMine ? 'text-right text-white' : 'text-right text-gray-500'
                 }`}
               >
-                {msg.content}
-                <div
-                  className={`mt-1 text-[10px] ${
-                    isMine ? 'text-right text-white' : 'text-right text-gray-500'
-                  }`}
-                >
-                  {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </div>
+                {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
               </div>
 
-              {/* ✅ 안 읽은 내 메시지일 경우에만 읽음 표시 */}
               {isMine && !msg.is_read && (
-                <div className="absolute -right-4 bottom-0 text-xs text-red-500">1</div>
+                <div className="absolute -right-4 bottom-0 text-[18px] text-red-500">1</div>
               )}
             </div>
 
-            {/* 내 프로필 (선택) */}
             {isMine && (
               <Avatar
                 src={msg.sender_avatar ?? undefined}
