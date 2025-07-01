@@ -3,7 +3,7 @@ import 'swiper/css';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Product } from '../../../widgets/product-section/types';
+import { Product } from '@/widgets/product-section/types';
 
 import { ProductCard } from './ProductCard';
 
@@ -20,7 +20,7 @@ export const ProductList = ({ items, direction }: ProductListProps) => {
           slidesPerView={3}
           spaceBetween={0}
           slidesOffsetAfter={0}
-          loop={true}
+          loop={(items?.length ?? 0) > 3}
           className="shadow-[5px_5px_10px_rgba(0,0,0,0.08)]"
         >
           {items.map((item) => (
