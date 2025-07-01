@@ -3,9 +3,12 @@ import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInf
 import Link from 'next/link';
 import { IoSettingsOutline } from 'react-icons/io5';
 
+import { getCacheBustingUrl } from '@/lib/utils/avatar';
 import { UserProfileType } from '@/types/profile';
 
 export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
+  const avatarSrc = getCacheBustingUrl(user.avatar);
+
   return (
     <section
       className="mb-7 rounded-[6px] bg-[var(--color-primary-50)] px-[18px] py-4"
@@ -16,7 +19,7 @@ export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
       </h2>
 
       <div className="flex items-center gap-6">
-        <Avatar src={user.avatar} alt={user.username} name={user.username} size="lg" />
+        <Avatar src={avatarSrc} alt={user.username} name={user.username} size="lg" />
 
         {/* ==================== UserProfileInfo  ==================== */}
         <div className="w-[220px]">

@@ -1,4 +1,4 @@
-import { UserProfileType } from '@/widgets/profile';
+import { UserProfileType } from '@/types/profile';
 
 interface UpdateProfileParams {
   id: string;
