@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
 
     // 대시보드, 프로필 등 보호된 페이지 경로 판별
     const isProtectedRoute =
-      request.nextUrl.pathname.startsWith('/dashboard') ||
+      request.nextUrl.pathname.startsWith('/main') ||
       request.nextUrl.pathname.startsWith('/profile');
 
     // 보호된 페이지에 접근하려는데 로그인되어 있지 않으면 로그인 페이지로 리디렉션
@@ -60,14 +60,14 @@ export async function middleware(request: NextRequest) {
 
     // 로그인/회원가입 페이지에 접근하려는데 이미 로그인된 경우 대시보드로 리디렉션
     if (isAuthRoute && session) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
+      return NextResponse.redirect(new URL('/main', request.url));
     }
   } catch (error) {
     // 예외 발생 시 (예: 네트워크, Supabase 오류 등)
     console.warn('Middleware session check failed:', error);
 
     // 보호된 페이지 요청이라면 로그인 페이지로 리디렉션
-    if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (request.nextUrl.pathname.startsWith('/main')) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
