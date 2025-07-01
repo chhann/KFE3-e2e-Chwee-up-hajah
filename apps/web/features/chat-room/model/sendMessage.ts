@@ -7,7 +7,7 @@ export const sendMessage = async ({
   senderId: string;
   content: string;
 }) => {
-  const res = await fetch('/api/message/send', {
+  const res = await fetch('/api/chat/message-send', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ roomId, senderId, content }),
