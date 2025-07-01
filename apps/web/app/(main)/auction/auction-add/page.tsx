@@ -14,10 +14,9 @@ import {
   handleStartPriceInput,
   handleTextareaChange,
 } from '@/features/auction-add/model/handlers';
-
-import { AuctionDateSelector } from '@/features/auction/ui/AuctionDateSelector';
-import { AuctionImageUploader } from '@/features/auction/ui/AuctionImageUploader';
-import { ProductDescriptionInput } from '@/features/auction/ui/ProductDescriptionInput';
+import { AuctionDateSelector } from '@/features/auction-add/ui/AuctionDateSelector';
+import { AuctionImageUploader } from '@/features/auction-add/ui/AuctionImageUploader';
+import { ProductDescriptionInput } from '@/features/auction-add/ui/ProductDescriptionInput';
 
 import { useCreateAuction } from '@/hooks/useCreateAuction';
 import { auctionAddSchema } from '@/lib/validators/auctionAddSchema';

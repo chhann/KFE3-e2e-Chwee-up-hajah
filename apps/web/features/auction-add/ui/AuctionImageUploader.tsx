@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 
-import { supabase } from '@/lib/supabase/supabase';
+import { useAuctionImage } from '@/hooks/useAuctionImage';
 
 interface AuctionImageUploaderProps {
   images: string[];
@@ -16,7 +16,7 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
   setImages,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const imageMutation = useAuctionImage();
   const handleImageClick = () => {
     if (images.length >= 5) return;
     fileInputRef.current?.click();
@@ -34,23 +34,17 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
     // 중복 url 방지 (업로드 후 url로 비교)
     let newUrls: string[] = [];
     for (const file of validFiles) {
-      // Supabase Storage 업로드
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${fileExt}`;
-      const { data, error } = await supabase.storage
-        .from('auction-image')
-        .upload(fileName, file, { upsert: false });
-      if (error) {
-        alert('이미지 업로드 실패' + error.message);
-        continue;
-      }
-      const { data: urlData } = supabase.storage.from('auction-image').getPublicUrl(data.path);
-      if (
-        urlData?.publicUrl &&
-        !images.includes(urlData.publicUrl) &&
-        !newUrls.includes(urlData.publicUrl)
-      ) {
-        newUrls.push(urlData.publicUrl);
+      // API로 이미지 업로드
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const imgUrl = await imageMutation.mutateAsync(file);
+        if (imgUrl) {
+          newUrls.push(imgUrl);
+        }
+      } catch (error) {
+        console.error('이미지 업로드 실패:', error);
+        alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
       }
     }
     const totalFiles = images.length + newUrls.length;
