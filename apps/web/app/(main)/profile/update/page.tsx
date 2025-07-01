@@ -13,7 +13,7 @@ const Page = async () => {
     redirect('/login');
   }
 
-  const userProfile = await getProfile(userData?.id!);
+  const userProfile = await getProfile(userData.id!);
 
   return <ProfileForm user={userProfile} />;
 };

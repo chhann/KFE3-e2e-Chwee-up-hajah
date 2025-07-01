@@ -8,14 +8,14 @@ import { getCurrentUser } from '@/app/session';
 import { NavigationItem } from '@/types/profile';
 
 const pointItems: NavigationItem[] = [
-  { label: '충전내역', href: '/1' },
-  { label: '사용내역', href: '/2' },
+  { label: '충전내역', href: '/profile/charge-history' },
+  { label: '사용내역', href: '/1' },
 ];
 
 const auctionItems: NavigationItem[] = [
-  { label: '판매 중인 물품', href: '/3' },
-  { label: '참여 중인 경매', href: '/4' },
-  { label: '낙찰 받은 물품', href: '/5' },
+  { label: '판매 중인 물품', href: '/2' },
+  { label: '참여 중인 경매', href: '/3' },
+  { label: '낙찰 받은 물품', href: '/4' },
 ];
 
 const Page = async () => {
@@ -25,7 +25,7 @@ const Page = async () => {
     redirect('/login');
   }
 
-  const userProfile = await getProfile(userData?.id!);
+  const userProfile = await getProfile(userData.id!);
 
   return (
     <main className="text-neutral-70" role="main">

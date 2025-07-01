@@ -4,7 +4,9 @@ import React, { useRef } from 'react';
 
 import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 
-import { supabase } from '@/lib/supabase/supabase';
+import { useAuctionImage } from '@/hooks/useAuctionImage';
+
+import { handleImageChange } from '../model/handlers';
 
 interface AuctionImageUploaderProps {
   images: string[];
@@ -16,50 +18,10 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
   setImages,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const imageMutation = useAuctionImage();
   const handleImageClick = () => {
     if (images.length >= 5) return;
     fileInputRef.current?.click();
-  };
-
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const selectedFiles = Array.from(e.target.files);
-    // 확장자 필터링(jpg, jpeg, png)
-    const allowed = ['image/jpeg', 'image/png'];
-    const validFiles = selectedFiles.filter((f) => allowed.includes(f.type));
-    if (validFiles.length < selectedFiles.length) {
-      alert('jpg, png 파일만 업로드할 수 있습니다.');
-    }
-    // 중복 url 방지 (업로드 후 url로 비교)
-    let newUrls: string[] = [];
-    for (const file of validFiles) {
-      // Supabase Storage 업로드
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${fileExt}`;
-      const { data, error } = await supabase.storage
-        .from('auction-image')
-        .upload(fileName, file, { upsert: false });
-      if (error) {
-        alert('이미지 업로드 실패' + error.message);
-        continue;
-      }
-      const { data: urlData } = supabase.storage.from('auction-image').getPublicUrl(data.path);
-      if (
-        urlData?.publicUrl &&
-        !images.includes(urlData.publicUrl) &&
-        !newUrls.includes(urlData.publicUrl)
-      ) {
-        newUrls.push(urlData.publicUrl);
-      }
-    }
-    const totalFiles = images.length + newUrls.length;
-    if (totalFiles > 5) {
-      alert('사진은 최대 5장까지 등록할 수 있습니다.');
-      newUrls = newUrls.slice(0, 5 - images.length);
-    }
-    setImages((prev) => [...prev, ...newUrls].slice(0, 5));
-    e.target.value = '';
   };
 
   const handleRemoveImage = (idx: number) => {
@@ -79,7 +41,7 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
           accept="image/jpeg,image/png"
           multiple
           className="hidden"
-          onChange={handleImageChange}
+          onChange={(e) => handleImageChange(e, images, setImages, imageMutation)}
           disabled={images.length >= 5}
         />
       </div>

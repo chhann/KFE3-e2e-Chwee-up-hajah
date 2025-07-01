@@ -13,11 +13,11 @@ interface NavigationItem {
 
 export const Footer = () => {
   const items: NavigationItem[] = [
-    { label: '홈', href: '/3', icon: IoMdHome },
-    { label: '검색', href: '/4', icon: GoSearch },
-    { label: '등록', href: '/5', icon: IoIosAddCircleOutline },
-    { label: '대화', href: '/6', icon: IoChatboxEllipses },
-    { label: '프로필', href: '/7', icon: FaUser },
+    { label: '홈', href: '/main', icon: IoMdHome },
+    { label: '검색', href: '#', icon: GoSearch },
+    { label: '등록', href: '/auction/auction-add', icon: IoIosAddCircleOutline },
+    { label: '대화', href: '/chat', icon: IoChatboxEllipses },
+    { label: '프로필', href: '/profile', icon: FaUser },
   ];
 
   return (
