@@ -1,8 +1,12 @@
-import { supabase } from '../../../lib/supabase/supabase';
+import { NextRequest, NextResponse } from 'next/server';
 
-export type SortOption = 'popular' | 'latest' | 'endingSoon';
+import { createSSRClient } from '../../server';
 
-export const fetchProductList = async (sort: SortOption) => {
+export async function GET(req: NextRequest) {
+  const supabase = await createSSRClient();
+  const { searchParams } = new URL(req.url);
+  const sort = searchParams.get('sort') ?? 'popular';
+
   let query = supabase.from('view_products_list').select('*');
 
   switch (sort) {
@@ -21,6 +25,9 @@ export const fetchProductList = async (sort: SortOption) => {
 
   const { data, error } = await query;
 
-  if (error) throw new Error(error.message);
-  return data;
-};
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json(data);
+}

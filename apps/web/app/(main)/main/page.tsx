@@ -17,7 +17,7 @@ const Page = () => {
     <div className="flex min-h-screen w-full flex-col items-center p-1">
       {/* 배너 */}
       <ImageBanner
-        images={['images.jpg', 'images (1).jpg']}
+        images={['/mock-image/images.jpg', '/mock-image/images (1).jpg']}
         height={172}
         autoplay={true}
         marginBottom={10}

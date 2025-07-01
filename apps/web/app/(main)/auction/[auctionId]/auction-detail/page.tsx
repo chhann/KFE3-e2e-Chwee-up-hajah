@@ -140,7 +140,9 @@ const Page = () => {
       />
       <AuctionSellerProfile user={seller} />
       <AuctionDescriptionCard bids={displayBids} description={product.description} />
-      {data.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
+      {data.status === 'end' && (
+        <AuctionOverlay overlayText="경매가 종료되었습니다." isCanClose={true} />
+      )}
     </main>
   );
 };
