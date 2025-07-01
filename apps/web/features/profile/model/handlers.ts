@@ -2,6 +2,8 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import type { ZodFormattedError } from 'zod';
 
+import { uploadAvatarToStorage } from '../api/uploadAvatar';
+
 import { profileSchema } from '@/lib/validators/profileSchema';
 import { ProfileFormType, UserProfileType } from '@/types/profile';
 
@@ -31,19 +33,33 @@ export async function handleSubmit(
   e: React.FormEvent,
   user: UserProfileType,
   enteredValues: ProfileFormType,
-  avatarUrl: string | undefined,
+  selectedFile: File | undefined,
   setFieldErrors: Dispatch<SetStateAction<ZodFormattedError<ProfileFormType> | undefined>>,
   updateProfileMutation: UpdateProfileMutation
 ) {
   e.preventDefault();
+  setFieldErrors(undefined);
+
   const id = user.user_id;
   const { username, address, addressDetail } = enteredValues;
+
+  let finalAvatarUrl: string | undefined = user.avatar;
+
+  if (selectedFile) {
+    try {
+      const uploadedUrl = await uploadAvatarToStorage(id, selectedFile);
+      finalAvatarUrl = uploadedUrl;
+    } catch (uploadError: any) {
+      alert(`아바타 업로드 실패: ${uploadError.message}`);
+      console.error('Avatar upload error:', uploadError);
+      return; // 아바타 업로드 실패 시 전체 폼 제출 중단
+    }
+  }
 
   const result = profileSchema.safeParse({
     username,
     address,
     addressDetail,
-    avatarUrl,
   });
 
   if (!result.success) {
@@ -52,5 +68,11 @@ export async function handleSubmit(
     return;
   }
 
-  updateProfileMutation.mutate({ id, username, address, addressDetail, avatarUrl });
+  updateProfileMutation.mutate({
+    id,
+    username,
+    address,
+    addressDetail,
+    avatarUrl: finalAvatarUrl,
+  });
 }
