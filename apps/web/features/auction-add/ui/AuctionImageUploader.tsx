@@ -6,6 +6,8 @@ import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 
 import { useAuctionImage } from '@/hooks/useAuctionImage';
 
+import { handleImageChange } from '../model/handlers';
+
 interface AuctionImageUploaderProps {
   images: string[];
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
@@ -20,40 +22,6 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
   const handleImageClick = () => {
     if (images.length >= 5) return;
     fileInputRef.current?.click();
-  };
-
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const selectedFiles = Array.from(e.target.files);
-    // 확장자 필터링(jpg, jpeg, png)
-    const allowed = ['image/jpeg', 'image/png'];
-    const validFiles = selectedFiles.filter((f) => allowed.includes(f.type));
-    if (validFiles.length < selectedFiles.length) {
-      alert('jpg, png 파일만 업로드할 수 있습니다.');
-    }
-    // 중복 url 방지 (업로드 후 url로 비교)
-    let newUrls: string[] = [];
-    for (const file of validFiles) {
-      // API로 이미지 업로드
-      const formData = new FormData();
-      formData.append('file', file);
-      try {
-        const imgUrl = await imageMutation.mutateAsync(file);
-        if (imgUrl) {
-          newUrls.push(imgUrl);
-        }
-      } catch (error) {
-        console.error('이미지 업로드 실패:', error);
-        alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
-      }
-    }
-    const totalFiles = images.length + newUrls.length;
-    if (totalFiles > 5) {
-      alert('사진은 최대 5장까지 등록할 수 있습니다.');
-      newUrls = newUrls.slice(0, 5 - images.length);
-    }
-    setImages((prev) => [...prev, ...newUrls].slice(0, 5));
-    e.target.value = '';
   };
 
   const handleRemoveImage = (idx: number) => {
@@ -73,7 +41,7 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
           accept="image/jpeg,image/png"
           multiple
           className="hidden"
-          onChange={handleImageChange}
+          onChange={(e) => handleImageChange(e, images, setImages, imageMutation)}
           disabled={images.length >= 5}
         />
       </div>
