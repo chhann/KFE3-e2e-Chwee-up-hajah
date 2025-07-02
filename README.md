@@ -110,3 +110,5 @@
 - **UI 컴포넌트**: UI 컴포넌트 작업을 하려면 `packages/ui`로 이동하여 시각화 및 테스트를 위해 `apps/docs` 내의 Storybook을 사용합니다.
 - **기능**: 새로운 기능을 추가할 때는 `apps/web/features` 아래에 새 디렉토리를 만들고 FSD 원칙을 따릅니다.
 - **데이터베이스/인증**: `apps/web/lib/supabase`에 정의된 클라이언트를 통해 Supabase와 상호작용합니다.
+
+<!-- Test Discord notification on dev branch - Attempt 2 -->

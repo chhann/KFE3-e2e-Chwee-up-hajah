@@ -21,7 +21,7 @@ const SignupCompletePage = () => {
 
       // 여기서 추가 프로필 정보를 입력받거나
       // 바로 대시보드로 리다이렉션
-      router.replace('/dashboard');
+      router.replace('/main');
     };
 
     completeSignup();

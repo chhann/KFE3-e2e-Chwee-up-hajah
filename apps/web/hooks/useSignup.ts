@@ -280,7 +280,7 @@ export const useSignup = (): UseSignupReturn => {
           alert('가입 확인 이메일을 발송했습니다. 이메일을 확인 후 로그인해주세요.');
           router.push('/login');
         } else {
-          router.push('/dashboard');
+          router.push('/main');
         }
       } catch (error) {
         // 오류 처리: 오류 메시지에 따라 적절한 필드에 표시

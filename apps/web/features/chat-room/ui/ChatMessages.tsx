@@ -3,11 +3,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
+import { cn } from '@repo/ui/utils/cn';
 
 import { useMessages } from '@/hooks/chat/useMessages';
 import { useMessagesAsRead } from '@/hooks/chat/useMessagesAsRead';
 import { subscribeToMessages } from '@/hooks/chat/useMessageSubscription';
 import { Message, MessageWithSender } from '@/types/chat';
+
+import {
+  containerStyles,
+  messageBubbleStyles,
+  messageRowStyles,
+  timestampStyles,
+  unreadIndicatorStyles,
+} from './styles/ChatMessages.styles';
 
 export const ChatMessages = ({
   roomId,
@@ -90,14 +99,17 @@ export const ChatMessages = ({
   }, [messages, currentUserId]);
 
   return (
-    <div className="flex flex-col gap-3 px-4 py-3">
+    <div className={containerStyles}>
       {messages.map((msg) => {
         const isMine = msg.sender_id === currentUserId;
 
         return (
           <div
             key={msg.message_id}
-            className={`flex items-end ${isMine ? 'justify-end' : 'justify-start'}`}
+            className={cn(
+              messageRowStyles.base,
+              isMine ? messageRowStyles.mine : messageRowStyles.theirs
+            )}
           >
             {!isMine && (
               <Avatar
@@ -110,17 +122,17 @@ export const ChatMessages = ({
             )}
 
             <div
-              className={`relative max-w-[70%] rounded-xl px-4 py-2 text-sm leading-tight shadow-sm ${
-                isMine
-                  ? 'rounded-br-none bg-[#BEAFFC] text-white'
-                  : 'rounded-bl-none bg-gray-200 text-black'
-              }`}
+              className={cn(
+                messageBubbleStyles.base,
+                isMine ? messageBubbleStyles.mine : messageBubbleStyles.theirs
+              )}
             >
               {msg.content}
               <div
-                className={`mt-1 text-[10px] ${
-                  isMine ? 'text-right text-white' : 'text-right text-gray-500'
-                }`}
+                className={cn(
+                  timestampStyles.base,
+                  isMine ? timestampStyles.mine : timestampStyles.theirs
+                )}
               >
                 {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
                   hour: '2-digit',
@@ -128,9 +140,7 @@ export const ChatMessages = ({
                 })}
               </div>
 
-              {isMine && !msg.is_read && (
-                <div className="absolute -right-4 bottom-0 text-[18px] text-red-500">1</div>
-              )}
+              {isMine && !msg.is_read && <div className={unreadIndicatorStyles}>1</div>}
             </div>
 
             {isMine && (
