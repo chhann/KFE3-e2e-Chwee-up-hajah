@@ -3,25 +3,23 @@
 
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import React from 'react';
-
-interface SocialLoginSectionProps {
-  onSocialLoginClick: () => void;
-}
+import { SocialLoginSectionProps } from '../../../types/auth/login';
+import { SocialLoginSectionStyles } from './styles';
 
 export const SocialLoginSection: React.FC<SocialLoginSectionProps> = ({ onSocialLoginClick }) => (
-  <div className="mt-4 text-center">
-    <div className="text-center text-gray-500">다른 계정으로 로그인</div>
-    <div className="mt-4 flex items-center justify-center space-x-3">
+  <div className={SocialLoginSectionStyles.container}>
+    <div className={SocialLoginSectionStyles.title}>다른 계정으로 로그인</div>
+    <div className={SocialLoginSectionStyles.icons}>
       {['구글', '애플', '페이스북'].map((platform) => (
         <Avatar
           key={platform}
           alt={platform}
           name={platform}
           size="sm"
-          className="inline-block align-middle"
+          className={SocialLoginSectionStyles.avatar}
           onClick={onSocialLoginClick}
           src={`/images/avatar.png`}
-          style={{ marginLeft: '8px', cursor: 'pointer' }}
+          style={SocialLoginSectionStyles.avatarStyle}
         />
       ))}
     </div>
