@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 
+import { cn } from '@repo/ui/utils/cn';
+
 import { useSendMessage } from '../../../hooks/chat/useSendMessage';
+
+import { buttonStyles, inputContainerStyles, inputStyles } from './styles/ChatInput.styles';
 
 export const ChatInput = ({ roomId, senderId }: { roomId: string; senderId: string }) => {
   const [message, setMessage] = useState('');
@@ -28,18 +32,25 @@ export const ChatInput = ({ roomId, senderId }: { roomId: string; senderId: stri
   };
 
   return (
-    <div className="flex gap-2 p-2">
+    <div className={inputContainerStyles}>
       <input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+        className={inputStyles}
         placeholder="메시지를 입력하세요"
       />
       <button
         onClick={handleSend}
         disabled={mutation.isPending}
-        className="rounded-md bg-purple-500 px-4 py-2 text-sm text-white hover:bg-purple-600 active:bg-purple-700 disabled:bg-gray-300"
+        className={cn(
+          buttonStyles.base,
+          buttonStyles.bg,
+          buttonStyles.text,
+          buttonStyles.hoverBg,
+          buttonStyles.activeBg,
+          buttonStyles.disabledBg
+        )}
       >
         {mutation.isPending ? '전송 중...' : '전송'}
       </button>
