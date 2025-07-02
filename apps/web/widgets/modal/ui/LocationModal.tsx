@@ -1,4 +1,4 @@
-import { useModalStore } from '../../../stores/modal';
+'use client';
 import {
   Item,
   ItemBadge,
@@ -11,6 +11,8 @@ import {
   ModalHeader,
 } from '@repo/ui/design-system/base-components/Modal/index';
 import { IoShieldCheckmarkSharp } from 'react-icons/io5';
+
+import { useModalStore } from '../../../stores/modal';
 
 export const LocationModal = () => {
   const { isModalOpen, closeModal } = useModalStore();
