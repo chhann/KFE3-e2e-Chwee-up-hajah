@@ -29,13 +29,12 @@ export const ProfileAvatarUpload = ({
       // 선택된 파일을 상위 컴포넌트(ProfileForm)로 전달합니다.
       // 상위 컴포넌트가 이 파일을 가지고 미리보기 URL을 생성하고 상태를 업데이트
       onFileSelect(file);
-    } else {
-      // 파일 선택 취소 시
-      // 파일이 선택되지 않았음을 상위 컴포넌트(ProfileForm)로 전달.
-      // 상위 컴포넌트가 이 정보를 가지고 미리보기 URL을 기존(DB) 아바타로 되돌림.
-      onFileSelect(undefined);
     }
   };
+
+  if (!avatarUrl) {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className="flex justify-center">
