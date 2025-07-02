@@ -7,8 +7,7 @@ import { useAuthStore } from '../stores/auth';
 
 export const useLogin = () => {
   const router = useRouter();
-  const login = useAuthStore((state) => state.login); // zustand의 login 액션
-  const error = useAuthStore((state) => state.error);
+  const { login, error } = useAuthStore();
 
   // 이메일과 비밀번호 상태
   const [email, setEmail] = useState('');
@@ -32,11 +31,16 @@ export const useLogin = () => {
       // 상태에서 isAuthenticated 검사 후 대시보드 이동
       const { isAuthenticated } = useAuthStore.getState();
       if (isAuthenticated) {
-        router.push('/dashboard');
+        router.push('/main');
       }
     },
     [email, password, login, router]
   );
+
+  const resetFields = useCallback(() => {
+    setEmail('');
+    setPassword('');
+  }, []);
 
   return {
     email,
@@ -45,5 +49,6 @@ export const useLogin = () => {
     onChangeEmail,
     onChangePassword,
     onSubmit,
+    resetFields,
   };
 };

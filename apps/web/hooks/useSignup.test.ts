@@ -192,7 +192,7 @@ describe('useSignup', () => {
       });
 
       expect(AuthService.signup).toHaveBeenCalled();
-      expect(mockPush).toHaveBeenCalledWith('/dashboard');
+      expect(mockPush).toHaveBeenCalledWith('/main');
       expect(result.current.formError).toBe('');
     });
 

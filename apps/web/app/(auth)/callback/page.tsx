@@ -41,7 +41,7 @@ const AuthCallbackPage = () => {
             router.replace('/signup/complete');
           } else {
             // 프로필이 있으면 대시보드로
-            router.replace('/dashboard');
+            router.replace('/main');
           }
         } else {
           // 세션이 없으면 로그인 페이지로
@@ -73,7 +73,7 @@ const AuthCallbackPage = () => {
         if (!profile) {
           router.replace('/signup/complete');
         } else {
-          router.replace('/dashboard');
+          router.replace('/main');
         }
       } else if (event === 'SIGNED_OUT') {
         router.replace('/login');
@@ -103,7 +103,9 @@ const AuthCallbackPage = () => {
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <div className="mb-2 text-[var(--color-error-500)]">{error}</div>
-          <div className="text-sm text-[var(--color-neutral-500)]">잠시 후 로그인 페이지로 이동합니다...</div>
+          <div className="text-sm text-[var(--color-neutral-500)]">
+            잠시 후 로그인 페이지로 이동합니다...
+          </div>
         </div>
       </div>
     );

@@ -1,22 +1,18 @@
-// app/login/page.tsx (또는 클라이언트 페이지)
 'use client';
 
 import { useLogin } from '../../../hooks/useLogin';
-import { useAuthStore } from '../../../stores/auth';
-import LoginForm from '../../../widgets/authentication/LoginForm';
+import { LoginFormComponent } from '../../../widgets/authentication/LoginFormComponent';
+import { SignUpLinkComponent } from '../../../widgets/authentication/SignUpLinkComponent';
+import { SocialLoginSection } from '../../../widgets/authentication/SocialLoginSection';
 
 const LoginPage = () => {
-  const { email, password, error, onChangeEmail, onChangePassword, onSubmit } = useLogin();
-
-  // 상태를 콘솔로 출력하는 함수
-  const handleTest = () => {
-    const state = useAuthStore.getState();
-    console.log('useAuthStore state:', state);
-  };
+  const { email, password, error, onChangeEmail, onChangePassword, onSubmit, resetFields } =
+    useLogin();
 
   return (
-    <div>
-      <LoginForm
+    <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md">
+      <h2 className="mt mb-4 text-center text-2xl font-bold">로그인</h2>
+      <LoginFormComponent
         email={email}
         password={password}
         error={error}
@@ -24,14 +20,8 @@ const LoginPage = () => {
         onChangePassword={onChangePassword}
         onSubmit={onSubmit}
       />
-
-      {/* 상태 출력용 버튼 */}
-      <button
-        onClick={handleTest}
-        className="rounded bg-[var(--color-primary-500)] px-4 py-2 text-[var(--color-neutral-0)] hover:bg-[var(--color-primary-600)]"
-      >
-        상태 테스트
-      </button>
+      <SocialLoginSection onSocialLoginClick={resetFields} />
+      <SignUpLinkComponent />
     </div>
   );
 };
