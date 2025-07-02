@@ -15,22 +15,8 @@ import {
 import { IoAlertCircleOutline } from 'react-icons/io5';
 import { RiAuctionLine } from 'react-icons/ri';
 
+import { NotificationSection } from '@/types/modal';
 import { useModalStore } from '../../../stores/modal';
-
-// 타입 정의
-interface NotificationItem {
-  id: string;
-  title: string;
-  content?: string;
-  price?: number;
-  misc?: string;
-}
-
-interface NotificationSection {
-  icon: React.ReactNode;
-  title: string;
-  items: NotificationItem[];
-}
 
 export const NotificationModal = () => {
   const { isModalOpen, closeModal } = useModalStore();
