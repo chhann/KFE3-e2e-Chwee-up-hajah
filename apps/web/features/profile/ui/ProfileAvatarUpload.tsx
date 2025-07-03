@@ -5,6 +5,8 @@ import { useRef } from 'react';
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { FaCamera } from 'react-icons/fa6';
 
+import { profileAvatarUploadStyles as styles } from '../styles/profileAvatarUpload.styles';
+
 interface AvatarUploadProps {
   username: string;
   avatarUrl?: string; // ProfileForm에서 관리하는 현재 미리보기 URL
@@ -37,24 +39,25 @@ export const ProfileAvatarUpload = ({
   }
 
   return (
-    <div className="flex justify-center">
-      <div className="relative inline-flex">
+    <div className={styles.container}>
+      <div className={styles.avatarWrapper}>
         <input
           ref={imageRef}
           type="file"
           accept="image/*"
-          hidden
+          className={styles.fileInput}
           onChange={handleImageChange}
           data-testid="file-input"
         />
-        <Avatar src={avatarUrl} alt={username} name={username} size="xxl" className="relative" />
-        <p
-          onClick={imageClick}
-          role="button"
-          aria-label="camera"
-          className="border-3 absolute -right-[7px] bottom-0 inline-block cursor-pointer rounded-full border-solid border-white bg-neutral-500 p-1"
-        >
-          <FaCamera className="size-3.5 text-white" />
+        <Avatar
+          src={avatarUrl}
+          alt={username}
+          name={username}
+          size="xxl"
+          className={styles.avatar}
+        />
+        <p onClick={imageClick} role="button" aria-label="camera" className={styles.cameraButton}>
+          <FaCamera className={styles.cameraIcon} />
         </p>
       </div>
     </div>

@@ -6,6 +6,8 @@ import { FaArrowLeft } from 'react-icons/fa';
 
 import { useModalStore } from '../../../stores/modal';
 
+import { headerStyles as styles } from '../styles/header.styles';
+
 export const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -16,18 +18,18 @@ export const Header = () => {
   const showBackButton = !noBackButtonRoutes.includes(pathname);
 
   return (
-    <header className="text-neutral-70 flex h-[68px] cursor-pointer items-center justify-between pl-2">
+    <header className={styles.header}>
       {showBackButton && (
-        <div className="text-neutral-700" onClick={() => router.back()}>
-          <FaArrowLeft className="size-4" />
+        <div className={styles.backButton.wrapper} onClick={() => router.back()}>
+          <FaArrowLeft className={styles.backButton.icon} />
         </div>
       )}
-      <div className="grow text-right">
+      <div className={styles.buttonArea.container}>
         <Button
           variants="ghost"
           size="thinMd"
           onClick={() => setOpenModal('notification')}
-          className="mr-1 px-2"
+          className={styles.buttonArea.notificationButton}
         >
           <h2>알림</h2>
         </Button>
@@ -35,7 +37,7 @@ export const Header = () => {
           size="thinMd"
           variants="ghost"
           onClick={() => setOpenModal('location')}
-          className="px-2"
+          className={styles.buttonArea.locationButton}
         >
           <h2>내 위치</h2>
         </Button>

@@ -18,6 +18,8 @@ import { RiAuctionLine } from 'react-icons/ri';
 import { NotificationSection } from '@/types/modal';
 import { useModalStore } from '../../../stores/modal';
 
+import { notificationModalStyles as styles } from '../styles/notificationModal.styles';
+
 export const NotificationModal = () => {
   const { isModalOpen, closeModal } = useModalStore();
 
@@ -59,34 +61,31 @@ export const NotificationModal = () => {
   ];
 
   return (
-    <Modal className="pt-15 items-start">
-      <ModalContent className="h-[500px] w-[340px] bg-[#F4F1FE] p-4 pb-0">
+    <Modal className={styles.modal}>
+      <ModalContent className={styles.content}>
         <ModalHeader title="알림" onClose={closeModal} />
-        {sections.length === 0 && <p>알림 내역이 없습니다.</p>}
+        {sections.length === 0 && <p className={styles.emptyMessage}>알림 내역이 없습니다.</p>}
         {sections.map((section, sectionIndex) => (
           <div key={sectionIndex}>
-            <ItemBadge className="text-neutral-70 mb-2">
-              {section.icon}
+            <ItemBadge className={styles.sectionBadge}>
+              <span className={styles.sectionIcon}>{section.icon}</span>
               <h3>{section.title}</h3>
             </ItemBadge>
 
             {section.items.map((item) => (
-              <Item
-                key={item.id}
-                className="text-neutral-80 mb-4 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
-              >
-                <ItemTitle className="w-[250px] truncate">{item.title}</ItemTitle>
-                <ItemContent className="text-neutral-40 w-[240px] truncate">
-                  {item.content}
-                </ItemContent>
-                <ItemFooter className="flex items-end justify-between">
+              <Item key={item.id} className={styles.notificationItem}>
+                <ItemTitle className={styles.itemTitle}>{item.title}</ItemTitle>
+                <ItemContent className={styles.itemContent}>{item.content}</ItemContent>
+                <ItemFooter className={styles.itemFooter}>
                   {item.price && (
                     <div>
-                      <span className="mr-1 text-[12px]">낙찰가</span>
-                      <strong className="text-base">{item.price.toLocaleString()}원</strong>
+                      <span className={styles.price.label}>낙찰가</span>
+                      <strong className={styles.price.amount}>
+                        {item.price.toLocaleString()}원
+                      </strong>
                     </div>
                   )}
-                  <p className="flex-1 text-right text-[10px]">{item.misc}</p>
+                  <p className={styles.timestamp}>{item.misc}</p>
                 </ItemFooter>
               </Item>
             ))}
