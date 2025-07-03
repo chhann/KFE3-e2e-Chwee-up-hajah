@@ -1,6 +1,12 @@
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 
 import { Bid } from '@/types/db';
+import {
+  auctionBidHistoryCardContainerStyle,
+  auctionBidHistoryCardDotStyle,
+  auctionBidHistoryCardInfoRowStyle,
+  auctionBidHistoryCardPriceStyle,
+} from './style/AuctionBidHistoryCard.styles';
 
 export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
   const dateObj = new Date(bid.bid_time);
@@ -16,16 +22,18 @@ export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
   });
 
   return (
-    <div className="mb-3 rounded-lg p-4 shadow-md">
+    <div className={auctionBidHistoryCardContainerStyle}>
       <div>
         <span>{dateStr}</span>
         <span className="mx-2"></span>
         <span>{timeStr}</span>
       </div>
-      <div className="flex items-center">
+      <div className={auctionBidHistoryCardInfoRowStyle}>
         <span>{bid.user?.username}</span>
-        <span className="mx-1">·</span>
-        <span className="font-semibold">{formatPriceNumber(bid.bid_price)}원</span>
+        <span className={auctionBidHistoryCardDotStyle}>·</span>
+        <span className={auctionBidHistoryCardPriceStyle}>
+          {formatPriceNumber(bid.bid_price)}원
+        </span>
       </div>
     </div>
   );
