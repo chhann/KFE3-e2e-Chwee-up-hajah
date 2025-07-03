@@ -16,7 +16,7 @@ import importPlugin from 'eslint-plugin-import';
  *
  * @type {import("eslint").Linter.Config}
  * */
-export const nextJsConfig = [
+const nextJsConfig = [
   ...baseConfig,
   js.configs.recommended,
   eslintConfigPrettier,
@@ -166,3 +166,5 @@ export const nextJsConfig = [
     },
   },
 ];
+
+export default nextJsConfig;
