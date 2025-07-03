@@ -14,8 +14,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "build:styles && build:components",
-    "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
+    "build": "pnpm run build:styles && pnpm run build:components",
+    "build:styles": "tailwindcss -c ./tailwind.config.ts -i ./src/styles.css -o ./dist/index.css",
     "build:components": "tsc",
     "check-types": "tsc --noEmit",
     "dev:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
