@@ -1,17 +1,23 @@
-import { createSSRClient } from './server'; // ✅ 경로 수정
+import { createSSRClient } from './server';
 
 export async function getCurrentUser() {
-  const supabase = await createSSRClient(); // ✅ await 추가
+  try {
+    const supabase = await createSSRClient();
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
 
-  if (error) {
-    console.error('[getCurrentUser] error:', error.message);
+    if (error) {
+      console.error('[getCurrentUser] error:', error.message);
+      return null;
+    }
+
+    return user;
+  } catch (error: unknown) {
+    console.error('[getCurrentUser] unexpected error:', error);
+
     return null;
   }
-
-  return user;
 }
