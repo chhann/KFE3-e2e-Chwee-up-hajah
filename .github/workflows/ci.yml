@@ -38,3 +38,12 @@ jobs:
         run: pnpm --filter web test
         env:
           NEXT_PUBLIC_BASE_URL: http://localhost:3001
+
+      - name: Trigger sync in fork repo
+        if: ${{ success() }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.FORK_TRIGGER_TOKEN }}" \
+            https://api.github.com/repos/chhann/KFE3-e2e-Chwee-up-hajah/actions/workflows/sync-upstream.yml/dispatches \
+            -d '{"ref":"main"}'
