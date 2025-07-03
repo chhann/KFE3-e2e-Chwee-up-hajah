@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 
-interface AuctionBidParams {
+export interface AuctionBidParams {
   auctionId: string;
   bidderId: string;
   bidPrice: number;
 }
 
-interface AuctionBidResponse {
+export interface AuctionBidResponse {
   success?: boolean;
   error?: string;
 }

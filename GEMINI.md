@@ -51,6 +51,8 @@
 - **`hooks/`**: 재사용 가능한 로직을 위한 커스텀 React 훅입니다 (예: `useLogin`, `useCreateAuction`).
 - **`lib/`**: 유틸리티 함수, Supabase 클라이언트 설정, 유효성 검사기(validators)를 포함합니다.
 - **`stores/`**: Zustand 스토어 정의입니다 (예: `auth.ts`, `modal.ts`).
+- **`styles/`**: 컴포넌트별 스타일 정의를 포함합니다. Tailwind CSS의 임의 값 구문을 사용하여 `packages/ui/src/theme.css`의 테마 변수를 참조합니다.
+- **`types/`**: 모든 TypeScript 타입 정의를 포함하는 중앙 집중식 디렉토리입니다. `apps/web/types/` 아래에 기능별 또는 도메인별로 하위 디렉토리를 구성하여 관리합니다.
 
 ## 4. `packages/ui` - 디자인 시스템 및 컴포넌트
 
@@ -75,26 +77,18 @@
         - 이는 컴포넌트의 외형과 기본적인 상호작용을 독립적으로 확인하는 데 중점을 둡니다.
 
     - **단위/통합 테스트 (Vitest)**:
-        - **현재 상태**: 현재 프로젝트에는 `hooks`, `features`, `lib` (유틸리티 및 유효성 검사기), `stores` 등 다양한 영역에 단위/통합 테스트 코드가 존재합니다.
-        - **목표**: `hooks`, `lib`, `stores`, `features` 등 애플리케이션의 핵심 비즈니스 로직에 대한 단위 및 통합 테스트 작성을 강력히 권장합니다.
+        - **현재 상태**: `apps/web`에는 Vitest가 이미 설치 및 설정되어 있으며, `hooks`, `lib` (유틸리티 및 유효성 검사기), `stores` 등 다양한 영역에 단위/통합 테스트 코드가 존재합니다.
+        - **목표**: `features` 등 애플리케이션의 핵심 비즈니스 로직에 대한 단위 및 통합 테스트 작성을 강력히 권장합니다.
         - **도구**: `apps/docs`에서 사용되는 Vitest를 `apps/web`에서도 활용하여 테스트를 작성합니다.
         - **테스트 전략 및 우선순위 (권장 단계)**:
-            1.  **`apps/web`에 Vitest 설치 및 설정:**
-                *   `apps/web` 디렉토리로 이동하여 Vitest를 개발 의존성으로 설치합니다.
-                    ```bash
-                    cd apps/web
-                    pnpm add -D vitest @vitest/coverage-v8
-                    ```
-                *   `apps/web` 디렉토리 내에 `vitest.config.ts` 파일을 생성하고, `apps/docs`의 설정을 참고하여 `apps/web`에 맞게 구성합니다.
-                *   `apps/web/package.json`에 테스트 실행 스크립트를 추가합니다 (예: `"test": "vitest"`).
-            2.  **`stores` (Zustand)에 대한 단위 테스트 작성:**
+            1.  **`stores` (Zustand)에 대한 단위 테스트 작성:**
                 *   `apps/web/stores/auth.ts`와 같은 Zustand 스토어 파일에 대해 단위 테스트를 작성합니다.
                 *   네트워크 요청 등 외부 의존성을 모의(mock) 처리하여 스토어의 로직 자체를 검증합니다.
-            3.  **`lib` (유틸리티, 유효성 검사기)에 대한 단위 테스트 작성:**
+            2.  **`lib` (유틸리티, 유효성 검사기)에 대한 단위 테스트 작성:**
                 *   `apps/web/lib/utils/` 또는 `apps/web/lib/validators/`와 같은 디렉토리에 있는 순수 함수나 유틸리티 함수에 대한 단위 테스트를 작성합니다.
-            4.  **`hooks`에 대한 단위 테스트 작성:**
+            3.  **`hooks`에 대한 단위 테스트 작성:**
                 *   `apps/web/hooks/` 디렉토리에 있는 커스텀 훅에 대한 단위 테스트를 작성합니다.
-            5.  **`features`에 대한 통합 테스트 작성:**
+            4.  **`features`에 대한 통합 테스트 작성:**
                 *   `apps/web/features/` 디렉토리에 있는 복잡한 기능 간의 상호작용에 대한 통합 테스트를 작성합니다.
 
     - **E2E (End-to-End) 테스트**:

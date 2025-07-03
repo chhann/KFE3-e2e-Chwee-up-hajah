@@ -5,15 +5,8 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import Link from 'next/link';
 import React from 'react';
-
-interface LoginFormComponentProps {
-  email: string;
-  password: string;
-  error?: string | null;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { LoginFormComponentProps } from '../../../types/auth/login';
+import { LoginFormComponentStyles } from './styles';
 
 export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
   email,
@@ -24,7 +17,7 @@ export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
   onChangePassword,
 }) => {
   return (
-    <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
+    <form className={LoginFormComponentStyles.form} onSubmit={onSubmit}>
       <Input
         type="email"
         value={email}
@@ -41,9 +34,12 @@ export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
         required
         leftIcon="password"
       />
-      {error && <p className="mt-2 text-red-500">{error}</p>}
-      <div className="justify-between text-center text-sm text-gray-500">
-        <Link href="/reset_password" className="text-gray-500 hover:underline">
+
+      {/** 에러 메시지 */}
+      {error && <p className={LoginFormComponentStyles.error}>{error}</p>}
+
+      <div className={LoginFormComponentStyles.reset_password}>
+        <Link href="/reset_password" className={LoginFormComponentStyles.reset_password_link}>
           비밀번호를 잊으셨나요?
         </Link>
       </div>
