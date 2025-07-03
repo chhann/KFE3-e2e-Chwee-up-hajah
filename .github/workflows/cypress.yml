@@ -23,8 +23,10 @@ jobs:
           node-version: '20' # 프로젝트의 Node.js 버전에 맞게 조정
           cache: 'pnpm' # pnpm 캐시 사용 설정
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
       - name: Confirm pnpm installed
         run: pnpm --version
