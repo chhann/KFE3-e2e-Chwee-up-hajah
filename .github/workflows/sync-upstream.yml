@@ -1,0 +1,35 @@
+name: Sync from Upstream Main
+
+on:
+  workflow_dispatch:  # 수동 실행만 허용 (curl 또는 GitHub UI)
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream and fetch
+        run: |
+          git remote add upstream https://github.com/Kernel360/KFE3-e2e-Chwee-up-hajah.git
+          git fetch upstream
+
+      - name: Merge upstream/main into local main
+        run: |
+          git checkout main
+          git merge upstream/main --no-edit || echo "No changes to merge"
+
+      - name: Push changes
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} main
