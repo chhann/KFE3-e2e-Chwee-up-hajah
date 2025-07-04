@@ -29,11 +29,18 @@ export const ChatMessages = ({
   const { data } = useMessages(roomId);
   const { mutate: markAsRead } = useMessagesAsRead();
   const subscriptionRef = useRef<() => void | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   // 최초 fetch된 메시지 세팅
   useEffect(() => {
     if (data) setMessages(data);
   }, [data]);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' }); // 또는 'auto'로 즉시 이동
+    }
+  }, [messages]);
 
   // onMessageInsert 콜백
   const onMessageInsert = useCallback((msg: Message) => {
@@ -68,35 +75,58 @@ export const ChatMessages = ({
 
   // ✅ 구독은 메시지가 한번 로드된 이후 roomId에만 의존하여 실행 (단, 구독 중복 방지)
   useEffect(() => {
-    if (!data || data.length === 0 || subscriptionRef.current) return;
+    if (!data || data.length === 0) return;
 
-    console.log('[ChatMessages] subscribing to realtime only once');
+    let unsubscribe: (() => void) | null = null;
+    let isUnmounted = false;
 
-    subscriptionRef.current = subscribeToMessages({
-      roomId,
-      onMessageInsert: (msg) => {
-        console.log('[Realtime] INSERT received:', msg);
-        onMessageInsert(msg);
-      },
-      onMessageUpdate: (msg) => {
-        console.log('[Realtime] UPDATE received:', msg);
-        onMessageUpdate(msg);
-      },
-    });
+    const setupSubscription = async () => {
+      // 이전 구독이 있다면 제거 후 딜레이
+      if (subscriptionRef.current) {
+        subscriptionRef.current();
+        subscriptionRef.current = null;
 
-    // cleanup 등록하지 않음 (페이지 생명주기 유지 목적)
+        // 💡 WebSocket 안정적으로 닫힐 시간 확보
+        await new Promise((res) => setTimeout(res, 300));
+      }
+
+      if (isUnmounted) return;
+
+      console.log('[ChatMessages] subscribing to realtime');
+      unsubscribe = subscribeToMessages({
+        roomId,
+        onMessageInsert: (msg) => {
+          console.log('[Realtime] INSERT received:', msg);
+          onMessageInsert(msg);
+        },
+        onMessageUpdate: (msg) => {
+          console.log('[Realtime] UPDATE received:', msg);
+          onMessageUpdate(msg);
+        },
+      });
+
+      subscriptionRef.current = unsubscribe;
+    };
+
+    setupSubscription();
+
+    return () => {
+      isUnmounted = true;
+      console.log('[ChatMessages] unsubscribing from realtime');
+      unsubscribe?.();
+    };
   }, [roomId, onMessageInsert, onMessageUpdate, data]);
 
   // 읽음 처리
-  useEffect(() => {
-    const unreadIds = messages
-      .filter((m) => m.sender_id !== currentUserId && !m.is_read)
-      .map((m) => m.message_id);
+  // useEffect(() => {
+  //   const unreadIds = messages
+  //     .filter((m) => m.sender_id !== currentUserId && !m.is_read)
+  //     .map((m) => m.message_id);
 
-    if (unreadIds.length > 0) {
-      markAsRead(unreadIds);
-    }
-  }, [messages, currentUserId]);
+  //   if (unreadIds.length > 0) {
+  //     markAsRead(unreadIds);
+  //   }
+  // }, [messages, currentUserId]);
 
   return (
     <div className={containerStyles}>
@@ -155,6 +185,7 @@ export const ChatMessages = ({
           </div>
         );
       })}
+      <div ref={bottomRef} />
     </div>
   );
 };

@@ -3,6 +3,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import {
+  BannerContainerStyle,
+  BannerImageStyle,
+  BannerItemContainerStyle,
+} from './style/ImageBanner.styles';
 import './swiper-custom.css';
 import { Styles } from './styles/image-banner.styles';
 
@@ -10,15 +15,9 @@ interface ImageBannerProps {
   images: string[];
   height?: number | string;
   autoplay?: boolean;
-  marginBottom?: number | string;
 }
 
-export const ImageBanner = ({
-  images,
-  marginBottom,
-  autoplay = false,
-  height = 230,
-}: ImageBannerProps) => {
+export const ImageBanner = ({ images, autoplay = false, height = 230 }: ImageBannerProps) => {
   return (
     <Swiper
       style={{ height }}

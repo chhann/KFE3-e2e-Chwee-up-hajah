@@ -2,6 +2,13 @@
 
 import { forwardRef } from 'react';
 import { cn } from '../../../utils/cn'; // 클래스명 유틸리티 함수
+import {
+  AVATAR_SIZES,
+  avatarBasicStyle,
+  avatarBorderStyle,
+  avatarHoverStyle,
+  avatarImageStyle,
+} from './Avatar.styles';
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   src?: string; // 프로필 이미지 URL
@@ -12,28 +19,6 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 // 크기별 스타일 상수
-const AVATAR_SIZES = {
-  sm: {
-    container: 'size-6', // w-6 h-6 → size-6 (Tailwind v4)
-    pixels: 24,
-  },
-  md: {
-    container: 'size-8',
-    pixels: 32,
-  },
-  lg: {
-    container: 'size-11',
-    pixels: 44,
-  },
-  xl: {
-    container: 'size-12',
-    pixels: 48,
-  },
-  xxl: {
-    container: 'size-18',
-    pixels: 72,
-  },
-} as const;
 
 const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   ({ src, alt, size = 'md', name, onImageError, className, ...props }, ref) => {
@@ -51,13 +36,13 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         ref={ref}
         className={cn(
           // 기본 스타일
-          'relative inline-flex shrink-0 overflow-hidden rounded-full',
+          avatarBasicStyle,
           // 보더 스타일 (디자인 시스템 컬러 사용)
-          'border border-[var(--color-neutral-20)]',
+          avatarBorderStyle,
           // 크기
           sizeConfig.container,
           // 호버 효과 (상호작용 개선)
-          'transition-all duration-200 hover:border-[var(--color-primary-300)]',
+          avatarHoverStyle,
           className
         )}
         {...props}
@@ -67,7 +52,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
           alt={alt}
           width={sizeConfig.pixels}
           height={sizeConfig.pixels}
-          className="size-full object-cover"
+          className={avatarImageStyle}
           onError={onImageError}
           // 이미지 최적화 설정
           sizes={`${sizeConfig.pixels}px`}

@@ -1,4 +1,9 @@
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import {
+  locationInfoIconStyle,
+  locationInfoStyle,
+  locationInfoTextStyle,
+} from './LocationInfo.styles';
 
 interface LocationInfoProps {
   address: string;
@@ -6,9 +11,9 @@ interface LocationInfoProps {
 }
 const LocationInfo = ({ address, addressDetail }: LocationInfoProps) => {
   return (
-    <div className="flex items-center justify-start text-xs">
-      <FaMapMarkerAlt className="mr-1 size-4 text-pink-500" />
-      <div className="truncate">
+    <div className={locationInfoStyle}>
+      <FaMapMarkerAlt className={locationInfoIconStyle} />
+      <div className={locationInfoTextStyle}>
         {address}
         {addressDetail}
       </div>

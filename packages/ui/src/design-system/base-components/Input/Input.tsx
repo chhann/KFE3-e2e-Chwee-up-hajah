@@ -1,5 +1,18 @@
 import { useId, useState } from 'react';
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md';
+import { cn } from '../../../utils/cn';
+import {
+  errorMessageStyle,
+  inputButtonStyle,
+  inputIconStyle,
+  inputLabelStyle,
+  inputOutlineDisabledStyle,
+  inputOutlineErrorStyle,
+  inputOutlineStyle,
+  inputRequiredLabelStyle,
+  inputStyle,
+  messageBaseStyle,
+} from './Input.styles';
 
 export interface InputProps {
   label?: string;
@@ -38,10 +51,10 @@ export const Input = ({
 
   const renderLeftIcon = () => {
     if (leftIcon === 'email') {
-      return <MdEmail className="h-5 w-5 text-[var(--color-neutral-60)]" />;
+      return <MdEmail className={inputIconStyle} />;
     }
     if (leftIcon === 'password') {
-      return <MdLock className="h-5 w-5 text-[var(--color-neutral-60)]" />;
+      return <MdLock className={inputIconStyle} />;
     }
     return null;
   };
@@ -50,19 +63,20 @@ export const Input = ({
     <div className="w-full">
       {/* 라벨 */}
       {label && (
-        <label
-          htmlFor={inputId}
-          className="mb-2 block text-sm font-medium text-[var(--color-neutral-70)]"
-        >
+        <label htmlFor={inputId} className={inputLabelStyle}>
           {label}
-          {required && <span className="ml-1 text-[var(--color-red-500)]">*</span>}
+          {required && <span className={inputRequiredLabelStyle}>*</span>}
         </label>
       )}
 
       {/* 입력 필드 컨테이너 */}
       <div className="relative">
         <div
-          className={`flex items-center rounded-lg border px-3 py-2 ${error ? 'text-[var(--color-red-500)]' : 'text-[var(--color-neutral-30)]'} ${disabled ? 'bg-[var(--color-neutral-20)]' : 'bg-[var(--color-neutral-0)]'} focus-within:ring-1 ${error ? 'focus-within:ring-[var(--color-red-500)]' : 'focus-within:ring-[var(--color-primary-800)]'} ${error ? 'focus-within:text-[var(--color-red-500)]' : 'focus-within:text-[var(--color-primary-800)]'} `}
+          className={cn(
+            inputOutlineStyle,
+            error && inputOutlineErrorStyle,
+            disabled && inputOutlineDisabledStyle
+          )}
         >
           {/* 왼쪽 아이콘 */}
           {leftIcon && <div className="mr-3">{renderLeftIcon()}</div>}
@@ -76,7 +90,7 @@ export const Input = ({
             onChange={onChange}
             disabled={disabled}
             required={required}
-            className="flex-1 border-0 bg-transparent placeholder-[var(--color-neutral-80)] outline-none disabled:cursor-not-allowed"
+            className={inputStyle}
             {...props}
           />
 
@@ -85,24 +99,24 @@ export const Input = ({
             <button
               type="button"
               onClick={handleTogglePassword}
-              className="ml-3 text-[var(--color-neutral-60)] hover:text-[var(--color-neutral-80)]"
+              className={inputButtonStyle}
               disabled={disabled}
               aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
               {showPassword ? (
-                <MdVisibilityOff className="h-5 w-5" />
+                <MdVisibilityOff className={inputIconStyle} />
               ) : (
-                <MdVisibility className="h-5 w-5" />
+                <MdVisibility className={inputIconStyle} />
               )}
             </button>
           )}
         </div>
 
         {/* 에러 메시지 */}
-        {error && <p className="mt-1 text-sm text-[var(--color-red-500)]">{error}</p>}
+        {error && <p className={cn(messageBaseStyle, errorMessageStyle)}>{error}</p>}
 
-        {/* 상공 메시지 */}
-        {success && <p className="mt-1 text-sm text-[var(--color-green-500)]">{success}</p>}
+        {/* 성공 메시지 */}
+        {success && <p className={cn(messageBaseStyle)}>{success}</p>}
       </div>
     </div>
   );
