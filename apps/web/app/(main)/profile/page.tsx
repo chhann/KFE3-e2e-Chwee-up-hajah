@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation';
 
 import { Navigation, UserProfileCard } from '@/widgets/profile'; // UserProfileType import 추가
 
-import { LogoutButton } from '@/features/authentication/ui/LogoutButton';
 import { getProfile } from '@/features/profile/api/getProfile';
+import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 
 import { getCurrentUser } from '@/app/session';
 import { NavigationItem } from '@/types/profile';
