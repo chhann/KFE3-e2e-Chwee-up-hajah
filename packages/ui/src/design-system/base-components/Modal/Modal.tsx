@@ -1,6 +1,16 @@
 import { cn } from '@repo/ui/utils/cn';
-import { Button } from '../Button';
 import { IoMdClose } from 'react-icons/io';
+import { Button } from '../Button';
+import {
+  modalCloseButtonIconStyle,
+  modalCloseButtonStyle,
+  modalContainerStyle,
+  modalContentStyle,
+  modalFooterStyle,
+  modalHeaderStyle,
+  modalHeaderTextStyle,
+  modalStyle,
+} from './Modal.styles';
 
 interface Props {
   children: React.ReactNode;
@@ -10,11 +20,8 @@ interface Props {
 
 const Modal = ({ children, className, props }: Props) => {
   return (
-    <div
-      className={cn('fixed inset-0 z-50 flex items-center justify-center', className)}
-      {...props}
-    >
-      <div className="absolute inset-0 z-50 backdrop-blur-sm" />
+    <div className={cn(modalContainerStyle, className)} {...props}>
+      <div className={modalStyle} />
       {children}
     </div>
   );
@@ -22,7 +29,7 @@ const Modal = ({ children, className, props }: Props) => {
 
 const ModalContent = ({ children, className = '', props }: Props) => {
   return (
-    <div className={cn('relative z-50 overflow-y-auto rounded-[10px]', className)} {...props}>
+    <div className={cn(modalContentStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -36,8 +43,8 @@ interface ModalHeaderProps {
 
 const ModalHeader = ({ title, onClose, className }: ModalHeaderProps) => {
   return (
-    <header className={cn('mb-2 flex w-full items-center justify-between', className)}>
-      <h2 id="notification-title" className="text-lg font-semibold text-gray-900">
+    <header className={cn(modalHeaderStyle, className)}>
+      <h2 id="notification-title" className={modalHeaderTextStyle}>
         {title}
       </h2>
       <ModalCloseButton onClose={onClose} />
@@ -47,7 +54,7 @@ const ModalHeader = ({ title, onClose, className }: ModalHeaderProps) => {
 
 const ModalFooter = ({ children, className = '', props }: Props) => {
   return (
-    <div className={cn('flex', className)} {...props}>
+    <div className={cn(modalFooterStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -64,12 +71,12 @@ const ModalCloseButton = ({ onClose, className = '' }: ModalCloseButtonProps) =>
       variants="ghost"
       aria-label="알림창 닫기"
       size="thinMd"
-      className={cn('absolute right-2 top-2 px-1 py-1 hover:bg-gray-200', className)}
+      className={cn(modalCloseButtonStyle, className)}
       onClick={onClose}
     >
-      <IoMdClose className="size-5" />
+      <IoMdClose className={modalCloseButtonIconStyle} />
     </Button>
   );
 };
 
-export { Modal, ModalContent, ModalHeader, ModalCloseButton, ModalFooter };
+export { Modal, ModalCloseButton, ModalContent, ModalFooter, ModalHeader };

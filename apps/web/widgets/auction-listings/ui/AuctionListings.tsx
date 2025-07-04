@@ -2,6 +2,16 @@ import Link from 'next/link';
 
 import AuctionCard, { AuctionCardProps } from '@/features/auction/ui/AuctionCard';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import {
+  AuctionListCardStyle,
+  AuctionListingContainerStyle,
+  AuctionListingLabelStyle,
+  AuctionListStyle,
+  EmptyListAddHeaderTextStyle,
+  EmptyListAddTextStyle,
+  EmptyListContainerStyle,
+} from './styles/AuctionListings.styles';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
@@ -10,13 +20,13 @@ interface MockAuctionCardProps extends AuctionCardProps {
 
 export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
   return (
-    <section className="px-4 py-4">
-      <h2 className="sr-only">판매중인물품</h2>
+    <section className={AuctionListingContainerStyle}>
+      <h2 className={AuctionListingLabelStyle}>판매중인물품</h2>
 
       {/* 경매 아이템 목록 */}
-      <div className="space-y-4">
+      <div className={AuctionListStyle}>
         {listData.map((item) => (
-          <section key={item.id} className="relative">
+          <section key={item.id} className={AuctionListCardStyle}>
             <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
               <AuctionCard
                 key={item.id}
@@ -37,13 +47,13 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
 
       {/* 빈 상태 처리 */}
       {listData.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-16 text-center">
-          <h3 className="text-neutral-70 mb-2 text-lg font-medium">등록된 경매 상품이 없습니다</h3>
-          <p className="text-neutral-40 mb-6">첫 번째 경매 상품을 등록해보세요</p>
+        <div className={EmptyListContainerStyle}>
+          <h3 className={EmptyListAddHeaderTextStyle}>등록된 경매 상품이 없습니다</h3>
+          <p className={EmptyListAddTextStyle}>첫 번째 경매 상품을 등록해보세요</p>
           <Link href="/auction/auction-add">
-            <button className="cursor-pointer rounded-lg bg-[var(--color-primary-500)] px-6 py-2 font-medium text-white">
+            <Button variants="primary" size="md">
               상품 등록하기
-            </button>
+            </Button>
           </Link>
         </div>
       )}

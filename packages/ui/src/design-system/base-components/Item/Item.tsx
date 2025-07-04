@@ -1,4 +1,5 @@
 import { cn } from '@repo/ui/utils/cn';
+import { itemBadgeStyle, itemContentStyle, itemStyle, itemTitleStyle } from './Item.styles';
 
 interface Props {
   children: React.ReactNode;
@@ -8,10 +9,7 @@ interface Props {
 
 const Item = ({ className = '', children, ...props }: Props) => {
   return (
-    <div
-      className={cn('w-full space-y-1 rounded-[6px] bg-transparent px-2 py-2', className)}
-      {...props}
-    >
+    <div className={cn(itemStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -19,7 +17,7 @@ const Item = ({ className = '', children, ...props }: Props) => {
 
 const ItemBadge = ({ children, className = '', ...props }: Props) => {
   return (
-    <div className={cn('flex items-center text-sm', className)} {...props}>
+    <div className={cn(itemBadgeStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -27,7 +25,7 @@ const ItemBadge = ({ children, className = '', ...props }: Props) => {
 
 const ItemTitle = ({ className = '', children, ...props }: Props) => {
   return (
-    <div className={cn('text-base font-bold', className)} {...props}>
+    <div className={cn(itemTitleStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -35,7 +33,7 @@ const ItemTitle = ({ className = '', children, ...props }: Props) => {
 
 const ItemContent = ({ className = '', children, ...props }: Props) => {
   return (
-    <div className={cn('text-xs', className)} {...props}>
+    <div className={cn(itemContentStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -49,4 +47,4 @@ const ItemFooter = ({ className = '', children, ...props }: Props) => {
   );
 };
 
-export { Item, ItemBadge, ItemTitle, ItemContent, ItemFooter };
+export { Item, ItemBadge, ItemContent, ItemFooter, ItemTitle };
