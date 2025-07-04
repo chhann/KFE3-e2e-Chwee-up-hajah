@@ -35,7 +35,7 @@ export function useCreateAuction() {
         return;
       }
       // 성공 시 루트 페이지로 이동
-      router.push('/');
+      router.push('/main');
     },
     onError: (error) => {
       alert('전송 실패' + error.message);
