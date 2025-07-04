@@ -1,16 +1,6 @@
 'use client';
 
-const getToday = () => {
-  const today = new Date();
-  return today.toISOString().split('T')[0];
-};
-
-const addDays = (dateStr: string, days: number): string => {
-  const date = new Date(dateStr);
-  date.setDate(date.getDate() + days);
-  return date.toISOString().split('T')[0] as string;
-};
-
+import { getToday } from '@repo/ui/utils/getToday';
 interface AuctionDateSelectorProps {
   startDate: string;
   endDate: string;
@@ -24,6 +14,12 @@ export const AuctionDateSelector = ({
   setStartDate,
   setEndDate,
 }: AuctionDateSelectorProps) => {
+  const addDays = (dateStr: string, days: number): string => {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().split('T')[0] as string;
+  };
+
   const today = getToday();
   // baseDate는 항상 string이 되도록 보장
   const baseDate = startDate;
