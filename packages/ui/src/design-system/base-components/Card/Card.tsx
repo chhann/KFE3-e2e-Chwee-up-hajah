@@ -27,7 +27,7 @@ const Card = ({ imageSrc, badgeVariant, title, locationName, endTime }: CardProp
         </div>
         <div className="flex items-center justify-between">
           <LocationInfo address={locationName} />
-          <div className="text-neutral-70 flex items-center gap-1">
+          <div className="text-neutral-70 flex items-center gap-1 truncate">
             <FaRegClock />
             {leftTime}
           </div>
