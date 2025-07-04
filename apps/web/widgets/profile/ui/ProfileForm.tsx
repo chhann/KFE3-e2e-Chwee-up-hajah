@@ -13,6 +13,8 @@ import { useUpdateProfile } from '@/hooks/profile/useUpdateProfile';
 import { getCacheBustingUrl } from '@/lib/utils/avatar';
 import { ProfileFormType, UserProfileType } from '@/types/profile';
 
+import { profileFormStyles as styles } from '../styles/profileForm.styles';
+
 export const ProfileForm = ({ user }: { user: UserProfileType }) => {
   // 1. 초기 상태는 user.avatar의 순수한 URL로 설정.
   // 이 값이 서버에서 렌더링되어 HTML에 포함.
@@ -52,20 +54,23 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
   const updateProfileMutation = useUpdateProfile();
 
   return (
-    <main className="text-neutral-70" role="main">
-      <h1 className="mb-3 text-base font-semibold">내 정보 수정</h1>
+    <main className={styles.main} role="main">
+      <h1 className={styles.title}>내 정보 수정</h1>
+
       <ProfileAvatarUpload
         username={user.username}
         avatarUrl={avatarPreviewUrl}
         onFileSelect={handleFileSelect}
       />
+
       <form
         onSubmit={(e) =>
           handleSubmit(e, user, enteredValues, selectedFile, setFieldErrors, updateProfileMutation)
         }
       >
-        <section className="mt-4 flex w-full max-w-md flex-col gap-4">
-          <div className="flex flex-col">
+        <section className={styles.formSection}>
+          {/* 닉네임 필드 */}
+          <div className={styles.fieldGroup}>
             <Input
               label="닉네임"
               placeholder={user.username}
@@ -75,15 +80,17 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
               }
             />
             {fieldErrors?.username && (
-              <div className="my-1 ml-1 text-xs text-red-500">
-                {fieldErrors.username._errors[0]}
-              </div>
+              <div className={styles.errorMessage}>{fieldErrors.username._errors[0]}</div>
             )}
           </div>
-          <div className="flex flex-col">
+
+          {/* 이메일 필드 */}
+          <div className={styles.fieldGroup}>
             <Input label="이메일" value={user.email} disabled />
           </div>
-          <div className="flex flex-col">
+
+          {/* 주소 필드 */}
+          <div className={styles.fieldGroup}>
             <Input
               label="주소"
               value={enteredValues.address}
@@ -92,10 +99,12 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
               }
             />
             {fieldErrors?.address && (
-              <div className="my-1 ml-1 text-xs text-red-500">{fieldErrors.address._errors[0]}</div>
+              <div className={styles.errorMessage}>{fieldErrors.address._errors[0]}</div>
             )}
           </div>
-          <div className="flex flex-col">
+
+          {/* 상세주소 필드 */}
+          <div className={styles.fieldGroup}>
             <Input
               label="상세주소"
               value={enteredValues.addressDetail}
@@ -104,6 +113,8 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
               }
             />
           </div>
+
+          {/* 제출 버튼 */}
           <Button variants="primary" type="submit" disabled={updateProfileMutation.isPending}>
             {updateProfileMutation.isPending ? '제출 중...' : '정보 변경'}
           </Button>

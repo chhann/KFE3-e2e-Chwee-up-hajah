@@ -7,12 +7,7 @@ import {
   AuctionDateSelectorLabelStyle,
   AuctionStartDateSelectorContainerStyle,
 } from './styles/AuctionDateSelector.styles';
-interface AuctionDateSelectorProps {
-  startDate: string;
-  endDate: string;
-  setStartDate: (date: string) => void;
-  setEndDate: (date: string) => void;
-}
+
 
 export const AuctionDateSelector = ({
   startDate,

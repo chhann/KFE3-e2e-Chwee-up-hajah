@@ -1,5 +1,7 @@
 import { Item, ItemContent, ItemFooter } from '@repo/ui/design-system/base-components/Item/index';
 
+import { chargeHistoryListStyles as styles } from '../styles/chargeHistory.styles';
+
 export const ChargeHistoryList = () => {
   const items = [
     {
@@ -29,26 +31,24 @@ export const ChargeHistoryList = () => {
       </h2>
 
       {items.length === 0 ? (
-        <p className="py-8 text-center text-gray-500">충전 내역이 없습니다.</p>
+        <p className={styles.emptyMessage}>충전 내역이 없습니다.</p>
       ) : (
-        <ul role="list" className="space-y-[30px]">
+        <ul role="list" className={styles.listContainer}>
           {items.map((item) => (
-            <li
-              key={item.id}
-              className="rounded-[6px] bg-white shadow-[5px_5px_16px_0px_rgba(0,0,0,0.1)]"
-              role="listitem"
-            >
+            <li key={item.id} className={styles.listItem} role="listitem">
               <h2 className="sr-only">충전 내역</h2>
-              <Item className="text-neutral-80 px-3 py-4">
+              <Item className={styles.item.wrapper}>
                 <ItemContent>
-                  <time dateTime={item.date.replace(/\//g, '-')}>{item.date}</time>
-                  <p className="text-base font-semibold">
+                  <time dateTime={item.date.replace(/\//g, '-')} className={styles.item.date}>
+                    {item.date}
+                  </time>
+                  <p className={styles.item.price}>
                     <span className="sr-only">충전 금액: </span>
                     {item.price.toLocaleString()}원
                   </p>
                 </ItemContent>
                 <ItemFooter>
-                  <p className="text-xs">
+                  <p className={styles.item.paymentInfo}>
                     <span className="sr-only">결제 수단: </span>
                     결제정보: {item.paymentInfo}
                   </p>
