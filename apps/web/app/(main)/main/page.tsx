@@ -8,11 +8,13 @@ import { SectionHeader } from '@/widgets/product-section-header';
 
 import { useProductList } from '@/hooks/product-list/useProductList';
 import { categories } from '@/mock/auction';
+import { useRouter } from 'next/navigation';
 import { Styles } from './styles/main.styles';
 
 const Page = () => {
   const { data: popularProducts, isLoading: isPopularLoading } = useProductList('popular');
   const { data: latestProducts, isLoading: isLatestLoading } = useProductList('latest');
+  const router = useRouter();
 
   return (
     <div className={Styles.container}>
@@ -21,12 +23,11 @@ const Page = () => {
         images={['/mock-image/images.jpg', '/mock-image/images (1).jpg']}
         height={172}
         autoplay={true}
-        marginBottom={10}
       />
       {/* 카테고리 */}
       <Category categories={categories} className={Styles.category} />
       {/* 인기순 상품 리스트 */}
-      <SectionHeader title="인기순" onClickMore={() => console.log('작동함')} />
+      <SectionHeader title="인기순" onClickMore={() => router.push(`/auction/auction-list`)} />
       <ProductSection
         products={popularProducts}
         isLoading={isPopularLoading}
@@ -43,7 +44,7 @@ const Page = () => {
       {/* 최신순 상품 리스트 */}
       <SectionHeader
         title="최신순"
-        onClickMore={() => console.log('작동함')}
+        onClickMore={() => router.push(`/auction/auction-list`)}
         className={Styles.latestSectionHeader}
       />
       <ProductSection
