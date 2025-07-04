@@ -4,7 +4,7 @@ import { FaUser } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import { IoIosAddCircleOutline, IoMdHome } from 'react-icons/io';
 import { IoChatboxEllipses } from 'react-icons/io5';
-
+import { footerStyles as styles } from '../styles/footer.styles';
 interface NavigationItem {
   label: string;
   href: string;
@@ -21,18 +21,15 @@ export const Footer = () => {
   ];
 
   return (
-    <footer className="h-20">
-      <ul className="text-neutral-70 flex size-full items-center justify-between px-6 py-4">
+    <footer className={styles.footer}>
+      <ul className={styles.navList}>
         {items.map((item) => {
           const Icon = item.icon;
           return (
             <li key={item.label}>
-              <Link
-                href={item.href}
-                className="flex flex-col items-center text-sm transition-colors hover:text-[var(--color-primary-500)]"
-              >
-                <Icon className="mb-[6px] size-6" />
-                {item.label}
+              <Link href={item.href} className={styles.navLink}>
+                <Icon className={styles.icon} />
+                <span className={styles.label}>{item.label}</span>
               </Link>
             </li>
           );
