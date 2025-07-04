@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { Navigation, UserProfileCard } from '@/widgets/profile'; // UserProfileType import 추가
 
 import { getProfile } from '@/features/profile/api/getProfile';
+import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 
 import { getCurrentUser } from '@/app/session';
 import { NavigationItem } from '@/types/profile';
@@ -44,6 +45,12 @@ const Page = async () => {
           내 경매 현황
         </h2>
         <Navigation title="경매 현황 메뉴" items={auctionItems} />
+      </section>
+      <section className="mb-7" aria-labelledby="account-settings-title">
+        <h2 id="account-settings-title" className="mb-3 text-base font-semibold">
+          계정 설정
+        </h2>
+        <LogoutButton />
       </section>
     </main>
   );
