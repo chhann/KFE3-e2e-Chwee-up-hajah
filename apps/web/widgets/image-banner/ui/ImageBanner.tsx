@@ -9,6 +9,7 @@ import {
   BannerItemContainerStyle,
 } from './style/ImageBanner.styles';
 import './swiper-custom.css';
+import { Styles } from './styles/image-banner.styles';
 
 interface ImageBannerProps {
   images: string[];
@@ -26,12 +27,12 @@ export const ImageBanner = ({ images, autoplay = false, height = 230 }: ImageBan
       pagination={{ clickable: true }}
       autoplay={autoplay ? { delay: 3000, disableOnInteraction: false } : false}
       modules={[Navigation, Pagination, Autoplay]}
-      className={BannerContainerStyle}
+      className={Styles.swiperContainer}
     >
       {images.map((image) => (
         <SwiperSlide key={image}>
-          <div className={BannerItemContainerStyle}>
-            <img src={image} alt={image} className={BannerImageStyle} />
+          <div className={Styles.slideContainer}>
+            <img src={image} alt={image} className={Styles.image} />
           </div>
         </SwiperSlide>
       ))}
