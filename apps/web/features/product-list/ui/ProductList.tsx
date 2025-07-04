@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Product } from '@/widgets/product-section/types';
 
 import { ProductCard } from './ProductCard';
+import { Styles } from './styles/product-list.styles';
 
 interface ProductListProps {
   items: Product[];
@@ -15,16 +16,16 @@ interface ProductListProps {
 export const ProductList = ({ items, direction }: ProductListProps) => {
   if (direction === 'horizontal') {
     return (
-      <div className="w-full">
+      <div className={Styles.horizontalContainer}>
         <Swiper
           slidesPerView={3}
           spaceBetween={0}
           slidesOffsetAfter={0}
           loop={(items?.length ?? 0) > 3}
-          className="shadow-[5px_5px_10px_rgba(0,0,0,0.08)]"
+          className={Styles.swiper}
         >
           {items.map((item) => (
-            <SwiperSlide key={item.id} className="h-[211px]">
+            <SwiperSlide key={item.id} className={Styles.swiperSlide}>
               <ProductCard item={item} layout="horizontal" />
             </SwiperSlide>
           ))}
@@ -34,15 +35,15 @@ export const ProductList = ({ items, direction }: ProductListProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className={Styles.verticalContainer}>
       {items.length > 0 ? (
         items.map((item) => (
-          <div key={item.id} className="w-full">
+          <div key={item.id} className={Styles.verticalItem}>
             <ProductCard item={item} />
           </div>
         ))
       ) : (
-        <p>No products available.</p>
+        <p className={Styles.noProducts}>No products available.</p>
       )}
     </div>
   );

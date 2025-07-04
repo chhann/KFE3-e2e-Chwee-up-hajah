@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+  SelectBoxContainer,
+  SelectBoxStyle,
+  SelectIconStyle,
+  SelectLabelStyle,
+} from './Select.styles';
 
 export interface SelectProps {
   label?: string;
@@ -13,22 +19,14 @@ const Select = ({ label, value, onChange, options, id = 'custom-select' }: Selec
     <div>
       {/*라벨*/}
       {label && (
-        <label
-          htmlFor={id}
-          className="mb-2 block text-sm font-medium text-[var(--color-neutral-70)]"
-        >
+        <label htmlFor={id} className={SelectLabelStyle}>
           {label}
         </label>
       )}
 
-      <div className="relative">
-        {/*커스텀 셀렉트 박스*/}
-        <select
-          className={`w-full flex-1 appearance-none rounded-lg border border-[var(--color-neutral-30)] bg-[var(--color-neutral-0)] px-3 py-2 text-[var(--color-neutral-80)] placeholder-[var(--color-neutral-80)] outline-none focus:text-[var(--color-primary-800)] focus:ring-1 focus:ring-[var(--color-primary-800)]`}
-          id={id}
-          value={value}
-          onChange={onChange}
-        >
+      {/*커스텀 셀렉트 박스*/}
+      <div className={SelectBoxContainer}>
+        <select className={SelectBoxStyle} id={id} value={value} onChange={onChange}>
           <option value="" disabled hidden></option>
           {options.map((option) => (
             <option key={option} value={option}>
@@ -38,7 +36,7 @@ const Select = ({ label, value, onChange, options, id = 'custom-select' }: Selec
         </select>
         {/* 커스텀 화살표 아이콘 */}
         <svg
-          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-neutral-60)]"
+          className={SelectIconStyle}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"

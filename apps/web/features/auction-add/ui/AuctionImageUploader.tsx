@@ -7,6 +7,15 @@ import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 import { useAuctionImage } from '@/hooks/useAuctionImage';
 
 import { handleImageChange } from '../model/handlers';
+import {
+  AuctionImageUploaderContainerStyle,
+  DelateButtonStyle,
+  ImagePreviewContainerStyle,
+  ImagePreviewStyle,
+  ImageStyle,
+  ImageUploaderIconStyle,
+  ImageUploaderStyle,
+} from './styles/AuctionImageUploader.styles';
 
 interface AuctionImageUploaderProps {
   images: string[];
@@ -29,12 +38,9 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
   };
 
   return (
-    <div className="mb-1 flex items-start gap-2">
-      <div
-        className="w-30 h-30 border-neutral-40 flex shrink-0 cursor-pointer items-center justify-center rounded-md border"
-        onClick={handleImageClick}
-      >
-        <IoIosAddCircleOutline className="text-neutral-40" />
+    <div className={AuctionImageUploaderContainerStyle}>
+      <div className={ImageUploaderStyle} onClick={handleImageClick}>
+        <IoIosAddCircleOutline className={ImageUploaderIconStyle} />
         <input
           ref={fileInputRef}
           type="file"
@@ -46,16 +52,13 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
         />
       </div>
       {/* 미리보기 썸네일 */}
-      <div className="flex max-w-[210px] flex-nowrap gap-2 overflow-x-auto">
+      <div className={ImagePreviewContainerStyle}>
         {images.map((url, idx) => (
-          <div
-            key={idx}
-            className="w-30 h-30 border-neutral-40 relative shrink-0 overflow-hidden rounded border"
-          >
-            <img src={url} alt="미리보기" className="h-full w-full object-cover" />
+          <div key={idx} className={ImagePreviewStyle}>
+            <img src={url} alt="미리보기" className={ImageStyle} />
             <button
               type="button"
-              className="absolute right-0 top-0"
+              className={DelateButtonStyle}
               onClick={() => handleRemoveImage(idx)}
               tabIndex={-1}
             >
