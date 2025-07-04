@@ -9,18 +9,27 @@ interface UpdateProfileParams {
 }
 
 export const updateProfile = async (params: UpdateProfileParams): Promise<UserProfileType> => {
-  const response = await fetch('/api/profile/update', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
+  try {
+    const response = await fetch('/api/profile/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Failed to update profile');
+    if (!response.ok) {
+      throw new Error(`Failed to update profile: ${response.status} ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error: unknown) {
+    console.error('[updateProfile] Error:', error);
+
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error('Unknown error occurred while updating profile');
   }
-
-  return response.json();
 };
