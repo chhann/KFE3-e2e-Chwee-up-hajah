@@ -1,6 +1,7 @@
 'use client';
 
 import { FaLocationDot } from 'react-icons/fa6';
+import { Styles } from './styles/section-header.styles';
 
 interface SectionHeaderProps {
   title: string;
@@ -16,20 +17,20 @@ export const SectionHeader = ({
   className = '', // 기본값 빈 문자열
 }: SectionHeaderProps) => {
   return (
-    <div className={`mb-[5px] flex w-full items-center justify-between px-1 ${className}`}>
-      <div className="flex items-center gap-1">
+    <div className={Styles.container(className)}>
+      <div className={Styles.titleContainer}>
         {/* 제목 */}
-        <span className="text-neutral-70 text-sm">{title}</span>
+        <span className={Styles.title}>{title}</span>
         {/* 장소 지도위 헤더에만 */}
         {location && (
-          <div className="flex items-center gap-[2px]">
-            <FaLocationDot className="mt-[1px] text-xs text-pink-500" />
-            <span className="text-xs text-neutral-500">{location}</span>
+          <div className={Styles.locationContainer}>
+            <FaLocationDot className={Styles.locationIcon} />
+            <span className={Styles.locationText}>{location}</span>
           </div>
         )}
       </div>
       {/* 더보기 네비게이션 */}
-      <button onClick={onClickMore} className="text-neutral-70 cursor-pointer text-sm">
+      <button onClick={onClickMore} className={Styles.moreButton}>
         더보기
       </button>
     </div>
