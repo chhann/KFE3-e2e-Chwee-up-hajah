@@ -1,6 +1,16 @@
 // apps/web/features/authentication/model/types.ts
 
 /**
+ * 로그인 요청 데이터 인터페이스
+ */
+export interface LoginRequest {
+  /** 이메일 주소 */
+  email: string;
+  /** 비밀번호 */
+  password: string;
+}
+
+/**
  * 회원가입 데이터 인터페이스
  */
 export interface SignupData {
