@@ -9,10 +9,10 @@ import { ZodFormattedError } from 'zod';
 import { handleInputChange, handleSubmit } from '@/features/profile/model/handlers';
 import { ProfileAvatarUpload } from '@/features/profile/ui/ProfileAvatarUpload';
 
-import { useUpdateProfile } from '@/hooks/profile/useUpdateProfile';
 import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
 import { ProfileFormType, UserProfileType } from '@/shared/types/profile';
 
+import { useUpdateProfile } from '@/shared/api/client/profile/useUpdateProfile';
 import { profileFormStyles as styles } from '../styles/profileForm.styles';
 
 export const ProfileForm = ({ user }: { user: UserProfileType }) => {

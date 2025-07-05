@@ -1,4 +1,4 @@
-export const uploadAvatarToStorage = async (id: string, file: File): Promise<string> => {
+export const postAvatarToStorage = async (id: string, file: File): Promise<string> => {
   try {
     const formData = new FormData();
     formData.append('userId', id);

@@ -8,7 +8,7 @@ interface UpdateProfileParams {
   avatarUrl?: string;
 }
 
-export const updateProfile = async (params: UpdateProfileParams): Promise<UserProfileType> => {
+export const postProfile = async (params: UpdateProfileParams): Promise<UserProfileType> => {
   try {
     const response = await fetch('/api/profile/update', {
       method: 'POST',

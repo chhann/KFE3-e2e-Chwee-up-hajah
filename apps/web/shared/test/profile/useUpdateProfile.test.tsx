@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { updateProfile } from '../../features/profile/api/updateProfile';
-import { useUpdateProfile } from './useUpdateProfile';
+import { useUpdateProfile } from '../../hooks/profile/useUpdateProfile';
 
 // Mock next/navigation
 const mockPush = vi.fn();
