@@ -6,9 +6,8 @@ import { Category } from '@repo/ui/design-system/base-components/Category/index'
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
 import { AuctionListings } from '@/widgets/auction-listings';
-
-import { useAuctionList } from '@/hooks/useAuctionList';
-import { categories } from '@/mock/auction';
+import { useAuctionList } from '@/shared/hooks/useAuctionList';
+import { categories } from '@/shared/mock/auction';
 
 const Page = () => {
   const locationName = '서울시 강남구';
@@ -19,7 +18,7 @@ const Page = () => {
   const mappedList = (auctionList || []).map((item) => ({
     id: item.auction_id,
     bidStartPrice: item.start_price,
-    bidCurrentPrice: item.current_price,  
+    bidCurrentPrice: item.current_price,
     bidCount: item.bid_count,
     status: item.status,
     imageSrc: item.thumbnail,

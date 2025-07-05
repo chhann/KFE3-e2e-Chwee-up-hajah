@@ -18,7 +18,7 @@ import { ErrorMessage } from '@/features/auction-add/ui/ErrorMessage';
 import { ProductDescriptionInput } from '@/features/auction-add/ui/ProductDescriptionInput';
 
 import { useAuctionAddForm } from '@/features/auction-add/model/useAuctionAddForm';
-import { categories } from '@/mock/auction';
+import { categories } from '@/shared/mock/auction';
 
 const Page = () => {
   const {

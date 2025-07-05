@@ -4,10 +4,9 @@ import React, { useRef } from 'react';
 
 import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 
-import { useAuctionImage } from '@/hooks/useAuctionImage';
-
 import { handleImageChange } from '../model/handlers';
 import { auctionImageUploaderStyle } from './styles/AuctionImageUploader.styles';
+import { useAuctionImage } from '@/shared/hooks/useAuctionImage';
 
 interface AuctionImageUploaderProps {
   images: string[];

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { fetchAuctionList } from '../api/server/auction/fetchAuctionList';
 
 type AuctionItem = {
   auction_id: string;
@@ -27,11 +28,7 @@ type AuctionItem = {
 export const useAuctionList = () => {
   return useQuery<AuctionItem[]>({
     queryKey: ['auction-list'],
-    queryFn: async () => {
-      const res = await fetch('/api/auction/list');
-      if (!res.ok) throw new Error('경매 목록을 불러오지 못했습니다');
-      return res.json();
-    },
+    queryFn: fetchAuctionList,
     staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
   });
 };

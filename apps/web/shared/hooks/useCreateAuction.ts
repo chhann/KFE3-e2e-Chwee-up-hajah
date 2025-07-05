@@ -1,28 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-
-interface CreateAuctionPayload {
-  name: string;
-  category: string;
-  description: string;
-  start_price: number;
-  start_time: string;
-  end_time: string;
-  thumbnail: string;
-  images: string[];
-}
+import { postAuctionAdd } from '../api/server/auction/postAuctionAdd';
+import { CreateAuctionPayload } from '../types/auction';
 
 export function useCreateAuction() {
   const router = useRouter();
   return useMutation({
-    mutationFn: (payload: CreateAuctionPayload) =>
-      fetch('/api/auction/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }),
+    mutationFn: (payload: CreateAuctionPayload) => postAuctionAdd(payload),
     onSuccess: async (res: Response) => {
       if (!res.ok) {
         let errJson;
