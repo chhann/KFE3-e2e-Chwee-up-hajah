@@ -5,7 +5,7 @@ import { AuctionBidHistoryCard } from '@/features/auction/ui/AuctionBidHistoryCa
 
 import { Bid } from '@/types/db';
 import { cn } from '@repo/ui/utils/cn';
-import { auctionDescriptionCardStyle } from './style/AuctionDescriptionCard.styles';
+import { auctionDescriptionCardStyle } from './styles/AuctionDescriptionCard.styles';
 
 export const AuctionDescriptionCard = ({
   bids,

@@ -3,7 +3,7 @@
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { auctionDetailCardStyle } from './style/AuctionDetailCard.styles';
+import { auctionDetailCardStyle } from './styles/AuctionDetailCard.styles';
 
 interface AuctionDetailCardProps {
   currentBidCost: number;

@@ -2,7 +2,7 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Card, CardProps } from '@repo/ui/design-system/base-components/Card/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 import { IoPersonOutline } from 'react-icons/io5';
-import { autionCardStyle } from './style/AuctionCard.styles';
+import { autionCardStyle } from './styles/AuctionCard.styles';
 
 export interface AuctionCardProps extends CardProps {
   badgeVariant?: 'best' | 'urgent' | null;

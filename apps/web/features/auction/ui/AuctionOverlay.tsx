@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 import { IoMdClose } from 'react-icons/io';
-import { overlayStyle } from './style/AuctionOverlay';
+import { overlayStyle } from './styles/AuctionOverlay';
 
 export const AuctionOverlay = ({
   overlayText,

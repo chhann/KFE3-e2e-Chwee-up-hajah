@@ -1,7 +1,7 @@
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 
 import { Bid } from '@/types/db';
-import { auctionBidHistoryStyle } from './style/AuctionBidHistoryCard.styles';
+import { auctionBidHistoryStyle } from './styles/AuctionBidHistoryCard.styles';
 
 export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
   const dateObj = new Date(bid.bid_time);
