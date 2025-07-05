@@ -1,19 +1,24 @@
-// hooks/useLogin.ts
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
+import { useLoginMutation } from './mutations/useLoginMutation';
 import { useAuthStore } from '../stores/auth';
 
 export const useLogin = () => {
-  const router = useRouter();
-  const { login, error } = useAuthStore();
-
-  // 이메일과 비밀번호 상태
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { mutate: login, isPending, error: mutationError, isError } = useLoginMutation();
+  const { error: authError, setError: setAuthError } = useAuthStore();
 
-  // input 상태 변경 핸들러
+  useEffect(() => {
+    // mutation 훅에서 발생한 에러를 zustand 스토어에 반영
+    if (isError && mutationError) {
+      setAuthError(mutationError.message);
+    } else {
+      setAuthError(null);
+    }
+  }, [isError, mutationError, setAuthError]);
+
   const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }, []);
@@ -22,30 +27,26 @@ export const useLogin = () => {
     setPassword(e.target.value);
   }, []);
 
-  // 로그인 요청
   const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      await login(email, password); // zustand의 login 호출
-
-      // 상태에서 isAuthenticated 검사 후 대시보드 이동
-      const { isAuthenticated } = useAuthStore.getState();
-      if (isAuthenticated) {
-        router.push('/main');
-      }
+      // 이메일, 비밀번호로 로그인 뮤테이션 실행
+      login({ email, password });
     },
-    [email, password, login, router]
+    [email, password, login]
   );
 
   const resetFields = useCallback(() => {
     setEmail('');
     setPassword('');
-  }, []);
+    setAuthError(null);
+  }, [setAuthError]);
 
   return {
     email,
     password,
-    error,
+    error: authError, // UI에 표시될 에러
+    isPending, // 로딩 상태
     onChangeEmail,
     onChangePassword,
     onSubmit,
