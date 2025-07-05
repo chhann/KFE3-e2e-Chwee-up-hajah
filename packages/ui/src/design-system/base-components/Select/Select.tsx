@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  SelectBoxContainer,
-  SelectBoxStyle,
-  SelectIconStyle,
-  SelectLabelStyle,
-} from './Select.styles';
+import { selectStyle } from './Select.styles';
 
 export interface SelectProps {
   label?: string;
@@ -19,14 +14,14 @@ const Select = ({ label, value, onChange, options, id = 'custom-select' }: Selec
     <div>
       {/*라벨*/}
       {label && (
-        <label htmlFor={id} className={SelectLabelStyle}>
+        <label htmlFor={id} className={selectStyle.selectLabelStyle}>
           {label}
         </label>
       )}
 
       {/*커스텀 셀렉트 박스*/}
-      <div className={SelectBoxContainer}>
-        <select className={SelectBoxStyle} id={id} value={value} onChange={onChange}>
+      <div className={selectStyle.selectBoxContainer}>
+        <select className={selectStyle.selectBoxStyle} id={id} value={value} onChange={onChange}>
           <option value="" disabled hidden></option>
           {options.map((option) => (
             <option key={option} value={option}>
@@ -36,7 +31,7 @@ const Select = ({ label, value, onChange, options, id = 'custom-select' }: Selec
         </select>
         {/* 커스텀 화살표 아이콘 */}
         <svg
-          className={SelectIconStyle}
+          className={selectStyle.selectIconStyle}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"

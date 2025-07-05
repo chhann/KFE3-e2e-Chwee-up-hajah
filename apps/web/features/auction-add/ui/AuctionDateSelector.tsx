@@ -1,12 +1,7 @@
 'use client';
 
 import { getToday } from '@repo/ui/utils/getToday';
-import {
-  AuctionDateSelectorContainerStyle,
-  AuctionDateSelectorInputStyle,
-  AuctionDateSelectorLabelStyle,
-  AuctionStartDateSelectorContainerStyle,
-} from './styles/AuctionDateSelector.styles';
+import { auctionDateSelectorStyle } from './styles/AuctionDateSelector.styles';
 interface AuctionDateSelectorProps {
   startDate: string;
   endDate: string;
@@ -33,9 +28,11 @@ export const AuctionDateSelector = ({
   const maxEndDate = addDays(baseDate, 5);
 
   return (
-    <div className={AuctionDateSelectorContainerStyle}>
-      <div className={AuctionStartDateSelectorContainerStyle}>
-        <label className={AuctionDateSelectorLabelStyle}>경매 시작일</label>
+    <div className={auctionDateSelectorStyle.auctionDateSelectorContainerStyle}>
+      <div className={auctionDateSelectorStyle.auctionStartDateSelectorContainerStyle}>
+        <label className={auctionDateSelectorStyle.auctionDateSelectorLabelStyle}>
+          경매 시작일
+        </label>
         <input
           type="date"
           min={today}
@@ -49,11 +46,13 @@ export const AuctionDateSelector = ({
               setEndDate(addDays(newStart, 5));
             }
           }}
-          className={AuctionDateSelectorInputStyle}
+          className={auctionDateSelectorStyle.auctionDateSelectorInputStyle}
         />
       </div>
-      <div className={AuctionStartDateSelectorContainerStyle}>
-        <label className={AuctionDateSelectorLabelStyle}>경매 종료일</label>
+      <div className={auctionDateSelectorStyle.auctionStartDateSelectorContainerStyle}>
+        <label className={auctionDateSelectorStyle.auctionDateSelectorLabelStyle}>
+          경매 종료일
+        </label>
         <input
           type="date"
           min={minEndDate}
@@ -62,7 +61,7 @@ export const AuctionDateSelector = ({
           onChange={(e) => {
             setEndDate(e.target.value);
           }}
-          className={AuctionDateSelectorInputStyle}
+          className={auctionDateSelectorStyle.auctionDateSelectorInputStyle}
         />
       </div>
     </div>

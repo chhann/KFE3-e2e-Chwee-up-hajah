@@ -3,13 +3,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {
-  BannerContainerStyle,
-  BannerImageStyle,
-  BannerItemContainerStyle,
-} from './style/ImageBanner.styles';
-import './swiper-custom.css';
 import { Styles } from './styles/image-banner.styles';
+import './swiper-custom.css';
 
 interface ImageBannerProps {
   images: string[];

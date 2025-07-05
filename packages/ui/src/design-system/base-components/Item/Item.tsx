@@ -1,5 +1,5 @@
 import { cn } from '@repo/ui/utils/cn';
-import { itemBadgeStyle, itemContentStyle, itemStyle, itemTitleStyle } from './Item.styles';
+import { itemStyle } from './Item.styles';
 
 interface Props {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ interface Props {
 
 const Item = ({ className = '', children, ...props }: Props) => {
   return (
-    <div className={cn(itemStyle, className)} {...props}>
+    <div className={cn(itemStyle.itemBasickStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -17,7 +17,7 @@ const Item = ({ className = '', children, ...props }: Props) => {
 
 const ItemBadge = ({ children, className = '', ...props }: Props) => {
   return (
-    <div className={cn(itemBadgeStyle, className)} {...props}>
+    <div className={cn(itemStyle.itemBadgeStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -25,7 +25,7 @@ const ItemBadge = ({ children, className = '', ...props }: Props) => {
 
 const ItemTitle = ({ className = '', children, ...props }: Props) => {
   return (
-    <div className={cn(itemTitleStyle, className)} {...props}>
+    <div className={cn(itemStyle.itemTitleStyle, className)} {...props}>
       {children}
     </div>
   );
@@ -33,7 +33,7 @@ const ItemTitle = ({ className = '', children, ...props }: Props) => {
 
 const ItemContent = ({ className = '', children, ...props }: Props) => {
   return (
-    <div className={cn(itemContentStyle, className)} {...props}>
+    <div className={cn(itemStyle.itemContentStyle, className)} {...props}>
       {children}
     </div>
   );

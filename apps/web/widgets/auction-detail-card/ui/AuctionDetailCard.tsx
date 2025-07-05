@@ -3,17 +3,7 @@
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import {
-  auctionDetailCardBidButtonStyle,
-  auctionDetailCardBidControlStyle,
-  auctionDetailCardContainerStyle,
-  auctionDetailCardCurrentPriceLabelStyle,
-  auctionDetailCardCurrentPriceStyle,
-  auctionDetailCardHeaderStyle,
-  auctionDetailCardInfoStyle,
-  auctionDetailCardRemainingTimeStyle,
-  auctionDetailCardStartPriceStyle,
-} from './style/AuctionDetailCard.styles';
+import { auctionDetailCardStyle } from './styles/AuctionDetailCard.styles';
 
 interface AuctionDetailCardProps {
   currentBidCost: number;
@@ -41,16 +31,22 @@ export const AuctionDetailCard = ({
   onClick,
 }: AuctionDetailCardProps) => {
   return (
-    <section className={auctionDetailCardContainerStyle}>
-      <div className={auctionDetailCardHeaderStyle}>
-        <p className={auctionDetailCardCurrentPriceLabelStyle}>현재 입찰가</p>
-        <p className={auctionDetailCardCurrentPriceStyle}>{formatPriceNumber(currentBidCost)}원</p>
-        <p className={auctionDetailCardStartPriceStyle}>
+    <section className={auctionDetailCardStyle.auctionDetailCardContainerStyle}>
+      <div className={auctionDetailCardStyle.auctionDetailCardHeaderStyle}>
+        <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceLabelStyle}>
+          현재 입찰가
+        </p>
+        <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceStyle}>
+          {formatPriceNumber(currentBidCost)}원
+        </p>
+        <p className={auctionDetailCardStyle.auctionDetailCardStartPriceStyle}>
           시작가 {formatPriceNumber(startBidCost)}원
         </p>
-        <p className={auctionDetailCardRemainingTimeStyle}>남은 시간 : {remainingTime}</p>
+        <p className={auctionDetailCardStyle.auctionDetailCardRemainingTimeStyle}>
+          남은 시간 : {remainingTime}
+        </p>
       </div>
-      <div className={auctionDetailCardBidControlStyle}>
+      <div className={auctionDetailCardStyle.auctionDetailCardBidControlStyle}>
         <Button variants="outline" onClick={onMinus} disabled={!isProgressing}>
           <FaMinus />
         </Button>
@@ -59,14 +55,14 @@ export const AuctionDetailCard = ({
           <FaPlus />
         </Button>
       </div>
-      <div className={auctionDetailCardInfoStyle}>
+      <div className={auctionDetailCardStyle.auctionDetailCardInfoStyle}>
         <p>최소입찰가 : {formatPriceNumber(minBidCost)}원</p>
         <p>입찰 단위 : {formatPriceNumber(bidUnit)}원</p>
       </div>
       <Button
         variants="primary"
         size="thinLg"
-        className={auctionDetailCardBidButtonStyle}
+        className={auctionDetailCardStyle.auctionDetailCardBidButtonStyle}
         onClick={onClick}
         disabled={!isProgressing}
       >

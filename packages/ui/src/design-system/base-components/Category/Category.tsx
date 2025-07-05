@@ -3,12 +3,7 @@ import 'swiper/css';
 
 import { MdLocationPin } from 'react-icons/md';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {
-  CategoryIconStyle,
-  CategoryImageStyle,
-  CategoryItemStyle,
-  CategoryItemTextStyle,
-} from './Category.Styles';
+import { categoryStyle } from './Category.Styles';
 
 export interface CategoryProps {
   categories: { title: string }[];
@@ -28,11 +23,14 @@ export default function Category({ categories, className, onCategoryClick }: Cat
       >
         {categories.map((item, i) => (
           <SwiperSlide key={i}>
-            <div className={CategoryItemStyle} onClick={() => onCategoryClick?.(item.title)}>
-              <div className={CategoryImageStyle}>
-                <MdLocationPin className={CategoryIconStyle} />
+            <div
+              className={categoryStyle.categoryItemStyle}
+              onClick={() => onCategoryClick?.(item.title)}
+            >
+              <div className={categoryStyle.categoryImageStyle}>
+                <MdLocationPin className={categoryStyle.categoryIconStyle} />
               </div>
-              <span className={CategoryItemTextStyle}>{item.title}</span>
+              <span className={categoryStyle.categoryItemTextStyle}>{item.title}</span>
             </div>
           </SwiperSlide>
         ))}

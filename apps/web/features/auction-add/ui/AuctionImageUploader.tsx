@@ -7,15 +7,7 @@ import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 import { useAuctionImage } from '@/hooks/useAuctionImage';
 
 import { handleImageChange } from '../model/handlers';
-import {
-  AuctionImageUploaderContainerStyle,
-  DelateButtonStyle,
-  ImagePreviewContainerStyle,
-  ImagePreviewStyle,
-  ImageStyle,
-  ImageUploaderIconStyle,
-  ImageUploaderStyle,
-} from './styles/AuctionImageUploader.styles';
+import { auctionImageUploaderStyle } from './styles/AuctionImageUploader.styles';
 
 interface AuctionImageUploaderProps {
   images: string[];
@@ -38,9 +30,9 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
   };
 
   return (
-    <div className={AuctionImageUploaderContainerStyle}>
-      <div className={ImageUploaderStyle} onClick={handleImageClick}>
-        <IoIosAddCircleOutline className={ImageUploaderIconStyle} />
+    <div className={auctionImageUploaderStyle.auctionImageUploaderContainerStyle}>
+      <div className={auctionImageUploaderStyle.imageUploaderStyle} onClick={handleImageClick}>
+        <IoIosAddCircleOutline className={auctionImageUploaderStyle.imageUploaderIconStyle} />
         <input
           ref={fileInputRef}
           type="file"
@@ -52,13 +44,13 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
         />
       </div>
       {/* 미리보기 썸네일 */}
-      <div className={ImagePreviewContainerStyle}>
+      <div className={auctionImageUploaderStyle.imagePreviewContainerStyle}>
         {images.map((url, idx) => (
-          <div key={idx} className={ImagePreviewStyle}>
-            <img src={url} alt="미리보기" className={ImageStyle} />
+          <div key={idx} className={auctionImageUploaderStyle.imagePreviewStyle}>
+            <img src={url} alt="미리보기" className={auctionImageUploaderStyle.imageStyle} />
             <button
               type="button"
-              className={DelateButtonStyle}
+              className={auctionImageUploaderStyle.delateButtonStyle}
               onClick={() => handleRemoveImage(idx)}
               tabIndex={-1}
             >
