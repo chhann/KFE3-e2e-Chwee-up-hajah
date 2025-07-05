@@ -2,15 +2,7 @@ import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
 import { AuctionDetail } from '@/types/db';
-import {
-  auctionSellerProfileAvatarStyle,
-  auctionSellerProfileContainerStyle,
-  auctionSellerProfileHeaderStyle,
-  auctionSellerProfileInfoGrowStyle,
-  auctionSellerProfileInfoHeaderStyle,
-  auctionSellerProfileInfoRowStyle,
-  auctionSellerProfileScoreStyle,
-} from './style/AuctionSellerProfile.styles';
+import { auctionSellerProfileStyle } from './style/AuctionSellerProfile.styles';
 
 interface AuctionSellerProfileProps {
   user: AuctionDetail['seller'];
@@ -18,21 +10,23 @@ interface AuctionSellerProfileProps {
 
 export const AuctionSellerProfile = ({ user }: AuctionSellerProfileProps) => {
   return (
-    <section className={auctionSellerProfileContainerStyle}>
+    <section className={auctionSellerProfileStyle.auctionSellerProfileContainerStyle}>
       <h1 id="profile-header-title">판매자 정보</h1>
-      <div className={auctionSellerProfileInfoRowStyle}>
+      <div className={auctionSellerProfileStyle.auctionSellerProfileInfoRowStyle}>
         <Avatar
-          className={auctionSellerProfileAvatarStyle}
+          className={auctionSellerProfileStyle.auctionSellerProfileAvatarStyle}
           src={user.avatar}
           alt={`${user.username} 프로필 이미지`}
           name={user.username || '사용자'}
           size="lg"
         />
-        <div className={auctionSellerProfileInfoGrowStyle}>
-          <header className={auctionSellerProfileInfoHeaderStyle}>
-            <h3 className={auctionSellerProfileHeaderStyle}>{user.username}</h3>
+        <div className={auctionSellerProfileStyle.auctionSellerProfileInfoGrowStyle}>
+          <header className={auctionSellerProfileStyle.auctionSellerProfileInfoHeaderStyle}>
+            <h3 className={auctionSellerProfileStyle.auctionSellerProfileHeaderStyle}>
+              {user.username}
+            </h3>
           </header>
-          <div className={auctionSellerProfileScoreStyle}>
+          <div className={auctionSellerProfileStyle.auctionSellerProfileScoreStyle}>
             온도 {user.score} · 판매 {user.selling_auction?.length || 0}
           </div>
 

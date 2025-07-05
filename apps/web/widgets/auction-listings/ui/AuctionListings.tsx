@@ -3,15 +3,7 @@ import Link from 'next/link';
 import AuctionCard, { AuctionCardProps } from '@/features/auction/ui/AuctionCard';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import {
-  AuctionListCardStyle,
-  AuctionListingContainerStyle,
-  AuctionListingLabelStyle,
-  AuctionListStyle,
-  EmptyListAddHeaderTextStyle,
-  EmptyListAddTextStyle,
-  EmptyListContainerStyle,
-} from './styles/AuctionListings.styles';
+import { auctionListStyle } from './styles/AuctionListings.styles';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
@@ -20,13 +12,13 @@ interface MockAuctionCardProps extends AuctionCardProps {
 
 export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
   return (
-    <section className={AuctionListingContainerStyle}>
-      <h2 className={AuctionListingLabelStyle}>판매중인물품</h2>
+    <section className={auctionListStyle.auctionListingContainerStyle}>
+      <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
 
       {/* 경매 아이템 목록 */}
-      <div className={AuctionListStyle}>
+      <div className={auctionListStyle.auctionListBasickStyle}>
         {listData.map((item) => (
-          <section key={item.id} className={AuctionListCardStyle}>
+          <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
             <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
               <AuctionCard
                 key={item.id}
@@ -47,9 +39,11 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
 
       {/* 빈 상태 처리 */}
       {listData.length === 0 && (
-        <div className={EmptyListContainerStyle}>
-          <h3 className={EmptyListAddHeaderTextStyle}>등록된 경매 상품이 없습니다</h3>
-          <p className={EmptyListAddTextStyle}>첫 번째 경매 상품을 등록해보세요</p>
+        <div className={auctionListStyle.emptyListContainerStyle}>
+          <h3 className={auctionListStyle.emptyListAddHeaderTextStyle}>
+            등록된 경매 상품이 없습니다
+          </h3>
+          <p className={auctionListStyle.emptyListAddTextStyle}>첫 번째 경매 상품을 등록해보세요</p>
           <Link href="/auction/auction-add">
             <Button variants="primary" size="md">
               상품 등록하기

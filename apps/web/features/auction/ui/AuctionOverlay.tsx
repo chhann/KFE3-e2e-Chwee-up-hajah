@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 import { IoMdClose } from 'react-icons/io';
-import { CloseIconStyle, OverlayContainerStyle, OverlayTextStyle } from './style/AuctionOverlay';
+import { overlayStyle } from './style/AuctionOverlay';
 
 export const AuctionOverlay = ({
   overlayText,
@@ -17,7 +17,7 @@ export const AuctionOverlay = ({
 
   return (
     <div
-      className={OverlayContainerStyle}
+      className={overlayStyle.overlayContainerStyle}
       style={{ pointerEvents: isCanClose ? 'auto' : 'none' }}
       onClick={isCanClose ? () => setVisible(false) : undefined}
       onTouchStart={isCanClose ? () => setVisible(false) : undefined}
@@ -25,14 +25,14 @@ export const AuctionOverlay = ({
       {/* 닫기 버튼 */}
       {isCanClose && (
         <IoMdClose
-          className={CloseIconStyle}
+          className={overlayStyle.closeIconStyle}
           onClick={(e) => {
             e.stopPropagation();
             setVisible(false);
           }}
         />
       )}
-      <div className={OverlayTextStyle}>
+      <div className={overlayStyle.overlayTextStyle}>
         <p>{overlayText}</p>
       </div>
     </div>

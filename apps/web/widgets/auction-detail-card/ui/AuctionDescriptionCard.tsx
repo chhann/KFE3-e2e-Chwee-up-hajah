@@ -5,14 +5,7 @@ import { AuctionBidHistoryCard } from '@/features/auction/ui/AuctionBidHistoryCa
 
 import { Bid } from '@/types/db';
 import { cn } from '@repo/ui/utils/cn';
-import {
-  auctionDescriptionCardContainerStyle,
-  auctionDescriptionCardDescriptionStyle,
-  auctionDescriptionCardNoBidStyle,
-  auctionDescriptionCardTabActiveStyle,
-  auctionDescriptionCardTabListStyle,
-  auctionDescriptionCardTabStyle,
-} from './style/AuctionDescriptionCard.styles';
+import { auctionDescriptionCardStyle } from './style/AuctionDescriptionCard.styles';
 
 export const AuctionDescriptionCard = ({
   bids,
@@ -28,13 +21,14 @@ export const AuctionDescriptionCard = ({
   );
 
   return (
-    <div className={auctionDescriptionCardContainerStyle}>
-      <div className={auctionDescriptionCardTabListStyle}>
+    <div className={auctionDescriptionCardStyle.auctionDescriptionCardContainerStyle}>
+      <div className={auctionDescriptionCardStyle.auctionDescriptionCardTabListStyle}>
         <div
           onClick={() => setTab('description')}
           className={cn(
-            auctionDescriptionCardTabStyle,
-            tab === 'description' && auctionDescriptionCardTabActiveStyle
+            auctionDescriptionCardStyle.auctionDescriptionCardTabStyle,
+            tab === 'description' &&
+              auctionDescriptionCardStyle.auctionDescriptionCardTabActiveStyle
           )}
         >
           상품설명
@@ -42,8 +36,8 @@ export const AuctionDescriptionCard = ({
         <div
           onClick={() => setTab('bids')}
           className={cn(
-            auctionDescriptionCardTabStyle,
-            tab === 'bis' && auctionDescriptionCardTabActiveStyle
+            auctionDescriptionCardStyle.auctionDescriptionCardTabStyle,
+            tab === 'bis' && auctionDescriptionCardStyle.auctionDescriptionCardTabActiveStyle
           )}
         >
           입찰기록
@@ -51,11 +45,13 @@ export const AuctionDescriptionCard = ({
       </div>
 
       {tab === 'description' ? (
-        <div className={auctionDescriptionCardDescriptionStyle}>{description}</div>
+        <div className={auctionDescriptionCardStyle.auctionDescriptionCardDescriptionStyle}>
+          {description}
+        </div>
       ) : (
         <div>
           {sortedBids.length === 0 ? (
-            <div className={auctionDescriptionCardNoBidStyle}>
+            <div className={auctionDescriptionCardStyle.auctionDescriptionCardNoBidStyle}>
               아직 입찰자가 없습니다.
               <br />
               첫번째 입찰자가 되어보세요!

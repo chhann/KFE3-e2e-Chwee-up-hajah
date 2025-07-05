@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  ProductDescriptionLabelStyle,
-  ProductDescriptionTextareaStyle,
-} from './styles/ProductDescriptionInput.styles';
+import { productDescriptionStyle } from './styles/ProductDescriptionInput.styles';
 
 interface ProductDescriptionInputProps {
   value: string;
@@ -11,13 +8,16 @@ interface ProductDescriptionInputProps {
 
 export const ProductDescriptionInput = ({ value, onChange }: ProductDescriptionInputProps) => (
   <div>
-    <label htmlFor="auctionDescription" className={ProductDescriptionLabelStyle}>
+    <label
+      htmlFor="auctionDescription"
+      className={productDescriptionStyle.productDescriptionLabelStyle}
+    >
       상품 정보
     </label>
     <textarea
       name="auctionDescription"
       id="auctionDescription"
-      className={ProductDescriptionTextareaStyle}
+      className={productDescriptionStyle.productDescriptionTextareaStyle}
       value={value}
       onChange={onChange}
     />
