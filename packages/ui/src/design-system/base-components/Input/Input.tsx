@@ -1,18 +1,7 @@
 import { useId, useState } from 'react';
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { cn } from '../../../utils/cn';
-import {
-  errorMessageStyle,
-  inputButtonStyle,
-  inputIconStyle,
-  inputLabelStyle,
-  inputOutlineDisabledStyle,
-  inputOutlineErrorStyle,
-  inputOutlineStyle,
-  inputRequiredLabelStyle,
-  inputStyle,
-  messageBaseStyle,
-} from './Input.styles';
+import { inputStyle } from './Input.styles';
 
 export interface InputProps {
   label?: string;
@@ -51,10 +40,10 @@ export const Input = ({
 
   const renderLeftIcon = () => {
     if (leftIcon === 'email') {
-      return <MdEmail className={inputIconStyle} />;
+      return <MdEmail className={inputStyle.inputIconStyle} />;
     }
     if (leftIcon === 'password') {
-      return <MdLock className={inputIconStyle} />;
+      return <MdLock className={inputStyle.inputIconStyle} />;
     }
     return null;
   };
@@ -63,9 +52,9 @@ export const Input = ({
     <div className="w-full">
       {/* 라벨 */}
       {label && (
-        <label htmlFor={inputId} className={inputLabelStyle}>
+        <label htmlFor={inputId} className={inputStyle.inputLabelStyle}>
           {label}
-          {required && <span className={inputRequiredLabelStyle}>*</span>}
+          {required && <span className={inputStyle.inputRequiredLabelStyle}>*</span>}
         </label>
       )}
 
@@ -73,9 +62,9 @@ export const Input = ({
       <div className="relative">
         <div
           className={cn(
-            inputOutlineStyle,
-            error && inputOutlineErrorStyle,
-            disabled && inputOutlineDisabledStyle
+            inputStyle.inputOutlineStyle,
+            error && inputStyle.inputOutlineErrorStyle,
+            disabled && inputStyle.inputOutlineDisabledStyle
           )}
         >
           {/* 왼쪽 아이콘 */}
@@ -90,7 +79,7 @@ export const Input = ({
             onChange={onChange}
             disabled={disabled}
             required={required}
-            className={inputStyle}
+            className={inputStyle.inputBasickStyle}
             {...props}
           />
 
@@ -99,24 +88,26 @@ export const Input = ({
             <button
               type="button"
               onClick={handleTogglePassword}
-              className={inputButtonStyle}
+              className={inputStyle.inputButtonStyle}
               disabled={disabled}
               aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
               {showPassword ? (
-                <MdVisibilityOff className={inputIconStyle} />
+                <MdVisibilityOff className={inputStyle.inputIconStyle} />
               ) : (
-                <MdVisibility className={inputIconStyle} />
+                <MdVisibility className={inputStyle.inputIconStyle} />
               )}
             </button>
           )}
         </div>
 
         {/* 에러 메시지 */}
-        {error && <p className={cn(messageBaseStyle, errorMessageStyle)}>{error}</p>}
+        {error && (
+          <p className={cn(inputStyle.messageBaseStyle, inputStyle.errorMessageStyle)}>{error}</p>
+        )}
 
         {/* 성공 메시지 */}
-        {success && <p className={cn(messageBaseStyle)}>{success}</p>}
+        {success && <p className={cn(inputStyle.messageBaseStyle)}>{success}</p>}
       </div>
     </div>
   );

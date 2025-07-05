@@ -20,8 +20,9 @@ export const AVATAR_SIZES = {
     pixels: 72,
   },
 } as const;
-export const avatarBasicStyle = 'relative inline-flex shrink-0 overflow-hidden rounded-full';
-export const avatarBorderStyle = 'border border-[var(--color-neutral-20)]';
-export const avatarHoverStyle =
-  'transition-all duration-200 hover:border-[var(--color-primary-300)]';
-export const avatarImageStyle = 'size-full object-cover';
+export const avatarStyle = {
+  avatarBasicStyle: 'relative inline-flex shrink-0 overflow-hidden rounded-full',
+  avatarBorderStyle: 'border border-[var(--color-neutral-20)]',
+  avatarHoverStyle: 'transition-all duration-200 hover:border-[var(--color-primary-300)]',
+  avatarImageStyle: 'size-full object-cover',
+};

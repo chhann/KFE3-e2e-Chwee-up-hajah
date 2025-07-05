@@ -1,5 +1,5 @@
 import { cn } from '../../../utils/cn';
-import { badgeStyle, variantClasses } from './Badge.styles';
+import { badgeStyle } from './Badge.styles';
 
 export interface BadgeProps {
   children: React.ReactNode;
@@ -9,7 +9,10 @@ export interface BadgeProps {
 
 const Badge = ({ children, variant, className = '', ...props }: BadgeProps) => {
   return (
-    <span className={cn(badgeStyle, variantClasses[variant], className)} {...props}>
+    <span
+      className={cn(badgeStyle.basickBadgeStyle, badgeStyle.variantClasses[variant], className)}
+      {...props}
+    >
       {children}
     </span>
   );
