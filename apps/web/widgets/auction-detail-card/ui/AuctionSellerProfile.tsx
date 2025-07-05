@@ -1,7 +1,7 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
-import { AuctionDetail } from '@/types/db';
+import { AuctionDetail } from '@/shared/types/db';
 import { auctionSellerProfileStyle } from './styles/AuctionSellerProfile.styles';
 
 interface AuctionSellerProfileProps {

@@ -2,7 +2,7 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Modal, ModalContent } from '@repo/ui/design-system/base-components/Modal/index';
 
 import { ModalFooter } from '../../../../../packages/ui/src/design-system/base-components/Modal/Modal';
-import { useModalStore } from '../../../stores/modal';
+import { useModalStore } from '../../../shared/stores/modal';
 
 import { locationPermissionModalStyles as styles } from '../styles/locationPermissionModal';
 

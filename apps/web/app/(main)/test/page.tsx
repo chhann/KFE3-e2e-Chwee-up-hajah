@@ -1,6 +1,6 @@
 'use client';
 
-import { supabase } from '../../../lib/supabase/supabase';
+import { supabase } from '../../../shared/lib/supabase/supabase';
 
 // 낙찰이 되어서 buyer과 seller 의 각각의 유저 id의 정보로 chat rooms 테이블 생성
 const test = () => {
@@ -14,7 +14,7 @@ const test = () => {
         seller_nickname: '철수',
         buyer_id: 'be5cf2a9-63d5-4a89-afd0-86d304fe4154', // ✅ 예시 유저 영희
         buyer_nickname: '영희',
-        is_push_on: false
+        is_push_on: false,
       })
       .select('room_id')
       .single();

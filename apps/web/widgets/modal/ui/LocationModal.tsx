@@ -12,7 +12,7 @@ import {
 } from '@repo/ui/design-system/base-components/Modal/index';
 import { IoShieldCheckmarkSharp } from 'react-icons/io5';
 
-import { useModalStore } from '../../../stores/modal';
+import { useModalStore } from '../../../shared/stores/modal';
 
 import { locationModalStyles as styles } from '../styles/locationModal.styles';
 

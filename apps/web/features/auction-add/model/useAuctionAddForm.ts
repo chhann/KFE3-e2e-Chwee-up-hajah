@@ -1,6 +1,6 @@
 import { useCreateAuction } from '@/hooks/useCreateAuction';
-import { auctionAddSchema } from '@/lib/validators/auctionAddSchema';
-import { useAuthStore } from '@/stores/auth';
+import { auctionAddSchema } from '@/shared/lib/validators/auctionAddSchema';
+import { useAuthStore } from '@/shared/stores/auth';
 import { getToday } from '@repo/ui/utils/getToday';
 import { useState } from 'react';
 

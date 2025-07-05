@@ -15,8 +15,8 @@ import {
 import { IoAlertCircleOutline } from 'react-icons/io5';
 import { RiAuctionLine } from 'react-icons/ri';
 
-import { NotificationSection } from '@/types/modal';
-import { useModalStore } from '../../../stores/modal';
+import { NotificationSection } from '@/shared/types/modal';
+import { useModalStore } from '../../../shared/stores/modal';
 
 import { notificationModalStyles as styles } from '../styles/notificationModal.styles';
 

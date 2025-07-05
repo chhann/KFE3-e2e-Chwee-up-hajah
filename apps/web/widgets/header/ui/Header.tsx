@@ -4,7 +4,7 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { usePathname, useRouter } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
 
-import { useModalStore } from '../../../stores/modal';
+import { useModalStore } from '../../../shared/stores/modal';
 
 import { headerStyles as styles } from '../styles/header.styles';
 

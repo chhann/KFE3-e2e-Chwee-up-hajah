@@ -4,8 +4,8 @@ import type { ZodFormattedError } from 'zod';
 
 import { uploadAvatarToStorage } from '../api/uploadAvatar';
 
-import { profileSchema } from '@/lib/validators/profileSchema';
-import { ProfileFormType, UserProfileType } from '@/types/profile';
+import { profileSchema } from '@/shared/lib/validators/profileSchema';
+import { ProfileFormType, UserProfileType } from '@/shared/types/profile';
 
 export function handleInputChange(
   identifier: string,

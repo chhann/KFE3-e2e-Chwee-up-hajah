@@ -6,7 +6,7 @@ import { getProfile } from '@/features/profile/api/getProfile';
 import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 
 import { getCurrentUser } from '@/app/session';
-import { NavigationItem } from '@/types/profile';
+import { NavigationItem } from '@/shared/types/profile';
 
 const pointItems: NavigationItem[] = [
   { label: '충전내역', href: '/profile/charge-history' },

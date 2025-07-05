@@ -1,7 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { ProfileAvatarUpload } from './ProfileAvatarUpload';
+import { supabase } from '@/shared/lib/supabase/supabase';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import { supabase } from '@/lib/supabase/supabase';
+import { ProfileAvatarUpload } from './ProfileAvatarUpload';
 
 // Mock Supabase
 vi.mock('@/lib/supabase/supabase', () => ({
@@ -25,7 +25,9 @@ describe('ProfileAvatarUpload', () => {
 
   it('calls setAvatarUrl when a file is successfully uploaded', async () => {
     const mockSetAvatarUrl = vi.fn();
-    render(<ProfileAvatarUpload id="test-id" username="testuser" setAvatarUrl={mockSetAvatarUrl} />);
+    render(
+      <ProfileAvatarUpload id="test-id" username="testuser" setAvatarUrl={mockSetAvatarUrl} />
+    );
 
     const file = new File(['(binary data)'], 'new-avatar.png', { type: 'image/png' });
     const fileInput = screen.getByTestId('file-input');
@@ -33,17 +35,19 @@ describe('ProfileAvatarUpload', () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
 
     await waitFor(() => {
-      expect(mockSetAvatarUrl).toHaveBeenCalledWith(expect.stringContaining('/path/to/new-avatar.png'));
+      expect(mockSetAvatarUrl).toHaveBeenCalledWith(
+        expect.stringContaining('/path/to/new-avatar.png')
+      );
     });
   });
 
   it('logs an error message on upload failure', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     (supabase.storage.from as vi.Mock).mockReturnValueOnce({
-        remove: vi.fn().mockResolvedValue({}),
-        upload: vi.fn().mockResolvedValue({ data: null, error: new Error('Upload failed') }),
-        getPublicUrl: vi.fn(),
-      });
+      remove: vi.fn().mockResolvedValue({}),
+      upload: vi.fn().mockResolvedValue({ data: null, error: new Error('Upload failed') }),
+      getPublicUrl: vi.fn(),
+    });
 
     render(<ProfileAvatarUpload id="test-id" username="testuser" setAvatarUrl={vi.fn()} />);
 
@@ -53,10 +57,10 @@ describe('ProfileAvatarUpload', () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
 
     await waitFor(() => {
-        // We expect the error to be thrown, which is handled inside the component.
-        // The test passes if the component doesn't crash and the error is logged.
+      // We expect the error to be thrown, which is handled inside the component.
+      // The test passes if the component doesn't crash and the error is logged.
     });
-    
+
     // Restore the original console.error
     consoleErrorSpy.mockRestore();
   });

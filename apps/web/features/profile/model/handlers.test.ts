@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { profileSchema } from '@/shared/lib/validators/profileSchema';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { handleInputChange, handleSubmit } from './handlers';
-import { profileSchema } from '@/lib/validators/profileSchema';
 
 // Mock profileSchema
 vi.mock('@/lib/validators/profileSchema', () => ({

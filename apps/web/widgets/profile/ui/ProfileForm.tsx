@@ -10,8 +10,8 @@ import { handleInputChange, handleSubmit } from '@/features/profile/model/handle
 import { ProfileAvatarUpload } from '@/features/profile/ui/ProfileAvatarUpload';
 
 import { useUpdateProfile } from '@/hooks/profile/useUpdateProfile';
-import { getCacheBustingUrl } from '@/lib/utils/avatar';
-import { ProfileFormType, UserProfileType } from '@/types/profile';
+import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
+import { ProfileFormType, UserProfileType } from '@/shared/types/profile';
 
 import { profileFormStyles as styles } from '../styles/profileForm.styles';
 

@@ -1,5 +1,6 @@
 'use client';
-import { useLogout } from '@/hooks/useLogout';
+
+import { useLogout } from '@/shared/hooks/useLogout';
 import { logoutButtonStyles } from './styles';
 
 export const LogoutButton = () => {

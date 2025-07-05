@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/supabase';
+import { supabase } from '@/shared/lib/supabase/supabase';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { updateProfile } from './updateProfile';
 

@@ -1,4 +1,4 @@
-import { UserProfileType } from '@/types/profile';
+import { UserProfileType } from '@/shared/types/profile';
 
 interface UpdateProfileParams {
   id: string;

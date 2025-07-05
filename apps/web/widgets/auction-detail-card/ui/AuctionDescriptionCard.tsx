@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { AuctionBidHistoryCard } from '@/features/auction/ui/AuctionBidHistoryCard';
 
-import { Bid } from '@/types/db';
+import { Bid } from '@/shared/types/db';
 import { cn } from '@repo/ui/utils/cn';
 import { auctionDescriptionCardStyle } from './styles/AuctionDescriptionCard.styles';
 

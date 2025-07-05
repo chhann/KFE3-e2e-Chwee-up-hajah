@@ -1,6 +1,6 @@
 'use client';
 
-import { useLogin } from '../../../hooks/useLogin';
+import { useLogin } from '../../../shared/hooks/useLogin';
 import { LoginFormComponent } from '../../../widgets/authentication/LoginFormComponent';
 import { SignUpLinkComponent } from '../../../widgets/authentication/SignUpLinkComponent';
 import { SocialLoginSection } from '../../../widgets/authentication/SocialLoginSection';

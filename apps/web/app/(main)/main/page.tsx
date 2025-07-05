@@ -6,8 +6,8 @@ import { ImageBanner } from '@/widgets/image-banner';
 import { ProductSection } from '@/widgets/product-section';
 import { SectionHeader } from '@/widgets/product-section-header';
 
-import { useProductList } from '@/hooks/product-list/useProductList';
-import { categories } from '@/mock/auction';
+import { useProductList } from '@/shared/api/client/product/useProductList';
+import { categories } from '@/shared/mock/auction';
 import { useRouter } from 'next/navigation';
 import { Styles } from './styles/main.styles';
 
