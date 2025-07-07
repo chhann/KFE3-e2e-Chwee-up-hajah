@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { MutateOptions } from '@tanstack/react-query';
 
-import { AuctionBidParams, AuctionBidResponse } from '@/hooks/useAuctionBid';
+import { AuctionBidParams, AuctionBidResponse } from '@/shared/types/auction';
 import { AuctionDetail } from '@/shared/types/db';
 
 export function useSendBid(

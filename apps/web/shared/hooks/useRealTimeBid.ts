@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-import { Bid } from '../types/db';
+import { fetchBidderName } from '../api/server/auction/fetchBidderName';
 import { supabase } from '../lib/supabase/supabase';
+import { Bid } from '../types/db';
 
 export function useRealtimeBids(auctionId: string | undefined, onNewBid: (bid: Bid) => void) {
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
@@ -9,22 +10,6 @@ export function useRealtimeBids(auctionId: string | undefined, onNewBid: (bid: B
 
   useEffect(() => {
     if (!auctionId) return;
-
-    const fetchUser = async (bidder_id: string) => {
-      if (bidderCache.current.has(bidder_id)) {
-        return bidderCache.current.get(bidder_id);
-      }
-      try {
-        const res = await fetch(`/api/auction/bidder-name?bidderId=${bidder_id}`);
-        if (!res.ok) return undefined;
-        const { username } = await res.json();
-        const user = { username };
-        bidderCache.current.set(bidder_id, user);
-        return user;
-      } catch {
-        return undefined;
-      }
-    };
 
     interface PostgresChangesPayload {
       new: Bid;
@@ -35,7 +20,7 @@ export function useRealtimeBids(auctionId: string | undefined, onNewBid: (bid: B
       const bid = payload.new as Bid;
       if (bid?.auction_id !== auctionId) return;
 
-      const user = bid.bidder_id ? await fetchUser(bid.bidder_id) : undefined;
+      const user = bid.bidder_id ? await fetchBidderName(bidderCache, bid.bidder_id) : undefined;
 
       onNewBid({ ...bid, user });
     };
