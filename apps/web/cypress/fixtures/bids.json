@@ -1,0 +1,18 @@
+[
+  {
+    "bid_id": "bid1",
+    "auction_id": "auction123",
+    "bidder_id": "user456",
+    "user": { "username": "user456_name" },
+    "bid_price": 100,
+    "bid_time": "2025-07-07T10:00:00Z"
+  },
+  {
+    "bid_id": "bid2",
+    "auction_id": "auction123",
+    "bidder_id": "user789",
+    "user": { "username": "user789_name" },
+    "bid_price": 120,
+    "bid_time": "2025-07-07T10:05:00Z"
+  }
+]
