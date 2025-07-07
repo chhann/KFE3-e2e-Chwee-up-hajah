@@ -1,15 +1,12 @@
+'use client';
+
+import { AuctionCardProps } from '@/shared/types/auction';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import { Card, CardProps } from '@repo/ui/design-system/base-components/Card/index';
+import { Card } from '@repo/ui/design-system/base-components/Card/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 import { IoPersonOutline } from 'react-icons/io5';
-import { autionCardStyle } from './styles/AuctionCard.styles';
+import { auctionCardStyle } from './styles/AuctionCard.styles';
 
-export interface AuctionCardProps extends CardProps {
-  badgeVariant?: 'best' | 'urgent' | null;
-  bidStartPrice: number;
-  bidCurrentPrice: number;
-  bidCount: number;
-}
 const AuctionCard = ({
   title,
   locationName,
@@ -23,7 +20,7 @@ const AuctionCard = ({
   const startPrice = formatPriceNumber(bidStartPrice);
   const currentPrice = formatPriceNumber(bidCurrentPrice);
   return (
-    <div className={autionCardStyle.auctionCardContainerStyle}>
+    <div className={auctionCardStyle.auctionCardContainerStyle}>
       <Card
         imageSrc={imageSrc}
         badgeVariant={badgeVariant}
@@ -32,25 +29,27 @@ const AuctionCard = ({
         endTime={endTime}
       />
       {/* 제목 및 입찰 내용 */}
-      <section className={autionCardStyle.auctionCardInfoContainerStyle}>
-        <div className={autionCardStyle.auctionCardInfoContentsSectionStyle}>
+      <section className={auctionCardStyle.auctionCardInfoContainerStyle}>
+        <div className={auctionCardStyle.auctionCardInfoContentsSectionStyle}>
           <div>
-            <label className={autionCardStyle.auctionCardInfoLabelStyle}>시작가</label>
+            <label className={auctionCardStyle.auctionCardInfoLabelStyle}>시작가</label>
             <div>{startPrice}원</div>
           </div>
-          <div className={autionCardStyle.auctionCardInfoCurrentPriceWrapperStyle}>
+          <div className={auctionCardStyle.auctionCardInfoCurrentPriceWrapperStyle}>
             <label>현재 입찰가</label>
-            <div className={autionCardStyle.auctionCardInfoCurrentPriceStyle}>{currentPrice}원</div>
+            <div className={auctionCardStyle.auctionCardInfoCurrentPriceStyle}>
+              {currentPrice}원
+            </div>
           </div>
         </div>
         <Button variants="primary" size="lg">
           입찰하기
         </Button>
-        <div className={autionCardStyle.auctionCardFooterContainerStyle}>
+        <div className={auctionCardStyle.auctionCardFooterContainerStyle}>
           <IoPersonOutline />
           <div>
             입찰
-            <span className={autionCardStyle.auctionCardFooterBidCountStyle}> {bidCount}</span>건
+            <span className={auctionCardStyle.auctionCardFooterBidCountStyle}> {bidCount}</span>건
           </div>
         </div>
       </section>

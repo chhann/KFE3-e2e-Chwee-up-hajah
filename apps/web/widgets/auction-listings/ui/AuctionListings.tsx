@@ -1,7 +1,9 @@
+'use client';
 import Link from 'next/link';
 
-import AuctionCard, { AuctionCardProps } from '@/features/auction/ui/AuctionCard';
+import AuctionCard from '@/features/auction/ui/AuctionCard';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+import { AuctionCardProps } from '@/shared/types/auction';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { auctionListStyle } from './styles/AuctionListings.styles';
 
@@ -16,7 +18,7 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
       <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
 
       {/* 경매 아이템 목록 */}
-      <div className={auctionListStyle.auctionListBasickStyle}>
+      <div className={auctionListStyle.auctionListBasicStyle}>
         {listData.map((item) => (
           <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
             <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">

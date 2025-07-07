@@ -1,3 +1,5 @@
+import { CardProps } from '@repo/ui/design-system/base-components/Card/index';
+
 export interface AuctionBidParams {
   auctionId: string;
   bidderId: string;
@@ -18,4 +20,10 @@ export interface CreateAuctionPayload {
   end_time: string;
   thumbnail: string;
   images: string[];
+}
+export interface AuctionCardProps extends CardProps {
+  badgeVariant?: 'best' | 'urgent' | null;
+  bidStartPrice: number;
+  bidCurrentPrice: number;
+  bidCount: number;
 }

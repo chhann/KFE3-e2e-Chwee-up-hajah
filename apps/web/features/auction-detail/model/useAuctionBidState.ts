@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useAuctionBid } from '@/hooks/useAuctionBid';
-import { useAuctionDetail } from '@/hooks/useAuctionDetail';
-import { useRealtimeBids } from '@/hooks/useRealTimeBid';
 import { useAuthStore } from '@/shared/stores/auth';
 import { Bid } from '@/shared/types/db';
 
+import { useAuctionBid } from '@/shared/hooks/useAuctionBid';
+import { useAuctionDetail } from '@/shared/hooks/useAuctionDetail';
+import { useRealtimeBids } from '@/shared/hooks/useRealTimeBid';
 import { useBidCostHandlers } from './useBidCostHandlers';
 import { useSendBid } from './useSendBid';
 

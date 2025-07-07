@@ -1,4 +1,4 @@
-import { useCreateAuction } from '@/hooks/useCreateAuction';
+import { useCreateAuction } from '@/shared/hooks/useCreateAuction';
 import { auctionAddSchema } from '@/shared/lib/validators/auctionAddSchema';
 import { useAuthStore } from '@/shared/stores/auth';
 import { getToday } from '@repo/ui/utils/getToday';
