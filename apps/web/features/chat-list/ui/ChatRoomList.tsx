@@ -1,7 +1,6 @@
 'use client';
 
-import { useChatList } from '@/hooks/chat/useChatList';
-
+import { useChatList } from '@/shared/api/client/chat/useChatList';
 import { ChatRoomItem } from './ChatRoomItem';
 import {
   containerStyles,

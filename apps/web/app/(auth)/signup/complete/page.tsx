@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../../lib/supabase/supabase';
+import { supabase } from '../../../../shared/lib/supabase/supabase';
 
 const SignupCompletePage = () => {
   const router = useRouter();

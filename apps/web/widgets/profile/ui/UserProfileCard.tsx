@@ -3,8 +3,8 @@ import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInf
 import Link from 'next/link';
 import { IoSettingsOutline } from 'react-icons/io5';
 
-import { getCacheBustingUrl } from '@/lib/utils/avatar';
-import { UserProfileType } from '@/types/profile';
+import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
+import { UserProfileType } from '@/shared/types/profile';
 import { userProfileCardStyles as styles } from '../styles/useProfileCard.styles';
 
 export const UserProfileCard = ({ user }: { user: UserProfileType }) => {

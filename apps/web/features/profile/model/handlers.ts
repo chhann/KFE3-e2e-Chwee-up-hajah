@@ -2,10 +2,9 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import type { ZodFormattedError } from 'zod';
 
-import { uploadAvatarToStorage } from '../api/uploadAvatar';
-
-import { profileSchema } from '@/lib/validators/profileSchema';
-import { ProfileFormType, UserProfileType } from '@/types/profile';
+import { postAvatarToStorage } from '@/shared/api/server/profile/postAvatar';
+import { profileSchema } from '@/shared/lib/validators/profileSchema';
+import { ProfileFormType, UserProfileType } from '@/shared/types/profile';
 
 export function handleInputChange(
   identifier: string,
@@ -47,7 +46,7 @@ export async function handleSubmit(
 
   if (selectedFile) {
     try {
-      const uploadedUrl = await uploadAvatarToStorage(id, selectedFile);
+      const uploadedUrl = await postAvatarToStorage(id, selectedFile);
       finalAvatarUrl = uploadedUrl;
     } catch (uploadError: any) {
       alert(`아바타 업로드 실패: ${uploadError.message}`);

@@ -2,11 +2,11 @@ import { redirect } from 'next/navigation';
 
 import { Navigation, UserProfileCard } from '@/widgets/profile'; // UserProfileType import 추가
 
-import { getProfile } from '@/features/profile/api/getProfile';
 import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 
 import { getCurrentUser } from '@/app/session';
-import { NavigationItem } from '@/types/profile';
+import { getProfile } from '@/shared/api/server/profile/getProfile';
+import { NavigationItem } from '@/shared/types/profile';
 
 const pointItems: NavigationItem[] = [
   { label: '충전내역', href: '/profile/charge-history' },

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { IoChevronForward } from 'react-icons/io5';
 
-import { NavigationItem } from '@/types/profile';
+import { NavigationItem } from '@/shared/types/profile';
 import { navigationStyles as styles } from '../styles/navigation.styles';
 
 interface NavigationProps {

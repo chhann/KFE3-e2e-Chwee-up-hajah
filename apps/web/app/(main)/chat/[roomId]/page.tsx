@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { ChatInput } from '@/features/chat-room/ui/ChatInput';
 import { ChatMessages } from '@/features/chat-room/ui/ChatMessages';
 
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/shared/stores/auth';
 
 const ChatPage = () => {
   const { roomId } = useParams();

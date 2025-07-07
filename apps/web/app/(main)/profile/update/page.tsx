@@ -2,9 +2,9 @@ import { redirect } from 'next/navigation';
 
 import { ProfileForm } from '@/widgets/profile/ui/ProfileForm';
 
-import { getProfile } from '@/features/profile/api/getProfile';
-
 import { getCurrentUser } from '@/app/session';
+
+import { getProfile } from '@/shared/api/server/profile/getProfile';
 
 const Page = async () => {
   const userData = await getCurrentUser();

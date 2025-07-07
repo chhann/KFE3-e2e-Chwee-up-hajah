@@ -5,11 +5,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { cn } from '@repo/ui/utils/cn';
 
-import { useMessages } from '@/hooks/chat/useMessages';
-import { useMessagesAsRead } from '@/hooks/chat/useMessagesAsRead';
-import { subscribeToMessages } from '@/hooks/chat/useMessageSubscription';
-import { Message, MessageWithSender } from '@/types/chat';
+import { Message, MessageWithSender } from '@/shared/types/chat';
 
+import { useMessages } from '@/shared/api/client/chat/useMessages';
+import { useMessagesAsRead } from '@/shared/api/client/chat/useMessagesAsRead';
+import { subscribeToMessages } from '../model/subscribeToMessages';
 import {
   containerStyles,
   messageBubbleStyles,

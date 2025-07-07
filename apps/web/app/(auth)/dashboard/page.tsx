@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useAuthStore } from '../../../stores/auth';
+import { useAuthStore } from '../../../shared/stores/auth';
 
 export default function DashboardPage() {
   const router = useRouter();

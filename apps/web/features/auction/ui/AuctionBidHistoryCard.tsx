@@ -1,6 +1,6 @@
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 
-import { Bid } from '@/types/db';
+import { Bid } from '@/shared/types/db';
 import { auctionBidHistoryStyle } from './styles/AuctionBidHistoryCard.styles';
 
 export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
