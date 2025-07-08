@@ -2,7 +2,6 @@ import { adminClient } from '@/app/admin';
 import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
 import { NextRequest, NextResponse } from 'next/server';
 
-// pages/api/my-won-auctions.ts (가정)
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
