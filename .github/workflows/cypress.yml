@@ -28,6 +28,9 @@ jobs:
         with:
           version: 8
 
+      - name: Enable corepack
+        run: corepack enable
+
       - name: Confirm pnpm installed
         run: pnpm --version
 
