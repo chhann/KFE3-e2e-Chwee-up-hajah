@@ -1,7 +1,7 @@
 export const auctionListStyle = {
   auctionListingContainerStyle: 'px-4 py-4',
   auctionListingLabelStyle: 'sr-only',
-  auctionListBasickStyle: 'space-y-4',
+  auctionListBasicStyle: 'space-y-4',
   auctionListCardStyle: 'relative',
 
   emptyListContainerStyle: 'flex flex-col items-center justify-center py-16 text-center',

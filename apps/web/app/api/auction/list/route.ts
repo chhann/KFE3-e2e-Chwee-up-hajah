@@ -1,6 +1,5 @@
+import { adminClient } from '@/app/admin';
 import { NextResponse } from 'next/server';
-
-import { adminClient } from '../../../admin';
 
 export async function GET() {
   try {
