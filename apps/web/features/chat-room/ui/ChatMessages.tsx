@@ -1,15 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { cn } from '@repo/ui/utils/cn';
 
-import { Message, MessageWithSender } from '@/shared/types/chat';
-
 import { useMessages } from '@/shared/api/client/chat/useMessages';
 import { useMessagesAsRead } from '@/shared/api/client/chat/useMessagesAsRead';
+import { useQueryClient } from '@tanstack/react-query';
 import { subscribeToMessages } from '../model/subscribeToMessages';
+
 import {
   containerStyles,
   messageBubbleStyles,
@@ -25,97 +25,43 @@ export const ChatMessages = ({
   roomId: string;
   currentUserId: string;
 }) => {
-  const [messages, setMessages] = useState<MessageWithSender[]>([]);
-  const { data } = useMessages(roomId);
+  const queryClient = useQueryClient();
+  const { data: messages } = useMessages(roomId);
   const { mutate: markAsRead } = useMessagesAsRead();
   const subscriptionRef = useRef<() => void | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // 최초 fetch된 메시지 세팅
-  useEffect(() => {
-    if (data) setMessages(data);
-  }, [data]);
-
+  // 최신 메세지를 볼 수 있게 스크롤 맨 아래로
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: 'smooth' }); // 또는 'auto'로 즉시 이동
     }
   }, [messages]);
 
-  // onMessageInsert 콜백
-  const onMessageInsert = useCallback((msg: Message) => {
-    setMessages((prev) => {
-      const sender = prev.find((m) => m.sender_id === msg.sender_id);
-      if (!sender) {
-        console.warn('[onMessageInsert] sender info not found for', msg.sender_id);
-        return prev;
-      }
-
-      const fullMessage: MessageWithSender = {
-        ...msg,
-        sender_name: sender.sender_name,
-        sender_avatar: sender.sender_avatar,
-        sender_address: sender.sender_address,
-        sender_address_detail: sender.sender_address_detail,
-        sender_score: sender.sender_score,
-      };
-
-      return [...prev, fullMessage];
-    });
-  }, []);
-
-  // onMessageUpdate 콜백
-  const onMessageUpdate = useCallback((updatedMsg: Message) => {
-    setMessages((prev) =>
-      prev.map((msg) =>
-        msg.message_id === updatedMsg.message_id ? { ...msg, is_read: updatedMsg.is_read } : msg
-      )
-    );
-  }, []);
-
-  // ✅ 구독은 메시지가 한번 로드된 이후 roomId에만 의존하여 실행 (단, 구독 중복 방지)
+  // 구독 설정
   useEffect(() => {
-    if (!data || data.length === 0) return;
+    if (!roomId) return;
 
     let unsubscribe: (() => void) | null = null;
-    let isUnmounted = false;
 
-    const setupSubscription = async () => {
-      // 이전 구독이 있다면 제거 후 딜레이
-      if (subscriptionRef.current) {
-        subscriptionRef.current();
-        subscriptionRef.current = null;
-
-        // 💡 WebSocket 안정적으로 닫힐 시간 확보
-        await new Promise((res) => setTimeout(res, 300));
-      }
-
-      if (isUnmounted) return;
-
-      console.log('[ChatMessages] subscribing to realtime');
-      unsubscribe = subscribeToMessages({
+    const setup = async () => {
+      unsubscribe = await subscribeToMessages({
         roomId,
-        onMessageInsert: (msg) => {
-          console.log('[Realtime] INSERT received:', msg);
-          onMessageInsert(msg);
+        onMessageInsert: () => {
+          queryClient.invalidateQueries({ queryKey: ['messages', roomId] });
         },
-        onMessageUpdate: (msg) => {
-          console.log('[Realtime] UPDATE received:', msg);
-          onMessageUpdate(msg);
+        onMessageUpdate: () => {
+          queryClient.invalidateQueries({ queryKey: ['messages', roomId] });
         },
       });
-
-      subscriptionRef.current = unsubscribe;
     };
 
-    setupSubscription();
+    setup();
 
     return () => {
-      isUnmounted = true;
-      console.log('[ChatMessages] unsubscribing from realtime');
-      unsubscribe?.();
+      unsubscribe?.(); // ✅ 반드시 구독 해제 필요
     };
-  }, [roomId, onMessageInsert, onMessageUpdate, data]);
+  }, [roomId]);
 
   // 읽음 처리
   // useEffect(() => {
@@ -127,6 +73,8 @@ export const ChatMessages = ({
   //     markAsRead(unreadIds);
   //   }
   // }, [messages, currentUserId]);
+
+  if (!messages) return <div>Loading...</div>;
 
   return (
     <div className={containerStyles}>
