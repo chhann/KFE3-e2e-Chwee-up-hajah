@@ -1,7 +1,7 @@
+import { useAuctionBid } from '@/shared/api/client/auction/useAuctionBid';
+import { QueryClientWrapper } from '@/test-utils/QueryClientWrapper';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
-import { QueryClientWrapper } from '../test-utils/QueryClientWrapper';
-import { useAuctionBid } from './useAuctionBid';
+import { expect, vi } from 'vitest';
 
 describe('useAuctionBid', () => {
   beforeEach(() => {

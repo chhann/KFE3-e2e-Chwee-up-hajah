@@ -1,19 +1,22 @@
+import { useRealtimeBids } from '@/shared/api/client/auction/useRealTimeBid';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
-import { useRealtimeBids } from './useRealTimeBid'; // <-- 당신의 훅 위치에 따라 조정
+import { vi, expect } from 'vitest';
 
 // ✅ 1. 모듈 최상단에서 mocking
-vi.mock('../lib/supabase/supabase', () => {
+vi.mock('../../lib/supabase/supabase', async () => {
+  const actualSupabaseModule: any = await vi.importActual('../../lib/supabase/supabase');
   const mockOn = vi.fn().mockReturnThis();
   const mockSubscribe = vi.fn();
   const mockRemoveChannel = vi.fn();
 
   return {
     supabase: {
+      ...actualSupabaseModule.supabase,
       channel: vi.fn(() => ({
         on: mockOn,
         subscribe: mockSubscribe,
+        unsubscribe: vi.fn(), // Add unsubscribe directly to the channel object
       })),
       removeChannel: mockRemoveChannel,
     },
@@ -32,11 +35,11 @@ describe('useRealtimeBids', () => {
     // ✅ 2. 훅 실행
     renderHook(() => useRealtimeBids('1', onNewBid), { wrapper });
 
-    const { supabase } = await import('../shared/lib/supabase/supabase'); // <-- 모킹된 모듈 가져오기
+    const { supabase } = await import('../../lib/supabase/supabase'); // <-- 모킹된 모듈 가져오기
 
     await waitFor(() => {
       expect(supabase.channel).toHaveBeenCalledWith('realtime-bids-1');
-      expect(supabase.channel('1').on).toHaveBeenCalledWith(
+      (expect(supabase.channel('1').on) as any).toHaveBeenCalledWith(
         'postgres_changes',
         {
           event: 'INSERT',
@@ -46,7 +49,7 @@ describe('useRealtimeBids', () => {
         },
         expect.any(Function)
       );
-      expect(supabase.channel('1').subscribe).toHaveBeenCalled();
+      (expect(supabase.channel('1').subscribe) as any).toHaveBeenCalled();
     });
   });
 });

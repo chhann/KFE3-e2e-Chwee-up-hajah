@@ -1,10 +1,10 @@
 import { useAuctionBidState } from '@/features/auction-detail/model/useAuctionBidState';
 import * as useBidCostHandlers from '@/features/auction-detail/model/useBidCostHandlers';
 import * as useSendBid from '@/features/auction-detail/model/useSendBid';
+import { useAuctionBid } from '@/shared/api/client/auction/useAuctionBid';
+import * as useAuctionDetail from '@/shared/api/client/auction/useAuctionDetail';
+import * as useRealtimeBids from '@/shared/api/client/auction/useRealTimeBid';
 import * as fetchBidderNameModule from '@/shared/api/server/auction/fetchBidderName';
-import * as useAuctionBid from '@/shared/hooks/useAuctionBid';
-import * as useAuctionDetail from '@/shared/hooks/useAuctionDetail';
-import * as useRealtimeBids from '@/shared/hooks/useRealTimeBid';
 import * as supabaseModule from '@/shared/lib/supabase/supabase';
 import * as useAuthStore from '@/shared/stores/auth';
 import { AuctionDetail, Bid } from '@/shared/types/db';
@@ -13,10 +13,10 @@ import { useEffect } from 'react';
 import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
 // Mock dependencies
-vi.mock('@/shared/hooks/useAuctionDetail');
-vi.mock('@/shared/hooks/useAuctionBid');
+vi.mock('@/shared/api/client/auction/useAuctionDetail');
+vi.mock('@/shared/api/client/auction/useAuctionBid');
 vi.mock('@/shared/stores/auth');
-vi.mock('@/shared/hooks/useRealTimeBid');
+vi.mock('@/shared/api/client/auction/useRealTimeBid');
 vi.mock('@/features/auction-detail/model/useBidCostHandlers');
 vi.mock('@/features/auction-detail/model/useSendBid');
 vi.mock('@/shared/lib/supabase/supabase', () => ({
@@ -91,7 +91,7 @@ describe('useAuctionBidState', () => {
     mockChannelSubscribeCallback = vi.fn();
 
     vi.mocked(useAuctionDetail).useAuctionDetail.mockReturnValue(mockAuctionDetail as any);
-    vi.mocked(useAuctionBid).useAuctionBid.mockReturnValue({ mutate: mockMutate } as any);
+    vi.mocked(useAuctionBid).mockReturnValue({ mutate: mockMutate } as any);
     vi.mocked(useAuthStore).useAuthStore.mockReturnValue({ userId: 'test-user-id' });
 
     // Mock useRealtimeBids to capture the onNewBid callback and mock Supabase channel behavior

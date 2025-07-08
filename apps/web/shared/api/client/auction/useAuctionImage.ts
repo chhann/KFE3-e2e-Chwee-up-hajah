@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { postAuctionImages } from '../api/server/auction/postAuctionImages';
+import { postAuctionImages } from '../../server/auction/postAuctionImages';
 
 export const useAuctionImage = () => {
   return useMutation<string, Error, File>({

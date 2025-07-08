@@ -1,6 +1,6 @@
+import { AuctionBidParams, AuctionBidResponse } from '@/shared/types/auction';
 import { useMutation } from '@tanstack/react-query';
-import { postAuctionBid } from '../api/server/auction/postAuctionBid';
-import { AuctionBidParams, AuctionBidResponse } from '../types/auction';
+import { postAuctionBid } from '../../server/auction/postAuctionBid';
 
 export function useAuctionBid() {
   return useMutation<AuctionBidResponse, Error, AuctionBidParams>({
