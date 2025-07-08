@@ -49,9 +49,9 @@ export function useRealtimeBids(auctionId: string | undefined, onNewBid: (bid: B
 
     return () => {
       if (channelRef.current) {
-        supabase.removeChannel(channelRef.current);
+        channelRef.current.unsubscribe();
         channelRef.current = null;
-        console.log('[realtime] channel removed');
+        console.log('[realtime] channel unsubscribed');
       }
     };
   }, [auctionId]);
