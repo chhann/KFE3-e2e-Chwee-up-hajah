@@ -1,4 +1,4 @@
-export const autionCardStyle = {
+export const auctionCardStyle = {
   auctionCardContainerStyle: 'border-neutral-20 relative w-full rounded-lg border p-4 shadow-md',
   auctionCardInfoContainerStyle: 'mt-4 flex flex-col gap-4',
   auctionCardInfoContentsSectionStyle: 'flex justify-between',

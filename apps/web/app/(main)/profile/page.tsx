@@ -5,8 +5,8 @@ import { Navigation, UserProfileCard } from '@/widgets/profile'; // UserProfileT
 import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 
 import { getCurrentUser } from '@/app/session';
-import { getProfile } from '@/shared/api/server/profile/getProfile';
 import { NavigationItem } from '@/shared/types/profile';
+import { getProfile } from '@/shared/api/server/profile/getProfile';
 
 const pointItems: NavigationItem[] = [
   { label: '충전내역', href: '/profile/charge-history' },
@@ -14,9 +14,9 @@ const pointItems: NavigationItem[] = [
 ];
 
 const auctionItems: NavigationItem[] = [
-  { label: '판매 중인 물품', href: '/2' },
-  { label: '참여 중인 경매', href: '/3' },
-  { label: '낙찰 받은 물품', href: '/4' },
+  { label: '판매 중인 물품', href: '/auction/my-listings' },
+  { label: '참여 중인 경매', href: '/auction/my-participated' },
+  { label: '낙찰 받은 물품', href: '/auction/my-won-auctions' },
 ];
 
 const Page = async () => {
