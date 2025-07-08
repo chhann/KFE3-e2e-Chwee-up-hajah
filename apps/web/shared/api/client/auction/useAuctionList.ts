@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchAuctionList } from '../api/server/auction/fetchAuctionList';
+import { fetchAuctionList } from '../../server/auction/fetchAuctionList';
 
 type AuctionItem = {
   auction_id: string;

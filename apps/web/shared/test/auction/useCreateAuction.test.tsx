@@ -1,8 +1,8 @@
+import { useCreateAuction } from '@/shared/api/client/auction/useCreateAuction';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
-import { vi } from 'vitest';
-import { useCreateAuction } from './useCreateAuction';
+import { expect, vi } from 'vitest';
 
 // ✅ App Router mock
 vi.mock('next/navigation', () => ({
