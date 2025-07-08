@@ -8,6 +8,7 @@ import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInf
 import { AuctionListings } from '@/widgets/auction-listings';
 import { useAuctionList } from '@/shared/hooks/useAuctionList';
 import { categories } from '@/shared/mock/auction';
+import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
 
 const Page = () => {
   const locationName = '서울시 강남구';
@@ -15,25 +16,7 @@ const Page = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedBadge, setSelectedBadge] = useState<string>('all');
   // API 데이터 → AuctionListings용 데이터로 변환
-  const mappedList = (auctionList || []).map((item) => ({
-    id: item.auction_id,
-    bidStartPrice: item.start_price,
-    bidCurrentPrice: item.current_price,
-    bidCount: item.bid_count,
-    status: item.status,
-    imageSrc: item.thumbnail,
-    title: item.product.name,
-    category: item.product.category,
-    description: item.product.description,
-    badgeVariant: item.badge_variant,
-    seller: {
-      username: item.seller.username,
-      address: item.seller.address,
-    },
-    locationName: item.seller.address,
-    startTime: item.start_time,
-    endTime: item.end_time,
-  }));
+  const mappedList = (auctionList || []).map(mapAuctionItem);
 
   let filteredList = mappedList;
   if (!(selectedCategory === 'all' || selectedCategory === '전체')) {
