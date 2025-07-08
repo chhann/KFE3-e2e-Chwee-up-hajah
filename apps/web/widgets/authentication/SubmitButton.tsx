@@ -1,8 +1,8 @@
 'use client';
 
+import { SubmitButtonProps } from '@/shared/types/auth/signup';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import React from 'react';
-import { SubmitButtonProps } from '../../../types/auth/signup';
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({
   isSubmitting,

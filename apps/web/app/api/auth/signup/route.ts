@@ -1,6 +1,6 @@
 // app/api/auth/signup/route.ts
+import { SignupServerSchema } from '@/shared/lib/validators/auth';
 import { NextRequest, NextResponse } from 'next/server';
-import { SignupServerSchema } from '../../../../shared/lib/validators/auth';
 import { adminClient } from '../../../admin';
 import { createApiClient } from '../../../server';
 

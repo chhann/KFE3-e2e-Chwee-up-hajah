@@ -1,9 +1,9 @@
 'use client';
 
+import { AddressInputSectionProps } from '@/shared/types/auth/signup';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import React from 'react';
-import { AddressInputSectionProps } from '../../../types/auth/signup';
 import { SignupFormComponentStyles } from './styles';
 
 export const AddressInputSection: React.FC<AddressInputSectionProps> = ({

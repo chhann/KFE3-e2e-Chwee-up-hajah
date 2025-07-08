@@ -1,5 +1,4 @@
-// features/authentication/api/me.ts
-import { createClient } from '../../../app/client';
+import { createClient } from '@/app/client';
 
 /**
  * 현재 로그인한 사용자 정보를 가져오는 서비스

@@ -1,4 +1,4 @@
-import type { SignupData, ValidationErrors } from '../model/types';
+import type { SignupData, ValidationErrors } from '@/shared/types/auth/types';
 
 /**
  * 인증 관련 클라이언트 사이드 서비스

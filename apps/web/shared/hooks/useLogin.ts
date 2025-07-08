@@ -1,13 +1,10 @@
-// hooks/useLogin.ts
-'use client';
-
+import { useLoginMutation } from '@/shared/api/client/authentication/useLoginMutation';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { useAuthStore } from '../stores/auth';
 
 export const useLogin = () => {
   const router = useRouter();
-  const { login, error } = useAuthStore();
+  const { mutate: loginMutate, isPending, error } = useLoginMutation();
 
   // 이메일과 비밀번호 상태
   const [email, setEmail] = useState('');
@@ -22,19 +19,29 @@ export const useLogin = () => {
     setPassword(e.target.value);
   }, []);
 
-  // 로그인 요청
+  // 핵심 로그인 로직을 분리
+  const triggerLogin = useCallback(() => {
+    loginMutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          router.push('/main');
+        },
+        onError: (err) => {
+          console.error('Login failed:', err.message);
+          alert(err.message);
+        },
+      }
+    );
+  }, [email, password, loginMutate, router]);
+
+  // 폼 제출 핸들러
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      await login(email, password); // zustand의 login 호출
-
-      // 상태에서 isAuthenticated 검사 후 대시보드 이동
-      const { isAuthenticated } = useAuthStore.getState();
-      if (isAuthenticated) {
-        router.push('/main');
-      }
+      e.preventDefault(); // 폼 제출의 기본 동작(페이지 새로고침)을 막기 위함
+      triggerLogin();
     },
-    [email, password, login, router]
+    [triggerLogin]
   );
 
   const resetFields = useCallback(() => {
@@ -45,10 +52,12 @@ export const useLogin = () => {
   return {
     email,
     password,
-    error,
+    error: error?.message, // 에러 메시지를 반환하도록 수정
     onChangeEmail,
     onChangePassword,
     onSubmit,
     resetFields,
+    isPending,
+    triggerLogin, // triggerLogin 함수를 반환
   };
 };

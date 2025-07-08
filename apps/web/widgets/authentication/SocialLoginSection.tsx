@@ -1,9 +1,9 @@
 // apps/web/widgets/authentication/SocialLoginSection.tsx
 'use client';
 
+import { SocialLoginSectionProps } from '@/shared/types/auth/login';
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import React from 'react';
-import { SocialLoginSectionProps } from '../../../types/auth/login';
 import { SocialLoginSectionStyles } from './styles';
 
 export const SocialLoginSection: React.FC<SocialLoginSectionProps> = ({ onSocialLoginClick }) => (

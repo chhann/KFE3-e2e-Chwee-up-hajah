@@ -59,7 +59,7 @@ export const Input = ({
       )}
 
       {/* 입력 필드 컨테이너 */}
-      <div className="relative">
+      <div className="relative flex-grow">
         <div
           className={cn(
             inputStyle.inputOutlineStyle,
@@ -107,7 +107,7 @@ export const Input = ({
         )}
 
         {/* 성공 메시지 */}
-        {success && <p className={cn(inputStyle.messageBaseStyle)}>{success}</p>}
+        {success && <p className={cn(inputStyle.successMessageStyle)}>{success}</p>}
       </div>
     </div>
   );

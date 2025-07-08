@@ -1,13 +1,40 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useLogin } from '../../../shared/hooks/useLogin';
 import { LoginFormComponent } from '../../../widgets/authentication/LoginFormComponent';
 import { SignUpLinkComponent } from '../../../widgets/authentication/SignUpLinkComponent';
 import { SocialLoginSection } from '../../../widgets/authentication/SocialLoginSection';
 
 const LoginPage = () => {
-  const { email, password, error, onChangeEmail, onChangePassword, onSubmit, resetFields } =
-    useLogin();
+  const {
+    email,
+    password,
+    error,
+    onChangeEmail,
+    onChangePassword,
+    onSubmit,
+    resetFields,
+    isPending,
+    triggerLogin,
+  } = useLogin();
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        // Enter 키가 눌렸을 때 로그인 로직 실행
+        triggerLogin();
+      }
+    };
+
+    // document에 이벤트 리스너 추가
+    document.addEventListener('keydown', handleKeyDown);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [triggerLogin]); // triggerLogin이 변경될 때마다 이펙트 재실행
 
   return (
     <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md">
@@ -19,6 +46,7 @@ const LoginPage = () => {
         onChangeEmail={onChangeEmail}
         onChangePassword={onChangePassword}
         onSubmit={onSubmit}
+        isPending={isPending}
       />
       <SocialLoginSection onSocialLoginClick={resetFields} />
       <SignUpLinkComponent />

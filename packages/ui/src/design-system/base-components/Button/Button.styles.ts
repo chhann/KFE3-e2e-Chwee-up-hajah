@@ -12,7 +12,7 @@ export const buttonStyle = {
   buttonSizeClasses: {
     lg: 'text-base w-full py-5 px-6',
     thinLg: 'text-base w-full py-2 px-6',
-    md: 'text-sm px-8 py-3',
+    md: 'text-sm px-6 py-2',
     thinMd: 'text-sm px-8 py-2',
     sm: 'text-xs px-4 py-2',
   },

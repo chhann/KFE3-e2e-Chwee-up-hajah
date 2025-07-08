@@ -1,4 +1,4 @@
-// apps/web/features/authentication/model/types.ts
+// apps/web/shared/types/auth/types.ts
 
 /**
  * 로그인 요청 데이터 인터페이스

@@ -1,5 +1,5 @@
+import { LoginService } from '@/shared/api/server/authentication/login';
 import { NextRequest, NextResponse } from 'next/server';
-import { LoginService } from '../../../../features/authentication/api/login';
 import { createApiClient } from '../../../server';
 
 export async function POST(req: NextRequest) {
