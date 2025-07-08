@@ -10,6 +10,7 @@ import { useAuthStore } from '@/shared/stores/auth';
 const ChatPage = () => {
   const { roomId } = useParams();
   const senderId = useAuthStore((state) => state.userId);
+  console.log(senderId);
 
   if (!senderId) {
     return <div>로그인이 필요합니다</div>;
@@ -28,7 +29,7 @@ const ChatPage = () => {
 
       {/* 인풋 */}
       <div className="w-full px-2 pb-[env(safe-area-inset-bottom)] pt-2">
-        <ChatInput roomId={roomId} senderId={senderId} />
+        <ChatInput roomId={roomId} senderId={senderId} senderName={'test'} />
       </div>
     </div>
   );

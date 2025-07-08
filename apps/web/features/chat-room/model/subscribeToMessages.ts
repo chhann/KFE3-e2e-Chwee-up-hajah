@@ -7,13 +7,28 @@ type Props = {
   onMessageUpdate: (message: Message) => void;
 };
 
-export const subscribeToMessages = ({ roomId, onMessageInsert, onMessageUpdate }: Props) => {
-  const channel = supabase
-    .channel(`room:${roomId}`)
+export const subscribeToMessages = async ({
+  roomId,
+  onMessageInsert,
+  onMessageUpdate,
+}: Props): Promise<() => void> => {
+  const channelName = `room:${roomId}`;
+
+  // 이미 등록된 채널이 있는지 확인
+  const existing = supabase.getChannels().find((ch) => ch.topic === `realtime:${channelName}`);
+  if (existing) {
+    console.warn(`[subscribeToMessages] channel ${channelName} already exists.`);
+    return () => supabase.removeChannel(existing);
+  }
+
+  const channel = supabase.channel(channelName);
+
+  channel
     .on(
       'postgres_changes',
       { event: 'INSERT', schema: 'public', table: 'message', filter: `room_id=eq.${roomId}` },
       (payload) => {
+        console.log('[Realtime] INSERT received:', payload.new);
         onMessageInsert(payload.new as Message);
       }
     )
@@ -21,14 +36,14 @@ export const subscribeToMessages = ({ roomId, onMessageInsert, onMessageUpdate }
       'postgres_changes',
       { event: 'UPDATE', schema: 'public', table: 'message', filter: `room_id=eq.${roomId}` },
       (payload) => {
+        console.log('[Realtime] UPDATE received:', payload.new);
         onMessageUpdate(payload.new as Message);
       }
-    )
-    .subscribe((status) => {
-      console.log('[subscribeToMessages] subscription status:', status);
-    });
+    );
 
-  // 반드시 unsubscribe 반환
+  const result = await channel.subscribe();
+  console.log(result);
+
   return () => {
     supabase.removeChannel(channel);
   };
