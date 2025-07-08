@@ -17,7 +17,7 @@ export const MyParticipatedAuctions = ({ listData }: { listData: MockAuctionCard
       <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
 
       {/* 경매 아이템 목록 */}
-      <div className={auctionListStyle.auctionListBasickStyle}>
+      <div className={auctionListStyle.auctionListBasicStyle}>
         {listData.map((item, index) => (
           <section key={index} className={auctionListStyle.auctionListCardStyle}>
             <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
