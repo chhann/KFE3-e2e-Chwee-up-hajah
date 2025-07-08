@@ -5,7 +5,7 @@ export interface EmailInputSectionProps {
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEmailDuplicateCheck: () => void;
   isCheckingEmail: boolean;
-  emailCheckStatus?: 'success' | 'error' | 'idle';
+  emailCheckStatus?: '' | 'checking' | 'success' | 'error';
   error?: string;
 }
 

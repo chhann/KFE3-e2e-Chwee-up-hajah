@@ -1,19 +1,5 @@
-// features/authentication/api/login.ts
-/*
-  Server에서 Supabase Auth로 인증 처리하는 흐름:
-    1. 클라이언트 → 이메일/패스워드 전송
-    2. Server → Supabase Auth에 인증 요청
-    3. Supabase → 사용자 인증 후 세션/토큰 반환
-    4. Server → 인증 성공 시 사용자 ID 반환
-
-  핵심 특징:
-    - 패스워드를 직접 저장/관리하지 않음
-    - Supabase Auth가 모든 인증 로직 처리
-    - 서버는 단순히 Supabase와 통신하는 역할
-*/
-
+import { createApiClient, createSSRClient } from '@/app/server';
 import { NextRequest, NextResponse } from 'next/server';
-import { createApiClient, createSSRClient } from '../../../app/server';
 
 /**
  * 로그인 관련 서버 사이드 서비스

@@ -1,9 +1,9 @@
 'use client';
 
+import { UsernameInputSectionProps } from '@/shared/types/auth/signup';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import React from 'react';
-import { UsernameInputSectionProps } from '../../../types/auth/signup';
 
 export const UsernameInputSection: React.FC<UsernameInputSectionProps> = ({
   username,

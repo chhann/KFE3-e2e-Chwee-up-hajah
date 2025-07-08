@@ -1,6 +1,6 @@
 'use client';
 
-import type { UseSignupReturn } from '../../../features/authentication/model/types';
+import type { UseSignupReturn } from '@/shared/types/auth/types';
 import { AddressInputSection } from './AddressInputSection';
 import { EmailInputSection } from './EmailInputSection';
 import { LoginLink } from './LoginLink';
