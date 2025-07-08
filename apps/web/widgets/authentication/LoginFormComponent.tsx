@@ -1,11 +1,11 @@
 // apps/web/widgets/authentication/LoginFormComponent.tsx
 'use client';
 
+import { LoginFormComponentProps } from '@/shared/types/auth/login';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import Link from 'next/link';
 import React from 'react';
-import { LoginFormComponentProps } from '../../../types/auth/login';
 import { LoginFormComponentStyles } from './styles';
 
 export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
@@ -15,6 +15,7 @@ export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
   onSubmit,
   onChangeEmail,
   onChangePassword,
+  isPending, // 추가
 }) => {
   return (
     <form className={LoginFormComponentStyles.form} onSubmit={onSubmit}>
@@ -49,7 +50,7 @@ export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
         type="submit"
         variants="primary"
         size="md"
-        disabled={!email || !password}
+        disabled={!email || !password || isPending} // isPending 추가
       />
     </form>
   );

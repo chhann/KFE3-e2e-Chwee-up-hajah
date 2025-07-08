@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
+import * as Sentry from '@sentry/nextjs';
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const theme = (await cookies()).get('theme')?.value ?? 'light';
   const isDark = theme === 'dark';
@@ -33,8 +35,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="ko" className={`${notoSansKR.variable} ${isDark ? 'dark' : ''}`}>
       <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
-        <DarkModeToggle />
-        <Providers>{children}</Providers>
+        <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+          <DarkModeToggle />
+          <Providers>{children}</Providers>
+        </Sentry.ErrorBoundary>
       </body>
     </html>
   );

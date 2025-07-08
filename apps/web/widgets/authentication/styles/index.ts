@@ -6,26 +6,26 @@ export const LoginFormComponentStyles = {
 };
 
 export const SignupFormComponentStyles = {
-  container: 'mx-auto max-w-md rounded-lg bg-white p-6 shadow-md',
+  container: 'mx-auto w-full rounded-lg bg-white p-4 shadow-md',
   title: 'mb-4 text-center text-2xl font-bold',
   form: 'space-y-4',
   emailInputSection: {
     label: 'text-sm text-gray-500',
-    inputGroup: 'mt-1 flex items-start space-x-2',
+    inputGroup: 'mt-1 flex flex-col space-y-2 md:flex-row md:items-start md:space-x-2 md:space-y-0',
   },
   passwordInputSection: {
     label: 'text-sm text-gray-500',
   },
   usernameInputSection: {
     label: 'text-sm text-gray-500',
-    inputGroup: 'flex items-start space-x-2',
+    inputGroup: 'flex flex-col space-y-2 md:flex-row md:items-start md:space-x-2 md:space-y-0',
   },
   addressInputSection: {
     label: 'text-sm text-gray-500',
-    inputGroup: 'flex items-start space-x-2',
+    inputGroup: 'flex flex-col space-y-2 md:flex-row md:items-start md:space-x-2 md:space-y-0',
   },
   formError: 'text-center text-sm text-red-500',
-  loginLinkContainer: 'mt-12 text-center',
+  loginLinkContainer: 'mt-8 text-center',
   loginLink: 'text-gray-500 hover:underline',
 };
 

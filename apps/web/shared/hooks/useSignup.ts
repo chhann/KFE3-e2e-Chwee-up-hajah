@@ -1,5 +1,5 @@
-import { AuthService } from 'features/authentication/api/authService';
-import type { UseSignupReturn, ValidationErrors } from 'features/authentication/model/types';
+import { AuthService } from '@/shared/api/server/authentication/authService';
+import type { UseSignupReturn, ValidationErrors } from '@/shared/types/auth/types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 

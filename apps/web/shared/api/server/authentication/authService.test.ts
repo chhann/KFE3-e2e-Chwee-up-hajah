@@ -1,4 +1,3 @@
-
 import { vi } from 'vitest';
 import { AuthService } from './authService';
 
@@ -19,7 +18,9 @@ describe('AuthService', () => {
       json: () => Promise.resolve({ error: 'Email already exists' }),
     } as Response);
 
-    await expect(AuthService.checkEmailDuplicate('duplicate@example.com')).rejects.toThrow('Email already exists');
+    await expect(AuthService.checkEmailDuplicate('duplicate@example.com')).rejects.toThrow(
+      'Email already exists'
+    );
   });
 
   it('should throw an error for an empty email', async () => {

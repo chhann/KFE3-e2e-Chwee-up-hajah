@@ -51,12 +51,7 @@ describe('LoginService', () => {
         },
       });
 
-      const userId = await LoginService.login(
-        mockEmail,
-        mockPassword,
-        mockRequest,
-        mockResponse
-      );
+      const userId = await LoginService.login(mockEmail, mockPassword, mockRequest, mockResponse);
 
       expect(createApiClient).toHaveBeenCalledWith(mockRequest, mockResponse);
       expect(createApiClient().auth.signInWithPassword).toHaveBeenCalledWith({

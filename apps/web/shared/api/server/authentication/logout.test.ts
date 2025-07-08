@@ -33,9 +33,7 @@ describe('LogoutService', () => {
       const errorMessage = 'Logout failed';
       mockSignOut.mockResolvedValue({ error: { message: errorMessage } });
 
-      await expect(LogoutService.logout()).rejects.toThrow(
-        `[LogoutService] ${errorMessage}`
-      );
+      await expect(LogoutService.logout()).rejects.toThrow(`[LogoutService] ${errorMessage}`);
       expect(createSSRClient).toHaveBeenCalledTimes(1);
       expect(mockSignOut).toHaveBeenCalledTimes(1);
     });

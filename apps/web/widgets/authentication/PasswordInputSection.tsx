@@ -1,8 +1,8 @@
 'use client';
 
+import { PasswordInputSectionProps } from '@/shared/types/auth/signup';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import React from 'react';
-import { PasswordInputSectionProps } from '../../../types/auth/signup';
 import { SignupFormComponentStyles } from './styles';
 
 export const PasswordInputSection: React.FC<PasswordInputSectionProps> = ({
