@@ -1,7 +1,7 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useAuctionList } from './useAuctionList';
+import { renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 
 // fetch API 모의 처리
 global.fetch = vi.fn();
@@ -47,7 +47,7 @@ describe('useAuctionList', () => {
       },
     ];
 
-    (fetch as vi.Mock).mockResolvedValue(createFetchResponse(true, mockAuctionList));
+    (fetch as Mock).mockResolvedValue(createFetchResponse(true, mockAuctionList));
 
     const { result } = renderHook(() => useAuctionList(), {
       wrapper: ({ children }) => (
@@ -65,7 +65,7 @@ describe('useAuctionList', () => {
   });
 
   it('should handle fetch error', async () => {
-    (fetch as vi.Mock).mockResolvedValue(createFetchResponse(false, { message: 'Network Error' }));
+    (fetch as Mock).mockResolvedValue(createFetchResponse(false, { message: 'Network Error' }));
 
     const { result } = renderHook(() => useAuctionList(), {
       wrapper: ({ children }) => (

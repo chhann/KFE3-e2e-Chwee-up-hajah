@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { Category } from '@repo/ui/design-system/base-components/Category/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
-import { AuctionListings } from '@/widgets/auction-listings';
-import { useAuctionList } from '@/shared/hooks/useAuctionList';
+import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
 import { categories } from '@/shared/mock/auction';
+import { AuctionListings } from '@/widgets/auction-listings';
 
 const Page = () => {
   const locationName = '서울시 강남구';

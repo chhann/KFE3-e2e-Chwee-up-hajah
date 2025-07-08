@@ -1,7 +1,7 @@
+import { CreateAuctionPayload } from '@/shared/types/auction';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { postAuctionAdd } from '../api/server/auction/postAuctionAdd';
-import { CreateAuctionPayload } from '../types/auction';
+import { postAuctionAdd } from '../../server/auction/postAuctionAdd';
 
 export function useCreateAuction() {
   const router = useRouter();

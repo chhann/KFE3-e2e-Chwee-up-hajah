@@ -7,6 +7,6 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    supportFile: false, // 이 줄을 추가합니다.
+    supportFile: 'cypress/support/e2e.ts',
   },
 });

@@ -1,7 +1,7 @@
 import createWrapper from '@/shared/lib/utils/createWrapper';
 import { renderHook, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
-import { useAuctionDetail } from './useAuctionDetail';
+import { expect, vi } from 'vitest';
+import { useAuctionDetail } from '../../api/client/auction/useAuctionDetail';
 
 describe('useAuctionDetail', () => {
   it('should fetch auction details successfully', async () => {
