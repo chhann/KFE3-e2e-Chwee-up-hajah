@@ -1,4 +1,5 @@
 import { adminClient } from '@/app/admin';
+import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -24,18 +25,9 @@ export async function GET() {
     if (error) throw error;
 
     // status 계산 및 덮어쓰기
-    const now = new Date();
     const result = (data || []).map((item: any) => {
-      let status: 'ready' | 'in progress' | 'end' = 'ready';
-      const start = item.start_time ? new Date(item.start_time) : null;
-      const end = item.end_time ? new Date(item.end_time) : null;
-      if (start && end) {
-        if (now < start) status = 'ready';
-        else if (now >= start && now <= end) status = 'in progress';
-        else if (now > end) status = 'end';
-      }
       const { status: oldStatus, ...rest } = item;
-      return { ...rest, status };
+      return { ...rest, status: getAuctionStatus(item) };
     });
 
     return NextResponse.json(result);
