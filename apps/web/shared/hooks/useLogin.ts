@@ -1,6 +1,7 @@
 import { useLoginMutation } from '@/shared/api/client/authentication/useLoginMutation';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { useAuthStore } from '@/shared/stores/auth'; // useAuthStore 임포트
 
 export const useLogin = () => {
   const router = useRouter();
@@ -21,10 +22,16 @@ export const useLogin = () => {
 
   // 핵심 로그인 로직을 분리
   const triggerLogin = useCallback(() => {
+    // useAuthStore 인스턴스 가져오기
+    const authStore = useAuthStore.getState();
+
     loginMutate(
       { email, password },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          // async 추가
+          // 로그인 성공 시 useAuthStore의 login 함수를 호출하여 상태 업데이트
+          await authStore.login(email, password); // <-- 이 부분 추가
           router.push('/main');
         },
         onError: (err) => {
@@ -33,7 +40,7 @@ export const useLogin = () => {
         },
       }
     );
-  }, [email, password, loginMutate, router]);
+  }, [email, password, loginMutate, router]); // authStore를 의존성 배열에 추가하지 않아도 됨 (getState() 사용 시)
 
   // 폼 제출 핸들러
   const onSubmit = useCallback(
