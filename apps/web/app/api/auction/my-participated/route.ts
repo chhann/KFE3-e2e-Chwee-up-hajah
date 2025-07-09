@@ -40,14 +40,6 @@ export async function GET(req: NextRequest) {
 
     // 데이터 구조 평면화 + 입찰 정보 추가
     const result = (bidData || [])
-      .filter((item: any) => {
-        const auction = item.auction;
-        const now = new Date();
-        const endTime = new Date(auction.end_time);
-
-        // 경매가 아직 끝나지 않은 것만 포함
-        return endTime > now;
-      })
       .map((item: any) => {
         const { auction, bid_price } = item;
         const { status: oldStatus, ...auctionRest } = auction;
@@ -57,7 +49,9 @@ export async function GET(req: NextRequest) {
           status: getAuctionStatus(auction),
           my_bid_price: bid_price,
         };
-      });
+      })
+      .filter((item) => item.status !== 'end');
+
     return NextResponse.json(result);
   } catch (error) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

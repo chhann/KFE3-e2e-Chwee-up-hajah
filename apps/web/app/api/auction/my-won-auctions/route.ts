@@ -42,29 +42,27 @@ export async function GET(req: NextRequest) {
     const wonAuctions = bidData
       .filter((bid: any) => {
         const auction = bid.auction;
-        const now = new Date();
-        const endTime = new Date(auction.end_time);
+        const auctionStatus = getAuctionStatus(auction);
 
         return (
-          endTime < now && // 경매 종료됨
+          auctionStatus === 'end' && // getAuctionStatus로 종료 확인
           bid.bid_price === auction.current_price // 내 입찰가가 최종 낙찰가와 같음
         );
       })
       .map((bid: any) => {
-        const { auction, bid_price } = bid; // bid_price도 함께 추출
+        const { auction, bid_price } = bid;
         const { status: oldStatus, ...auctionRest } = auction;
 
         return {
           ...auctionRest,
-          status: getAuctionStatus(auction),
-          my_won_price: bid_price, // 낙찰받은 가격 (내 입찰가)
+          status: 'end',
+          my_won_price: bid_price,
         };
       });
 
-    // 만약 한 경매에 여러 번 입찰했는데 그 중 가장 높은 가격으로 낙찰받았다면,
-    // 이 필터링은 해당 경매가 중복될 수 있으므로, 최종적으로 낙찰된 경매만 남도록 함
+    // 3. 중복 제거 (한 경매에 여러 번 입찰한 경우)
     const uniqueWonAuctions = Array.from(
-      new Map(wonAuctions.map((item) => [item.id, item])).values()
+      new Map(wonAuctions.map((item) => [item.auction_id, item])).values()
     );
 
     return NextResponse.json(uniqueWonAuctions); // 중복 제거된 결과 반환
