@@ -1,24 +1,20 @@
+'use client';
+
 import { useRef } from 'react';
 
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { FaCamera } from 'react-icons/fa6';
 
-import { supabase } from '@/lib/supabase/supabase';
-
 interface AvatarUploadProps {
-  id: string;
   username: string;
-  prevUrl?: string;
-  avatarUrl?: string;
-  setAvatarUrl: (value: string | undefined) => void;
+  avatarUrl?: string; // ProfileForm에서 관리하는 현재 미리보기 URL
+  onFileSelect: (file: File | undefined) => void; // 선택된 File 객체를 상위로 전달하는 콜백
 }
 
 export const ProfileAvatarUpload = ({
-  id,
   username,
-  prevUrl,
-  avatarUrl,
-  setAvatarUrl,
+  avatarUrl, // ProfileForm에서 이미 캐시 버스터가 붙어 전달된 URL 사용
+  onFileSelect,
 }: AvatarUploadProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
 
@@ -26,42 +22,36 @@ export const ProfileAvatarUpload = ({
     imageRef.current?.click();
   };
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${id}.${fileExt}`;
-
-      const { data, error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: true,
-        });
-
-      if (uploadError) {
-        throw uploadError;
-      }
-
-      const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(data.path);
-      setAvatarUrl(urlData.publicUrl + '?t=' + Date.now()); // 쿼리 파라미터로 캐시 무력화
+      // 선택된 파일을 상위 컴포넌트(ProfileForm)로 전달합니다.
+      // 상위 컴포넌트가 이 파일을 가지고 미리보기 URL을 생성하고 상태를 업데이트
+      onFileSelect(file);
     }
   };
+
+  if (!avatarUrl) {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className="flex justify-center">
       <div className="relative inline-flex">
-        <input ref={imageRef} type="file" accept="image/*" hidden onChange={handleImageChange} />
-        <Avatar
-          src={avatarUrl || prevUrl}
-          alt={username}
-          name={username}
-          size="xxl"
-          className="relative"
+        <input
+          ref={imageRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleImageChange}
+          data-testid="file-input"
         />
+        <Avatar src={avatarUrl} alt={username} name={username} size="xxl" className="relative" />
         <p
           onClick={imageClick}
+          role="button"
+          aria-label="camera"
           className="border-3 absolute -right-[7px] bottom-0 inline-block cursor-pointer rounded-full border-solid border-white bg-neutral-500 p-1"
         >
           <FaCamera className="size-3.5 text-white" />
