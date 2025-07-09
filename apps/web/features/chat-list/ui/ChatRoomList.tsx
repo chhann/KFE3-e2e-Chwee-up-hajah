@@ -1,13 +1,9 @@
 'use client';
 
 import { useChatList } from '@/shared/api/client/chat/useChatList';
-import { ChatRoomItem } from './ChatRoomItem';
-import {
-  containerStyles,
-  errorStyles,
-  listStyles,
-  titleStyles,
-} from './styles/ChatRoomList.styles';
+
+import { containerStyles, errorStyles, listStyles } from './styles/ChatRoomList.styles';
+import { ChatRoomListItem } from './ChatRoomListItem';
 
 export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
   const { data: chatRooms, isLoading, isError, error } = useChatList(currentUserId);
@@ -17,10 +13,9 @@ export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
 
   return (
     <div className={containerStyles}>
-      <h2 className={titleStyles}>내 채팅방</h2>
       <ul className={listStyles}>
         {chatRooms?.map((room) => (
-          <ChatRoomItem key={room.room_id} room={room} currentUserId={currentUserId} />
+          <ChatRoomListItem key={room.room_id} room={room} currentUserId={currentUserId} />
         ))}
       </ul>
     </div>
