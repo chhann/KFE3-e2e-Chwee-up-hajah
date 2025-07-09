@@ -21,7 +21,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20' # 프로젝트의 Node.js 버전에 맞게 조정
-          cache: 'pnpm' # pnpm 캐시 사용 설정
 
       - name: Setup pnpm manually
         run: |
