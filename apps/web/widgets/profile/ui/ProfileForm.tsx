@@ -6,15 +6,11 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import { ZodFormattedError } from 'zod';
 
-import { UserProfileType } from '@/widgets/profile';
-import {
-  handleInputChange,
-  handleSubmit,
-  ProfileFormType,
-} from '@/features/profile/model/handlers';
+import { handleInputChange, handleSubmit } from '@/features/profile/model/handlers';
 import { ProfileAvatarUpload } from '@/features/profile/ui/ProfileAvatarUpload';
+import { ProfileFormType, UserProfileType } from '@/shared/types/profile';
 
-import { useUpdateProfile } from '@/hooks/profile/useUpdateProfile';
+import { useUpdateProfile } from '@/shared/api/client/profile/useUpdateProfile';
 
 export const ProfileForm = ({ user }: { user: UserProfileType }) => {
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user.avatar);

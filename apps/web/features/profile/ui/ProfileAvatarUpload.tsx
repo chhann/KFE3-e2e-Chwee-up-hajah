@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { FaCamera } from 'react-icons/fa6';
 
-import { supabase } from '@/lib/supabase/supabase';
+import { supabase } from '@/shared/lib/supabase/supabase';
 
 interface AvatarUploadProps {
   id: string;
