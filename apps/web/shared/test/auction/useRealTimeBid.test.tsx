@@ -1,7 +1,7 @@
-import { useRealtimeBids } from '@/shared/api/client/auction/useRealTimeBid';
+import { useRealtimeBids } from '@/shared/hooks/useRealTimeBid';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
-import { vi, expect } from 'vitest';
+import { expect, vi } from 'vitest';
 
 // ✅ 1. 모듈 최상단에서 mocking
 vi.mock('../../lib/supabase/supabase', async () => {
