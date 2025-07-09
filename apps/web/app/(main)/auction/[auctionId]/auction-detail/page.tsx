@@ -52,6 +52,8 @@ const Page = () => {
         bidUnit={bidUnit}
         bidCost={bidCost}
         isProgressing={data.status === 'in progress'}
+        auctionId={auctionId}
+        sellerId={data.seller_id}
         onMinus={minusBidCost}
         onPlus={plusBidCost}
         onClick={sendBid}

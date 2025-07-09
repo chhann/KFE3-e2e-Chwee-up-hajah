@@ -1,7 +1,9 @@
 'use client';
 
+import { useAuthStore } from '@/shared/stores/auth';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
+import Link from 'next/link';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { auctionDetailCardStyle } from './styles/AuctionDetailCard.styles';
 
@@ -13,6 +15,8 @@ interface AuctionDetailCardProps {
   bidUnit: number;
   bidCost: number;
   isProgressing?: boolean;
+  auctionId: string;
+  sellerId: string;
   onMinus: () => void;
   onPlus: () => void;
   onClick: () => void;
@@ -26,16 +30,31 @@ export const AuctionDetailCard = ({
   bidUnit,
   bidCost,
   isProgressing,
+  auctionId,
+  sellerId,
   onMinus,
   onPlus,
   onClick,
 }: AuctionDetailCardProps) => {
+  const userId = useAuthStore().userId;
   return (
     <section className={auctionDetailCardStyle.auctionDetailCardContainerStyle}>
       <div className={auctionDetailCardStyle.auctionDetailCardHeaderStyle}>
-        <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceLabelStyle}>
-          현재 입찰가
-        </p>
+        <div className={auctionDetailCardStyle.auctionDetailCardCurrentPriceNEditButtonContainer}>
+          <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceLabelStyle}>
+            현재 입찰가
+          </p>
+          {userId === sellerId && (
+            <Link href={`/auction/${auctionId}/auction-edit`}>
+              <Button
+                variants="primary"
+                className={auctionDetailCardStyle.auctionDetailCardEditButtonStyle}
+              >
+                수정하기
+              </Button>
+            </Link>
+          )}
+        </div>
         <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceStyle}>
           {formatPriceNumber(currentBidCost)}원
         </p>
