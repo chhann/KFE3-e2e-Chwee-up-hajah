@@ -26,7 +26,7 @@ jobs:
       - name: Setup pnpm manually
         run: |
           corepack enable
-          corepack prepare pnpm@8 --activatee
+          corepack prepare pnpm@8 --activate
 
       - name: Confirm pnpm installed
         run: pnpm --version
