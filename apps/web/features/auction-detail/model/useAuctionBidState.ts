@@ -5,7 +5,7 @@ import { Bid } from '@/shared/types/db';
 
 import { useAuctionBid } from '@/shared/api/client/auction/useAuctionBid';
 import { useAuctionDetail } from '@/shared/api/client/auction/useAuctionDetail';
-import { useRealtimeBids } from '@/shared/api/client/auction/useRealTimeBid';
+import { useRealtimeBids } from '@/shared/hooks/useRealTimeBid';
 import { useBidCostHandlers } from './useBidCostHandlers';
 import { useSendBid } from './useSendBid';
 
