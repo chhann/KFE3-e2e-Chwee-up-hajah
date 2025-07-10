@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - dev # dev 브랜치 추가
   pull_request:
     branches:
       - main
-      - dev # dev 브랜치 추가
 
 jobs:
   cypress-run:
