@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { supabase } from '@/shared/lib/supabase/supabase';
 import { Bid } from '@/shared/types/db';
-import { fetchBidderName } from '../../server/auction/fetchBidderName';
+import { fetchBidderName } from '../api/server/auction/fetchBidderName';
 
 export function useRealtimeBids(auctionId: string | undefined, onNewBid: (bid: Bid) => void) {
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);

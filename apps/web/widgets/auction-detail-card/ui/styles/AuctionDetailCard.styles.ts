@@ -2,9 +2,10 @@ export const auctionDetailCardStyle = {
   auctionDetailCardContainerStyle:
     'border-neutral-30 bg-neutral-0 flex w-full max-w-md flex-col items-center justify-center rounded-lg border p-4',
 
-  auctionDetailCardHeaderStyle: 'mr-auto',
-
+  auctionDetailCardHeaderStyle: 'mr-auto w-full',
+  auctionDetailCardCurrentPriceNEditButtonContainer: 'relative flex justify-between',
   auctionDetailCardCurrentPriceLabelStyle: 'text-neutral-30 text-sm',
+  auctionDetailCardEditButtonContainerStyle: 'absolute right-0 flex gap-1',
   auctionDetailCardCurrentPriceStyle: 'text-neutral-70 text-xl font-bold',
   auctionDetailCardStartPriceStyle: 'text-neutral-30 text-xs',
   auctionDetailCardRemainingTimeStyle: 'text-xs text-red-500',
