@@ -12,15 +12,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Sentry Next.js SDK options (moved from third argument of withSentryConfig)
-  sentry: {
-    widenClientFileUpload: true,
-    transpileClientSDK: true,
-    tunnelRoute: '/monitoring',
-    hideSourceMaps: true,
-    disableLogger: true,
-    automaticVercelMonitors: true,
-  },
 };
 
 const pwaOptions = {
