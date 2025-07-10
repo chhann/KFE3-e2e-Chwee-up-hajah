@@ -1,5 +1,6 @@
 'use client';
 
+import { useDeleteAuction } from '@/shared/api/client/auction/useDeleteAuction';
 import { useAuthStore } from '@/shared/stores/auth';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
@@ -37,6 +38,18 @@ export const AuctionDetailCard = ({
   onClick,
 }: AuctionDetailCardProps) => {
   const userId = useAuthStore().userId;
+  const { mutate } = useDeleteAuction();
+  const handleDelete = () => {
+    if (userId !== sellerId) {
+      return alert('본인 경매만 삭제할 수 있습니다.');
+    }
+    const isConfirm = window.confirm('경매를 삭제하시겠습니까?');
+    if (isConfirm) {
+      mutate(auctionId);
+    } else {
+      return;
+    }
+  };
   return (
     <section className={auctionDetailCardStyle.auctionDetailCardContainerStyle}>
       <div className={auctionDetailCardStyle.auctionDetailCardHeaderStyle}>
@@ -45,14 +58,14 @@ export const AuctionDetailCard = ({
             현재 입찰가
           </p>
           {userId === sellerId && (
-            <Link href={`/auction/${auctionId}/auction-edit`}>
-              <Button
-                variants="primary"
-                className={auctionDetailCardStyle.auctionDetailCardEditButtonStyle}
-              >
-                수정하기
+            <div className={auctionDetailCardStyle.auctionDetailCardEditButtonContainerStyle}>
+              <Link href={`/auction/${auctionId}/auction-edit`}>
+                <Button variants="primary">수정하기</Button>
+              </Link>
+              <Button variants="secondary" onClick={handleDelete}>
+                삭제하기
               </Button>
-            </Link>
+            </div>
           )}
         </div>
         <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceStyle}>

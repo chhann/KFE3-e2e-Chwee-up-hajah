@@ -5,7 +5,7 @@ export const auctionDetailCardStyle = {
   auctionDetailCardHeaderStyle: 'mr-auto w-full',
   auctionDetailCardCurrentPriceNEditButtonContainer: 'relative flex justify-between',
   auctionDetailCardCurrentPriceLabelStyle: 'text-neutral-30 text-sm',
-  auctionDetailCardEditButtonStyle: 'absolute right-0',
+  auctionDetailCardEditButtonContainerStyle: 'absolute right-0 flex gap-1',
   auctionDetailCardCurrentPriceStyle: 'text-neutral-70 text-xl font-bold',
   auctionDetailCardStartPriceStyle: 'text-neutral-30 text-xs',
   auctionDetailCardRemainingTimeStyle: 'text-xs text-red-500',
