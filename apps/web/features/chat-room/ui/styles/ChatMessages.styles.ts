@@ -13,9 +13,9 @@ export const messageBubbleStyles = {
 };
 
 export const timestampStyles = {
-  base: 'mt-1 text-[10px] text-right',
-  mine: 'text-[var(--button-primary-text)]',
-  theirs: 'text-[var(--text-tertiary)]',
+  base: 'mb-[2px] text-[6px] whitespace-nowrap',
+  mine: 'mr-1 text-[var(--text-tertiary)]', // 좌측
+  theirs: 'ml-1 text-[var(--text-tertiary)]', // 우측
 };
 
-export const unreadIndicatorStyles = 'absolute -right-4 bottom-0 text-[18px] text-[var(--text-error)]';
+export const unreadIndicatorStyles = 'text-[18px] text-[var(--text-error)]';

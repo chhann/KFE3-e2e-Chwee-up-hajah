@@ -7,6 +7,7 @@ type Variables = {
   roomId: string;
   senderId: string;
   content: string;
+  sent_at: string;
 };
 
 export const useSendMessage = (roomId: string, currentUser: { id: string; name: string }) => {

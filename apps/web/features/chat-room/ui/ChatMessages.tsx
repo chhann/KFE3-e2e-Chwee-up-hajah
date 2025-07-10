@@ -14,8 +14,6 @@ import {
   containerStyles,
   messageBubbleStyles,
   messageRowStyles,
-  timestampStyles,
-  unreadIndicatorStyles,
 } from './styles/ChatMessages.styles';
 
 export const ChatMessages = ({
@@ -28,7 +26,6 @@ export const ChatMessages = ({
   const queryClient = useQueryClient();
   const { data: messages } = useMessages(roomId);
   const { mutate: markAsRead } = useMessagesAsRead();
-  const subscriptionRef = useRef<() => void | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   // 최신 메세지를 볼 수 있게 스크롤 맨 아래로
@@ -63,16 +60,18 @@ export const ChatMessages = ({
     };
   }, [roomId]);
 
-  // 읽음 처리
-  // useEffect(() => {
-  //   const unreadIds = messages
-  //     .filter((m) => m.sender_id !== currentUserId && !m.is_read)
-  //     .map((m) => m.message_id);
+  //읽음 처리
+  useEffect(() => {
+    if (!messages) return;
 
-  //   if (unreadIds.length > 0) {
-  //     markAsRead(unreadIds);
-  //   }
-  // }, [messages, currentUserId]);
+    const unreadIds = messages
+      .filter((m) => m.sender_id !== currentUserId && !m.is_read)
+      .map((m) => m.message_id);
+
+    if (unreadIds.length > 0) {
+      markAsRead(unreadIds);
+    }
+  }, [messages, currentUserId]);
 
   if (!messages) return <div>Loading...</div>;
 
@@ -89,6 +88,7 @@ export const ChatMessages = ({
               isMine ? messageRowStyles.mine : messageRowStyles.theirs
             )}
           >
+            {/* 상대방 아바타 */}
             {!isMine && (
               <Avatar
                 src={msg.sender_avatar ?? undefined}
@@ -99,28 +99,51 @@ export const ChatMessages = ({
               />
             )}
 
-            <div
-              className={cn(
-                messageBubbleStyles.base,
-                isMine ? messageBubbleStyles.mine : messageBubbleStyles.theirs
+            {/* 말풍선 + timestamp + 읽음표시 */}
+            <div className="flex flex-col items-end gap-[2px]">
+              {/* ✅ 1 표시 */}
+              {isMine && !msg.is_read && (
+                <div className="mr-auto text-[10px] leading-none text-[var(--text-error)]">1</div>
               )}
-            >
-              {msg.content}
-              <div
-                className={cn(
-                  timestampStyles.base,
-                  isMine ? timestampStyles.mine : timestampStyles.theirs
-                )}
-              >
-                {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </div>
 
-              {isMine && !msg.is_read && <div className={unreadIndicatorStyles}>1</div>}
+              <div className="flex items-end gap-1">
+                {/* timestamp */}
+                {isMine && (
+                  <div className="mr-1 whitespace-nowrap text-[10px] leading-none text-[var(--button-primary-text)]">
+                    {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                      timeZone: 'Asia/Seoul',
+                    })}
+                  </div>
+                )}
+
+                {/* 말풍선 */}
+                <div
+                  className={cn(
+                    messageBubbleStyles.base,
+                    isMine ? messageBubbleStyles.mine : messageBubbleStyles.theirs
+                  )}
+                >
+                  {msg.content}
+                </div>
+
+                {/* 상대방 timestamp */}
+                {!isMine && (
+                  <div className="ml-1 whitespace-nowrap text-[10px] leading-none text-[var(--text-tertiary)]">
+                    {new Date(msg.sent_at).toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                      timeZone: 'Asia/Seoul',
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
 
+            {/* 내 아바타 */}
             {isMine && (
               <Avatar
                 src={msg.sender_avatar ?? undefined}

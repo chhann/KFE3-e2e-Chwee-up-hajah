@@ -23,7 +23,12 @@ export const ChatInput = ({
   const handleSend = () => {
     if (!input.trim()) return;
 
-    mutate({ roomId, senderId, content: input });
+    mutate({
+      roomId,
+      senderId,
+      content: input,
+      sent_at: new Date().toISOString(),
+    });
     setInput('');
   };
 
