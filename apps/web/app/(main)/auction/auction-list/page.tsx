@@ -10,7 +10,7 @@ import { categories } from '@/shared/mock/auction';
 
 import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
 import { AuctionListings } from '@/widgets/auction-listings';
-
+import { SearchInput } from '@/widgets/search';
 
 const Page = () => {
   const locationName = '서울시 강남구';
@@ -27,8 +27,10 @@ const Page = () => {
   if (selectedBadge !== 'all') {
     filteredList = filteredList.filter((item) => item.badgeVariant === selectedBadge);
   }
+  console.log(filteredList);
   return (
     <main className="flex min-h-screen w-full flex-col items-center p-1">
+      <SearchInput />
       <div className="mr-auto flex items-center gap-1">
         <LocationInfo address={locationName}></LocationInfo>
       </div>
@@ -41,7 +43,9 @@ const Page = () => {
         id="actionListFilter"
         className="text-neutral-70 my-2 ml-auto mr-4 w-1/2 rounded-sm p-1 shadow-md"
         value={selectedBadge}
-        onChange={(e) => setSelectedBadge(e.target.value)}
+        onChange={(e) => {
+          setSelectedBadge(e.target.value);
+        }}
       >
         <option value="all">전체 보기</option>
         <option value="best">인기</option>

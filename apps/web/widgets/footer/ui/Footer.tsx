@@ -14,7 +14,7 @@ interface NavigationItem {
 export const Footer = () => {
   const items: NavigationItem[] = [
     { label: '홈', href: '/main', icon: IoMdHome },
-    { label: '검색', href: '#', icon: GoSearch },
+    { label: '검색', href: '/auction/auction-list', icon: GoSearch },
     { label: '등록', href: '/auction/auction-add', icon: IoIosAddCircleOutline },
     { label: '대화', href: '/chat', icon: IoChatboxEllipses },
     { label: '프로필', href: '/profile', icon: FaUser },

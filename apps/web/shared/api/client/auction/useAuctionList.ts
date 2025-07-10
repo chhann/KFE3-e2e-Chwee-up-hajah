@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { fetchAuctionList } from '../../server/auction/fetchAuctionList';
 
 type AuctionItem = {
@@ -26,9 +27,13 @@ type AuctionItem = {
 };
 
 export const useAuctionList = () => {
-  return useQuery<AuctionItem[]>({
-    queryKey: ['auction-list'],
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get('search') || '';
+
+  return useQuery<AuctionItem[], Object, AuctionItem[], [_1: string, string]>({
+    queryKey: ['auction-list', search],
     queryFn: fetchAuctionList,
-    staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
+    staleTime: 1000 * 60 * 5,
   });
 };
