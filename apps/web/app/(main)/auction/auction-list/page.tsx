@@ -27,7 +27,6 @@ const Page = () => {
   if (selectedBadge !== 'all') {
     filteredList = filteredList.filter((item) => item.badgeVariant === selectedBadge);
   }
-  console.log(filteredList);
   return (
     <main className="flex min-h-screen w-full flex-col items-center p-1">
       <SearchInput />
