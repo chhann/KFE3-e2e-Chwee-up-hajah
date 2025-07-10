@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - dev # dev 브랜치 추가
   pull_request:
     branches:
       - main
-      - dev # dev 브랜치 추가
 
 jobs:
   cypress-run:
@@ -21,15 +19,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20' # 프로젝트의 Node.js 버전에 맞게 조정
-          cache: 'pnpm' # pnpm 캐시 사용 설정
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
-      - name: Enable corepack
-        run: corepack enable
+      - name: Setup pnpm manually
+        run: |
+          corepack enable
+          corepack prepare pnpm@8 --activate
 
       - name: Confirm pnpm installed
         run: pnpm --version
