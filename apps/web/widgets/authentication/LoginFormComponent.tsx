@@ -40,7 +40,7 @@ export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
       {error && <p className={LoginFormComponentStyles.error}>{error}</p>}
 
       <div className={LoginFormComponentStyles.reset_password}>
-        <Link href="/reset_password" className={LoginFormComponentStyles.reset_password_link}>
+        <Link href="/password-reset" className={LoginFormComponentStyles.reset_password_link}>
           비밀번호를 잊으셨나요?
         </Link>
       </div>
