@@ -30,7 +30,7 @@ export interface AuctionCardProps extends CardProps {
   myWonPrice?: number; // 내 낙찰가
 }
 
-export type AuctionItem = {
+export interface AuctionBase {
   auction_id: string;
   start_price: number;
   current_price: number;
@@ -41,16 +41,25 @@ export type AuctionItem = {
   seller_confirm: boolean;
   buyer_confirm: boolean;
   bid_count: number;
-  bid_price: number;
+  // bid_price: number;
   status: string;
   badge_variant: 'urgent' | 'best' | null;
-  product: {
-    name: string;
-    category: string;
-    description: string;
-  };
+}
+export interface ProductItem {
+  name: string;
+  category: string;
+  description: string;
+}
+export interface AuctionItem extends AuctionBase {
+  product: ProductItem;
   seller: {
     username: string;
     address: string;
   };
-};
+}
+
+export interface UpdateAuctionParams {
+  auctionId: string;
+  auctionData: AuctionBase;
+  productData: ProductItem;
+}

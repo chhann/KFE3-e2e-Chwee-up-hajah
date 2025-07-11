@@ -3,8 +3,8 @@ import * as useBidCostHandlers from '@/features/auction-detail/model/useBidCostH
 import * as useSendBid from '@/features/auction-detail/model/useSendBid';
 import { useAuctionBid } from '@/shared/api/client/auction/useAuctionBid';
 import * as useAuctionDetail from '@/shared/api/client/auction/useAuctionDetail';
-import * as useRealtimeBids from '@/shared/api/client/auction/useRealTimeBid';
 import * as fetchBidderNameModule from '@/shared/api/server/auction/fetchBidderName';
+import * as useRealtimeBids from '@/shared/hooks/useRealTimeBid';
 import * as supabaseModule from '@/shared/lib/supabase/supabase';
 import * as useAuthStore from '@/shared/stores/auth';
 import { AuctionDetail, Bid } from '@/shared/types/db';

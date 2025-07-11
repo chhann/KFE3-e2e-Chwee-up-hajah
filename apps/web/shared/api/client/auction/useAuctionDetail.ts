@@ -1,15 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { AuctionDetail } from '../../../types/db';
+import { AuctionDetail } from '@/shared/types/db';
 import { fetchAuctionDetail } from '../../server/auction/fetchAuctionDetail';
 
-// auction, product, seller, bids 모두 db 타입을 활용해 정의
-
-export function useAuctionDetail(auctionId: string) {
+export function useAuctionDetail(auctionId: string | null) {
   return useQuery<AuctionDetail, Error>({
     queryKey: ['auctionDetail', auctionId],
-    queryFn: () => fetchAuctionDetail(auctionId),
-    enabled: !!auctionId,
+    queryFn: () => fetchAuctionDetail(auctionId!), // auctionId가 null이 아님을 단언
+    enabled: !!auctionId, // auctionId가 있을 때만 쿼리 실행
     staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
   });
 }
