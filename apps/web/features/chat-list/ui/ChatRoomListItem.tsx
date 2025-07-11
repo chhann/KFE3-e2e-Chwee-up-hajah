@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FaLocationDot } from 'react-icons/fa6';
 
 import { ChatRoom } from '@/shared/types/chat';
-import { itemStyles, textStyles } from './styles/ChatRoomItem.styles';
+import { itemStyles, textStyles } from '../styles/ChatRoomItem.styles';
 
 interface Props {
   room: ChatRoom;

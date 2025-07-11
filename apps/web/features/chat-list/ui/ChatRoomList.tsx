@@ -3,8 +3,8 @@
 import { useChatList } from '@/shared/api/client/chat/useChatList';
 
 import { useState } from 'react';
+import { containerStyles, errorStyles, listStyles } from '../styles/ChatRoomList.styles';
 import { ChatRoomListItem } from './ChatRoomListItem';
-import { containerStyles, errorStyles, listStyles } from './styles/ChatRoomList.styles';
 
 export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
   const [tab, setTab] = useState<'buying' | 'selling'>('buying');

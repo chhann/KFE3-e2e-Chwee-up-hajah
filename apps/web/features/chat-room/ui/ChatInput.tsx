@@ -4,7 +4,7 @@ import { cn } from '@repo/ui/utils/cn';
 import { useState } from 'react';
 
 import { useSendMessage } from '@/shared/api/client/chat/useSendMessage';
-import { buttonStyles, inputContainerStyles, inputStyles } from './styles/ChatInput.styles';
+import { buttonStyles, inputContainerStyles, inputStyles } from '../styles/ChatInput.styles';
 
 export const ChatInput = ({
   roomId,
