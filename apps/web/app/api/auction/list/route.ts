@@ -12,12 +12,12 @@ export async function GET(req: NextRequest) {
       .select(
         `
         *,
-        product:product_id!inner(
+        product:product_id (
           name,
           category,
           description
         ),
-        seller:seller_id!inner(
+        seller:seller_id (
           username,
           address
         ),
