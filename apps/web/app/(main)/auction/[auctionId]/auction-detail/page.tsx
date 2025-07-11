@@ -1,6 +1,7 @@
 'use client';
 
 import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
+import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { useParams } from 'next/navigation';
 
 import {
@@ -39,6 +40,7 @@ const Page = () => {
   const startBidCost = data.start_price;
   const remainingTime = getTimeLeftString({ endDate: data.end_time, startDate: data.start_time });
   const bidUnit = 5000; // 입찰 단위
+  const auctionStarted = isAuctionStarted(data.start_time);
 
   return (
     <main className="relative flex w-full flex-col items-center justify-center gap-2.5" role="main">
@@ -54,6 +56,7 @@ const Page = () => {
         isProgressing={data.status === 'in progress'}
         auctionId={auctionId}
         sellerId={data.seller_id}
+        isAuctionStarted={auctionStarted}
         onMinus={minusBidCost}
         onPlus={plusBidCost}
         onClick={sendBid}
