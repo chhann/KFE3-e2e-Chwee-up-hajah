@@ -41,7 +41,6 @@ export interface AuctionBase {
   seller_confirm: boolean;
   buyer_confirm: boolean;
   bid_count: number;
-  // bid_price: number;
   status: string;
   badge_variant: 'urgent' | 'best' | null;
 }
