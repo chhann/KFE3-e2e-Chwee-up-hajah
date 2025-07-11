@@ -9,7 +9,7 @@ export const auctionAddSchema = z
     auctionName: z
       .string()
       .min(1, '경매 이름을 입력해 주세요.')
-      .max(10, '상품명은 20자 이하로 입력해 주세요'),
+      .max(20, '상품명은 20자 이하로 입력해 주세요'),
     auctionCategory: z.string().min(1, '경매 카테고리를 선택해 주세요.'),
     startPrice: z
       .string()
