@@ -66,6 +66,23 @@ export function useAuctionForm({
       return;
     }
 
+    let finalStartDate = startDate;
+    let finalEndDate = endDate;
+
+    const today = new Date();
+    const todayDateString = today.toISOString().split('T')[0];
+
+    if (startDate.split('T')[0] === todayDateString) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 10);
+
+      finalStartDate = now.toISOString();
+
+      const endDateObj = new Date(endDate);
+      endDateObj.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
+      finalEndDate = endDateObj.toISOString();
+    }
+
     if (isEdit) {
       if (sellerId !== initialData?.seller_id) {
         return alert('본인이 등록한 경매만 수정할 수 있습니다.');
@@ -82,8 +99,8 @@ export function useAuctionForm({
         auctionCategory: auctionCategory,
         auctionDescription: auctionDescription,
         images: images,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: finalStartDate,
+        endDate: finalEndDate,
       };
 
       // 초기 데이터에서 수정 가능한 필드 값들을 객체로 구성
@@ -106,8 +123,8 @@ export function useAuctionForm({
       const completeAuctionData = {
         ...initialData,
         start_price: Number(startPrice),
-        start_time: startDate,
-        end_time: endDate,
+        start_time: finalStartDate,
+        end_time: finalEndDate,
         images: images,
         thumbnail: images[0] || '',
       };
@@ -129,8 +146,8 @@ export function useAuctionForm({
         category: auctionCategory,
         description: auctionDescription,
         start_price: Number(startPrice),
-        start_time: startDate,
-        end_time: endDate,
+        start_time: finalStartDate,
+        end_time: finalEndDate,
         thumbnail: images[0] || '',
         images,
       };
