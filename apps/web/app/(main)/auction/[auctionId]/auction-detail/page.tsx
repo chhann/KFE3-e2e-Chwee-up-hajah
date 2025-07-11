@@ -37,7 +37,7 @@ const Page = () => {
   const imageFiles = data.images || [];
   const auctionName = product.name;
   const startBidCost = data.start_price;
-  const remainingTime = getTimeLeftString(data.end_time);
+  const remainingTime = getTimeLeftString({ endDate: data.end_time, startDate: data.start_time });
   const bidUnit = 5000; // 입찰 단위
 
   return (

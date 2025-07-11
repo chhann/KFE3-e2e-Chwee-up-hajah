@@ -6,6 +6,7 @@ export interface AuctionCardBaseProps extends CardProps {
   locationName: string;
   imageSrc: string;
   endTime: Date | string;
+  startTime?: Date | string;
   badgeVariant?: 'best' | 'urgent' | null;
   children: React.ReactNode;
 }
@@ -15,6 +16,7 @@ export const AuctionCardBase = ({
   locationName,
   imageSrc,
   endTime,
+  startTime,
   badgeVariant,
   children,
 }: AuctionCardBaseProps) => {
@@ -26,6 +28,7 @@ export const AuctionCardBase = ({
         title={title}
         locationName={locationName}
         endTime={endTime}
+        startTime={startTime}
       />
       {children}
     </div>

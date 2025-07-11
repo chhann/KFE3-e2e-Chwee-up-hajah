@@ -1,12 +1,12 @@
 'use client';
 import Link from 'next/link';
 
+import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
+import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
 import { AuctionCardProps } from '@/shared/types/auction';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { auctionListStyle } from './styles/AuctionListings.styles';
-import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
-import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
@@ -29,6 +29,7 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
                 locationName={item.locationName}
                 imageSrc={item.imageSrc}
                 endTime={item.endTime}
+                startTime={item.startTime}
               >
                 <AuctionContent
                   primaryLabel="시작가"
