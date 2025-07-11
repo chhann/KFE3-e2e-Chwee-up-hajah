@@ -184,4 +184,39 @@ export class AuthService {
       throw new Error('회원가입 중 오류가 발생했습니다.');
     }
   }
+
+  /**
+   * OTP(One-Time Password)를 검증합니다.
+   *
+   * @param email - OTP를 받은 이메일 주소
+   * @param token - 사용자가 입력한 6자리 OTP 코드
+   * @param type - OTP 타입 (Supabase에서 지원하는 타입)
+   * @returns 검증 성공 시 true
+   * @throws 검증 실패 시 Error 발생
+   */
+  static async verifyOtp(
+    email: string,
+    token: string,
+    type: 'signup' | 'email_change' | 'recovery'
+  ): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.API_BASE}/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, token, type }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'OTP 검증에 실패했습니다.');
+      }
+
+      return true;
+    } catch (error) {
+      console.error('💥 OTP Verification error:', error);
+      if (error instanceof Error) throw error;
+      throw new Error('OTP 검증 중 오류가 발생했습니다.');
+    }
+  }
 }

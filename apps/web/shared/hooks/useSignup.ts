@@ -277,9 +277,10 @@ export const useSignup = (): UseSignupReturn => {
 
         // 4. 성공 시 적절한 페이지로 이동
         if (result.needsVerification) {
-          alert('가입 확인 이메일을 발송했습니다. 이메일을 확인 후 로그인해주세요.');
-          router.push('/login');
+          // 인증 코드를 입력하는 페이지로 리디렉션
+          router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
         } else {
+          // 이메일 인증이 필요 없는 경우 (거의 발생하지 않음)
           router.push('/main');
         }
       } catch (error) {

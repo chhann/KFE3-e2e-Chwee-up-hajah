@@ -1,4 +1,4 @@
-import { UpdatePasswordForm } from '@/features/authentication/components/UpdatePasswordForm';
+import { UpdatePasswordForm } from '@/features/authentication/UpdatePasswordForm';
 import { Suspense } from 'react';
 
 function UpdatePasswordContent() {
