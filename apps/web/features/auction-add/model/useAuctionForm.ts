@@ -1,6 +1,7 @@
 import { useCreateAuction } from '@/shared/api/client/auction/useCreateAuction';
 import { useUpdateAuction } from '@/shared/api/client/auction/useUpdateAuction';
 import { formatDateString } from '@/shared/lib/utils/formatDateString';
+import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { auctionAddSchema } from '@/shared/lib/validators/auctionAddSchema';
 import { useAuthStore } from '@/shared/stores/auth';
 import { AuctionDetail } from '@/shared/types/db';
@@ -29,6 +30,9 @@ export function useAuctionForm({
   const updateAuctionMutation = useUpdateAuction();
   const sellerId = useAuthStore((state) => state.userId);
 
+  const isStarted =
+    initialData && initialData.start_time ? isAuctionStarted(initialData.start_time) : false;
+
   useEffect(() => {
     if (isEdit && initialData) {
       setAuctionName(initialData.product?.name || '');
@@ -43,6 +47,19 @@ export function useAuctionForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isEdit && isStarted) {
+      alert('경매가 시작되어 수정이 불가능합니다.');
+      return;
+    }
+
+    const confirmMessage = isEdit
+      ? '경매 시작 이후로는 수정 및 삭제가 불가능하며\n당일 시작일 경우 10분의 유예시간이 주어집니다.\n경매를 수정하시겠습니까?'
+      : '경매 시작 이후로는 수정 및 삭제가 불가능하며\n당일 시작일 경우 10분의 유예시간이 주어집니다.\n경매를 등록하시겠습니까?';
+    if (!window.confirm(confirmMessage)) {
+      return; // 사용자가 취소를 누르면 함수 종료
+    }
+
     setFormError(null);
     setFieldErrors({});
 
@@ -66,6 +83,23 @@ export function useAuctionForm({
       return;
     }
 
+    let finalStartDate = startDate;
+    let finalEndDate = endDate;
+
+    const today = new Date();
+    const todayDateString = today.toISOString().split('T')[0];
+
+    if (startDate.split('T')[0] === todayDateString) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 10);
+
+      finalStartDate = now.toISOString();
+
+      const endDateObj = new Date(endDate);
+      endDateObj.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
+      finalEndDate = endDateObj.toISOString();
+    }
+
     if (isEdit) {
       if (sellerId !== initialData?.seller_id) {
         return alert('본인이 등록한 경매만 수정할 수 있습니다.');
@@ -82,8 +116,8 @@ export function useAuctionForm({
         auctionCategory: auctionCategory,
         auctionDescription: auctionDescription,
         images: images,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: finalStartDate,
+        endDate: finalEndDate,
       };
 
       // 초기 데이터에서 수정 가능한 필드 값들을 객체로 구성
@@ -106,8 +140,8 @@ export function useAuctionForm({
       const completeAuctionData = {
         ...initialData,
         start_price: Number(startPrice),
-        start_time: startDate,
-        end_time: endDate,
+        start_time: finalStartDate,
+        end_time: finalEndDate,
         images: images,
         thumbnail: images[0] || '',
       };
@@ -129,8 +163,8 @@ export function useAuctionForm({
         category: auctionCategory,
         description: auctionDescription,
         start_price: Number(startPrice),
-        start_time: startDate,
-        end_time: endDate,
+        start_time: finalStartDate,
+        end_time: finalEndDate,
         thumbnail: images[0] || '',
         images,
       };

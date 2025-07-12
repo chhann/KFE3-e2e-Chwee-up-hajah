@@ -9,10 +9,11 @@ export interface CardProps {
   title: string;
   locationName: string;
   endTime: Date | string;
+  startTime?: Date | string;
 }
 
-const Card = ({ imageSrc, badgeVariant, title, locationName, endTime }: CardProps) => {
-  const leftTime = getTimeLeftString(endTime);
+const Card = ({ imageSrc, badgeVariant, title, locationName, endTime, startTime }: CardProps) => {
+  const leftTime = getTimeLeftString({ endDate: endTime, startDate: startTime });
   const badgeTitle =
     badgeVariant === 'best' ? '인기' : badgeVariant === 'urgent' ? '마감임박' : null;
   return (

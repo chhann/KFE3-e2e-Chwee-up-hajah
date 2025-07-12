@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
-import { AuctionCardBase, AuctionCardBaseProps } from '@/features/auction/ui/AuctionCardBase';
+import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
 import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 import { AuctionCardProps } from '@/shared/types/auction';
+import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
@@ -27,6 +27,7 @@ export const MyParticipatedAuctions = ({ listData }: { listData: MockAuctionCard
                 locationName={item.locationName}
                 imageSrc={item.imageSrc}
                 endTime={item.endTime}
+                startTime={item.startTime}
                 badgeVariant={item.badgeVariant}
               >
                 <AuctionContent
