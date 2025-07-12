@@ -79,7 +79,7 @@ describe('useAuctionList', () => {
     // 오류 발생 및 확인
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeInstanceOf(Error);
-    expect(result.current.error?.message).toBe('경매 목록을 불러오지 못했습니다');
+    expect(result.current.error?.toString()).toBe('경매 목록을 불러오지 못했습니다');
     expect(fetch).toHaveBeenCalledWith('/api/auction/list');
   });
 });
