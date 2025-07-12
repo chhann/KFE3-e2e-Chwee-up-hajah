@@ -32,10 +32,6 @@ export const ProfileAvatarUpload = ({
     }
   };
 
-  if (!avatarUrl) {
-    return <div>loading...</div>;
-  }
-
   return (
     <div className="flex justify-center">
       <div className="relative inline-flex">
