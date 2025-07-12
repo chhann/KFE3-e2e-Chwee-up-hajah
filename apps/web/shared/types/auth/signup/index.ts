@@ -23,7 +23,7 @@ export interface UsernameInputSectionProps {
   onChangeUsername: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onUsernameDuplicateCheck: () => void;
   isCheckingUsername: boolean;
-  usernameCheckStatus?: 'success' | 'error' | 'idle';
+  usernameCheckStatus?: '' | 'checking' | 'success' | 'error';
   error?: string;
 }
 
