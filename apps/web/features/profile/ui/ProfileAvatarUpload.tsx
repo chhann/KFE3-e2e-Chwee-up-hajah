@@ -34,7 +34,7 @@ export const ProfileAvatarUpload = ({
     }
   };
 
-  if (previewAvatarUrl === undefined && originalAvatarUrl) {
+  if (!previewAvatarUrl && originalAvatarUrl) {
     // DB에 저장된 원본 아바타 URL이 있는데, 아직 avatarUrl 세팅 중이면 로딩
     return <div>loading...</div>;
   }
