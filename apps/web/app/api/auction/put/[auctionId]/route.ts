@@ -24,6 +24,16 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: '업데이트에 실패했습니다.', detail: error }, { status: 500 });
   }
 
+  // 검색 테이블 수동 동기화 추가
+  const { error: syncError } = await adminClient.rpc('sync_auction_search_manual', {
+    p_auction_id: auction_id,
+  });
+
+  if (syncError) {
+    console.error('검색 테이블 동기화 오류:', syncError);
+    // 에러가 나도 메인 업데이트는 성공했으므로 경고만 로그
+  }
+
   return NextResponse.json({
     message: '경매 및 상품 정보가 성공적으로 업데이트되었습니다.',
     auction_id,
