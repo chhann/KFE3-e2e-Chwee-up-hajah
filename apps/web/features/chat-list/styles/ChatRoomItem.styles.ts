@@ -9,6 +9,7 @@ export const textStyles = {
   opponentNickname: 'truncate text-xs text-[var(--button-primary-text)]',
   location: 'flex items-center gap-1 truncate text-xs text-[var(--button-primary-text)]',
   locationIcon: 'leading-none text-[var(--text-accent)]',
-  priceLabel: 'mb-[2px] text-[10px] leading-none text-[var(--text-secondary)] group-active:text-[var(--button-primary-text)]',
+  priceLabel:
+    'mb-[2px] text-[10px] leading-none text-[var(--text-secondary)] group-active:text-[var(--button-primary-text)]',
   price: 'text-base font-bold leading-tight text-[var(--button-primary-text)]',
 };

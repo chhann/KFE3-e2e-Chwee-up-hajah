@@ -4,25 +4,15 @@ import { cn } from '@repo/ui/utils/cn';
 import { useRouter } from 'next/navigation';
 import { FaLocationDot } from 'react-icons/fa6';
 
-import { itemStyles, textStyles } from './styles/ChatRoomItem.styles';
-
-type ChatRoom = {
-  room_id: string;
-  product_id: string;
-  product_name: string;
-  buyer_id: string;
-  buyer_nickname: string;
-  seller_id: string;
-  seller_nickname: string;
-  created_at: string;
-};
+import { ChatRoom } from '@/shared/types/chat';
+import { itemStyles, textStyles } from '../styles/ChatRoomItem.styles';
 
 interface Props {
   room: ChatRoom;
   currentUserId: string;
 }
 
-export const ChatRoomItem = ({ room, currentUserId }: Props) => {
+export const ChatRoomListItem = ({ room, currentUserId }: Props) => {
   const router = useRouter();
 
   const isBuyer = currentUserId === room.buyer_id;
@@ -30,6 +20,8 @@ export const ChatRoomItem = ({ room, currentUserId }: Props) => {
 
   return (
     <li
+      role="button"
+      tabIndex={0}
       className={cn(itemStyles.base, itemStyles.bg, itemStyles.activeBg)}
       onClick={() => router.push(`/chat/${room.room_id}`)}
     >
@@ -46,11 +38,11 @@ export const ChatRoomItem = ({ room, currentUserId }: Props) => {
             <span className={textStyles.locationIcon}>
               <FaLocationDot />
             </span>
-            <span>서울시 강남구</span>
+            <span>{room.seller_location}</span>
           </div>
           <div className="whitespace-nowrap text-right">
             <p className={textStyles.priceLabel}>낙찰가</p>
-            <p className={textStyles.price}>50,000원</p>
+            <p className={textStyles.price}>{room.winning_bid_price?.toLocaleString()}원</p>
           </div>
         </div>
       </div>

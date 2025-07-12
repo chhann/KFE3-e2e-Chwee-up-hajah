@@ -24,6 +24,8 @@ export interface ChatRoom {
   buyer_nickname: string;
   seller_id: string;
   seller_nickname: string;
+  seller_location: string;
+  winning_bid_price: number;
   created_at: string;
 }
 
@@ -36,11 +38,3 @@ export interface Message {
   is_read: boolean; // 읽음 여부
   created_at: string; // timestamptz
 }
-
-// ✅ sender만 따로 분리한 타입
-// 유지보수를 위해 자동 유도 방식으로 구성
-export interface SenderInfo
-  extends Pick<
-    MessageWithSender,
-    'sender_name' | 'sender_avatar' | 'sender_address' | 'sender_address_detail' | 'sender_score'
-  > {}
