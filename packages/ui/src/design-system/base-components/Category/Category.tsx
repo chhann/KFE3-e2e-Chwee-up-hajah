@@ -1,12 +1,11 @@
 'use client';
 import 'swiper/css';
 
-import { MdLocationPin } from 'react-icons/md';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { categoryStyle } from './Category.Styles';
 
 export interface CategoryProps {
-  categories: { title: string }[];
+  categories: { title: string; imageUrl: string }[];
   className?: string;
   onCategoryClick?: (cat: string) => void;
 }
@@ -28,7 +27,11 @@ export default function Category({ categories, className, onCategoryClick }: Cat
               onClick={() => onCategoryClick?.(item.title)}
             >
               <div className={categoryStyle.categoryImageStyle}>
-                <MdLocationPin className={categoryStyle.categoryIconStyle} />
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="h-12 w-12 rounded-full object-cover"
+                />
               </div>
               <span className={categoryStyle.categoryItemTextStyle}>{item.title}</span>
             </div>
