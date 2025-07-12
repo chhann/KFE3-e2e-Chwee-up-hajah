@@ -18,7 +18,6 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
     className="w-full"
     variants="primary"
     size="md"
-    error={emailError ?? ''}
     disabled={isSubmitting || !email || !username || !password || !confirmPassword}
   />
 );
