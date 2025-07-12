@@ -14,6 +14,7 @@ export interface InputProps {
   leftIcon?: 'email' | 'password';
   disabled?: boolean;
   required?: boolean;
+  maxLength?: number;
 }
 
 export const Input = ({
@@ -27,6 +28,7 @@ export const Input = ({
   leftIcon,
   disabled = false,
   required = false,
+  maxLength,
   ...props
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -79,6 +81,7 @@ export const Input = ({
             onChange={onChange}
             disabled={disabled}
             required={required}
+            maxLength={maxLength}
             className={inputStyle.inputBasickStyle}
             {...props}
           />

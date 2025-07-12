@@ -4,7 +4,7 @@ import { createApiClient } from '../../../server';
 
 export async function POST(req: NextRequest) {
   const supabase = createApiClient(req);
-  const { roomId, senderId, content } = await req.json();
+  const { roomId, senderId, content, sent_at } = await req.json();
 
   if (!roomId || !senderId || !content) {
     return NextResponse.json({ error: '필수 값 누락' }, { status: 400 });
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     room_id: roomId,
     sender_id: senderId,
     content,
-    sent_at: now,
+    sent_at,
     is_read: false,
   });
 

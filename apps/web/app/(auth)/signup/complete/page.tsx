@@ -1,41 +1,18 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { supabase } from '../../../../shared/lib/supabase/supabase';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import Link from 'next/link';
 
-const SignupCompletePage = () => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const completeSignup = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        router.replace('/login');
-        return;
-      }
-
-      // 여기서 추가 프로필 정보를 입력받거나
-      // 바로 대시보드로 리다이렉션
-      router.replace('/main');
-    };
-
-    completeSignup();
-  }, [router]);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div>회원가입을 완료하는 중입니다...</div>
-      </div>
-    );
-  }
-
-  return null;
-};
+function SignupCompletePage() {
+  return (
+    <div style={{ maxWidth: '400px', margin: 'auto', textAlign: 'center', padding: '40px 0' }}>
+      <h2>회원가입 완료!</h2>
+      <p style={{ margin: '20px 0' }}>환영합니다! 이제 모든 서비스를 이용하실 수 있습니다.</p>
+      <Link href="/main" passHref>
+        <Button variants="primary">메인 페이지로 이동</Button>
+      </Link>
+    </div>
+  );
+}
 
 export default SignupCompletePage;

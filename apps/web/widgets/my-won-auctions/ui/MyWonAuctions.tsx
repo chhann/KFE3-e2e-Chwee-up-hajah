@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
 import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 import { AuctionCardProps } from '@/shared/types/auction';
+import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
@@ -25,6 +25,7 @@ export const MyWonAuctions = ({ listData }: { listData: MockAuctionCardProps[] }
                 locationName={item.locationName}
                 imageSrc={item.imageSrc}
                 endTime={item.endTime}
+                startTime={item.startTime}
               >
                 <AuctionContent
                   primaryLabel="시작가"

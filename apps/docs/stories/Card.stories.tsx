@@ -44,6 +44,10 @@ const meta = {
       control: { type: 'date' },
       description: '종료일(Date 또는 ISO 문자열)',
     },
+    startTime: {
+      control: { type: 'date' },
+      description: '시작일(Date 또는 ISO 문자열)',
+    },
   },
   args: {
     imageSrc: 'https://picsum.photos/300/200',
@@ -51,6 +55,7 @@ const meta = {
     locationName: '서울 강남구',
     badgeVariant: 'best',
     endTime: new Date(Date.now() + 1000 * 60 * 60 * 10 + 1000 * 60 * 30).toISOString(), // 10시간 30분 후
+    startTime: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2시간 전 시작
   },
 } satisfies Meta<typeof Card>;
 
@@ -65,6 +70,19 @@ export const Default: Story = {
     locationName: '부산 해운대',
     badgeVariant: 'best',
     endTime: new Date(Date.now() + 1000 * 60 * 60 * 5 + 1000 * 60 * 10).toISOString(), // 5시간 10분 후
+    startTime: new Date(Date.now() - 1000 * 60 * 60 * 1).toISOString(), // 1시간 전 시작
+  },
+};
+
+// 📝 경매 시작 전 카드
+export const BeforeStart: Story = {
+  args: {
+    imageSrc: 'https://picsum.photos/300/200?random=5',
+    title: '경매 시작 전 상품',
+    locationName: '서울 강남구',
+    badgeVariant: undefined,
+    endTime: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(), // 24시간 후 종료
+    startTime: new Date(Date.now() + 1000 * 60 * 60 * 2).toISOString(), // 2시간 후 시작
   },
 };
 
@@ -76,6 +94,7 @@ export const Urgent: Story = {
     locationName: '인천 송도',
     badgeVariant: 'urgent',
     endTime: new Date(Date.now() + 1000 * 60 * 60 * 1 + 1000 * 60 * 5).toISOString(), // 1시간 5분 후
+    startTime: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), // 3시간 전 시작
   },
 };
 

@@ -18,6 +18,7 @@ interface AuctionDetailCardProps {
   isProgressing?: boolean;
   auctionId: string;
   sellerId: string;
+  isAuctionStarted: boolean;
   onMinus: () => void;
   onPlus: () => void;
   onClick: () => void;
@@ -33,13 +34,19 @@ export const AuctionDetailCard = ({
   isProgressing,
   auctionId,
   sellerId,
+  isAuctionStarted,
   onMinus,
   onPlus,
   onClick,
 }: AuctionDetailCardProps) => {
   const userId = useAuthStore().userId;
   const { mutate } = useDeleteAuction();
+
   const handleDelete = () => {
+    if (isAuctionStarted) {
+      alert('경매가 시작되어 삭제가 불가능합니다.');
+      return;
+    }
     if (userId !== sellerId) {
       return alert('본인 경매만 삭제할 수 있습니다.');
     }
@@ -57,7 +64,7 @@ export const AuctionDetailCard = ({
           <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceLabelStyle}>
             현재 입찰가
           </p>
-          {userId === sellerId && (
+          {userId === sellerId && !isAuctionStarted && (
             <div className={auctionDetailCardStyle.auctionDetailCardEditButtonContainerStyle}>
               <Link href={`/auction/${auctionId}/auction-edit`}>
                 <Button variants="primary">수정하기</Button>
