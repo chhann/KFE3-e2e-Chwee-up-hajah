@@ -33,6 +33,9 @@ importers:
       acorn:
         specifier: ^8.15.0
         version: 8.15.0
+      cypress:
+        specifier: ^14.5.0
+        version: 14.5.0
       eslint:
         specifier: ^9.28.0
         version: 9.28.0
