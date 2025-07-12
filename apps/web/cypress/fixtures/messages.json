@@ -1,0 +1,18 @@
+[
+  {
+    "message_id": "msg-1",
+    "room_id": "room-for-product-1",
+    "sender_id": "test-user-123",
+    "content": "이전 메시지입니다.",
+    "sent_at": "2025-07-12T10:00:00.000Z",
+    "is_read": true
+  },
+  {
+    "message_id": "msg-2",
+    "room_id": "room-for-product-1",
+    "sender_id": "other-user-456",
+    "content": "반갑습니다!",
+    "sent_at": "2025-07-12T10:01:00.000Z",
+    "is_read": false
+  }
+]

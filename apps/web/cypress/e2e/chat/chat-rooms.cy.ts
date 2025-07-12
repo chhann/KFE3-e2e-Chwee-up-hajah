@@ -1,53 +1,47 @@
 describe('채팅방 목록 페이지', () => {
-  const mockUserId = 'test-user-123';
+  const mockUserId = 'a2c61a88-1132-4593-b2a1-5b7a4d3231a5'; // fixture와 일치하는 사용자 ID
 
   beforeEach(() => {
-    // 로그인 상태 mock
+    // Zustand auth-store의 localStorage를 직접 조작하여 로그인 상태 주입
     const authStore = {
       state: {
         userId: mockUserId,
         isAuthenticated: true,
+        isHydrated: true, // 중요: 스토어가 이미 hydration 되었다고 알려줌
       },
       version: 0,
     };
     window.localStorage.setItem('auth-store', JSON.stringify(authStore));
 
-    // ✅ 채팅방 목록 API mock (Next.js API Route)
+    // 채팅방 목록 API mock
     cy.intercept('GET', '/api/chat/list*', {
-      statusCode: 200,
-      body: [
-        {
-          room_id: 'room1',
-          product_id: 'p1',
-          product_name: '중고 맥북 에어',
-          buyer_id: mockUserId,
-          buyer_nickname: '나',
-          seller_id: 'user-2',
-          seller_nickname: '맥북판매왕',
-          created_at: '2025-07-01T12:00:00Z',
-        },
-      ],
-    });
+      fixture: 'chat-rooms.json',
+    }).as('getChatRooms');
+
+    cy.visit('/chat');
+    cy.wait('@getChatRooms');
   });
 
-  it('채팅방 항목이 올바르게 렌더링된다', () => {
-    cy.visit('/chat');
+  it('"구매"와 "판매" 탭이 표시되고, 기본으로 "구매" 탭의 채팅방이 보인다', () => {
+    // 탭 확인
+    cy.contains('button', '구매').should('be.visible');
+    cy.contains('button', '판매').should('be.visible');
 
-    cy.contains('내 채팅방').should('exist');
-    cy.contains('중고 맥북 에어').should('exist');
-    cy.contains('맥북판매왕').should('exist');
-    cy.contains('서울시 강남구').should('exist');
-    cy.contains('낙찰가').should('exist');
-    cy.contains('50,000원').should('exist');
+    // 기본 탭(구매)의 채팅방 내용 확인 (chat-rooms.json fixture 기준)
+    cy.contains('MacBook Pro 2022').should('be.visible');
+    cy.contains('김철수').should('be.visible'); // 판매자 닉네임
   });
 
-  it('채팅방 클릭 시 상세 페이지로 이동한다', () => {
-    cy.visit('/chat');
+  it('"판매" 탭을 클릭하면 판매 관련 채팅방이 표시된다', () => {
+    cy.contains('button', '판매').click();
 
-    cy.contains('중고 맥북 에어')
-      .click()
-      .then(() => {
-        cy.url().should('include', '/chat/room1');
-      });
+    // 판매 탭의 채팅방 내용 확인 (chat-rooms.json fixture 기준)
+    cy.contains('iPhone 15 Pro').should('be.visible');
+    cy.contains('박영희').should('be.visible'); // 구매자 닉네임
+  });
+
+  it('채팅방을 클릭하면 해당 채팅방 상세 페이지로 이동한다', () => {
+    cy.contains('MacBook Pro 2022').click();
+    cy.url().should('include', '/chat/a2c61a88-1132-4593-b2a1-5b7a4d3231a5'); // fixture의 room_id
   });
 });

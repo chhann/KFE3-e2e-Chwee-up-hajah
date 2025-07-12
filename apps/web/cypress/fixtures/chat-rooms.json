@@ -1,0 +1,24 @@
+[
+  {
+    "room_id": "a2c61a88-1132-4593-b2a1-5b7a4d3231a5",
+    "product_name": "MacBook Pro 2022",
+    "product_thumbnail": "/macbook.jpg",
+    "buyer_id": "a2c61a88-1132-4593-b2a1-5b7a4d3231a5",
+    "buyer_nickname": "홍길동",
+    "seller_id": "seller-uuid-123",
+    "seller_nickname": "김철수",
+    "winning_bid_price": 2000000,
+    "seller_location": "서울특별시 강남구"
+  },
+  {
+    "room_id": "room-id-iphone",
+    "product_name": "iPhone 15 Pro",
+    "product_thumbnail": "/iphone.jpg",
+    "buyer_id": "buyer-uuid-456",
+    "buyer_nickname": "박영희",
+    "seller_id": "a2c61a88-1132-4593-b2a1-5b7a4d3231a5",
+    "seller_nickname": "홍길동",
+    "winning_bid_price": 1600000,
+    "seller_location": "서울특별시 강서구"
+  }
+]
