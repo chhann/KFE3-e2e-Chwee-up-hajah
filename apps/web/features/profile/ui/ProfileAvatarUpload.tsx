@@ -7,13 +7,15 @@ import { FaCamera } from 'react-icons/fa6';
 
 interface AvatarUploadProps {
   username: string;
-  avatarUrl?: string; // ProfileForm에서 관리하는 현재 미리보기 URL
+  originalAvatarUrl?: string; // DB에 저장된 원본 아바타 URL
+  previewAvatarUrl?: string; // ProfileForm에서 관리하는 현재 미리보기 URL
   onFileSelect: (file: File | undefined) => void; // 선택된 File 객체를 상위로 전달하는 콜백
 }
 
 export const ProfileAvatarUpload = ({
   username,
-  avatarUrl, // ProfileForm에서 이미 캐시 버스터가 붙어 전달된 URL 사용
+  originalAvatarUrl,
+  previewAvatarUrl, // ProfileForm에서 이미 캐시 버스터가 붙어 전달된 URL 사용
   onFileSelect,
 }: AvatarUploadProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
@@ -32,7 +34,8 @@ export const ProfileAvatarUpload = ({
     }
   };
 
-  if (!avatarUrl) {
+  if (!previewAvatarUrl && originalAvatarUrl) {
+    // DB에 저장된 원본 아바타 URL이 있는데, 아직 avatarUrl 세팅 중이면 로딩
     return <div>loading...</div>;
   }
 
@@ -47,7 +50,13 @@ export const ProfileAvatarUpload = ({
           onChange={handleImageChange}
           data-testid="file-input"
         />
-        <Avatar src={avatarUrl} alt={username} name={username} size="xxl" className="relative" />
+        <Avatar
+          src={previewAvatarUrl}
+          alt={username}
+          name={username}
+          size="xxl"
+          className="relative"
+        />
         <p
           onClick={imageClick}
           role="button"

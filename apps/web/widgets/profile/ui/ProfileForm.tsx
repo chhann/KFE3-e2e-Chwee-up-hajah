@@ -8,9 +8,9 @@ import { ZodFormattedError } from 'zod';
 
 import { handleInputChange, handleSubmit } from '@/features/profile/model/handlers';
 import { ProfileAvatarUpload } from '@/features/profile/ui/ProfileAvatarUpload';
-import { ProfileFormType, UserProfileType } from '@/shared/types/profile';
-import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
 import { useUpdateProfile } from '@/shared/api/client/profile/useUpdateProfile';
+import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
+import { ProfileFormType, UserProfileType } from '@/shared/types/profile';
 
 export const ProfileForm = ({ user }: { user: UserProfileType }) => {
   // 1. 초기 상태는 user.avatar의 순수한 URL로 설정.
@@ -32,6 +32,7 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
   useEffect(() => {
     // selectedFile이 없고, user.avatar가 존재할 때만 캐시 버스팅을 적용
     // 이는 사용자가 새 파일을 선택하기 전의 기본 아바타에만 해당
+
     if (!selectedFile && user.avatar) {
       setAvatarPreviewUrl(getCacheBustingUrl(user.avatar));
     }
@@ -55,8 +56,9 @@ export const ProfileForm = ({ user }: { user: UserProfileType }) => {
       <h1 className="mb-3 text-base font-semibold">내 정보 수정</h1>
       <ProfileAvatarUpload
         username={user.username}
-        avatarUrl={avatarPreviewUrl}
+        previewAvatarUrl={avatarPreviewUrl}
         onFileSelect={handleFileSelect}
+        originalAvatarUrl={user.avatar}
       />
       <form
         onSubmit={(e) =>
