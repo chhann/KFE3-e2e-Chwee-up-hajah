@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import LoginForm from '../../web/features/authentication/ui/LoginForm';
+import { LoginFormComponent } from '../../web/widgets/authentication/LoginFormComponent';
 
 export default {
-  component: LoginForm,
-} satisfies Meta<typeof LoginForm>;
+  component: LoginFormComponent,
+} satisfies Meta<typeof LoginFormComponent>;
 
-type Story = StoryObj<typeof LoginForm>;
+type Story = StoryObj<typeof LoginFormComponent>;
 
 export const Default: Story = {
   args: {},
