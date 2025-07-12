@@ -7,7 +7,6 @@
   </defs>
   
   <!-- Background circle -->
-  <circle cx="100" cy="100" r="90" fill="url(#grad1)" opacity="0.1"/>
   
   <!-- Grid pattern representing "all" -->
   <rect x="60" y="60" width="25" height="25" fill="#7251f8" rx="3"/>
@@ -25,6 +24,4 @@
   <!-- Center highlight -->
   <circle cx="100" cy="100" r="8" fill="#7251f8"/>
   
-  <!-- Text -->
-  <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#7251f8">전체</text>
 </svg>
