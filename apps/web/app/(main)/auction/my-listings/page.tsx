@@ -21,7 +21,6 @@ const Page = () => {
   }
 
   const filteredList = (listings || []).map(mapAuctionItem);
-  console.log(filteredList);
 
   return (
     <main className="text-neutral-70" role="main">
