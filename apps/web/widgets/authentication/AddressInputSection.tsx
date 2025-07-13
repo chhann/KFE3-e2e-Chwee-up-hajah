@@ -59,7 +59,7 @@ export const AddressInputSection: React.FC<AddressInputSectionProps> = ({
   return (
     <>
       <Script
-        src={`//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_APP_KEY}`}
+        src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
         strategy="lazyOnload"
       />
       <div>
