@@ -1,8 +1,8 @@
 'use client';
 
-import { IoChevronForward } from 'react-icons/io5';
-import { useState } from 'react';
 import type { UseSignupReturn } from '@/shared/types/auth/types';
+import { useState } from 'react';
+import { IoChevronForward } from 'react-icons/io5';
 import { AddressInputSection } from './AddressInputSection';
 import { EmailInputSection } from './EmailInputSection';
 import { LoginLink } from './LoginLink';
@@ -50,7 +50,6 @@ export const SignupFormComponent = (props: UseSignupReturn) => {
           addressDetail={props.addressDetail}
           onChangeAddress={props.onChangeAddress}
           onChangeAddressDetail={props.onChangeAddressDetail}
-          onAddressSearch={props.onAddressSearch}
           error={props.fieldErrors.address}
         />
         {props.formError && (
