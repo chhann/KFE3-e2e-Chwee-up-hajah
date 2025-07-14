@@ -1,0 +1,20 @@
+{
+  "servers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        ".",
+        "--allowed-extensions",
+        ".ts,.tsx,.js,.jsx,.json,.md,.sql"
+      ]
+    },
+    "git": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-git", "."]
+    }
+  }
+}
+// This MCP configuration sets up a filesystem server for local files and a git server for version control.
+
+// It allows the Model Context Protocol to access TypeScript, JavaScript, JSON, Markdown, and SQL files.

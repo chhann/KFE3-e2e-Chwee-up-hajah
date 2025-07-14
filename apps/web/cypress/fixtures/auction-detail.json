@@ -1,0 +1,51 @@
+{
+  "data": {
+    "auction_id": "d92863e2-1bf5-4f6a-9a58-62a5d6eb5c57",
+    "product_id": "prod-123",
+    "seller_id": "user-abc",
+    "start_time": "2024-07-22T10:00:00.000Z",
+    "end_time": "2025-08-01T12:00:00.000Z",
+    "start_price": 10000,
+    "current_price": 15000,
+    "bid_count": 2,
+    "status": "in progress",
+    "seller_confirm": true,
+    "buyer_confirm": false,
+    "thumbnail": "/maik-narrow.jpg",
+    "images": ["/maik-narrow.jpg", "/maik-narrow-2.jpg"],
+    "created_at": "2024-07-22T10:00:00.000Z",
+    "badge_variant": null,
+    "product": {
+      "name": "테스트 경매 상품",
+      "category": "가전",
+      "created_at": "2024-07-22T09:00:00.000Z",
+      "product_id": "prod-123",
+      "description": "이것은 테스트를 위한 경매 상품 설명입니다."
+    },
+    "seller": {
+      "address": "서울시 강남구",
+      "username": "테스트판매자",
+      "avatar": "/user-profile.png",
+      "score": 100,
+      "selling_auction": []
+    },
+    "bids": [
+      {
+        "bid_id": "bid-1",
+        "auction_id": "d92863e2-1bf5-4f6a-9a58-62a5d6eb5c57",
+        "bidder_id": "user-bidder1",
+        "user": { "username": "입찰자1" },
+        "bid_price": 15000,
+        "bid_time": "2025-07-07T10:00:00Z"
+      },
+      {
+        "bid_id": "bid-2",
+        "auction_id": "d92863e2-1bf5-4f6a-9a58-62a5d6eb5c57",
+        "bidder_id": "user-bidder2",
+        "user": { "username": "입찰자2" },
+        "bid_price": 12000,
+        "bid_time": "2025-07-07T10:05:00Z"
+      }
+    ]
+  }
+}

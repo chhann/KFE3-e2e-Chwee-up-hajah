@@ -1,0 +1,93 @@
+{
+  "models": [
+    {
+      "title": "custom-deepseek",
+      "provider": "ollama",
+      "model": "custom-deepseek:latest",
+      "apiBase": "http://localhost:11434",
+      "systemPrompt": "You are a senior full-stack developer expert in React 18+, Next.js 15 App Router, TypeScript, Tailwind CSS, Zustand, and Supabase.\n\nCode Standards:\n- Use TypeScript with strict typing and proper interfaces\n- Follow Next.js 15 App Router conventions (app/ directory)\n- Use 'use client' directive when needed for client components\n- Implement proper error boundaries with error.tsx and loading.tsx\n- Use Tailwind utility classes, avoid custom CSS\n- Implement Zustand stores with TypeScript and persist middleware\n- Use Supabase client with proper RLS policies and type safety\n- Always include proper error handling and loading states\n- Use React Server Components by default, Client Components when needed\n- Follow modern React patterns (hooks, composition)\n\nProject Structure:\n- app/ (Next.js App Router pages)\n- components/ (Reusable UI components)\n- lib/ (Utilities, Supabase client, types)\n- stores/ (Zustand stores)\n- types/ (TypeScript definitions)\n\nAlways provide complete, production-ready code with proper imports and exports.",
+      "contextLength": 8192,
+      "completionOptions": {
+        "temperature": 0.2,
+        "top_p": 0.85
+      }
+    },
+    {
+      "title": "Qwen2.5 Coder 7B - Main",
+      "provider": "ollama",
+      "model": "qwen2.5-coder:7b-instruct",
+      "apiBase": "http://localhost:11434",
+      "systemPrompt": "You are a senior full-stack developer expert in React 18+, Next.js 15 App Router, TypeScript, Tailwind CSS, Zustand, and Supabase. Write clean, efficient code with proper TypeScript types and modern React patterns.",
+      "contextLength": 8192,
+      "completionOptions": {
+        "temperature": 0.2,
+        "top_p": 0.85
+      }
+    },
+    {
+      "title": "Qwen2.5 Coder 3B - Fast",
+      "provider": "ollama",
+      "model": "qwen2.5-coder:3b-instruct",
+      "apiBase": "http://localhost:11434",
+      "systemPrompt": "You are a TypeScript and React expert. Write clean, efficient code using Next.js 15 App Router, Tailwind CSS, and modern React patterns. Focus on type safety and performance optimization. Provide concise, working solutions.",
+      "contextLength": 8192,
+      "completionOptions": {
+        "temperature": 0.1,
+        "top_p": 0.8
+      }
+    }
+  ],
+  "defaultModel": "Fullstack Dev - Custom",
+  "tabAutocompleteModel": {
+    "title": "Qwen2.5 Coder 3B - Autocomplete",
+    "provider": "ollama",
+    "model": "qwen2.5-coder:3b-instruct",
+    "apiBase": "http://localhost:11434",
+    "completionOptions": {
+      "temperature": 0.05,
+      "top_p": 0.7,
+      "maxTokens": 150
+    }
+  },
+  "contextProviders": [
+    {
+      "name": "files",
+      "params": {
+        "include": ["**/*.{ts,tsx,js,jsx,json,md,sql,prisma}"],
+        "exclude": ["node_modules/**", ".next/**", "dist/**", ".git/**", "*.log", "*.lock"]
+      }
+    },
+    {
+      "name": "folder",
+      "params": {
+        "folders": ["components", "app", "lib", "stores", "types", "src", "prisma"]
+      }
+    },
+    {
+      "name": "codebase",
+      "params": {
+        "nRetrieve": 25,
+        "nFinal": 5,
+        "useReranking": true
+      }
+    },
+    {
+      "name": "docs",
+      "params": {
+        "sites": [
+          "https://nextjs.org/docs",
+          "https://react.dev",
+          "https://tailwindcss.com/docs",
+          "https://supabase.com/docs",
+          "https://zustand-demo.pmnd.rs"
+        ]
+      }
+    }
+  ],
+  "allowAnonymousTelemetry": false,
+  "embeddingsProvider": {
+    "provider": "ollama",
+    "model": "qwen2.5-coder:3b-instruct",
+    "apiBase": "http://localhost:11434"
+  }
+}
