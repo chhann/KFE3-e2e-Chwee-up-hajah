@@ -42,4 +42,5 @@ export interface SubmitButtonProps {
   password: string;
   confirmPassword: string;
   emailError?: string;
+  agreedToTerms: boolean;
 }
