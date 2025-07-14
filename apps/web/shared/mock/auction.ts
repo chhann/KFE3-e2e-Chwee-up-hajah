@@ -35,14 +35,19 @@ export const mockListings = [
 ];
 
 export const categories = [
-  { title: '전체' },
-  { title: '가전' },
-  { title: '스포츠용품' },
-  { title: '취미' },
-  { title: '의류' },
-  { title: '가구' },
-  { title: '사무용품' },
+  { title: '전체', imageUrl: '/category-images/category_all.svg' },
+  { title: '가전/전자기기', imageUrl: '/category-images/refrigerator.png' },
+  { title: '가구/인테리어', imageUrl: '/category-images/sofa.png' },
+  { title: '도서/티켓', imageUrl: '/category-images/book.png' },
+  { title: '뷰티', imageUrl: '/category-images/cosmetics.png' },
+  { title: '사무/잡화', imageUrl: '/category-images/office-supplies.png' },
+  { title: '스포츠용품', imageUrl: '/category-images/dumbbell.png' },
+  { title: '시계/쥬얼리', imageUrl: '/category-images/clock.png' },
+  { title: '의류', imageUrl: '/category-images/clothes.png' },
+  { title: '생활/주방', imageUrl: '/category-images/kitchen.png' }, // TODO: 아이콘 추가 필요
+  { title: '기타', imageUrl: '/category-images/etc.svg' }, // TODO: 아이콘 추가 필요
 ];
+
 export const auctionMockData = {
   auctionName: '빈티지시계 - 한정판',
   currentBidCost: 110000,
