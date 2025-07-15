@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { Category } from '@repo/ui/design-system/base-components/Category/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
@@ -14,11 +15,27 @@ import { SearchInput } from '@/widgets/search';
 
 const Page = () => {
   const locationName = '서울시 강남구';
-  const { data: auctionList, isLoading, isError } = useAuctionList();
+  const {
+    data: auctionPages,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useAuctionList();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedBadge, setSelectedBadge] = useState<string>('all');
-  // API 데이터 → AuctionListings용 데이터로 변환
-  const mappedList = (auctionList || []).map(mapAuctionItem);
+  const { ref } = useInView({
+    threshold: 0.5,
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+  });
+
+  const allAuctions = auctionPages?.pages.flatMap((page) => page.data) || [];
+  const mappedList = allAuctions.map(mapAuctionItem);
 
   let filteredList = mappedList;
   if (!(selectedCategory === 'all' || selectedCategory === '전체')) {
@@ -27,11 +44,12 @@ const Page = () => {
   if (selectedBadge !== 'all') {
     filteredList = filteredList.filter((item) => item.badgeVariant === selectedBadge);
   }
+
   return (
     <main className="flex min-h-screen w-full flex-col items-center p-1">
       <SearchInput />
       <div className="mr-auto flex items-center gap-1">
-        <LocationInfo address={locationName}></LocationInfo>
+        <LocationInfo address={locationName} />
       </div>
       <Category
         categories={categories}
@@ -55,7 +73,11 @@ const Page = () => {
       ) : isError ? (
         <div className="my-8 text-red-500">경매 목록을 불러오지 못했습니다.</div>
       ) : (
-        <AuctionListings listData={filteredList} />
+        <>
+          <AuctionListings listData={filteredList} />
+          <div ref={ref} style={{ height: '1px' }} />
+          {isFetchingNextPage && <div className="my-8">더 많은 경매를 불러오는 중...</div>}
+        </>
       )}
     </main>
   );
