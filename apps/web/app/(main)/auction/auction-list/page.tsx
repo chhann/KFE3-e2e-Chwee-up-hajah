@@ -37,7 +37,9 @@ const Page = () => {
   const allAuctions = auctionPages?.pages.flatMap((page) => page.data) || [];
   const mappedList = allAuctions.map(mapAuctionItem);
 
-  let filteredList = mappedList;
+  // 기본적으로 종료된 경매(status === 'end')는 필터링하여 제외
+  let filteredList = mappedList.filter((item) => item.status !== 'end');
+
   if (!(selectedCategory === 'all' || selectedCategory === '전체')) {
     filteredList = filteredList.filter((item) => item.category === selectedCategory);
   }

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   try {
     let query = adminClient
-      .from('auction')
+      .from('auctions_with_sort_key')
       .select(
         `
         *,
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
         )
       `
       )
-      .order('end_time', { ascending: false });
+      .order('sort_date', { ascending: false });
 
     // 검색 테이블 활용
     if (search) {
