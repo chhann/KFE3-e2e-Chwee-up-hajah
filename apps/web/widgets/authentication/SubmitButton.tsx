@@ -11,6 +11,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   password,
   confirmPassword,
   emailError,
+  agreedToTerms,
 }) => (
   <Button
     type="submit"
@@ -18,6 +19,8 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
     className="w-full"
     variants="primary"
     size="md"
-    disabled={isSubmitting || !email || !username || !password || !confirmPassword}
+    disabled={
+      isSubmitting || !email || !username || !password || !confirmPassword || !agreedToTerms
+    }
   />
 );
