@@ -47,6 +47,13 @@ const Page = () => {
     filteredList = filteredList.filter((item) => item.badgeVariant === selectedBadge);
   }
 
+  if (isLoading) {
+    return <div className="my-8">경매 목록을 불러오는 중...</div>;
+  }
+  if (isError) {
+    return <div className="my-8 text-red-500">경매 목록을 불러오지 못했습니다.</div>;
+  }
+
   return (
     <main className="flex min-h-screen w-full flex-col items-center p-1">
       <SearchInput />
@@ -70,17 +77,9 @@ const Page = () => {
         <option value="best">인기</option>
         <option value="urgent">마감 임박</option>
       </select>
-      {isLoading ? (
-        <div className="my-8">경매 목록을 불러오는 중...</div>
-      ) : isError ? (
-        <div className="my-8 text-red-500">경매 목록을 불러오지 못했습니다.</div>
-      ) : (
-        <>
-          <AuctionListings listData={filteredList} />
-          <div ref={ref} style={{ height: '1px' }} />
-          {isFetchingNextPage && <div className="my-8">더 많은 경매를 불러오는 중...</div>}
-        </>
-      )}
+      <AuctionListings listData={filteredList} />
+      <div ref={ref} style={{ height: '1px' }} />
+      {isFetchingNextPage && <div className="my-8">더 많은 경매를 불러오는 중...</div>}
     </main>
   );
 };
