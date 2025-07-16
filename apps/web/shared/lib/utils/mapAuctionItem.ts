@@ -19,5 +19,7 @@ export function mapAuctionItem(item: any) {
     locationName: item.seller.address,
     startTime: item.start_time,
     endTime: item.end_time,
+    createdAt: item.created_at,
+    updatedAt: item.updated_at,
   };
 }
