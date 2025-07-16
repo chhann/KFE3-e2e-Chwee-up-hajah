@@ -28,7 +28,6 @@ export const subscribeToMessages = async ({
       'postgres_changes',
       { event: 'INSERT', schema: 'public', table: 'message', filter: `room_id=eq.${roomId}` },
       (payload) => {
-        console.log('[Realtime] INSERT received:', payload.new);
         onMessageInsert(payload.new as Message);
       }
     )
