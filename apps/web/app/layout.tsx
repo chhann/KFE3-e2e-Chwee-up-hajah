@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { NotificationPermissionButton } from '@/features/test/NotificationPermissionButton';
+import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
 import * as Sentry from '@sentry/nextjs';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -37,7 +39,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
         <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
           <DarkModeToggle />
-          <Providers>{children}</Providers>
+          <NotificationPermissionButton />
+          <Providers>
+            <PushSubscriptionEffect />
+            {children}
+          </Providers>
         </Sentry.ErrorBoundary>
       </body>
     </html>
