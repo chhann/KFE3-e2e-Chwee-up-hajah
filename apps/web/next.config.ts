@@ -1,6 +1,6 @@
-import type { NextConfig } from 'next';
 import withPWA from '@ducanh2912/next-pwa';
 import { withSentryConfig } from '@sentry/nextjs';
+import type { NextConfig } from 'next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
@@ -18,6 +18,7 @@ const pwaOptions = {
   dest: 'public',
   register: true,
   skipWaiting: true,
+  swSrc: 'public/sw.js',
 };
 
 // withPWA를 먼저 적용하고, 그 결과에 nextConfig를 전달

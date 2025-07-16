@@ -86,14 +86,22 @@ export const subscribeToMessages = async ({
       : { event: 'UPDATE', schema: 'public', table: 'message' };
 
   channel
-    .on('postgres_changes', insertOptions, (payload) => {
-      console.log(`asdfsdfasdas34342[Realtime] ${mode} INSERT:`, payload.new);
-      onMessageInsert(payload.new as Message);
-    })
-    .on('postgres_changes', updateOptions, (payload) => {
-      console.log(`[Realtime] ${mode} UPDATE:`, payload.new);
-      onMessageUpdate(payload.new as Message);
-    });
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'message', filter: `room_id=eq.${roomId}` },
+      (payload) => {
+        console.log('[Realtime] INSERT received:', payload.new);
+        onMessageInsert(payload.new as Message);
+      }
+    )
+    .on(
+      'postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: 'message', filter: `room_id=eq.${roomId}` },
+      (payload) => {
+        console.log('[Realtime] UPDATE received:', payload.new);
+        onMessageUpdate(payload.new as Message);
+      }
+    );
 
   const result = await channel.subscribe();
   console.log(result, '실행 결과');
