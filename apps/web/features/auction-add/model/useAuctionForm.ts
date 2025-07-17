@@ -30,8 +30,17 @@ export function useAuctionForm({
   const updateAuctionMutation = useUpdateAuction();
   const sellerId = useAuthStore((state) => state.userId);
 
-  const isStarted =
-    initialData && initialData.start_time ? isAuctionStarted(initialData.start_time) : false;
+  const isStarted = (() => {
+    if (!initialData || !initialData.start_time) {
+      return false;
+    }
+    // 경매가 종료되었고, 입찰 기록이 없는 경우 수정 가능 (시작되지 않은 것으로 간주)
+    if (initialData.status === 'end' && initialData.bid_count === 0) {
+      return false;
+    }
+    // 그 외의 경우, 시작 시간을 기준으로 판단
+    return isAuctionStarted(initialData.start_time);
+  })();
 
   useEffect(() => {
     if (isEdit && initialData) {
