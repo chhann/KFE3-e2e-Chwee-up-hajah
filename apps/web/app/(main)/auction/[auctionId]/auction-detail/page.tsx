@@ -1,7 +1,7 @@
 'use client';
 
-import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
+import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { useParams } from 'next/navigation';
 
 import {
@@ -13,10 +13,12 @@ import { ImageBanner } from '@/widgets/image-banner';
 
 import { useAuctionBidState } from '@/features/auction-detail/model/useAuctionBidState';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+import { useAuthStore } from '@/shared/stores/auth';
 
 const Page = () => {
   const params = useParams();
   const auctionId = params.auctionId as string;
+  const userId = useAuthStore().userId;
   const {
     data,
     isLoading,
@@ -63,9 +65,17 @@ const Page = () => {
       />
       <AuctionSellerProfile user={seller} />
       <AuctionDescriptionCard bids={displayBids} description={product.description} />
-      {data.status === 'end' && (
-        <AuctionOverlay overlayText="경매가 종료되었습니다." isCanClose={true} />
-      )}
+      {data.status === 'end' &&
+        (displayBids.length === 0 && data.seller_id === userId ? (
+          <AuctionOverlay
+            overlayText={`아쉽지만 유찰되었습니다.\n 경매 수정 후 다시 등록해보세요.`}
+            isFailed={true}
+            isCanClose={true}
+            auctionId={auctionId}
+          />
+        ) : (
+          <AuctionOverlay overlayText="경매가 종료되었습니다." isCanClose={true} />
+        ))}
     </main>
   );
 };
