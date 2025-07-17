@@ -27,14 +27,18 @@ export async function POST(req: NextRequest) {
   if (auction.current_price > 0) {
     const { data: previousBid } = await adminClient
       .from('bid')
-      .select('bidder_id')
+      .select('bidder_id, bid_price')
       .eq('auction_id', auctionId)
       .neq('bidder_id', bidderId) // 현재 입찰자 제외
-      .order('bid_time', { ascending: false }) // 최신순
+      .order('bid_price', { ascending: false })
+      .order('bid_time', { ascending: false }) // 같은 가격이면 최신순
       .limit(1)
       .single();
 
-    previousBidderId = previousBid?.bidder_id;
+    // 중요: 이전 입찰자의 가격이 현재 경매의 최고가와 같을 때만 (= 진짜 직전 최고 입찰자)
+    if (previousBid && previousBid.bid_price === auction.current_price) {
+      previousBidderId = previousBid.bidder_id;
+    }
   }
 
   // 1. auction 테이블 업데이트
