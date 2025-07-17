@@ -1,11 +1,8 @@
 import { adminClient } from '@/app/admin';
-import { createApiClient } from '@/app/server';
-import webpush from 'web-push';
+import { sendNotificationAsync } from '@/shared/lib/notification/sendNotification';
 import { NextRequest, NextResponse } from 'next/server';
-import { sendOutbidNotificationAsync } from '@/shared/lib/notification/sendOutBidNotification';
 
 export async function POST(req: NextRequest) {
-  const supabase = createApiClient(req);
   const { auctionId, bidderId, bidPrice } = await req.json();
   if (!auctionId || !bidderId || !bidPrice) {
     return NextResponse.json({ error: '필수 값 누락' }, { status: 400 });
@@ -25,7 +22,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '입찰가는 현재 입찰가보다 커야 합니다.' }, { status: 400 });
   }
 
-  // 푸시 알림 - 이전 최고 입찰자 조회 (첫 입찰이 아닌 경우에만 )
+  // 이전 최고 입찰자 조회 (첫 입찰이 아닌 경우에만 )
   let previousBidderId = null;
   if (auction.current_price > 0) {
     const { data: previousBid } = await adminClient
@@ -66,10 +63,15 @@ export async function POST(req: NextRequest) {
   }
 
   if (previousBidderId) {
-    sendOutbidNotificationAsync({
-      previousBidderId,
-      newBidAmount: bidPrice,
+    sendNotificationAsync({
+      userId: previousBidderId,
       auctionId,
+      title: '더 높은 입찰 등장!',
+      body: `경매에서 더 높은 입찰이 나타났습니다. 현재 최고가: ${bidPrice.toLocaleString()}원`,
+      type: 'auction_outbid',
+      data: {
+        bid_amount: bidPrice,
+      },
     });
   }
 
