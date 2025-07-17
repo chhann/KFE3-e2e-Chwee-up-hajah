@@ -1,5 +1,15 @@
 import { adminClient } from '@/app/admin';
+import { AuctionWithProduct } from '@/shared/types/db';
 import webpush from 'web-push';
+
+interface NotificationConfig {
+  userId: string;
+  auctionId: string;
+  title: string;
+  body: string;
+  type: 'auction_outbid' | 'auction_won' | 'auction_lost' | 'auction_no_bid';
+  data: Record<string, any>;
+}
 
 const vapidKeys = {
   publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
@@ -12,18 +22,11 @@ webpush.setVapidDetails(
   vapidKeys.privateKey!
 );
 
-export const sendOutbidNotificationAsync = ({
-  previousBidderId,
-  auctionId,
-  newBidAmount,
-}: {
-  previousBidderId: string;
-  auctionId: string;
-  newBidAmount: number;
-}) => {
+export const sendNotificationAsync = (config: NotificationConfig) => {
   setImmediate(async () => {
     try {
-      const { data: auctionData, error: auctionError } = await adminClient
+      // 1. 경매 정보 조회
+      const { data: auctionData, error: auctionError } = (await adminClient
         .from('auction')
         .select(
           `
@@ -33,48 +36,47 @@ export const sendOutbidNotificationAsync = ({
           )
         `
         )
-        .eq('auction_id', auctionId)
-        .single();
+        .eq('auction_id', config.auctionId)
+        .single()) as { data: AuctionWithProduct | null; error: any };
 
       if (auctionError || !auctionData) {
         console.error('경매 정보 조회 실패:', auctionError);
         return;
       }
 
-      const productName = auctionData.product?.[0]?.name || '상품';
+      const productName = auctionData.product.name;
 
-      // 구독 정보 조회
+      // 2. 구독 정보 조회
       const { data: subscriptionData, error: subscriptionError } = await adminClient
         .from('push_subscriptions')
         .select('endpoint, p256dh, auth')
-        .eq('user_id', previousBidderId)
+        .eq('user_id', config.userId)
         .single();
 
-      // 알림 내역 저장용 데이터
+      // 3. 알림 내역 저장용 데이터 (auction_id는 별도 필드로, data에서 제거)
       const notificationData = {
-        user_id: previousBidderId,
-        title: '더 높은 입찰 등장!',
-        body: `${productName} 경매에서 더 높은 입찰이 나타났습니다. 현재 최고가: ${newBidAmount.toLocaleString()}원`,
-        type: 'auction_outbid',
+        user_id: config.userId,
+        auction_id: config.auctionId, // 별도 필드로 저장
+        title: config.title,
+        body: config.body,
+        type: config.type,
         data: {
-          auction_id: auctionId,
-          bid_amount: newBidAmount, // 해당 시점의 입찰가
-          product_name: productName, // 상품명도 저장 (상품명 변경 대비)
+          ...config.data,
+          product_name: productName, // product_name만 data에 포함
         },
         sent_at: new Date().toISOString(),
       };
 
       if (subscriptionError || !subscriptionData) {
-        // 구독 정보 없음
-        await adminClient.from('notifications').insert({
+        await adminClient.from('notification').insert({
           ...notificationData,
           delivery_status: 'not_subscribed',
         });
-        console.log(`사용자 ${previousBidderId}는 푸시 알림 구독하지 않음`);
+        console.log(`사용자 ${config.userId}는 푸시 알림 구독하지 않음`);
         return;
       }
 
-      // 푸시 알림 전송 시도
+      // 4. 푸시 알림 전송
       try {
         const pushSubscription = {
           endpoint: subscriptionData.endpoint,
@@ -85,28 +87,26 @@ export const sendOutbidNotificationAsync = ({
         };
 
         const pushPayload = JSON.stringify({
-          title: notificationData.title,
-          body: notificationData.body,
-          url: `/auction/${auctionId}/auction-detail`,
+          title: config.title,
+          body: config.body,
+          url: `/auction/${config.auctionId}/auction-detail`,
         });
 
         await webpush.sendNotification(pushSubscription, pushPayload);
 
-        // 성공 시 알림 내역 저장
-        await adminClient.from('notifications').insert({
+        await adminClient.from('notification').insert({
           ...notificationData,
           delivery_status: 'sent',
         });
 
-        console.log(`입찰 알림 전송 성공: ${previousBidderId}`);
+        console.log(`${config.type} 알림 전송 성공: ${config.userId}`);
       } catch (pushError) {
-        // 푸시 실패 시에도 알림 내역 저장
-        await adminClient.from('notifications').insert({
+        await adminClient.from('notification').insert({
           ...notificationData,
           delivery_status: 'failed',
         });
 
-        console.error(`푸시 전송 실패 (${previousBidderId}):`, pushError);
+        console.error(`푸시 전송 실패 (${config.userId}):`, pushError);
       }
     } catch (error) {
       console.error('알림 처리 중 오류:', error);
