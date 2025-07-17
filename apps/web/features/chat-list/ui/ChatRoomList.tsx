@@ -1,13 +1,16 @@
 'use client';
 
-import { useChatList } from '@/shared/api/client/chat/useChatList';
-
-import { subscribeToMessages } from '@/features/chat-room/model/subscribeToMessages';
-import { useUnreadCountMap } from '@/shared/api/client/chat/useUnreadMessageCount ';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { containerStyles, errorStyles, listStyles } from '../styles/ChatRoomList.styles';
+
+import { useChatList } from '@/shared/api/client/chat/useChatList';
+import { useUnreadCountMap } from '@/shared/api/client/chat/useUnreadMessageCount ';
+
+import { subscribeToMessages } from '@/features/chat-room/model/subscribeToMessages';
 import { ChatRoomListItem } from './ChatRoomListItem';
+
+import { AnimatePresence, motion } from 'framer-motion';
+import { containerStyles, errorStyles, listStyles } from '../styles/ChatRoomList.styles';
 
 export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
   const [tab, setTab] = useState<'buying' | 'selling'>('buying');
@@ -77,28 +80,39 @@ export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
 
       {/* 채팅방 리스트 아이템들 */}
       <ul className={listStyles}>
-        {filteredRooms
-          ?.slice()
-          .sort((a, b) => {
-            const aUnread = unreadCountMap?.[a.room_id] ?? 0;
-            const bUnread = unreadCountMap?.[b.room_id] ?? 0;
+        <AnimatePresence>
+          {filteredRooms
+            ?.slice()
+            .sort((a, b) => {
+              const aUnread = unreadCountMap?.[a.room_id] ?? 0;
+              const bUnread = unreadCountMap?.[b.room_id] ?? 0;
 
-            if (aUnread > 0 && bUnread === 0) return -1; // 안 읽은 메시지가 있는 방이 위로
-            if (aUnread === 0 && bUnread > 0) return 1;
+              if (aUnread > 0 && bUnread === 0) return -1; // 안 읽은 메시지가 있는 방이 위로
+              if (aUnread === 0 && bUnread > 0) return 1;
 
-            // ✅ 여기만 last_sent_at으로 수정
-            const aTime = new Date(a.last_sent_at ?? 0).getTime(); // 최신 메시지 기준 정렬
-            const bTime = new Date(b.last_sent_at ?? 0).getTime();
-            return bTime - aTime;
-          })
-          .map((room) => (
-            <ChatRoomListItem
-              key={room.room_id}
-              room={room}
-              currentUserId={currentUserId}
-              unreadCount={unreadCountMap?.[room.room_id] ?? 0}
-            />
-          ))}
+              // ✅ 여기만 last_sent_at으로 수정
+              const aTime = new Date(a.last_sent_at ?? 0).getTime(); // 최신 메시지 기준 정렬
+              const bTime = new Date(b.last_sent_at ?? 0).getTime();
+              return bTime - aTime;
+            })
+            .map((room) => (
+              <motion.li
+                key={room.room_id}
+                layout // ✨ 핵심: 위치 변화 감지
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              >
+                <ChatRoomListItem
+                  key={room.room_id}
+                  room={room}
+                  currentUserId={currentUserId}
+                  unreadCount={unreadCountMap?.[room.room_id] ?? 0}
+                />
+              </motion.li>
+            ))}
+        </AnimatePresence>
       </ul>
     </div>
   );

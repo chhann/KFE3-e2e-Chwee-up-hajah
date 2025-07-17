@@ -20,7 +20,7 @@ export const ChatRoomListItem = ({ room, currentUserId, unreadCount }: Props) =>
   const opponentNickname = isBuyer ? room.seller_nickname : room.buyer_nickname;
 
   return (
-    <li
+    <div
       role="button"
       tabIndex={0}
       className={cn(itemStyles.base, itemStyles.bg, itemStyles.activeBg)}
@@ -50,6 +50,6 @@ export const ChatRoomListItem = ({ room, currentUserId, unreadCount }: Props) =>
           </div>
         </div>
       </div>
-    </li>
+    </div>
   );
 };
