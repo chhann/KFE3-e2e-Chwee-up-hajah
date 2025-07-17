@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
       await processExpiredAuction(auction);
     }
 
-    console.log('알림 발송 처리된 경매 ', actuallyExpiredAuctions);
+    // console.log('알림 발송 처리된 경매 ', actuallyExpiredAuctions);
     return NextResponse.json({
       success: true,
       processed: actuallyExpiredAuctions.length,
@@ -68,7 +68,7 @@ async function processExpiredAuction(auction: any) {
       .single();
 
     if (existingNotification) {
-      console.log(`경매 ${auction.auction_id}는 이미 알림을 보냈습니다.`);
+      //   console.log(`경매 ${auction.auction_id}는 이미 알림을 보냈습니다.`);
       return;
     }
 
@@ -135,7 +135,7 @@ async function processExpiredAuction(auction: any) {
       });
     }
 
-    console.log(`경매 ${auction.auction_id} 알림 발송 완료`);
+    // console.log(`경매 ${auction.auction_id} 알림 발송 완료`);
   } catch (error) {
     console.error(`경매 ${auction.auction_id} 처리 중 에러:`, error);
   }
