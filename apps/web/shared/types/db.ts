@@ -64,3 +64,10 @@ export type Product = {
   created_at: string;
   category: string;
 };
+
+export type AuctionWithProduct = {
+  auction_id: string;
+  product: {
+    name: string;
+  };
+};

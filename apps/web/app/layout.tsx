@@ -41,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <DarkModeToggle />
           <NotificationPermissionButton />
           <Providers>
-            {/* <PushSubscriptionEffect /> */}
+            <PushSubscriptionEffect />
             {children}
           </Providers>
         </Sentry.ErrorBoundary>
