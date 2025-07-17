@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import { DarkModeToggle } from './(test)/toggle';
+import { Analytics } from '@vercel/analytics/next';
 
 import { Providers } from './providers';
 
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Providers>
             <PushSubscriptionEffect />
             {children}
+            <Analytics />
           </Providers>
         </Sentry.ErrorBoundary>
       </body>
