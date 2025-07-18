@@ -22,7 +22,7 @@ export const AVATAR_SIZES = {
 } as const;
 export const avatarStyle = {
   avatarBasicStyle: 'relative inline-flex shrink-0 overflow-hidden rounded-full',
-  avatarBorderStyle: 'border border-[var(--color-neutral-20)]',
-  avatarHoverStyle: 'transition-all duration-200 hover:border-[var(--color-primary-300)]',
+  avatarBorderStyle: 'border border-primary-200',
+  avatarHoverStyle: 'transition-all duration-200 hover:border-primary-300',
   avatarImageStyle: 'size-full object-cover',
 };

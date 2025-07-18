@@ -38,6 +38,9 @@ export class LoginService {
 
     // 인증 오류 처리
     if (error) {
+      if (error.message === 'Invalid login credentials') {
+        throw new Error('이메일 또는 비밀번호를 확인해주세요.');
+      }
       throw new Error(error.message);
     }
 

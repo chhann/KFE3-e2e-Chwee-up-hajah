@@ -1,7 +1,7 @@
 import { useLoginMutation } from '@/shared/api/client/authentication/useLoginMutation';
+import { useAuthStore } from '@/shared/stores/auth'; // useAuthStore 임포트
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { useAuthStore } from '@/shared/stores/auth'; // useAuthStore 임포트
 
 export const useLogin = () => {
   const router = useRouter();
@@ -36,7 +36,6 @@ export const useLogin = () => {
         },
         onError: (err) => {
           console.error('Login failed:', err.message);
-          alert(err.message);
         },
       }
     );
