@@ -1,12 +1,17 @@
-// apps/web/widgets/authentication/LoginFormComponent.tsx
 'use client';
 
-import { LoginFormComponentProps } from '@/shared/types/auth/login';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
-import Link from 'next/link';
 import React from 'react';
-import { LoginFormComponentStyles } from './styles';
+
+// isPending, error 등의 prop 타입 정의
+interface LoginFormComponentProps {
+  email?: string;
+  password?: string;
+  error?: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
   email,
@@ -15,43 +20,31 @@ export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
   onSubmit,
   onChangeEmail,
   onChangePassword,
-  isPending, // 추가
 }) => {
   return (
-    <form className={LoginFormComponentStyles.form} onSubmit={onSubmit}>
-      <Input
-        type="email"
-        value={email}
-        onChange={onChangeEmail}
-        placeholder="이메일 주소"
-        required
-        leftIcon="email"
-      />
-      <Input
-        type="password"
-        value={password}
-        onChange={onChangePassword}
-        placeholder="비밀번호"
-        required
-        leftIcon="password"
-      />
-
-      {/** 에러 메시지 */}
-      {error && <p className={LoginFormComponentStyles.error}>{error}</p>}
-
-      <div className={LoginFormComponentStyles.reset_password}>
-        <Link href="/password-reset" className={LoginFormComponentStyles.reset_password_link}>
-          비밀번호를 잊으셨나요?
-        </Link>
+    <form className="w-full" onSubmit={onSubmit}>
+      <div className="mb-6">
+        <Input
+          id="email"
+          label="이메일/아이디"
+          type="text"
+          value={email}
+          onChange={onChangeEmail}
+          placeholder="이메일 또는 아이디"
+          required
+        />
       </div>
-      <Button
-        children="로그인"
-        className="w-full"
-        type="submit"
-        variants="primary"
-        size="md"
-        disabled={!email || !password || isPending} // isPending 추가
-      />
+      <div>
+        <Input
+          id="password"
+          label="비밀번호"
+          type="password"
+          value={password}
+          onChange={onChangePassword}
+          placeholder="비밀번호"
+          required
+        />
+      </div>
     </form>
   );
 };

@@ -1,125 +1,84 @@
-import React, { useId, useState, forwardRef } from 'react';
-import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md';
-import { cn } from '../../../utils/cn';
-import { inputStyle } from './Input.styles';
+import React, { forwardRef, useId, useState } from 'react';
+import { MdVisibility, MdVisibilityOff } from 'react-icons/md'; // react-icons 설치 필요
+import { cn } from '../../../utils/cn'; // 경로는 실제 프로젝트 구조에 맞게 조정하세요.
 
 export interface InputProps {
+  id?: string;
   label?: string;
   type?: 'text' | 'email' | 'password';
   placeholder?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
-  success?: string;
-  leftIcon?: 'email' | 'password';
   disabled?: boolean;
   required?: boolean;
-  maxLength?: number;
-  readOnly?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
+      id,
       label,
       type = 'text',
       placeholder,
       value,
       onChange,
       error,
-      success,
-      leftIcon,
       disabled = false,
       required = false,
-      readOnly = false,
-      maxLength,
       ...props
     },
     ref
   ) => {
     const [showPassword, setShowPassword] = useState(false);
-    const inputId = useId();
+    const generatedId = useId();
+    const inputId = id || generatedId;
 
-    const handleTogglePassword = () => {
-      setShowPassword(!showPassword);
-    };
-
+    const handleTogglePassword = () => setShowPassword(!showPassword);
     const inputType = type === 'password' && showPassword ? 'text' : type;
-
-    const renderLeftIcon = () => {
-      if (leftIcon === 'email') {
-        return <MdEmail className={inputStyle.inputIconStyle} />;
-      }
-      if (leftIcon === 'password') {
-        return <MdLock className={inputStyle.inputIconStyle} />;
-      }
-      return null;
-    };
 
     return (
       <div className="w-full">
-        {/* 라벨 */}
         {label && (
-          <label htmlFor={inputId} className={inputStyle.inputLabelStyle}>
+          <label htmlFor={inputId} className="mb-2 block text-sm font-medium text-gray-700">
             {label}
-            {required && <span className={inputStyle.inputRequiredLabelStyle}>*</span>}
           </label>
         )}
-
-        {/* 입력 필드 컨테이너 */}
-        <div className="relative flex-grow">
-          <div
+        <div className="relative">
+          <input
+            id={inputId}
+            type={inputType}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            disabled={disabled}
+            required={required}
+            ref={ref}
             className={cn(
-              inputStyle.inputOutlineStyle,
-              error && inputStyle.inputOutlineErrorStyle,
-              disabled && inputStyle.inputOutlineDisabledStyle
+              'bg-primary-50 text-text-default placeholder-text-lighter w-full rounded-md border px-4 py-3 text-base transition-colors duration-200',
+              // 포커스 색상을 파스텔 보라색 계열로 변경
+              'focus:bg-background-light focus:border-[var(--color-primary-500)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2',
+              error ? 'border-red-500' : 'border-primary-200',
+              disabled ? 'bg-primary-100 cursor-not-allowed' : ''
             )}
-          >
-            {/* 왼쪽 아이콘 */}
-            {leftIcon && <div className="mr-3">{renderLeftIcon()}</div>}
-
-            {/* 입력 필드 */}
-            <input
-              id={inputId}
-              type={inputType}
-              placeholder={placeholder}
-              value={value}
-              onChange={onChange}
-              disabled={disabled}
-              required={required}
-              readOnly={readOnly}
-              maxLength={maxLength}
-              className={inputStyle.inputBasickStyle}
-              ref={ref}
-              {...props}
-            />
-
-            {/* 비밀번호 보기/숨기기 버튼 */}
-            {type === 'password' && (
-              <button
-                type="button"
-                onClick={handleTogglePassword}
-                className={inputStyle.inputButtonStyle}
-                disabled={disabled}
-                aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-              >
-                {showPassword ? (
-                  <MdVisibilityOff className={inputStyle.inputIconStyle} />
-                ) : (
-                  <MdVisibility className={inputStyle.inputIconStyle} />
-                )}
-              </button>
-            )}
-          </div>
-
-          {/* 에러 메시지 */}
-          {error && (
-            <p className={cn(inputStyle.messageBaseStyle, inputStyle.errorMessageStyle)}>{error}</p>
+            {...props}
+          />
+          {type === 'password' && (
+            <button
+              type="button"
+              onClick={handleTogglePassword}
+              className="text-text-light absolute inset-y-0 right-0 flex items-center pr-4"
+              aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+            >
+              {showPassword ? (
+                <MdVisibilityOff className="h-5 w-5" />
+              ) : (
+                <MdVisibility className="h-5 w-5" />
+              )}
+            </button>
           )}
-
-          {/* 성공 메시지 */}
-          {success && <p className={cn(inputStyle.successMessageStyle)}>{success}</p>}
         </div>
+        {error && <p className="mt-1.5 text-sm text-red-500">{error}</p>}
       </div>
     );
   }

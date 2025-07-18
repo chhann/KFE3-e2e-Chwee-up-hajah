@@ -2,8 +2,8 @@
 
 import { useLogin } from '@/shared/hooks/useLogin';
 import { LoginFormComponent } from '@/widgets/authentication/LoginFormComponent';
-import { SignUpLinkComponent } from '@/widgets/authentication/SignUpLinkComponent';
-import { SocialLoginSection } from '@/widgets/authentication/SocialLoginSection';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 const LoginPage = () => {
@@ -14,42 +14,61 @@ const LoginPage = () => {
     onChangeEmail,
     onChangePassword,
     onSubmit,
-    resetFields,
     isPending,
     triggerLogin,
   } = useLogin();
 
   useEffect(() => {
+    // Enter 키로 로그인하는 로직은 그대로 유지합니다.
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
-        // Enter 키가 눌렸을 때 로그인 로직 실행
+      if (event.key === 'Enter' && !isPending) {
         triggerLogin();
       }
     };
-
-    // document에 이벤트 리스너 추가
     document.addEventListener('keydown', handleKeyDown);
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [triggerLogin]); // triggerLogin이 변경될 때마다 이펙트 재실행
+  }, [triggerLogin, isPending]);
 
   return (
-    <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md">
-      <h2 className="mt mb-4 text-center text-2xl font-bold">로그인</h2>
-      <LoginFormComponent
-        email={email}
-        password={password}
-        error={error}
-        onChangeEmail={onChangeEmail}
-        onChangePassword={onChangePassword}
-        onSubmit={onSubmit}
-        isPending={isPending}
-      />
-      <SocialLoginSection onSocialLoginClick={resetFields} />
-      <SignUpLinkComponent />
+    <div className="bg-background-light flex min-h-screen w-full flex-col items-center pt-20">
+      <h2 className="mb-10 text-2xl font-bold text-gray-800">이메일/아이디 로그인</h2>
+      <div className="w-full max-w-xs px-4 sm:px-0">
+        <LoginFormComponent
+          email={email}
+          password={password}
+          error={error}
+          onSubmit={onSubmit}
+          onChangeEmail={onChangeEmail}
+          onChangePassword={onChangePassword}
+        />
+        <div className="mt-4">{error && <p className="mb-4 text-sm text-red-600">{error}</p>}</div>
+        <div className="my-6 flex justify-center space-x-3 text-sm text-gray-500">
+          {/* 링크 호버 색상을 파스텔 보라색 계열로 변경 */}
+          <Link href="/find-id" className="transition-colors hover:text-violet-600">
+            계정 찾기
+          </Link>
+          <span className="text-primary-200">|</span>
+          <Link href="/reset-password" className="transition-colors hover:text-violet-600">
+            비밀번호 찾기
+          </Link>
+          <span className="text-primary-200">|</span>
+          <Link href="/signup" className="transition-colors hover:text-violet-600">
+            회원가입
+          </Link>
+        </div>
+        <Button
+          onClick={() => triggerLogin()}
+          // 버튼 배경색을 파스텔 보라색 계열로 변경
+          className="w-full bg-violet-500 text-white hover:bg-violet-600"
+          size="lg"
+          disabled={!email || !password || isPending}
+          variants="custom"
+        >
+          {isPending ? '로그인 중...' : '로그인'}
+        </Button>
+      </div>
     </div>
   );
 };
