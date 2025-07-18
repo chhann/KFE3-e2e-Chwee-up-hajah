@@ -1,7 +1,7 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import { DarkModeToggle } from './(test)/toggle';
-import { Analytics } from '@vercel/analytics/next';
 
 import { Providers } from './providers';
 
@@ -29,7 +29,10 @@ export const metadata: Metadata = {
 
 import { NotificationPermissionButton } from '@/features/test/NotificationPermissionButton';
 import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
+import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';
 import * as Sentry from '@sentry/nextjs';
+import Script from 'next/script';
+import GoogleAnalytics from './GoogleAnalytics';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const theme = (await cookies()).get('theme')?.value ?? 'light';
@@ -45,6 +48,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <PushSubscriptionEffect />
             {children}
             <Analytics />
+            <GoogleAnalytics />
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_TRACKING_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
           </Providers>
         </Sentry.ErrorBoundary>
       </body>
