@@ -36,14 +36,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="ko" className={`${notoSansKR.variable} ${isDark ? 'dark' : ''}`}>
-      <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
+      <body
+        className={`${notoSansKR.className} bg-background-light text-text-default flex min-h-screen flex-col dark:bg-neutral-900 dark:text-neutral-100`}
+      >
         <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-          <DarkModeToggle />
-          <NotificationPermissionButton />
-          <Providers>
-            <PushSubscriptionEffect />
-            {children}
-          </Providers>
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <DarkModeToggle />
+            <NotificationPermissionButton />
+            <Providers>
+              <PushSubscriptionEffect />
+              <main className="flex-grow">{children}</main>
+            </Providers>
+          </div>
         </Sentry.ErrorBoundary>
       </body>
     </html>
