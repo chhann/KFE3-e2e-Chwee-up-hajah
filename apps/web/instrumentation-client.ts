@@ -11,9 +11,6 @@ Sentry.init({
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1.0,
 
-  // NODE_ENV가 'production'일 때만 Sentry를 활성화합니다.
-  enabled: process.env.NODE_ENV === 'production',
-
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
 

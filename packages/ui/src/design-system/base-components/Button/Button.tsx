@@ -6,7 +6,7 @@ export interface ButtonProps {
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   variants: 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
-  size?: 'lg' | 'md' | 'sm';
+  size?: 'lg' | 'thinLg' | 'md' | 'thinMd' | 'sm';
   disabled?: boolean;
   onClick?: (e: React.MouseEvent) => void;
   style?: React.CSSProperties;
@@ -15,7 +15,9 @@ export interface ButtonProps {
 const buttonStyle = {
   buttonSizeClasses: {
     lg: 'text-base w-full py-3 px-6',
+    thinLg: 'text-sm px-4 py-2',
     md: 'text-sm px-4 py-2',
+    thinMd: 'text-sm px-4 py-2',
     sm: 'text-xs px-3 py-1.5',
   },
   buttonDisabledClasses: cn(

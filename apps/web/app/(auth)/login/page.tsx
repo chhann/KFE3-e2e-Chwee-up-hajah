@@ -2,73 +2,28 @@
 
 import { useLogin } from '@/shared/hooks/useLogin';
 import { LoginFormComponent } from '@/widgets/authentication/LoginFormComponent';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import Link from 'next/link';
-import { useEffect } from 'react';
 
 const LoginPage = () => {
-  const {
-    email,
-    password,
-    error,
-    onChangeEmail,
-    onChangePassword,
-    onSubmit,
-    isPending,
-    triggerLogin,
-  } = useLogin();
+  // 1. 데이터와 상태, 핸들러는 모두 useLogin 훅에서 가져옵니다.
+  const { email, password, error, isPending, onSubmit, onChangeEmail, onChangePassword } =
+    useLogin();
 
-  useEffect(() => {
-    // Enter 키로 로그인하는 로직은 그대로 유지합니다.
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter' && !isPending) {
-        triggerLogin();
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [triggerLogin, isPending]);
+  // 2. Enter 키 입력을 위한 useEffect는 더 이상 필요 없으므로 삭제합니다.
+  //    (LoginFormComponent 내부의 <form>과 type="submit" 버튼이 자동으로 처리합니다.)
 
   return (
+    // 3. 페이지는 전체 레이아웃만 담당합니다. (예: 화면 중앙 정렬)
     <div className="bg-background-light flex min-h-screen w-full flex-col items-center pt-20">
-      <h2 className="mb-10 text-2xl font-bold text-gray-800">이메일/아이디 로그인</h2>
-      <div className="w-full max-w-xs px-4 sm:px-0">
-        <LoginFormComponent
-          email={email}
-          password={password}
-          error={error}
-          onSubmit={onSubmit}
-          onChangeEmail={onChangeEmail}
-          onChangePassword={onChangePassword}
-        />
-        <div className="mt-4">{error && <p className="mb-4 text-sm text-red-600">{error}</p>}</div>
-        <div className="my-6 flex justify-center space-x-3 text-sm text-gray-500">
-          {/* 링크 호버 색상을 파스텔 보라색 계열로 변경 */}
-          <Link href="/find-id" className="transition-colors hover:text-violet-600">
-            계정 찾기
-          </Link>
-          <span className="text-primary-200">|</span>
-          <Link href="/reset-password" className="transition-colors hover:text-violet-600">
-            비밀번호 찾기
-          </Link>
-          <span className="text-primary-200">|</span>
-          <Link href="/signup" className="transition-colors hover:text-violet-600">
-            회원가입
-          </Link>
-        </div>
-        <Button
-          onClick={() => triggerLogin()}
-          // 버튼 배경색을 파스텔 보라색 계열로 변경
-          className="w-full bg-violet-500 text-white hover:bg-violet-600"
-          size="lg"
-          disabled={!email || !password || isPending}
-          variants="custom"
-        >
-          {isPending ? '로그인 중...' : '로그인'}
-        </Button>
-      </div>
+      {/* 4. UI 렌더링은 LoginFormComponent에 모두 위임하고, 필요한 모든 props를 넘겨줍니다. */}
+      <LoginFormComponent
+        email={email}
+        password={password}
+        error={error}
+        isPending={isPending}
+        onSubmit={onSubmit}
+        onChangeEmail={onChangeEmail}
+        onChangePassword={onChangePassword}
+      />
     </div>
   );
 };
