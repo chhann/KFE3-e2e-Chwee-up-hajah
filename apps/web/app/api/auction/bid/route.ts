@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       .limit(1)
       .single();
 
-    // 중요: 이전 입찰자의 가격이 현재 경매의 최고가와 같을 때만 (= 진짜 직전 최고 입찰자)
+    // 이전 입찰자의 가격이 현재 경매의 최고가와 같을 때만 (= 진짜 직전 최고 입찰자)
     if (previousBid && previousBid.bid_price === auction.current_price) {
       previousBidderId = previousBid.bidder_id;
     }
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     sendNotificationAsync({
       userId: previousBidderId,
       auctionId,
-      title: '더 높은 입찰 등장!',
+      title: '입찰에 실패하였습니다.',
       body: `경매에서 더 높은 입찰이 나타났습니다. 현재 최고가: ${bidPrice.toLocaleString()}원`,
       type: 'auction_outbid',
       data: {
