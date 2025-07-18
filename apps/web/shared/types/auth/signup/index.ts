@@ -32,7 +32,6 @@ export interface AddressInputSectionProps {
   addressDetail: string;
   onChangeAddress: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddressDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onAddressSearch: () => void;
   error?: string;
 }
 
@@ -43,4 +42,5 @@ export interface SubmitButtonProps {
   password: string;
   confirmPassword: string;
   emailError?: string;
+  agreedToTerms: boolean;
 }

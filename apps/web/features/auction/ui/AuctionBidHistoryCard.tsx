@@ -4,8 +4,8 @@ import { Bid } from '@/shared/types/db';
 import { auctionBidHistoryStyle } from './styles/AuctionBidHistoryCard.styles';
 
 export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
-  const dateObj = new Date(bid.bid_time);
-  const dateStr = dateObj.toLocaleDateString('en-US', {
+  const dateObj = new Date(bid.bid_time + 'Z');
+  const dateStr = dateObj.toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

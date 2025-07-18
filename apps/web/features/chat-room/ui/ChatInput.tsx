@@ -21,6 +21,8 @@ export const ChatInput = ({
   const { mutate, isPending } = useSendMessage(roomId, { id: senderId, name: senderName });
 
   const handleSend = () => {
+    console.log('실행됐잖어');
+
     if (!input.trim()) return;
 
     mutate({

@@ -43,6 +43,7 @@ export const useSignup = (): UseSignupReturn => {
   const [username, setUsername] = useState('');
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   // 오류 상태
   const [fieldErrors, setFieldErrors] = useState<ValidationErrors>({});
@@ -155,6 +156,10 @@ export const useSignup = (): UseSignupReturn => {
     setAddressDetail(e.target.value);
   }, []);
 
+  const onChangeAgreedToTerms = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAgreedToTerms(e.target.checked);
+  }, []);
+
   // -------------------
   // 중복 확인 로직
   // -------------------
@@ -203,19 +208,6 @@ export const useSignup = (): UseSignupReturn => {
     }
   }, [username, clearSpecificFieldErrors]);
 
-  /**
-   * 주소 검색 처리
-   * 현재 콘솔 로그만 출력하는 플레이스 홀더
-   */
-  const onAddressSearch = useCallback(() => {
-    clearSpecificFieldErrors(['address']);
-    if (!address.trim()) {
-      setFieldErrors((prev) => ({ ...prev, address: '주소를 입력해주세요.' }));
-      return;
-    }
-    console.log('주소 검색:', address);
-  }, [address, clearSpecificFieldErrors]);
-
   // -------------------
   // 회원가입 처리
   // -------------------
@@ -258,6 +250,7 @@ export const useSignup = (): UseSignupReturn => {
           username,
           address,
           addressDetail,
+          agreedToTerms,
         });
 
         if (Object.keys(validationErrors).length > 0) {
@@ -267,13 +260,16 @@ export const useSignup = (): UseSignupReturn => {
         }
 
         // 3. 회원가입 API 호출
-        const result = await AuthService.signup({
+        const signupData = {
           email,
           password,
           username,
           address,
           addressDetail,
-        });
+          agreedToTerms,
+        };
+
+        const result = await AuthService.signup(signupData);
 
         // 4. 성공 시 적절한 페이지로 이동
         if (result.needsVerification) {
@@ -309,6 +305,7 @@ export const useSignup = (): UseSignupReturn => {
       resetErrors,
       router,
       isSubmitting,
+      agreedToTerms,
     ]
   );
 
@@ -323,6 +320,7 @@ export const useSignup = (): UseSignupReturn => {
     username,
     address,
     addressDetail,
+    agreedToTerms,
 
     // 오류 상태
     fieldErrors,
@@ -344,12 +342,12 @@ export const useSignup = (): UseSignupReturn => {
     onChangeUsername,
     onChangeAddress,
     onChangeAddressDetail,
+    onChangeAgreedToTerms,
 
     // 액션 핸들러
     onSubmit,
     onEmailDuplicateCheck,
     onUsernameDuplicateCheck,
-    onAddressSearch,
 
     // 유틸리티
     resetErrors,
