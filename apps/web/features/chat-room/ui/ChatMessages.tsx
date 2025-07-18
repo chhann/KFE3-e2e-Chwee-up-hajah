@@ -42,6 +42,7 @@ export const ChatMessages = ({
     const setup = async () => {
       unsubscribe = await subscribeToMessages({
         roomId,
+        mode: 'room',
         onMessageInsert: () => {
           queryClient.invalidateQueries({ queryKey: ['messages', roomId] });
         },
