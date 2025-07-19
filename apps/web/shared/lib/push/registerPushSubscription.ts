@@ -27,7 +27,7 @@ export const registerPushSubscription = async (): Promise<PushSubscription | nul
       existing ??
       (await (async () => {
         console.log('✅ step 3: VAPID 키 준비');
-        const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
+        const vapidKey = process.env.VAPID_PUBLIC_KEY!;
         const convertedKey = urlBase64ToUint8Array(vapidKey);
 
         console.log('📡 step 4: 푸시 구독 생성 시도');
