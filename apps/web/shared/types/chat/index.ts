@@ -26,6 +26,7 @@ export interface ChatRoom {
   seller_nickname: string;
   seller_location: string;
   winning_bid_price: number;
+  last_sent_at: string;
   created_at: string;
 }
 

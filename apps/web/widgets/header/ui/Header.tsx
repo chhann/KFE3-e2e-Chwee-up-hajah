@@ -8,6 +8,9 @@ import { useModalStore } from '../../../shared/stores/modal';
 
 import { headerStyles as styles } from '../styles/header.styles';
 
+import { IoNotificationsOutline } from 'react-icons/io5';
+import { GrLocation } from 'react-icons/gr';
+
 export const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -31,7 +34,7 @@ export const Header = () => {
           onClick={() => setOpenModal('notification')}
           className={styles.buttonArea.notificationButton}
         >
-          <h2>알림</h2>
+          <IoNotificationsOutline className={styles.buttonArea.icon} />
         </Button>
         <Button
           size="thinMd"
@@ -39,7 +42,7 @@ export const Header = () => {
           onClick={() => setOpenModal('location')}
           className={styles.buttonArea.locationButton}
         >
-          <h2>내 위치</h2>
+          <GrLocation className={styles.buttonArea.icon} />
         </Button>
       </div>
     </header>

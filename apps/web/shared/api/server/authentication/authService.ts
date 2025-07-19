@@ -1,3 +1,4 @@
+import { SignupClientSchema } from '@/shared/lib/validators/auth';
 import type { SignupData, ValidationErrors } from '@/shared/types/auth/types';
 
 /**
@@ -101,33 +102,21 @@ export class AuthService {
    * - 비밀번호 최소 길이 (8자)
    * - 비밀번호 확인 일치 여부
    */
-  static validateSignupData(data: SignupData & { confirmPassword: string }): ValidationErrors {
-    const errors: ValidationErrors = {};
+  static validateSignupData(
+    data: SignupData & {
+      confirmPassword: string;
+      agreedToTermsOfService: boolean;
+      agreedToPrivacyPolicy: boolean;
+      agreedToMarketing?: boolean;
+    }
+  ): ValidationErrors {
+    const result = SignupClientSchema.safeParse(data);
 
-    // 필수 필드 입력 여부 검사
-    if (!data.email) errors.email = '이메일을 입력해주세요.';
-    if (!data.password) errors.password = '비밀번호를 입력해주세요.';
-    if (!data.confirmPassword) errors.confirmPassword = '비밀번호 확인이 필요합니다.';
-    if (!data.username) errors.username = '닉네임을 입력해주세요.';
-    if (!data.address) errors.address = '주소를 입력해주세요.';
-
-    // 이메일 형식 검증 (RFC 5322 기본 패턴)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (data.email && !emailRegex.test(data.email)) {
-      errors.email = '올바른 이메일 형식을 입력해주세요.';
+    if (result.success) {
+      return {};
     }
 
-    // 비밀번호 최소 길이 검증
-    if (data.password && data.password.length < 8) {
-      errors.password = '비밀번호는 8자 이상이어야 합니다.';
-    }
-
-    // 비밀번호 확인 일치 여부 검증
-    if (data.password && data.confirmPassword && data.password !== data.confirmPassword) {
-      errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
-    }
-
-    return errors;
+    return result.error.flatten().fieldErrors as ValidationErrors;
   }
 
   /**

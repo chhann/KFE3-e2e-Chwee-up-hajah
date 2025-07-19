@@ -13,3 +13,8 @@ export const textStyles = {
     'mb-[2px] text-[10px] leading-none text-[var(--text-secondary)] group-active:text-[var(--button-primary-text)]',
   price: 'text-base font-bold leading-tight text-[var(--button-primary-text)]',
 };
+
+export const badgeStyles = {
+  wrapper:
+    'absolute top-2 right-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[var(--text-error)] px-1.5 text-[10px] font-semibold text-white shadow-md',
+};

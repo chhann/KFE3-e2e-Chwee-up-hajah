@@ -11,13 +11,16 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   password,
   confirmPassword,
   emailError,
+  agreedToTerms,
 }) => (
   <Button
     type="submit"
     children="회원가입"
     className="w-full"
     variants="primary"
-    size="md"
-    disabled={isSubmitting || !email || !username || !password || !confirmPassword}
+    size="lg"
+    disabled={
+      isSubmitting || !email || !username || !password || !confirmPassword || !agreedToTerms
+    }
   />
 );

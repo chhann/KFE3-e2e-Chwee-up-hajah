@@ -1,15 +1,21 @@
 'use client';
 import { useState } from 'react';
 
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import Link from 'next/link';
 import { IoMdClose } from 'react-icons/io';
 import { overlayStyle } from './styles/AuctionOverlay';
 
 export const AuctionOverlay = ({
   overlayText,
   isCanClose,
+  isFailed,
+  auctionId,
 }: {
   overlayText: string;
   isCanClose?: boolean;
+  isFailed?: boolean;
+  auctionId?: string;
 }) => {
   const [visible, setVisible] = useState(true);
 
@@ -32,8 +38,17 @@ export const AuctionOverlay = ({
           }}
         />
       )}
-      <div className={overlayStyle.overlayTextStyle}>
-        <p>{overlayText}</p>
+      <div className={overlayStyle.overlayTextContainer}>
+        <div className={overlayStyle.overlayTextStyle}>
+          <p>{overlayText}</p>
+        </div>
+        {isFailed && (
+          <Link href={`/auction/${auctionId}/auction-edit`}>
+            <Button variants="primary" size="lg">
+              수정하기
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

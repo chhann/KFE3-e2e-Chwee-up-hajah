@@ -22,7 +22,12 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json({ success: true });
     const supabase = createApiClient(req, response);
 
-    const { email, password, username, address, addressDetail } = parse.data;
+    const { email, password, username, address, addressDetail, agreedToTerms } = parse.data;
+
+    // 약관에 동의하지 않은 경우, 요청 거부
+    if (!agreedToTerms) {
+      return NextResponse.json({ error: '이용약관에 동의해야 합니다.' }, { status: 400 });
+    }
 
     // 1. Supabase Auth에 회원가입
     const { data, error } = await supabase.auth.signUp({
@@ -49,6 +54,7 @@ export async function POST(req: NextRequest) {
       address,
       address_detail: addressDetail,
       created_at: new Date().toISOString(),
+      terms_agreed_at: new Date().toISOString(),
     });
 
     if (insertError) {

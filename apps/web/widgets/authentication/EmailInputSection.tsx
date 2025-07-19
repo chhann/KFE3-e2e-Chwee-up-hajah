@@ -4,7 +4,6 @@ import { EmailInputSectionProps } from '@/shared/types/auth/signup';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import React from 'react';
-import { SignupFormComponentStyles } from './styles';
 
 export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
   email,
@@ -14,9 +13,8 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
   emailCheckStatus,
   error,
 }) => (
-  <div>
-    <span className={SignupFormComponentStyles.emailInputSection.label}>이메일 주소</span>
-    <div className={SignupFormComponentStyles.emailInputSection.inputGroup}>
+  <div className="mb-8">
+    <div className="flex items-start space-x-2">
       <Input
         type="email"
         value={email}
@@ -26,12 +24,13 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
         error={error}
         success={emailCheckStatus === 'success' ? '사용 가능한 이메일입니다.' : undefined}
       />
+
       <Button
         type="button"
         children="중복 확인"
-        className="whitespace-nowrap"
+        className="bg-primary-300 whitespace-nowrap rounded-md px-4 py-3 text-sm text-neutral-100"
         variants="primary"
-        size="md"
+        size="sm"
         disabled={!email || isCheckingEmail}
         onClick={onEmailDuplicateCheck}
       />

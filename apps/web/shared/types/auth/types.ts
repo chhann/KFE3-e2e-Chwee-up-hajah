@@ -24,6 +24,12 @@ export interface SignupData {
   address: string;
   /** 상세 주소 (선택사항) */
   addressDetail?: string;
+  /** 이용 약관 동의 여부 */
+  agreedToTermsOfService: boolean;
+  /** 개인정보 수집 및 이용 동의 여부 */
+  agreedToPrivacyPolicy: boolean;
+  /** 마케팅 정보 수신 동의 여부 */
+  agreedToMarketing: boolean;
 }
 
 /**
@@ -59,6 +65,12 @@ export interface UseSignupReturn {
   address: string;
   /** 상세 주소 입력값 */
   addressDetail: string;
+  /** 이용 약관 동의 여부 */
+  agreedToTermsOfService: boolean;
+  /** 개인정보 수집 및 이용 동의 여부 */
+  agreedToPrivacyPolicy: boolean;
+  /** 마케팅 정보 수신 동의 여부 */
+  agreedToMarketing: boolean;
 
   // 오류 상태
   /** 각 필드별 오류 메시지 */
@@ -93,6 +105,12 @@ export interface UseSignupReturn {
   onChangeAddress: (e: React.ChangeEvent<HTMLInputElement>) => void;
   /** 상세 주소 입력 변경 핸들러 */
   onChangeAddressDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** 이용 약관 동의 변경 핸들러 */
+  onChangeAgreedToTermsOfService: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** 개인정보 수집 및 이용 동의 변경 핸들러 */
+  onChangeAgreedToPrivacyPolicy: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** 마케팅 정보 수신 동의 변경 핸들러 */
+  onChangeAgreedToMarketing: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   // 액션 핸들러
   /** 회원가입 폼 제출 핸들러 */
@@ -101,8 +119,6 @@ export interface UseSignupReturn {
   onEmailDuplicateCheck: () => Promise<boolean>;
   /** 사용자명 중복 확인 핸들러 */
   onUsernameDuplicateCheck: () => Promise<boolean>;
-  /** 주소 검색 핸들러 */
-  onAddressSearch: () => void;
 
   // 유틸리티
   /** 모든 오류 메시지 초기화 */

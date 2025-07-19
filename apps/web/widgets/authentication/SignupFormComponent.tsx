@@ -1,15 +1,22 @@
 'use client';
 
 import type { UseSignupReturn } from '@/shared/types/auth/types';
+import { useState } from 'react';
 import { AddressInputSection } from './AddressInputSection';
 import { EmailInputSection } from './EmailInputSection';
 import { LoginLink } from './LoginLink';
 import { PasswordInputSection } from './PasswordInputSection';
-import { SubmitButton } from './SubmitButton';
-import { UsernameInputSection } from './UsernameInputSection';
 import { SignupFormComponentStyles } from './styles';
+import { SubmitButton } from './SubmitButton';
+import { TermsModal } from './TermsModal';
+import { TermsSection } from './TermsSection';
+import { UsernameInputSection } from './UsernameInputSection';
 
 export const SignupFormComponent = (props: UseSignupReturn) => {
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+
+  const openTermsModal = () => setIsTermsModalOpen(true);
+  const closeTermsModal = () => setIsTermsModalOpen(false);
   return (
     <div className={SignupFormComponentStyles.container}>
       <h2 className={SignupFormComponentStyles.title}>회원가입</h2>
@@ -43,12 +50,20 @@ export const SignupFormComponent = (props: UseSignupReturn) => {
           addressDetail={props.addressDetail}
           onChangeAddress={props.onChangeAddress}
           onChangeAddressDetail={props.onChangeAddressDetail}
-          onAddressSearch={props.onAddressSearch}
           error={props.fieldErrors.address}
         />
-        {props.formError && (
-          <p className={SignupFormComponentStyles.formError}>{props.formError}</p>
-        )}
+
+        {/* 약관 동의 섹션 */}
+        <TermsSection
+          agreedToTermsOfService={props.agreedToTermsOfService}
+          onChangeAgreedToTermsOfService={props.onChangeAgreedToTermsOfService}
+          agreedToPrivacyPolicy={props.agreedToPrivacyPolicy}
+          onChangeAgreedToPrivacyPolicy={props.onChangeAgreedToPrivacyPolicy}
+          agreedToMarketing={props.agreedToMarketing}
+          onChangeAgreedToMarketing={props.onChangeAgreedToMarketing}
+          openTermsModal={openTermsModal}
+        />
+
         <SubmitButton
           isSubmitting={props.isSubmitting}
           email={props.email}
@@ -56,9 +71,11 @@ export const SignupFormComponent = (props: UseSignupReturn) => {
           password={props.password}
           confirmPassword={props.confirmPassword}
           emailError={props.fieldErrors.email}
+          agreedToTerms={props.agreedToTermsOfService}
         />
         <LoginLink />
       </form>
+      {isTermsModalOpen && <TermsModal onClose={closeTermsModal} />}
     </div>
   );
 };

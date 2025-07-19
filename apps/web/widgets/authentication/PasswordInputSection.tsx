@@ -3,7 +3,6 @@
 import { PasswordInputSectionProps } from '@/shared/types/auth/signup';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import React from 'react';
-import { SignupFormComponentStyles } from './styles';
 
 export const PasswordInputSection: React.FC<PasswordInputSectionProps> = ({
   password,
@@ -13,9 +12,8 @@ export const PasswordInputSection: React.FC<PasswordInputSectionProps> = ({
   passwordError,
   confirmPasswordError,
 }) => (
-  <>
-    <div>
-      <span className={SignupFormComponentStyles.passwordInputSection.label}>비밀번호</span>
+  <div className="mb-8">
+    <div className="mb-4">
       <Input
         type="password"
         value={password}
@@ -26,7 +24,6 @@ export const PasswordInputSection: React.FC<PasswordInputSectionProps> = ({
       />
     </div>
     <div>
-      <span className={SignupFormComponentStyles.passwordInputSection.label}>비밀번호 확인</span>
       <Input
         type="password"
         value={confirmPassword}
@@ -36,5 +33,5 @@ export const PasswordInputSection: React.FC<PasswordInputSectionProps> = ({
         error={confirmPasswordError}
       />
     </div>
-  </>
+  </div>
 );

@@ -5,26 +5,30 @@ import { useRouter } from 'next/navigation';
 import { FaLocationDot } from 'react-icons/fa6';
 
 import { ChatRoom } from '@/shared/types/chat';
-import { itemStyles, textStyles } from '../styles/ChatRoomItem.styles';
+import { badgeStyles, itemStyles, textStyles } from '../styles/ChatRoomItem.styles';
 
 interface Props {
   room: ChatRoom;
   currentUserId: string;
+  unreadCount: number; // 읽지 않은 메시지 수
 }
 
-export const ChatRoomListItem = ({ room, currentUserId }: Props) => {
+export const ChatRoomListItem = ({ room, currentUserId, unreadCount }: Props) => {
   const router = useRouter();
 
   const isBuyer = currentUserId === room.buyer_id;
   const opponentNickname = isBuyer ? room.seller_nickname : room.buyer_nickname;
 
   return (
-    <li
+    <div
       role="button"
       tabIndex={0}
       className={cn(itemStyles.base, itemStyles.bg, itemStyles.activeBg)}
       onClick={() => router.push(`/chat/${room.room_id}`)}
     >
+      {unreadCount > 0 && (
+        <span className={badgeStyles.wrapper}>{unreadCount > 99 ? '199+' : unreadCount}</span>
+      )}
       <div className="flex h-full flex-col justify-between">
         {/* 상단: 상품명, 닉네임 */}
         <div className="flex flex-col gap-[2px] overflow-hidden">
@@ -46,6 +50,6 @@ export const ChatRoomListItem = ({ room, currentUserId }: Props) => {
           </div>
         </div>
       </div>
-    </li>
+    </div>
   );
 };
