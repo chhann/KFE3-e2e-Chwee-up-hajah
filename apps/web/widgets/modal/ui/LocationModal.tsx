@@ -16,7 +16,7 @@ import { useModalStore } from '../../../shared/stores/modal';
 
 import { locationModalStyles as styles } from '../styles/locationModal.styles';
 
-export const LocationModal = () => {
+const LocationModal = () => {
   const { isModalOpen, closeModal } = useModalStore();
 
   if (!isModalOpen('location')) return null;
@@ -42,3 +42,5 @@ export const LocationModal = () => {
     </Modal>
   );
 };
+
+export default LocationModal;
