@@ -1,6 +1,5 @@
+import { createApiClient } from '@/app/server';
 import { NextRequest, NextResponse } from 'next/server';
-
-import { createApiClient } from '../../../server'; // 예: createServerClient wrapper
 
 export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get('userId');
@@ -12,12 +11,13 @@ export async function GET(req: NextRequest) {
   const supabase = createApiClient(req);
 
   const { data, error } = await supabase
-    .from('chatroom')
+    .from('view_chatroom_with_last_message')
     .select('*')
     .or(`buyer_id.eq.${userId},seller_id.eq.${userId}`)
-    .order('created_at', { ascending: false });
+    .order('last_sent_at', { ascending: false });
 
   if (error) {
+    console.error('[GET /api/chat/list]', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 

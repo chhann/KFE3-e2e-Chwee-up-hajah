@@ -1,4 +1,5 @@
 import { adminClient } from '@/app/admin';
+import { sendNotificationAsync } from '@/shared/lib/notification/sendNotification';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -19,6 +20,25 @@ export async function POST(req: NextRequest) {
   }
   if (bidPrice <= auction.current_price) {
     return NextResponse.json({ error: '입찰가는 현재 입찰가보다 커야 합니다.' }, { status: 400 });
+  }
+
+  // 이전 최고 입찰자 조회 (첫 입찰이 아닌 경우에만 )
+  let previousBidderId = null;
+  if (auction.current_price > 0) {
+    const { data: previousBid } = await adminClient
+      .from('bid')
+      .select('bidder_id, bid_price')
+      .eq('auction_id', auctionId)
+      .neq('bidder_id', bidderId) // 현재 입찰자 제외
+      .order('bid_price', { ascending: false })
+      .order('bid_time', { ascending: false }) // 같은 가격이면 최신순
+      .limit(1)
+      .single();
+
+    // 이전 입찰자의 가격이 현재 경매의 최고가와 같을 때만 (= 진짜 직전 최고 입찰자)
+    if (previousBid && previousBid.bid_price === auction.current_price) {
+      previousBidderId = previousBid.bidder_id;
+    }
   }
 
   // 1. auction 테이블 업데이트
@@ -44,6 +64,19 @@ export async function POST(req: NextRequest) {
 
   if (bidError) {
     return NextResponse.json({ error: '입찰 기록 저장 실패' }, { status: 500 });
+  }
+
+  if (previousBidderId) {
+    sendNotificationAsync({
+      userId: previousBidderId,
+      auctionId,
+      title: '입찰에 실패하였습니다.',
+      body: `경매에서 더 높은 입찰이 나타났습니다. 현재 최고가: ${bidPrice.toLocaleString()}원`,
+      type: 'auction_outbid',
+      data: {
+        bid_amount: bidPrice,
+      },
+    });
   }
 
   return NextResponse.json({ success: true });
