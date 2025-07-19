@@ -3,6 +3,7 @@
 import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import {
   AuctionDescriptionCard,
@@ -17,7 +18,7 @@ import { useAuthStore } from '@/shared/stores/auth';
 
 const Page = () => {
   const params = useParams();
-  const auctionId = params.auctionId as string;
+  const auctionId = params?.auctionId as string;
   const userId = useAuthStore().userId;
   const {
     data,
@@ -32,6 +33,19 @@ const Page = () => {
     minBidCostNumber,
   } = useAuctionBidState(auctionId);
 
+  const [displayRemainingTime, setDisplayRemainingTime] = useState('');
+
+  useEffect(() => {
+    if (data) {
+      const interval = setInterval(() => {
+        setDisplayRemainingTime(
+          getTimeLeftString({ endDate: data.end_time, startDate: data.start_time })
+        );
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [data]);
+
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>에러: {error.message}</div>;
   if (!data) return <div>데이터가 없습니다.</div>;
@@ -40,8 +54,7 @@ const Page = () => {
   const imageFiles = data.images || [];
   const auctionName = product.name;
   const startBidCost = data.start_price;
-  const remainingTime = getTimeLeftString({ endDate: data.end_time, startDate: data.start_time });
-  const bidUnit = 5000; // 입찰 단위
+  const bidUnit = 5000;
   const auctionStarted = isAuctionStarted(data.start_time);
 
   return (
@@ -51,7 +64,7 @@ const Page = () => {
       <AuctionDetailCard
         currentBidCost={displayCurrentPrice}
         startBidCost={startBidCost}
-        remainingTime={remainingTime}
+        remainingTime={displayRemainingTime}
         minBidCost={minBidCostNumber}
         bidUnit={bidUnit}
         bidCost={bidCost}

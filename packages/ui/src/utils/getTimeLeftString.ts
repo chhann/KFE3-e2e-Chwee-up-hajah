@@ -16,12 +16,16 @@ export function getTimeLeftString({ endDate, startDate }: TimeLeftProps): string
   };
 
   const formatTime = (diff: number): string => {
-    const totalHours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff / 1000 / 60) % 60);
-    if (totalHours === 0 && minutes === 0) {
-      return '1분 미만';
-    }
-    return `${totalHours}시간 ${minutes}분`;
+    const totalHours = Math.floor(diff / (1000 * 60 * 60)); // 총 시간을 계산
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    let timeString = '';
+    if (totalHours > 0) timeString += `${totalHours}시간 `;
+    if (minutes > 0 || totalHours > 0) timeString += `${minutes}분 `;
+    timeString += `${seconds}초`;
+
+    return timeString.trim();
   };
 
   const start = parseDate(startDate);
