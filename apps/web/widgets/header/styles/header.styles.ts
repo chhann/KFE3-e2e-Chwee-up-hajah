@@ -13,5 +13,6 @@ export const headerStyles = {
     container: 'grow text-right',
     notificationButton: 'mr-1 px-2',
     locationButton: 'px-2',
+    icon: 'size-5',
   },
 };
