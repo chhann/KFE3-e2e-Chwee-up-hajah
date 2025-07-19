@@ -78,6 +78,9 @@ jobs:
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
 
+      - name: Install Cypress binary
+        run: npx cypress install    
+
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
