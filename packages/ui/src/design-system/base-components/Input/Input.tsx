@@ -1,4 +1,4 @@
-import React, { useId, useState, forwardRef } from 'react';
+import React, { forwardRef, useId, useState } from 'react';
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { cn } from '../../../utils/cn';
 import { inputStyle } from './Input.styles';
@@ -72,6 +72,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               inputStyle.inputOutlineStyle,
               error && inputStyle.inputOutlineErrorStyle,
+              success && inputStyle.inputOutlineSuccessStyle,
               disabled && inputStyle.inputOutlineDisabledStyle
             )}
           >
@@ -90,6 +91,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               readOnly={readOnly}
               maxLength={maxLength}
               className={inputStyle.inputBasickStyle}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                boxShadow: 'none',
+                appearance: 'none',
+                WebkitAppearance: 'none',
+                MozAppearance: 'textfield',
+              }}
               ref={ref}
               {...props}
             />
@@ -118,7 +128,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
 
           {/* 성공 메시지 */}
-          {success && <p className={cn(inputStyle.successMessageStyle)}>{success}</p>}
+          {success && (
+            <p className={cn(inputStyle.messageBaseStyle, inputStyle.successMessageStyle)}>
+              {success}
+            </p>
+          )}
         </div>
       </div>
     );

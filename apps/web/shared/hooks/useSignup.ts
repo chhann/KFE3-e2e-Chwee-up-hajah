@@ -43,7 +43,9 @@ export const useSignup = (): UseSignupReturn => {
   const [username, setUsername] = useState('');
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToTermsOfService, setAgreedToTermsOfService] = useState(false);
+  const [agreedToPrivacyPolicy, setAgreedToPrivacyPolicy] = useState(false);
+  const [agreedToMarketing, setAgreedToMarketing] = useState(false);
 
   // 오류 상태
   const [fieldErrors, setFieldErrors] = useState<ValidationErrors>({});
@@ -156,8 +158,16 @@ export const useSignup = (): UseSignupReturn => {
     setAddressDetail(e.target.value);
   }, []);
 
-  const onChangeAgreedToTerms = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAgreedToTerms(e.target.checked);
+  const onChangeAgreedToTermsOfService = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAgreedToTermsOfService(e.target.checked);
+  }, []);
+
+  const onChangeAgreedToPrivacyPolicy = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAgreedToPrivacyPolicy(e.target.checked);
+  }, []);
+
+  const onChangeAgreedToMarketing = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAgreedToMarketing(e.target.checked);
   }, []);
 
   // -------------------
@@ -250,7 +260,9 @@ export const useSignup = (): UseSignupReturn => {
           username,
           address,
           addressDetail,
-          agreedToTerms,
+          agreedToTermsOfService,
+          agreedToPrivacyPolicy,
+          agreedToMarketing,
         });
 
         if (Object.keys(validationErrors).length > 0) {
@@ -266,7 +278,9 @@ export const useSignup = (): UseSignupReturn => {
           username,
           address,
           addressDetail,
-          agreedToTerms,
+          agreedToTermsOfService,
+          agreedToPrivacyPolicy,
+          agreedToMarketing,
         };
 
         const result = await AuthService.signup(signupData);
@@ -305,7 +319,7 @@ export const useSignup = (): UseSignupReturn => {
       resetErrors,
       router,
       isSubmitting,
-      agreedToTerms,
+      agreedToTermsOfService,
     ]
   );
 
@@ -320,7 +334,9 @@ export const useSignup = (): UseSignupReturn => {
     username,
     address,
     addressDetail,
-    agreedToTerms,
+    agreedToTermsOfService,
+    agreedToPrivacyPolicy,
+    agreedToMarketing,
 
     // 오류 상태
     fieldErrors,
@@ -342,7 +358,9 @@ export const useSignup = (): UseSignupReturn => {
     onChangeUsername,
     onChangeAddress,
     onChangeAddressDetail,
-    onChangeAgreedToTerms,
+    onChangeAgreedToTermsOfService,
+    onChangeAgreedToPrivacyPolicy,
+    onChangeAgreedToMarketing,
 
     // 액션 핸들러
     onSubmit,

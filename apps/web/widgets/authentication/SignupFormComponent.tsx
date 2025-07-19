@@ -2,15 +2,15 @@
 
 import type { UseSignupReturn } from '@/shared/types/auth/types';
 import { useState } from 'react';
-import { IoChevronForward } from 'react-icons/io5';
 import { AddressInputSection } from './AddressInputSection';
 import { EmailInputSection } from './EmailInputSection';
 import { LoginLink } from './LoginLink';
 import { PasswordInputSection } from './PasswordInputSection';
+import { SignupFormComponentStyles } from './styles';
 import { SubmitButton } from './SubmitButton';
 import { TermsModal } from './TermsModal';
+import { TermsSection } from './TermsSection';
 import { UsernameInputSection } from './UsernameInputSection';
-import { SignupFormComponentStyles } from './styles';
 
 export const SignupFormComponent = (props: UseSignupReturn) => {
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
@@ -52,32 +52,18 @@ export const SignupFormComponent = (props: UseSignupReturn) => {
           onChangeAddressDetail={props.onChangeAddressDetail}
           error={props.fieldErrors.address}
         />
-        {props.formError && (
-          <p className={SignupFormComponentStyles.formError}>{props.formError}</p>
-        )}
-        <div className="rounded-md border p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="terms"
-                type="checkbox"
-                checked={props.agreedToTerms}
-                onChange={props.onChangeAgreedToTerms}
-                className="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-              />
-              <label htmlFor="terms" className="ml-3 block text-sm font-medium text-gray-700">
-                이용약관 및 개인정보 처리방침 동의
-              </label>
-            </div>
-            <button
-              type="button"
-              onClick={openTermsModal}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <IoChevronForward className="h-6 w-6" />
-            </button>
-          </div>
-        </div>
+
+        {/* 약관 동의 섹션 */}
+        <TermsSection
+          agreedToTermsOfService={props.agreedToTermsOfService}
+          onChangeAgreedToTermsOfService={props.onChangeAgreedToTermsOfService}
+          agreedToPrivacyPolicy={props.agreedToPrivacyPolicy}
+          onChangeAgreedToPrivacyPolicy={props.onChangeAgreedToPrivacyPolicy}
+          agreedToMarketing={props.agreedToMarketing}
+          onChangeAgreedToMarketing={props.onChangeAgreedToMarketing}
+          openTermsModal={openTermsModal}
+        />
+
         <SubmitButton
           isSubmitting={props.isSubmitting}
           email={props.email}
@@ -85,7 +71,7 @@ export const SignupFormComponent = (props: UseSignupReturn) => {
           password={props.password}
           confirmPassword={props.confirmPassword}
           emailError={props.fieldErrors.email}
-          agreedToTerms={props.agreedToTerms}
+          agreedToTerms={props.agreedToTermsOfService}
         />
         <LoginLink />
       </form>

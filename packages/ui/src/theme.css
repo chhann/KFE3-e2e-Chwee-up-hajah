@@ -146,7 +146,7 @@
     var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Monaco, Consolas, monospace;
 
-  --text-xs: 0.75rem;
+  --text-xs: 0.8rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;

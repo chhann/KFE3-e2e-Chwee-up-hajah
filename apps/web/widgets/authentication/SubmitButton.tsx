@@ -18,7 +18,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
     children="회원가입"
     className="w-full"
     variants="primary"
-    size="md"
+    size="lg"
     disabled={
       isSubmitting || !email || !username || !password || !confirmPassword || !agreedToTerms
     }

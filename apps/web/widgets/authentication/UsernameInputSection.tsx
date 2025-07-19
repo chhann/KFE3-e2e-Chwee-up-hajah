@@ -13,8 +13,7 @@ export const UsernameInputSection: React.FC<UsernameInputSectionProps> = ({
   usernameCheckStatus,
   error,
 }) => (
-  <div>
-    <span className="text-sm text-gray-500">닉네임</span>
+  <div className="mb-8">
     <div className="flex items-start space-x-2">
       <Input
         type="text"
@@ -25,12 +24,13 @@ export const UsernameInputSection: React.FC<UsernameInputSectionProps> = ({
         error={error}
         success={usernameCheckStatus === 'success' ? '사용 가능한 닉네임입니다.' : undefined}
       />
+
       <Button
         type="button"
         children="중복 확인"
-        className="whitespace-nowrap"
+        className="bg-primary-300 whitespace-nowrap rounded-md px-4 py-3 text-sm text-neutral-100"
         variants="primary"
-        size="md"
+        size="sm"
         disabled={!username || isCheckingUsername}
         onClick={onUsernameDuplicateCheck}
       />

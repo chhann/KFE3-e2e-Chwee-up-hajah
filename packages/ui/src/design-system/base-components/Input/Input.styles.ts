@@ -3,37 +3,52 @@
 import { cn } from '../../../utils/cn';
 
 export const inputStyle = {
-  // Input Label
-  inputLabelStyle: cn('mb-2 block text-sm font-medium text-gray-700'), // 좀 더 부드러운 색상으로 변경
-  inputRequiredLabelStyle: cn('ml-0.5 text-red-500'),
+  // Input Label - 디자인 시스템 토큰 사용
+  inputLabelStyle: cn('mb-2 block text-sm font-medium', 'text-[var(--text-primary)]'),
+  inputRequiredLabelStyle: cn('ml-0.5', 'text-[var(--text-error)]'),
 
-  // Input Outline Container
+  // Input Outline Container - 완전히 보더 제거하고 ring만 사용
   inputOutlineStyle: cn(
-    'relative flex items-center rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5', // ✅ 기본 스타일 변경: 부드러운 배경과 테두리
+    'relative flex items-center rounded-lg px-3 py-2.5',
+    'bg-[var(--form-bg)]', // 디자인 시스템 배경색
     'transition-all duration-150',
-    'focus-within:ring-2 focus-within:ring-purple-400/30' // ✅ 포커스 시 보라색 ring 효과 추가
+    'ring-1 ring-[var(--form-border)]', // 기본 얇은 ring
+    'focus-within:ring-1 focus-within:ring-[var(--border-accent)]' // 포커스 시 두꺼운 accent ring
   ),
-  inputOutlineErrorStyle: cn('!border-red-500 !ring-red-500/30'), // 에러 시 ring 효과 추가
-  inputOutlineDisabledStyle: cn('cursor-not-allowed bg-gray-200 text-gray-500'),
-  inputOutlineSuccessStyle: cn('!border-green-500 !ring-green-500/30'), // 성공 시 ring 효과 추가
+  inputOutlineErrorStyle: cn('!ring-1 !ring-[var(--border-error)]'),
+  inputOutlineDisabledStyle: cn(
+    'cursor-not-allowed',
+    'bg-[var(--bg-disabled)]',
+    'text-[var(--text-disabled)]',
+    '!ring-1 !ring-[var(--border-disabled)]'
+  ),
+  inputOutlineSuccessStyle: cn('!ring-1 !ring-[var(--color-success-500)]'),
 
-  // Input Element
+  // Input Element - input 요소 자체를 완전히 투명하게
   inputBasickStyle: cn(
-    'w-full flex-1 bg-transparent text-base text-gray-900 placeholder-gray-400', // 텍스트, placeholder 색상 변경
-    'focus:outline-none'
+    'w-full flex-1 text-base',
+    'bg-transparent border-0 outline-0', // 배경, 보더, 아웃라인 제거
+    'text-[var(--form-text)]',
+    'placeholder:text-[var(--form-placeholder)]',
+    'focus:outline-none focus:ring-0 focus:border-0 focus:bg-transparent', // 포커스 시에도 투명
+    '[&::-webkit-inner-spin-button]:appearance-none', // 웹킷 기본 스타일 제거
+    '[&::-webkit-outer-spin-button]:appearance-none',
+    'appearance-none' // 모든 기본 appearance 제거
   ),
 
   // Icons
-  inputIconStyle: cn('h-5 w-5 text-gray-400'), // 아이콘 색상 변경
+  inputIconStyle: cn('h-5 w-5', 'text-[var(--text-tertiary)]'),
 
   // Password Toggle Button
   inputButtonStyle: cn(
-    'ml-2 rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-200',
-    'focus:outline-none focus:ring-2 focus:ring-purple-400/50'
+    'ml-2 rounded-full p-1 transition-colors',
+    'text-[var(--text-tertiary)]',
+    'hover:bg-[var(--bg-tertiary)]',
+    'focus:outline-none focus:ring-2 focus:ring-[var(--border-accent)]/50'
   ),
 
   // Helper Messages
-  messageBaseStyle: cn('mt-1.5 text-sm'),
-  errorMessageStyle: cn('text-red-600'),
-  successMessageStyle: cn('text-green-600'),
+  messageBaseStyle: cn('mt-1.5 text-xs'),
+  errorMessageStyle: cn('text-[var(--text-error)]'),
+  successMessageStyle: cn('text-[var(--text-success)]'),
 };

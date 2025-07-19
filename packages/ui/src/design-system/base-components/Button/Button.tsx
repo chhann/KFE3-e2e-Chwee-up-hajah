@@ -20,9 +20,10 @@ const buttonStyle = {
     thinMd: 'text-sm px-4 py-2',
     sm: 'text-xs px-3 py-1.5',
   },
+
   buttonDisabledClasses: cn(
-    'disabled:bg-primary-100 disabled:text-primary-300 disabled:cursor-not-allowed',
-    'disabled:hover:bg-primary-100'
+    'disabled:bg-neutral-100 disabled:text-neutral-600 disabled:cursor-not-allowed',
+    'disabled:hover:bg-netual-100'
   ),
 };
 
