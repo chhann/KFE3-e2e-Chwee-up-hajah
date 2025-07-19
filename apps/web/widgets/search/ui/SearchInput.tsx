@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { GoSearch } from 'react-icons/go';
+import { Input } from '../../../../../packages/ui/src/design-system/base-components/Input/Input';
 import { searchInputStyles } from '../styles/searchInput.styles';
 
 export const SearchInput = () => {
@@ -20,9 +21,8 @@ export const SearchInput = () => {
   return (
     <form className={searchInputStyles.form} onSubmit={handleSearch}>
       <div className={searchInputStyles.inputWrapper}>
-        <input
-          type="search"
-          className={searchInputStyles.input}
+        <Input
+          type="text"
           placeholder="검색어를 입력하세요..."
           aria-label="검색어를 입력하세요"
           value={value}

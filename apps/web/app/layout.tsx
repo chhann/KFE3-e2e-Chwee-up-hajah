@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
-import { DarkModeToggle } from './(test)/toggle';
 
 import { Providers } from './providers';
 
@@ -42,7 +41,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="ko" className={`${notoSansKR.variable} ${isDark ? 'dark' : ''}`}>
       <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
         <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-          <DarkModeToggle />
           <NotificationPermissionButton />
           <Providers>
             <PushSubscriptionEffect />

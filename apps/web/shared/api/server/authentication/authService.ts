@@ -103,7 +103,12 @@ export class AuthService {
    * - 비밀번호 확인 일치 여부
    */
   static validateSignupData(
-    data: SignupData & { confirmPassword: string; agreedToTerms: boolean }
+    data: SignupData & {
+      confirmPassword: string;
+      agreedToTermsOfService: boolean;
+      agreedToPrivacyPolicy: boolean;
+      agreedToMarketing?: boolean;
+    }
   ): ValidationErrors {
     const result = SignupClientSchema.safeParse(data);
 

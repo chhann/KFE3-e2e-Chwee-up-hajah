@@ -25,10 +25,18 @@ export const SignupSchema = z.object({
   /** 상세 주소 - 선택 사항 */
   addressDetail: z.string().optional(),
 
-  /** 약관 동의 - 항상 true여야 함 */
-  agreedToTerms: z.literal(true, {
-    message: '이용약관 및 개인정보 처리방침에 동의해야 합니다.',
+  /** 이용 약관 동의 - 항상 true여야 함 */
+  agreedToTermsOfService: z.literal(true, {
+    message: '이용 약관 동의는 필수입니다.',
   }),
+
+  /** 개인정보 수집 및 이용 동의 - 항상 true여야 함 */
+  agreedToPrivacyPolicy: z.literal(true, {
+    message: '개인정보 수집 및 이용 동의는 필수입니다.',
+  }),
+
+  /** 마케팅 정보 수신 동의 - 선택 사항 */
+  agreedToMarketing: z.boolean().optional(),
 });
 
 // 먼저 omit으로 서버 스키마 생성

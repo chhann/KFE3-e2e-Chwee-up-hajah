@@ -57,13 +57,12 @@ export const AddressInputSection: React.FC<AddressInputSectionProps> = ({
   };
 
   return (
-    <>
+    <div className="mb-8">
       <Script
         src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
         strategy="lazyOnload"
       />
-      <div>
-        <span className={SignupFormComponentStyles.addressInputSection.label}>주소</span>
+      <div className="mb-4">
         <div className={SignupFormComponentStyles.addressInputSection.inputGroup}>
           <Input
             type="text"
@@ -77,7 +76,7 @@ export const AddressInputSection: React.FC<AddressInputSectionProps> = ({
           <Button
             type="button"
             onClick={handleAddressSearch}
-            className="whitespace-nowrap"
+            className="bg-primary-300 whitespace-nowrap rounded-md px-4 py-3 text-sm text-neutral-100"
             variants="primary"
             size="md"
           >
@@ -86,7 +85,6 @@ export const AddressInputSection: React.FC<AddressInputSectionProps> = ({
         </div>
       </div>
       <div>
-        <span className={SignupFormComponentStyles.addressInputSection.label}>상세 주소</span>
         <Input
           ref={addressDetailRef}
           type="text"
@@ -96,6 +94,6 @@ export const AddressInputSection: React.FC<AddressInputSectionProps> = ({
           required={false}
         />
       </div>
-    </>
+    </div>
   );
 };

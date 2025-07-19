@@ -1,4 +1,4 @@
-import { colors, colorUtils } from '@repo/ui/design-system/design-tokens/index';
+import { colors, colorUtils } from '@repo/ui/design-system/design-tokens';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 // 같은 폴더에 있으니 ./ 사용
 
