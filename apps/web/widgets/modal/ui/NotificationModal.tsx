@@ -16,29 +16,29 @@ import { useNotificationList } from '@/shared/api/client/notification/useNotific
 import { NotificationItem } from '@/shared/types/notification';
 
 import { NotificationModalItem } from './NotificationModalItem';
-import { notificationModalStyles as styles } from '../styles/notificationModal.styles';
+import { notificationModalStyles } from '../styles/notificationModal.styles';
 
 const NotificationModal = () => {
   const router = useRouter();
-  const { isModalOpen, closeModal } = useModalStore();
-  const { data: items, isLoading } = useNotificationList(isModalOpen('notification'));
-
-  if (!isModalOpen('notification')) return null;
+  const { closeModal } = useModalStore();
+  const { data: items = [], isLoading } = useNotificationList(true);
 
   return (
-    <Modal className={styles.modal}>
-      <ModalContent className={styles.content}>
+    <Modal className={notificationModalStyles.modal}>
+      <ModalContent className={notificationModalStyles.content}>
         <ModalHeader title="알림" onClose={closeModal} />
         {isLoading ? (
-          <div className="flex items-center justify-center p-8">
+          <div className={notificationModalStyles.loading}>
             <AiOutlineLoading3Quarters className="animate-spin" />
           </div>
         ) : (
           <>
-            {items.length === 0 && <p className={styles.emptyMessage}>알림 내역이 없습니다.</p>}
-            <div>
-              <ItemBadge className={styles.sectionBadge}>
-                <span className={styles.sectionIcon}>
+            {items.length === 0 && (
+              <p className={notificationModalStyles.emptyMessage}>알림 내역이 없습니다.</p>
+            )}
+            <>
+              <ItemBadge className={notificationModalStyles.sectionBadge}>
+                <span className={notificationModalStyles.sectionIcon}>
                   <RiAuctionLine className="mr-1 size-5" />
                 </span>
                 <h3>{items.length}개의 경매가 있습니다.</h3>
@@ -46,16 +46,17 @@ const NotificationModal = () => {
 
               {items.map((item: NotificationItem) => (
                 <div
-                  key={item['notification_id']}
+                  key={item.notification_id}
+                  className={notificationModalStyles.notificationItemWrapper}
                   onClick={() => {
-                    router.push(`/auction/${item['auction_id']}/auction-detail`);
+                    router.push(`/auction/${item.auction_id}/auction-detail`);
                     closeModal();
                   }}
                 >
                   <NotificationModalItem item={item} />
                 </div>
               ))}
-            </div>
+            </>
           </>
         )}
       </ModalContent>

@@ -46,14 +46,20 @@ export const notificationModalStyles = {
   // 모달 콘텐츠
   content: 'h-[500px] w-[340px] bg-[#F4F1FE] p-4 pb-0',
 
+  // 로딩 컨테이너 (추가)
+  loading: 'flex items-center justify-center p-8',
+
   // 빈 상태 메시지
-  emptyMessage: '',
+  emptyMessage: 'text-center text-neutral-50 py-8',
 
   // 섹션 배지
   sectionBadge: 'text-neutral-70 mb-2',
 
   // 섹션 아이콘
   sectionIcon: 'mr-1 size-5',
+
+  // 알림 아이템 래퍼
+  notificationItemWrapper: 'cursor-pointer hover:opacity-80 transition-opacity',
 
   // 알림 아이템
   notificationItem: 'text-neutral-80 mb-4 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]',

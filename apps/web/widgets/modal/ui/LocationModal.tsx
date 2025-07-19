@@ -17,9 +17,7 @@ import { useModalStore } from '../../../shared/stores/modal';
 import { locationModalStyles as styles } from '../styles/locationModal.styles';
 
 const LocationModal = () => {
-  const { isModalOpen, closeModal } = useModalStore();
-
-  if (!isModalOpen('location')) return null;
+  const { closeModal } = useModalStore();
 
   return (
     <Modal className={styles.modal}>

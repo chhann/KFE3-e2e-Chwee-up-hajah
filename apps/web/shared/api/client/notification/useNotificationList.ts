@@ -3,7 +3,7 @@ import { fetchNotificationList } from '../../server/notification/fetchNotificati
 
 export const useNotificationList = (isModalOpen: boolean) => {
   return useQuery({
-    queryKey: ['notification', 'list'],
+    queryKey: ['notifications'],
     queryFn: fetchNotificationList,
     enabled: isModalOpen,
   });
