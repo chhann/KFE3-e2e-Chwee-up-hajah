@@ -1,13 +1,5 @@
 import { adminClient } from '@/app/admin';
 
-// 등급별 적립률 매핑
-const TIER_RATES: Record<string, number> = {
-  숲: 0.04, // 4%
-  나무: 0.02, // 2%
-  새싹: 0.015, // 1.5%
-  씨앗: 0.01, // 1%
-};
-
 export const calculateAndAddPoints = async (
   userId: string,
   transactionAmount: number,
