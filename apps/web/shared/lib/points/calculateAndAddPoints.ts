@@ -10,44 +10,45 @@ const TIER_RATES: Record<string, number> = {
 
 export const calculateAndAddPoints = async (
   userId: string,
-  transactionAmount: number
-): Promise<{ status: number; data?: { earnedPoints: number }; error?: string }> => {
+  transactionAmount: number,
+  transactionId?: string,
+  userRole?: 'seller' | 'buyer'
+): Promise<{
+  status: number;
+  data?: {
+    earnedPoints: number;
+  };
+  error?: string;
+}> => {
   try {
-    // 1. 사용자 정보 조회
-    const { data: user, error: fetchUserError } = await adminClient
-      .from('user')
-      .select('points, tier')
-      .eq('user_id', userId)
-      .single();
+    const { data, error } = await adminClient.rpc('add_points_with_history', {
+      p_user_id: userId,
+      p_transaction_amount: transactionAmount,
+      p_transaction_id: transactionId,
+      p_user_role: userRole,
+      p_earning_type: 'transaction',
+    });
 
-    if (fetchUserError || !user) {
-      return { status: 401, error: '사용자를 찾을 수 없습니다' };
+    if (error) {
+      console.error('RPC 호출 실패:', error);
+      return { status: 500, error: 'RPC 호출 중 오류가 발생했습니다' };
     }
 
-    // 2. 현재 등급의 적립률로 포인트 계산
-    const currentTier = user.tier || '씨앗';
-    const accrualRate = TIER_RATES[currentTier] || 0.01; // 기본값은 씨앗 등급의 1%
-    const earnedPoints = Math.floor(transactionAmount * accrualRate);
-
-    // 3. 새 포인트 총합 계산
-    const newTotalPoints = (user.points || 0) + earnedPoints;
-
-    // 4. db 업데이트
-    const { error: updateError } = await adminClient
-      .from('user')
-      .update({ points: newTotalPoints })
-      .eq('user_id', userId);
-
-    if (updateError) {
+    if (data?.status === 200) {
       return {
-        status: 500,
-        error: '포인트 업데이트 중 오류가 발생했습니다',
+        status: 200,
+        data: {
+          earnedPoints: data.data.earned_points,
+        },
+      };
+    } else {
+      return {
+        status: data?.status || 500,
+        error: data?.error || '알 수 없는 오류가 발생했습니다',
       };
     }
-
-    return { status: 200, data: { earnedPoints } };
   } catch (error) {
-    console.error('Error calculating and adding points:', error);
+    console.error('포인트 적립 처리 중 오류:', error);
     return {
       status: 500,
       error: '포인트 적립 처리 중 오류가 발생했습니다',
