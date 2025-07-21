@@ -5,6 +5,18 @@ import * as Sentry from '@sentry/nextjs';
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
+const isBrowser = typeof window !== 'undefined';
+const integrations = [];
+
+if (isBrowser) {
+  integrations.push(
+    Sentry.replayIntegration({
+      maskAllText: true,
+      blockAllMedia: true,
+    })
+  );
+}
+
 Sentry.init({
   dsn: SENTRY_DSN,
 
@@ -21,11 +33,12 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
 
   // You can remove this option if you're not planning to use the Sentry Session Replay feature:
-  integrations: [
-    Sentry.replayIntegration({
-      // Additional Replay configuration goes in here, for example:
-      maskAllText: true,
-      blockAllMedia: true,
-    }),
-  ],
+  // integrations: [
+  //   Sentry.replayIntegration({
+  //     // Additional Replay configuration goes in here, for example:
+  //     maskAllText: true,
+  //     blockAllMedia: true,
+  //   }),
+  // ],
+  integrations,
 });
