@@ -18,7 +18,7 @@ export const calculateAndAddPoints = async (
       p_transaction_amount: transactionAmount,
       p_transaction_id: transactionId,
       p_user_role: userRole,
-      p_earning_type: 'transaction',
+      p_earning_type: '경매',
     });
 
     if (error) {
