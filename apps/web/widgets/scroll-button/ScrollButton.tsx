@@ -48,8 +48,10 @@ export function ScrollButton() {
   };
 
   const isChatRoom = pathname.startsWith('/chat/') && pathname.length > '/chat/'.length;
+  const isHotDealDetail = pathname.match(/^\/hotdeal\/[^/]+\/detail$/);
   const otherHiddenPaths = ['/profile'];
-  const isHiddenPage = isChatRoom || otherHiddenPaths.some((path) => pathname.startsWith(path));
+  const isHiddenPage =
+    isChatRoom || isHotDealDetail || otherHiddenPaths.some((path) => pathname.startsWith(path));
 
   if (!isMounted || isHiddenPage) {
     return null;
