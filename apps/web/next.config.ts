@@ -32,6 +32,9 @@ const sentryConfig = withSentryConfig(
     silent: true,
     org: process.env.SENTRY_ORG,
     project: process.env.SENTRY_PROJECT,
+
+    // Automatically tree-shake Sentry logger statements to reduce bundle size
+    disableLogger: true,
   }
 );
 
