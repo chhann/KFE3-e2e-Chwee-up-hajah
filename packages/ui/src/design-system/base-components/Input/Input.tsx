@@ -5,9 +5,9 @@ import { inputStyle } from './Input.styles';
 
 export interface InputProps {
   label?: string;
-  type?: 'text' | 'email' | 'password';
+  type?: 'text' | 'email' | 'password' | 'number';
   placeholder?: string;
-  value?: string;
+  value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   success?: string;
@@ -44,7 +44,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       setShowPassword(!showPassword);
     };
 
-    const inputType = type === 'password' && showPassword ? 'text' : type;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (type === 'number') {
+        const numericValue = e.target.value.replace(/[^0-9]/g, '');
+        e.target.value = numericValue;
+      }
+      onChange?.(e);
+    };
+
+    const inputType =
+      type === 'password' && showPassword ? 'text' : type === 'number' ? 'text' : type;
 
     const renderLeftIcon = () => {
       if (leftIcon === 'email') {
@@ -85,11 +94,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               type={inputType}
               placeholder={placeholder}
               value={value}
-              onChange={onChange}
+              onChange={handleChange} // 수정된 핸들러 사용
               disabled={disabled}
               required={required}
               readOnly={readOnly}
               maxLength={maxLength}
+              inputMode={type === 'number' ? 'numeric' : undefined} // 숫자 키패드 유도
+              pattern={type === 'number' ? '[0-9]*' : undefined} // 모바일 브라우저 지원
               className={inputStyle.inputBasickStyle}
               style={{
                 background: 'transparent',
