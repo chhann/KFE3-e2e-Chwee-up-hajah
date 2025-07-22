@@ -9,6 +9,7 @@ import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 import { getCurrentUser } from '@/app/session';
 import { NavigationItem } from '@/shared/types/profile';
 import { getProfile } from '@/shared/api/server/profile/getProfile';
+import { PointsTestButtons } from '@/widgets/profile/ui/PointsTestButton';
 
 // const pointItems: NavigationItem[] = [
 //   { label: '충전내역', href: '/profile/charge-history' },
@@ -54,6 +55,7 @@ const Page = async () => {
           계정 설정
         </h2>
         <LogoutButton />
+        {/* <PointsTestButtons /> */}
       </section>
     </main>
   );

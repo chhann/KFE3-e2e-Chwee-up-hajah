@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await adminClient
       .from('user')
-      .select('user_id, username, email, address, address_detail, avatar, points, tier')
+      .select('user_id, username, email, address, address_detail, avatar, points, grade')
       .eq('user_id', userId)
       .single();
 
