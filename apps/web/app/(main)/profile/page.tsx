@@ -30,6 +30,7 @@ const Page = async () => {
   }
 
   const userProfile = await getProfile(userData.id!);
+  console.log('userProfile:', userProfile);
 
   return (
     <main className="text-neutral-70" role="main">
