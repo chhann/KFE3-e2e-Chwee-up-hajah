@@ -51,7 +51,8 @@ export async function middleware(request: NextRequest) {
     // 대시보드, 프로필 등 보호된 페이지 경로 판별
     const isProtectedRoute =
       request.nextUrl.pathname.startsWith('/main') ||
-      request.nextUrl.pathname.startsWith('/profile');
+      request.nextUrl.pathname.startsWith('/profile') ||
+      request.nextUrl.pathname.startsWith('/admin');
 
     // 보호된 페이지에 접근하려는데 로그인되어 있지 않으면 로그인 페이지로 리디렉션
     if (isProtectedRoute && !session) {
@@ -61,6 +62,15 @@ export async function middleware(request: NextRequest) {
     // 로그인/회원가입 페이지에 접근하려는데 이미 로그인된 경우 대시보드로 리디렉션
     if (isAuthRoute && session) {
       return NextResponse.redirect(new URL('/main', request.url));
+    }
+
+    // 관리자 페이지 접근 시 할 경우
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      // 세션이 있고, 이메일이 관리자가 아닌 경우
+      if (session && session.user.email !== 'admin@admin.com') {
+        // 메인 페이지로 리디렉션
+        return NextResponse.redirect(new URL('/main', request.url));
+      }
     }
   } catch (error) {
     // 예외 발생 시 (예: 네트워크, Supabase 오류 등)
