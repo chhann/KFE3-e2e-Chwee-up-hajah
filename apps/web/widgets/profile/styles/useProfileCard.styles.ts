@@ -19,8 +19,8 @@ export const userProfileCardStyles = {
 
   pointsSection: {
     wrapper: 'flex items-center justify-between text-sm',
-    tierIcon: 'text-xl',
-    tierName: 'text-sm text-gray-700',
+    gradeIcon: 'text-xl',
+    gradeName: 'text-sm text-gray-700',
     pointsAmount: 'text-lg font-semibold text-gray-900',
     pointsLabel: 'text-gray-600',
   },

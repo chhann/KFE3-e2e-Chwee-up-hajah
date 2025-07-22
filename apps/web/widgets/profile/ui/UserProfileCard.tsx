@@ -6,7 +6,7 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
 import { UserProfileType } from '@/shared/types/profile';
 import { userProfileCardStyles as styles } from '../styles/useProfileCard.styles';
-import { getTierIcon } from '@/shared/lib/points/getTierIcon';
+import { getGradeIcon } from '@/shared/lib/points/getGradeIcon';
 
 export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
   const avatarSrc = getCacheBustingUrl(user.avatar);
@@ -42,9 +42,9 @@ export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
 
         <div className={styles.pointsSection.wrapper}>
           <div>
-            <p className={styles.pointsSection.tierName}>등급 {user.tier || '씨앗'} </p>
-            <span className={styles.pointsSection.tierIcon}>
-              {getTierIcon(user.tier || '씨앗')}
+            <p className={styles.pointsSection.gradeName}>등급 {user.grade || '씨앗'} </p>
+            <span className={styles.pointsSection.gradeIcon}>
+              {getGradeIcon(user.grade || '씨앗')}
             </span>
           </div>
           <div>
