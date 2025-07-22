@@ -9,6 +9,7 @@ import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 import { getCurrentUser } from '@/app/session';
 import { NavigationItem } from '@/shared/types/profile';
 import { getProfile } from '@/shared/api/server/profile/getProfile';
+import { PointsTestButtons } from '@/widgets/profile/ui/PointsTestButton';
 
 const pointItems: NavigationItem[] = [{ label: '적립내역', href: '/profile/points-history' }];
 
@@ -26,6 +27,7 @@ const Page = async () => {
   }
 
   const userProfile = await getProfile(userData.id!);
+  console.log('userProfile:', userProfile);
 
   return (
     <main className="text-neutral-70" role="main">
@@ -50,6 +52,7 @@ const Page = async () => {
           계정 설정
         </h2>
         <LogoutButton />
+        {/* <PointsTestButtons /> */}
       </section>
     </main>
   );

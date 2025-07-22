@@ -1,15 +1,22 @@
-// This file configures the initialization of Sentry on the server.
-// The config you add here will be used whenever the server handles a request.
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
 import * as Sentry from '@sentry/nextjs';
 
-Sentry.init({
-  dsn: 'https://bfe9aec7064b31889c9bdbc6a813f23d@o4509633344372736.ingest.us.sentry.io/4509633365737472',
+export function register() {
+  // 개발 환경에서는 초기화 하지 않음
+  if (process.env.NODE_ENV !== 'production') return;
 
-  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: 1,
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      tracesSampleRate: 1.0,
+    });
+  }
 
-  // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
-});
+  if (process.env.NEXT_RUNTIME === 'edge') {
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+    });
+  }
+}
+
+// 이건 그대로 유지 가능 (Sentry가 init 된 경우에만 작동)
+export const onRequestError = Sentry.captureRequestError;
