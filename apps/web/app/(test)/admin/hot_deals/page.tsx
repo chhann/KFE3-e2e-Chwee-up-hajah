@@ -1,6 +1,5 @@
 'use client';
 
-import { AuctionDateSelector } from '@/features/auction-add/ui/AuctionDateSelector';
 import { productDescriptionStyle } from '@/features/auction-add/ui/styles/ProductDescriptionInput.styles';
 
 import { type HotDeal, hotDealSchema } from '@/shared/lib/validators/hot-deal';
@@ -37,21 +36,51 @@ const createHotDeal = async (
   return response.json();
 };
 
+const updateHotDeal = async ({
+  id,
+  is_active,
+}: {
+  id: string;
+  is_active: boolean;
+}): Promise<HotDeal> => {
+  const response = await fetch(`/api/hot-deals`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id, is_active }),
+  });
+  if (!response.ok) {
+    throw new Error('핫딜 상태를 업데이트하는 데 실패했습니다.');
+  }
+  return response.json();
+};
+
 export default function HotDealsClient() {
   const queryClient = useQueryClient();
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000;
+  const nowForMin = new Date(now.getTime() - offset).toISOString().slice(0, 16);
+
+  const [startTimeError, setStartTimeError] = useState('시작 시간을 선택해주세요.');
+  const [endTimeError, setEndTimeError] = useState('종료 시간을 선택해주세요.');
+
   const [newHotDeal, setNewHotDeal] = useState<Omit<HotDeal, 'id' | 'created_at' | 'updated_at'>>({
     name: '',
     description: '',
-    image_url: 'https://via.placeholder.com/150',
-    start_time: new Date().toISOString().slice(0, 16),
-    end_time: new Date().toISOString().slice(0, 16),
+    image_url: 'https://picsum.photos/300/200?random=2',
+    start_time: new Date(Date.now()).toISOString(),
+    end_time: new Date(Date.now()).toISOString(),
     total_quantity: 100,
     current_quantity: 100,
     start_price: 10000,
     current_price: 10000,
     price_drop_interval_minutes: 60,
     price_drop_amount: 1000,
+    min_price: 100,
     min_user_grade: 'bronze',
+    waiting_time: 1,
+    is_active: true,
   });
 
   const {
@@ -64,10 +93,23 @@ export default function HotDealsClient() {
     queryFn: getHotDeals,
   });
 
-  const mutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: createHotDeal,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['hotDeals'] });
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: updateHotDeal,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['hotDeals'] });
+    },
+    onError: (error) => {
+      alert(error.message);
     },
   });
 
@@ -78,11 +120,22 @@ export default function HotDealsClient() {
       React.SetStateAction<Omit<HotDeal, 'id' | 'created_at' | 'updated_at'>>
     >
   ) => {
-    const isNumber = e.target.type === 'number';
-    setNewHotDeal((prev) => ({
-      ...prev,
-      [name]: isNumber ? Number(e.target.value) : e.target.value,
-    }));
+    const { value } = e.target;
+
+    const isNumbericString = /^\d*$/.test(value);
+    if (isNumbericString) {
+      if (value === '') {
+        setNewHotDeal((prev) => ({
+          ...prev,
+          [name]: '',
+        }));
+        return;
+      }
+      const numValue = parseInt(value, 10);
+      setNewHotDeal((prev) => ({ ...prev, [name]: numValue }));
+    } else {
+      setNewHotDeal((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleCounterChange = (
@@ -116,26 +169,65 @@ export default function HotDealsClient() {
     }));
   };
 
+  // 시작 시간 변경 핸들러
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStartTimeValue = e.target.value;
+    const newStartTime = new Date(newStartTimeValue);
+
+    const now = new Date();
+    now.setSeconds(0, 0);
+    if (newStartTime < now) {
+      setStartTimeError('지난 시간은 선택할 수 없습니다.');
+    } else {
+      setStartTimeError('');
+    }
+
+    const endTime = new Date(newHotDeal.end_time);
+    if (endTime < newStartTime) {
+      setEndTimeError('시작 시간보다 종료 시간이 늦어야 합니다.');
+    } else {
+      setEndTimeError('');
+    }
+
+    setNewHotDeal((prev) => ({
+      ...prev,
+      start_time: newStartTime.toISOString(),
+    }));
+  };
+
+  // 종료 시간 변경 핸들러
+  const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEndTimeValue = e.target.value;
+    const newEndTime = new Date(newEndTimeValue);
+    const startTime = new Date(newHotDeal.start_time);
+
+    if (newEndTime < startTime) {
+      setEndTimeError('시작 시간보다 종료 시간이 늦어야 합니다.');
+    } else {
+      setEndTimeError('');
+    }
+
+    setNewHotDeal((prev) => ({
+      ...prev,
+      end_time: newEndTime.toISOString(),
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Zod 검사를 위해 완전한 ISO 형식으로 임시 변환
-    const dataToValidate = {
-      ...newHotDeal,
-      start_time: `${newHotDeal.start_time}:00Z`,
-      end_time: `${newHotDeal.end_time}:00Z`,
-    };
-
     const validation = hotDealSchema
       .omit({ id: true, created_at: true, updated_at: true })
-      .safeParse(dataToValidate);
+      .safeParse(newHotDeal);
 
     if (!validation.success) {
-      alert(validation.error.errors.map((err) => err.message).join('\n'));
+      alert(
+        validation.error.errors.map((err) => `${err.path.join('.')}: ${err.message}`).join('\n')
+      );
       return;
     }
     // DB에는 표준 형식의 데이터를 보냅니다.
-    mutation.mutate(validation.data);
+    createMutation.mutate(validation.data);
   };
 
   if (isLoading) return <div>로딩 중...</div>;
@@ -171,37 +263,34 @@ export default function HotDealsClient() {
           <div className="col-span-2">
             <p>설명</p>
             <textarea
-              aria-label="설명"
+              placeholder="핫딜에 대한 설명을 입력하세요."
               name="설명"
               id="auctionDescription"
               className={productDescriptionStyle.productDescriptionTextareaStyle}
               value={newHotDeal.description}
               onChange={(e) => handleInputChange('description', e, setNewHotDeal)}
             />
-            <AuctionDateSelector
-              startDate={newHotDeal.start_time.split('T')[0]!}
-              endDate={newHotDeal.end_time.split('T')[0]!}
-              setStartDate={(date) =>
-                setNewHotDeal((prev) => {
-                  // T를 기준으로 시간 부분을 분리하고, 없는 경우 기본값 '00:00'을 사용합니다.
-                  const timePart = prev.start_time.split('T')[1] || '00:00';
-                  return {
-                    ...prev,
-                    start_time: `${date}T${timePart}`,
-                  };
-                })
-              }
-              setEndDate={(date) =>
-                setNewHotDeal((prev) => {
-                  // T를 기준으로 시간 부분을 분리하고, 없는 경우 기본값 '00:00'을 사용합니다.
-                  const timePart = prev.end_time.split('T')[1] || '00:00';
-                  return {
-                    ...prev,
-                    end_time: `${date}T${timePart}`,
-                  };
-                })
-              }
+
+            <span>시작 시간: </span>
+            <input
+              type="datetime-local"
+              name="start_time"
+              value={format(new Date(newHotDeal.start_time), "yyyy-MM-dd'T'HH:mm")}
+              onChange={handleStartTimeChange}
             />
+
+            {startTimeError && <p className="text-red-500">{startTimeError}</p>}
+            <p></p>
+            <span>종료 시간: </span>
+
+            <input
+              type="datetime-local"
+              name="end_time"
+              min={format(new Date(newHotDeal.start_time), "yyyy-MM-dd'T'HH:mm")}
+              value={format(new Date(newHotDeal.end_time), "yyyy-MM-dd'T'HH:mm")}
+              onChange={handleEndTimeChange}
+            />
+            {endTimeError && <p className="text-red-500">{endTimeError}</p>}
           </div>
           <Input
             label="총 수량"
@@ -233,15 +322,38 @@ export default function HotDealsClient() {
             value={newHotDeal.price_drop_amount}
             onChange={(e) => handleInputChange('price_drop_amount', e, setNewHotDeal)}
           />
+          <Input
+            label="최소 가격"
+            type="number"
+            placeholder="최소 가격을 입력하세요"
+            value={newHotDeal.min_price}
+            onChange={(e) => handleInputChange('min_price', e, setNewHotDeal)}
+          />
           <Select
             label="최소 사용자 등급"
             options={['새싹', '열매', '나무', '숲']}
             value={newHotDeal.min_user_grade}
             onChange={(e) => handleSelectChange('min_user_grade', e, setNewHotDeal)}
           />
+          <div className=": mt-4">
+            <span>테이블 활성화:</span>
+            <input
+              type="checkbox"
+              className="mb-4 text-xl font-semibold"
+              checked={newHotDeal.is_active}
+              onChange={() => {
+                setNewHotDeal({ ...newHotDeal, is_active: !newHotDeal.is_active });
+              }}
+            />
+          </div>
         </div>
-        <Button type="submit" variants="primary" className="mt-4" disabled={mutation.isPending}>
-          {mutation.isPending ? '추가 중...' : '핫딜 추가'}
+        <Button
+          type="submit"
+          variants="primary"
+          className="bg-primary-50 mt-4"
+          disabled={createMutation.isPending}
+        >
+          {createMutation.isPending ? '추가 중...' : '핫딜 추가'}
         </Button>
       </form>
 
@@ -287,6 +399,35 @@ export default function HotDealsClient() {
                       ? '유효하지 않은 시간'
                       : format(endDate, 'yyyy-MM-dd HH:mm')}
                   </span>
+                </div>
+                <div className="mt-4 flex items-center justify-between">
+                  <p>
+                    상태:{' '}
+                    <span
+                      className={`font-bold ${
+                        deal.status === '진행중'
+                          ? 'text-green-500'
+                          : deal.status === '종료됨'
+                            ? 'text-red-500'
+                            : 'text-gray-500'
+                      }`}
+                    >
+                      {deal.status}
+                    </span>
+                  </p>
+                  <Button
+                    variants={deal.is_active ? 'ghost' : 'primary'}
+                    onClick={() =>
+                      updateMutation.mutate({ id: deal.id, is_active: !deal.is_active })
+                    }
+                    disabled={updateMutation.isPending}
+                  >
+                    {updateMutation.isPending
+                      ? '변경 중...'
+                      : deal.is_active
+                        ? '비활성화'
+                        : '활성화'}
+                  </Button>
                 </div>
               </div>
             );
