@@ -54,7 +54,7 @@ const Page = async () => {
           계정 설정
         </h2>
         <LogoutButton />
-        <PointsTestButtons />
+        {/* <PointsTestButtons /> */}
       </section>
     </main>
   );
