@@ -1,4 +1,4 @@
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export const pageview = (url: string) => {
   if (typeof window !== 'undefined' && GA_TRACKING_ID) {
