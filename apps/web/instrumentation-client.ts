@@ -1,44 +1,22 @@
-// This file configures the Sentry browser client for error reporting.
-// It's important to note that this file is automatically included in the browser bundle.
-
 import * as Sentry from '@sentry/nextjs';
 
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
-
-const isBrowser = typeof window !== 'undefined';
-const integrations = [];
-
-if (isBrowser) {
-  integrations.push(
-    Sentry.replayIntegration({
-      maskAllText: true,
-      blockAllMedia: true,
-    })
-  );
+// production(배포 환경) 에서만 Sentry에 오류를 전송
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+    integrations:
+      typeof window !== 'undefined'
+        ? [
+            Sentry.replayIntegration({
+              maskAllText: true,
+              blockAllMedia: true,
+            }),
+          ]
+        : [],
+  });
 }
 
-Sentry.init({
-  dsn: SENTRY_DSN,
-
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 1.0,
-
-  // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
-
-  replaysOnErrorSampleRate: 1.0,
-
-  // This sets the sample rate to be 10%. You may want this to be 100% while
-  // in development and sample at a lower rate in production
-  replaysSessionSampleRate: 0.1,
-
-  // You can remove this option if you're not planning to use the Sentry Session Replay feature:
-  // integrations: [
-  //   Sentry.replayIntegration({
-  //     // Additional Replay configuration goes in here, for example:
-  //     maskAllText: true,
-  //     blockAllMedia: true,
-  //   }),
-  // ],
-  integrations,
-});
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
