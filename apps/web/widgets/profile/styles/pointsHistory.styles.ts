@@ -1,4 +1,4 @@
-export const chargeHistoryListStyles = {
+export const pointsHistoryListStyles = {
   // 빈 상태 메시지
   emptyMessage: 'py-8 text-center text-gray-500',
 

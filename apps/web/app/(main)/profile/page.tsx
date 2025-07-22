@@ -10,10 +10,7 @@ import { getCurrentUser } from '@/app/session';
 import { NavigationItem } from '@/shared/types/profile';
 import { getProfile } from '@/shared/api/server/profile/getProfile';
 
-// const pointItems: NavigationItem[] = [
-//   { label: '충전내역', href: '/profile/charge-history' },
-//   { label: '사용내역', href: '/1' },
-// ];
+const pointItems: NavigationItem[] = [{ label: '적립내역', href: '/profile/points-history' }];
 
 const auctionItems: NavigationItem[] = [
   { label: '판매 중인 물품', href: '/auction/my-listings' },
@@ -35,12 +32,12 @@ const Page = async () => {
       <h1 className="mb-3 text-base font-semibold">프로필</h1>
       <UserProfileCard user={userProfile!} />
 
-      {/* <section className="mb-7" aria-labelledby="point-management-title">
+      <section className="mb-7" aria-labelledby="point-management-title">
         <h2 id="point-management-title" className="mb-3 text-base font-semibold">
           포인트 내역 관리
         </h2>
         <Navigation title="포인트 내역 메뉴" items={pointItems} />
-      </section> */}
+      </section>
 
       <section className="mb-7" aria-labelledby="auction-status-title">
         <h2 id="auction-status-title" className="mb-3 text-base font-semibold">
