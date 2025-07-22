@@ -5,9 +5,9 @@ import { cn } from '../../../utils/cn'; // 클래스명 유틸리티 함수
 import { AVATAR_SIZES, avatarStyle } from './Avatar.styles';
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  src?: string; // 프로필 이미지 URL
+  src?: string | null; // null 허용
   alt: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl'; // 아바타 크기
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   name?: string;
   onImageError?: () => void; // 이미지 로드 실패 시 콜백
 }
@@ -16,14 +16,15 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   ({ src, alt, size = 'md', name, onImageError, className, ...props }, ref) => {
-    // Fallback 아바타 생성 함수
+    // fallback URL 생성기
     const generateFallbackAvatar = (seedName: string) => {
       return `https://api.dicebear.com/7.x/thumbs/svg?seed=${encodeURIComponent(seedName)}`;
     };
 
-    // 이미지 소스 결정
-    const imageSrc = src || generateFallbackAvatar(name || alt);
+    // src 값 정리
+    const cleanSrc = typeof src === 'string' && src.trim() !== '' ? src : undefined;
     const sizeConfig = AVATAR_SIZES[size];
+    const fallbackSrc = generateFallbackAvatar(name || alt);
 
     return (
       <div
@@ -42,14 +43,18 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         {...props}
       >
         <img
-          src={imageSrc}
+          src={cleanSrc ?? fallbackSrc}
           alt={alt}
           width={sizeConfig.pixels}
           height={sizeConfig.pixels}
           className={avatarStyle.avatarImageStyle}
-          onError={onImageError}
           // 이미지 최적화 설정
           sizes={`${sizeConfig.pixels}px`}
+          onError={(e) => {
+            e.currentTarget.onerror = null; // 무한 루프 방지
+            e.currentTarget.src = fallbackSrc;
+            onImageError?.();
+          }}
         />
       </div>
     );
