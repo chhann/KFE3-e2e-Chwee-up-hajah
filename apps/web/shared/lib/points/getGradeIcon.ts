@@ -5,6 +5,9 @@ export const getGradeIcon = (grade: string): string => {
     나무: '🌲',
     새싹: '🌱',
     씨앗: '🌰',
+    애벌레: '🐛',
+    돌멩이: '🪨',
+    흙: '🕳️',
   };
   return gradeIcons[grade] || '🌰';
 };
