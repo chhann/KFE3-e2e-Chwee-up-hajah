@@ -6,7 +6,7 @@ export interface UserProfileType {
   address_detail: string;
   avatar?: string;
   points?: number;
-  tier?: '씨앗' | '새싹' | '나무' | '숲';
+  grade?: '씨앗' | '새싹' | '나무' | '숲';
 }
 
 export type ProfileFormType = {
