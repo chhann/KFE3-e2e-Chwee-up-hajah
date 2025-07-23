@@ -2,7 +2,7 @@
 
 import { ProductList } from '../../../features/product-list/ui/ProductList';
 import type { Product } from '../types';
-import { Styles } from './styles/product-section.styles';
+import { Styles } from '../styles/product-section.styles';
 
 interface ProductSectionProps {
   products?: Product[];

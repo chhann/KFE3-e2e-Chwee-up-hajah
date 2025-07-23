@@ -1,76 +1,122 @@
 'use client';
-import { calculateAndAddPoints } from '@/shared/lib/points/calculateAndAddPoints';
-import { deductPointsWithHistory } from '@/shared/lib/points/deductPointsWithHistory';
-import React, { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 
-export const PointsTestButtons = () => {
-  // 포인트 적립 테스트
-  const handleAddPoints = async () => {
-    try {
-      const result = await calculateAndAddPoints(
-        '12553475-43da-4689-a2e2-38e61a3ce989', // 유저 아이디
-        50000, // 거래 금액 (5만원)
-        'test-auction-id', // 경매 아이디
-        'seller' // seller | 'buyer'
-      );
-      alert(`포인트 적립 성공: ${result}`);
-    } catch (error) {
-      console.error('포인트 적립 오류:', error);
-    }
+const PointsTestButton = ({ userId }: { userId: string }) => {
+  const pointsAddMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/point/add-test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('포인트 적립 실패');
+      }
+
+      return response.json();
+    },
+    onSuccess: (data) => {
+      console.log('포인트 적립 성공:', data);
+      alert(`${data.points}P 적립되었습니다!`);
+    },
+    onError: (error) => {
+      console.error('포인트 적립 실패:', error);
+      alert('포인트 적립에 실패했습니다.');
+    },
+  });
+
+  const pointsDeductMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/point/deduct-test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('포인트 차감 실패');
+      }
+
+      return response.json();
+    },
+    onSuccess: (data) => {
+      console.log('포인트 차감 성공:', data);
+      alert(`${data.points}P 차감되었습니다!`);
+    },
+    onError: (error) => {
+      console.error('포인트 차감 실패:', error);
+      alert('포인트 차감에 실패했습니다.');
+    },
+  });
+
+  const handleTestAddPoints = () => {
+    pointsAddMutation.mutate();
   };
 
-  // 포인트 차감 테스트
-  const handleDeductPoints = async () => {
-    try {
-      const result = await deductPointsWithHistory(
-        '12553475-43da-4689-a2e2-38e61a3ce989',
-        '악성후기',
-        undefined,
-        '테스트용 포인트 차감'
-      );
-
-      alert(`포인트 차감 성공: ${result}`);
-    } catch (error) {
-      console.error('포인트 차감 오류:', error);
-    }
+  const handleTestDeductPoints = () => {
+    pointsDeductMutation.mutate();
   };
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
-      <h2 className="mb-6 text-2xl font-bold">포인트 시스템 테스트</h2>
-
-      {/* 테스트 버튼들 */}
-      <div className="mb-6 flex gap-4">
+    <div className="flex">
+      <div className="p-4">
         <button
-          onClick={handleAddPoints}
-          className="flex items-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={handleTestAddPoints}
+          disabled={pointsAddMutation.isPending}
+          className={`rounded-md px-4 py-2 font-medium transition-colors ${
+            pointsAddMutation.isPending
+              ? 'cursor-not-allowed bg-gray-400 text-white'
+              : 'bg-blue-500 text-white hover:bg-blue-600'
+          }`}
         >
-          (<>💰 포인트 적립 테스트</>)
+          {pointsAddMutation.isPending ? '적립 중...' : '포인트 적립 테스트'}
         </button>
 
-        <button
-          onClick={handleDeductPoints}
-          className="flex items-center gap-2 rounded-lg bg-red-600 px-6 py-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          (<>⚠️ 포인트 차감 테스트</>)
-        </button>
+        {pointsAddMutation.isError && (
+          <p className="mt-2 text-sm text-red-500">
+            오류가 발생했습니다: {pointsAddMutation.error?.message}
+          </p>
+        )}
+
+        {pointsAddMutation.isSuccess && (
+          <p className="mt-2 text-sm text-green-500">
+            성공! {pointsAddMutation.data.points}P가 적립되었습니다.
+          </p>
+        )}
       </div>
 
-      {/* 테스트 정보 */}
-      <div className="mb-6 rounded-lg bg-blue-50 p-4">
-        <h3 className="mb-2 font-semibold">테스트 정보</h3>
-        <ul className="space-y-1 text-sm">
-          <li>
-            <strong>적립 테스트:</strong> 거래금액 50,000원, 판매자 역할
-          </li>
-          <li>
-            <strong>차감 테스트:</strong> 500포인트 고정 차감, 악성후기 사유
-          </li>
-          <li>
-            <strong>테스트 유저:</strong> 12553475-43da-4689-a2e2-38e61a3ce989
-          </li>
-        </ul>
+      <div className="p-4">
+        <button
+          onClick={handleTestDeductPoints}
+          disabled={pointsDeductMutation.isPending}
+          className={`rounded-md px-4 py-2 font-medium transition-colors ${
+            pointsDeductMutation.isPending
+              ? 'cursor-not-allowed bg-gray-400 text-white'
+              : 'bg-red-500 text-white hover:bg-red-600'
+          }`}
+        >
+          {pointsDeductMutation.isPending ? '차감 중...' : '포인트 차감 테스트'}
+        </button>
+
+        {pointsDeductMutation.isError && (
+          <p className="mt-2 text-sm text-red-500">
+            오류가 발생했습니다: {pointsDeductMutation.error?.message}
+          </p>
+        )}
+
+        {pointsDeductMutation.isSuccess && (
+          <p className="mt-2 text-sm text-green-500">
+            성공! {pointsDeductMutation.data.points}P가 차감되었습니다.
+          </p>
+        )}
       </div>
     </div>
   );
 };
+
+export default PointsTestButton;

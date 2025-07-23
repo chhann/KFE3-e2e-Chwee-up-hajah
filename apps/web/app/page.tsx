@@ -1,5 +1,7 @@
+import { redirect } from 'next/navigation';
+
 const Page = () => {
-  return <main className="flex min-h-screen flex-col items-center justify-between p-1">page</main>;
+  return redirect('/main'); // ✅ 자동으로 /main 으로 이동
 };
 
 export default Page;
