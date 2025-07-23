@@ -9,12 +9,31 @@ import { SectionHeader } from '@/widgets/product-section-header';
 import { useProductList } from '@/shared/api/client/product/useProductList';
 import { categories } from '@/shared/mock/auction';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Styles } from './styles/main.styles';
 
-const Page = () => {
+const MainHome = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('전체'); // ✅ 선택된 카테고리 상태
+
   const { data: popularProducts, isLoading: isPopularLoading } = useProductList('popular');
   const { data: latestProducts, isLoading: isLatestLoading } = useProductList('latest');
+
+  const filteredPopular =
+    selectedCategory === '전체'
+      ? popularProducts
+      : popularProducts?.filter((p) => p.category === selectedCategory);
+
+  const filteredLatest =
+    selectedCategory === '전체'
+      ? latestProducts
+      : latestProducts?.filter((p) => p.category === selectedCategory);
+
   const router = useRouter();
+
+  // ✅ 클릭 시 로직
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+  };
 
   return (
     <div className={Styles.container}>
@@ -25,11 +44,16 @@ const Page = () => {
         autoplay={true}
       />
       {/* 카테고리 */}
-      <Category categories={categories} className={Styles.category} />
+      <Category
+        categories={categories}
+        className={Styles.category}
+        selectedCategory={selectedCategory}
+        onCategoryClick={handleCategoryClick}
+      />
       {/* 인기순 상품 리스트 */}
       <SectionHeader title="인기순" onClickMore={() => router.push(`/auction/auction-list`)} />
       <ProductSection
-        products={popularProducts}
+        products={filteredPopular}
         isLoading={isPopularLoading}
         direction="horizontal"
       />
@@ -48,7 +72,7 @@ const Page = () => {
         className={Styles.latestSectionHeader}
       />
       <ProductSection
-        products={latestProducts}
+        products={filteredLatest}
         isLoading={isLatestLoading}
         direction="horizontal"
       />
@@ -56,4 +80,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default MainHome;

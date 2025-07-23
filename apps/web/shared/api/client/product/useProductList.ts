@@ -18,6 +18,7 @@ export const useProductList = (sort: SortOption) => {
       const mapped = raw.map((item) => ({
         id: item.auction_id,
         title: item.product_name,
+        category: item.category_name,
         price: item.current_price,
         image: item.thumbnail,
         distance: '5km', // TODO: 위치 계산 추가 예정
