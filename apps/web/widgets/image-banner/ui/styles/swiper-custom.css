@@ -1,0 +1,37 @@
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--color-neutral-70);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 20px;
+}
+
+.swiper-pagination-bullet {
+  background: var(--color-neutral-70);
+  opacity: 1;
+}
+.swiper-pagination-bullet-active {
+  background: var(--color-primary-500);
+}
+
+/* Fraction 스타일 추가 */
+.swiper-pagination-fraction {
+  bottom: 12px; /* 하단 여백 조정 */
+  right: 8px; /* 오른쪽 여백 조정 */
+  left: auto; /* 왼쪽 위치 자동 조정 */
+  width: auto; /* 너비 자동 조정 */
+  padding: 4px 7px; /* 내부 여백 조정 */
+  border-radius: 12px; /* 둥근 모서리 */
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+  color: white; /* 흰색 글자 */
+  font-size: 11px; /* 작은 글자 크기 조정 */
+  font-weight: 500; /* 중간 굵기 */
+}
