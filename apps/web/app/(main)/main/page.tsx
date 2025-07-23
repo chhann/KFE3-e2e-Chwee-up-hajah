@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Styles } from './styles/main.styles';
 
-const Page = () => {
+const MainHome = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isEventsLoading, setIsEventsLoading] = useState(true);
 
