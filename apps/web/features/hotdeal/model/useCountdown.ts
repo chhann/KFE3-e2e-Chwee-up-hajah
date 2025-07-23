@@ -44,10 +44,12 @@ export function useCountdown({ status, targetTime }: CountdownParams) {
     }
   };
 
-  const minutes = Math.floor(remainingTime / 60);
+  const hours = Math.floor(remainingTime / 3600);
+  const minutes = Math.floor((remainingTime % 3600) / 60);
   const seconds = remainingTime % 60;
 
   return {
+    hours: String(hours).padStart(2, '0'), // 시간 추가
     minutes: String(minutes).padStart(2, '0'),
     seconds: String(seconds).padStart(2, '0'),
     message: getMessage(),

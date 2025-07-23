@@ -83,7 +83,7 @@ export interface HotDeal {
   current_quantity: number;
   start_price: number;
   current_price: number;
-  price_drop_interval_min: number;
+  price_drop_interval_minutes: number;
   price_drop_amount: number;
   min_user_grade: string;
   created_at: string;

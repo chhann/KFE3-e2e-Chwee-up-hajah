@@ -4,6 +4,7 @@ import { ProgressBar } from '@/widgets/progress-bar';
 interface HotdealInfoCardProps {
   data: HotDeal;
   countdown: {
+    hours: string; // hours 추가
     minutes: string;
     seconds: string;
     message: string;
@@ -49,7 +50,9 @@ export const HotdealInfoCard = ({ data, countdown }: HotdealInfoCardProps) => {
             <div className="text-right">
               <div>{countdown.message}</div>
               <div className="text-[var(--text-error)]">
-                {countdown.minutes}:{countdown.seconds}
+                {countdown.hours !== '00'
+                  ? `${countdown.hours}:${countdown.minutes}:${countdown.seconds}`
+                  : `${countdown.minutes}:${countdown.seconds}`}
               </div>
             </div>
           </div>

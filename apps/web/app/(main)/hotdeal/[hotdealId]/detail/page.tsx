@@ -1,39 +1,21 @@
 'use client';
 
-import { CountdownStatus, useCountdown } from '@/features/hotdeal/model/useCountdown';
+import { useHotdealCountdownLogic } from '@/features/hotdeal/model/useHotdealCountdownLogic';
+import { useHotdealRealtime } from '@/features/hotdeal/model/useHotdealRealtime';
 import { useHotdealDetailQuery } from '@/shared/api/client/hotdeal/useHotdealDetail';
 import { usePurchaseHotdeal } from '@/shared/api/client/hotdeal/usePurchaseHotdeal';
 import { useAuthStore } from '@/shared/stores/auth';
 import { HotdealInfoCard } from '@/widgets/hotdeal-info-card';
 import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import { use, useMemo } from 'react';
-import { useHotdealRealtime } from '@/features/hotdeal/model/useHotdealRealtime';
+import { use } from 'react';
 
 export default function Page({ params }: { params: Promise<{ hotdealId: string }> }) {
   const { hotdealId } = use(params);
   const { data, isLoading, isError, error } = useHotdealDetailQuery(hotdealId);
   const userId = useAuthStore((state) => state.userId);
   const purchaseMutation = usePurchaseHotdeal(hotdealId);
-
-  const { status, targetTime } = useMemo(() => {
-    if (!data) {
-      return { status: 'FINISHED' as CountdownStatus, targetTime: new Date() };
-    }
-    const now = new Date();
-    const startTime = new Date(data.start_time);
-    const endTime = new Date(data.end_time);
-    if (now < startTime) {
-      return { status: 'UPCOMING' as CountdownStatus, targetTime: startTime };
-    }
-    if (now >= startTime && now < endTime) {
-      return { status: 'ACTIVE' as CountdownStatus, targetTime: endTime };
-    }
-    return { status: 'FINISHED' as CountdownStatus, targetTime: endTime };
-  }, [data]);
-
-  const countdown = useCountdown({ status, targetTime });
-
+  const { status, countdown } = useHotdealCountdownLogic({ data });
   useHotdealRealtime(hotdealId);
 
   const handlePurchase = () => {
