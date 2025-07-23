@@ -15,11 +15,22 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data, error } = await adminClient
-      .from('points_history')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
+    const url = new URL(req.url);
+    const filter = url.searchParams.get('filter') || 'all';
+
+    let query = adminClient.from('points_history').select('*').eq('user_id', user.id);
+
+    // 필터 적용
+    switch (filter) {
+      case 'earned':
+        query = query.gt('points_earned', 0);
+        break;
+      case 'deducted':
+        query = query.lt('points_earned', 0);
+        break;
+    }
+
+    const { data, error } = await query.order('created_at', { ascending: false });
 
     if (error) {
       console.error('points history fetch error:', error);
