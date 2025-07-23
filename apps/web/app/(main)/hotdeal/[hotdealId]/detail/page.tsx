@@ -8,6 +8,7 @@ import { HotdealInfoCard } from '@/widgets/hotdeal-info-card';
 import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { use, useMemo } from 'react';
+import { useHotdealRealtime } from '@/features/hotdeal/model/useHotdealRealtime';
 
 export default function Page({ params }: { params: Promise<{ hotdealId: string }> }) {
   const { hotdealId } = use(params);
@@ -32,6 +33,8 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
   }, [data]);
 
   const countdown = useCountdown({ status, targetTime });
+
+  useHotdealRealtime(hotdealId);
 
   const handlePurchase = () => {
     if (!userId) {
