@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const sort = searchParams.get('sort') ?? 'popular';
 
-  let query = supabase.from('view_products_list').select('*');
+  let query = supabase.from('view_current_auction_products').select('*');
 
   switch (sort) {
     case 'popular':

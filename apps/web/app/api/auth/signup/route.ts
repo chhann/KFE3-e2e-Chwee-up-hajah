@@ -22,10 +22,11 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json({ success: true });
     const supabase = createApiClient(req, response);
 
-    const { email, password, username, address, addressDetail, agreedToTerms } = parse.data;
+    const { email, password, username, address, addressDetail, agreedToTermsOfService } =
+      parse.data;
 
     // 약관에 동의하지 않은 경우, 요청 거부
-    if (!agreedToTerms) {
+    if (!agreedToTermsOfService) {
       return NextResponse.json({ error: '이용약관에 동의해야 합니다.' }, { status: 400 });
     }
 

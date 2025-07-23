@@ -2,18 +2,16 @@ export const dynamic = 'force-dynamic';
 
 import { redirect } from 'next/navigation';
 
-import { Navigation, UserProfileCard } from '@/widgets/profile'; // UserProfileType import 추가
+import { Navigation, UserProfileCard } from '@/widgets/profile';
 
 import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 
 import { getCurrentUser } from '@/app/session';
-import { NavigationItem } from '@/shared/types/profile';
 import { getProfile } from '@/shared/api/server/profile/getProfile';
+import { NavigationItem } from '@/shared/types/profile';
+import PointsTestButton from '@/widgets/profile/ui/PointsTestButton';
 
-const pointItems: NavigationItem[] = [
-  { label: '충전내역', href: '/profile/charge-history' },
-  { label: '사용내역', href: '/1' },
-];
+const pointItems: NavigationItem[] = [{ label: '적립내역', href: '/profile/points-history' }];
 
 const auctionItems: NavigationItem[] = [
   { label: '판매 중인 물품', href: '/auction/my-listings' },
@@ -29,6 +27,7 @@ const Page = async () => {
   }
 
   const userProfile = await getProfile(userData.id!);
+  console.log('userProfile:', userProfile);
 
   return (
     <main className="text-neutral-70" role="main">
@@ -53,6 +52,7 @@ const Page = async () => {
           계정 설정
         </h2>
         <LogoutButton />
+        <PointsTestButton userId={userData.id} />
       </section>
     </main>
   );
