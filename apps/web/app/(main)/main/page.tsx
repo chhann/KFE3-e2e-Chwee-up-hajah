@@ -2,17 +2,22 @@
 
 import { Category } from '@repo/ui/design-system/base-components/Category/index';
 
-import { ImageBanner } from '@/widgets/image-banner';
+import { Event } from '@/shared/types/events';
+import { EventBanner } from '@/widgets/image-banner';
 import { ProductSection } from '@/widgets/product-section';
 import { SectionHeader } from '@/widgets/product-section-header';
 
 import { useProductList } from '@/shared/api/client/product/useProductList';
 import { categories } from '@/shared/mock/auction';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+
+import { useEffect, useState } from 'react';
 import { Styles } from './styles/main.styles';
 
 const MainHome = () => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [isEventsLoading, setIsEventsLoading] = useState(true);
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>('전체'); // ✅ 선택된 카테고리 상태
 
   const { data: popularProducts, isLoading: isPopularLoading } = useProductList('popular');
@@ -35,14 +40,31 @@ const MainHome = () => {
     setSelectedCategory(category);
   };
 
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/events');
+        if (!response.ok) {
+          throw new Error('이벤트 목록을 불러오는 데 실패했습니다.');
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (err: any) {
+        console.error(err.message);
+      } finally {
+        // 데이터 요청이 성공하든 실패하든 로딩 상태를 false로 변경
+        setIsEventsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  
   return (
     <div className={Styles.container}>
       {/* 배너 */}
-      <ImageBanner
-        images={['/mock-image/images.jpg', '/mock-image/images (1).jpg']}
-        height={172}
-        autoplay={true}
-      />
+      <EventBanner events={events} height={172} autoplay={true} />
       {/* 카테고리 */}
       <Category
         categories={categories}

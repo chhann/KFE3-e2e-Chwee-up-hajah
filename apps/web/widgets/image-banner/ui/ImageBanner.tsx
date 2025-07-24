@@ -6,7 +6,7 @@ import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Styles } from './styles/image-banner.styles';
-import './swiper-custom.css';
+import './styles/swiper-custom.css';
 
 interface ImageBannerProps {
   images: string[];
