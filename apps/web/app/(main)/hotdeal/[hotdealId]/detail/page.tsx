@@ -1,87 +1,74 @@
-import { ProgressBar } from '@/widgets/progress-bar';
+'use client';
+
+import { useHotdealCountdownLogic } from '@/features/hotdeal/model/useHotdealCountdownLogic';
+import { useHotdealRealtime } from '@/features/hotdeal/model/useHotdealRealtime';
+import { useHotdealDetailQuery } from '@/shared/api/client/hotdeal/useHotdealDetail';
+import { usePurchaseHotdeal } from '@/shared/api/client/hotdeal/usePurchaseHotdeal';
+import { useAuthStore } from '@/shared/stores/auth';
+import { HotdealInfoCard } from '@/widgets/hotdeal-info-card';
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import { use } from 'react';
 
-const page = () => {
-  // fetch해온 데이터라고 가정
-  const startPrice = 1350000;
-  const finalPrice = 950000;
-  const currentPrice = 1100000; // 현재 가격 (예시)
+export default function Page({ params }: { params: Promise<{ hotdealId: string }> }) {
+  const { hotdealId } = use(params);
+  const { data, isLoading, isError, error } = useHotdealDetailQuery(hotdealId);
+  const userId = useAuthStore((state) => state.userId);
+  const purchaseMutation = usePurchaseHotdeal(hotdealId);
+  const { status, countdown } = useHotdealCountdownLogic({ data });
+  useHotdealRealtime(hotdealId);
 
-  // ProgressBar에 전달할 props 계산
-  const discount = startPrice - currentPrice;
-  const totalDiscount = startPrice - finalPrice;
-  const progressPercent = (discount / totalDiscount) * 100;
-  const discountPercent = (discount / startPrice) * 100;
-
-  const progressData = {
-    startPrice,
-    finalPrice,
-    currentPrice,
-    discount,
-    totalDiscount,
-    progressPercent,
+  const handlePurchase = () => {
+    if (!userId) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+    if (data) {
+      purchaseMutation.mutate({ hotdealId, userId, purchasePrice: data.current_price });
+    }
   };
 
-  const description = `🔥 매일 오후 3시 핫딜 이벤트! 🔥 
+  if (isLoading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div className="flex h-full items-center justify-center text-red-500">
+        <p>오류: {error?.message}</p>
+      </div>
+    );
+  }
+  if (!data) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <p>핫딜 정보를 찾을 수 없습니다.</p>
+      </div>
+    );
+  }
 
-          📱 빈티지 시계 한정판 - 정품 새제품 
-          ✅ 공식 보증서 포함 
-          ✅ 정품 박스 및 구성품 완비 
-          ✅ 전국 무료배송 
-          
-          ⏰ 하향식 경매 방식 
-          시작가: 1,350,000원
-          매분 10,000원씩 가격 인하  
-          먼저 입찰하는 분이 낙찰!
-  `;
   return (
     <div className="flex w-full flex-col gap-2">
-      <img src="/mock-image/images.jpg" alt="핫딜 이미지" />
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between font-light">
-          <div className="font-[var(--font-bold)]">빈티지 시계 한정판</div>
-        </div>
-        <div className="flex justify-between">
-          <div>
-            <div className="text-xs text-[var(--text-disabled)] line-through">
-              {startPrice.toLocaleString()}원
-            </div>
-            <div className="flex gap-2">
-              <div className="text-red-500">{parseFloat(discountPercent.toFixed(2))}%</div>
-              <div className="font-[var(--font-bold)]">{currentPrice.toLocaleString()}원</div>
-            </div>
-          </div>
-          <div className="text-right">
-            <div>다음 가격 인하</div>
-            <div className="text-[var(--text-error)]">02:53</div>
-          </div>
-        </div>
-        <ProgressBar progressData={progressData} />
-        <div className="flex justify-between">
-          <div>
-            <div>총 수량</div>
-            <div>100개</div>
-          </div>
-          <div className="text-right">
-            <div>남은 수량</div>
-            <div className="font-[var(--font-bold)]">5개</div>
-          </div>
-        </div>
-      </div>
+      <HotdealInfoCard data={data} countdown={countdown} />
 
-      <div className="mt-8 flex flex-col gap-2">
-        <h2 className="text-lg font-[var(--font-semibold)]">상품 설명</h2>
-        <div className="whitespace-pre-line">{description}</div>
-      </div>
       <Button
         variants="custom"
         className="sticky bottom-0 bg-purple-500 text-white transition-colors hover:bg-purple-600"
         size="thinLg"
+        onClick={handlePurchase}
+        disabled={status !== 'ACTIVE' || purchaseMutation.isPending}
       >
-        지금 구매 (다음 인하까지 02:53)
+        {purchaseMutation.isPending
+          ? '처리 중...'
+          : status === 'ACTIVE'
+            ? '지금 구매'
+            : status === 'UPCOMING'
+              ? '구매 불가 (시작 전)'
+              : '구매 불가 (종료)'}
       </Button>
     </div>
   );
-};
-
-export default page;
+}
