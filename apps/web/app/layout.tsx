@@ -5,6 +5,7 @@ import { Providers } from './providers';
 
 import '@repo/ui/styles';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { cookies } from 'next/headers';
 import './globals.css';
 
@@ -46,6 +47,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <PushSubscriptionEffect />
             {children}
             <Analytics />
+            <SpeedInsights />
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
               strategy="afterInteractive"
