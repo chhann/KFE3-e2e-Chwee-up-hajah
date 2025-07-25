@@ -52,7 +52,8 @@ export async function middleware(request: NextRequest) {
     const isProtectedRoute =
       request.nextUrl.pathname.startsWith('/main') ||
       request.nextUrl.pathname.startsWith('/profile') ||
-      request.nextUrl.pathname.startsWith('/admin');
+      request.nextUrl.pathname.startsWith('/admin') ||
+      request.nextUrl.pathname.startsWith('/chat');
 
     // 보호된 페이지에 접근하려는데 로그인되어 있지 않으면 로그인 페이지로 리디렉션
     if (isProtectedRoute && !session) {

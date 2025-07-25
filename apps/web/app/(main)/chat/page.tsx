@@ -5,7 +5,7 @@ import { useAuthStore } from '@/shared/stores/auth';
 
 const ChatRoomsPage = () => {
   const userId = useAuthStore((state) => state.userId);
-  if (!userId) return <div>로그인이 필요합니다</div>;
+  if (!userId) return <></>;
 
   return (
     <div className="mx-auto max-w-2xl">
