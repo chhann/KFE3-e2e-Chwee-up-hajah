@@ -14,10 +14,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  console.log('테스트1');
   const supabase = createApiClient(request);
   const body = await request.json();
-  console.log('테스트2');
   const { imageUrl, redirectUrl, startTime, endTime, is_active } = body;
 
   if (!imageUrl || !redirectUrl || !startTime || !endTime) {

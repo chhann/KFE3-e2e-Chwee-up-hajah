@@ -11,6 +11,8 @@ import { useProductList } from '@/shared/api/client/product/useProductList';
 import { categories } from '@/shared/mock/auction';
 import { useRouter } from 'next/navigation';
 
+import { EventPopup } from '@/widgets/events/eventPopup';
+
 import { useEffect, useState } from 'react';
 import { Styles } from './styles/main.styles';
 
@@ -60,9 +62,9 @@ const MainHome = () => {
     fetchEvents();
   }, []);
 
-  
   return (
     <div className={Styles.container}>
+      <EventPopup />
       {/* 배너 */}
       <EventBanner events={events} height={172} autoplay={true} />
       {/* 카테고리 */}

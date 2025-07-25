@@ -4,6 +4,18 @@ import type { NextConfig } from 'next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**', // picsum.photos 도메인의 모든 경로 허용
+      },
+      // 만약 다른 도메인도 사용한다면 여기에 추가
+    ],
+  },
+
   transpilePackages: ['@sentry/nextjs'],
   productionBrowserSourceMaps: true,
   typescript: {
