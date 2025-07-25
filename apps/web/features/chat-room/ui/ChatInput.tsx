@@ -54,15 +54,22 @@ export const ChatInput = ({
         onClick={handleSend}
         disabled={isPending}
         className={cn(
+          'w-[60px]',
           buttonStyles.base,
-          buttonStyles.bg,
+          isPending ? 'cursor-not-allowed bg-gray-400' : buttonStyles.bg,
           buttonStyles.text,
-          buttonStyles.hoverBg,
-          buttonStyles.activeBg,
-          buttonStyles.disabledBg
+          !isPending && buttonStyles.hoverBg,
+          !isPending && buttonStyles.activeBg,
+          isPending && 'opacity-70'
         )}
       >
-        {isPending ? '전송 중...' : '전송'}
+        {isPending ? (
+          <span className="flex items-center justify-center">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          </span>
+        ) : (
+          '전송'
+        )}
       </button>
     </div>
   );
