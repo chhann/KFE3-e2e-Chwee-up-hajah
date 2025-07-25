@@ -31,7 +31,7 @@ export const Header = () => {
         )}
         {!showBackButton && (
           <Link href="/main" className="flex items-center gap-1">
-            <img src="/turborepo.svg" alt="Logo" className="h-5 w-auto" />
+            <img src="/TA.png" alt="Logo" className="h-8 w-auto" />
             <h1 className="whitespace-nowrap text-lg font-bold">타임옥션</h1>
           </Link>
         )}
