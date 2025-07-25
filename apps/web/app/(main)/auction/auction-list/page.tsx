@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { Category } from '@repo/ui/design-system/base-components/Category/index';
-import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
 import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
 import { categories } from '@/shared/mock/auction';
@@ -14,7 +13,6 @@ import { AuctionListings } from '@/widgets/auction-listings';
 import { SearchInput } from '@/widgets/search';
 
 const Page = () => {
-  const locationName = '서울시 강남구';
   const {
     data: auctionPages,
     isLoading,
@@ -57,9 +55,6 @@ const Page = () => {
   return (
     <main className="flex min-h-screen w-full flex-col items-center p-1">
       <SearchInput />
-      <div className="mr-auto flex items-center gap-1">
-        <LocationInfo address={locationName} />
-      </div>
       <Category
         categories={categories}
         onCategoryClick={(cat) => setSelectedCategory(cat === '전체' ? 'all' : cat)}
@@ -67,7 +62,7 @@ const Page = () => {
       <select
         name="listFilter"
         id="actionListFilter"
-        className="text-neutral-70 my-2 ml-auto mr-4 w-1/2 rounded-sm p-1 shadow-md"
+        className="text-neutral-70 my-2 ml-auto mr-4 w-1/2 rounded-sm p-1"
         value={selectedBadge}
         onChange={(e) => {
           setSelectedBadge(e.target.value);

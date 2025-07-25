@@ -60,53 +60,67 @@ export const AuctionDetailCard = ({
   return (
     <section className={auctionDetailCardStyle.auctionDetailCardContainerStyle}>
       <div className={auctionDetailCardStyle.auctionDetailCardHeaderStyle}>
-        <div className={auctionDetailCardStyle.auctionDetailCardCurrentPriceNEditButtonContainer}>
-          <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceLabelStyle}>
-            현재 입찰가
-          </p>
-          {userId === sellerId && !isAuctionStarted && (
-            <div className={auctionDetailCardStyle.auctionDetailCardEditButtonContainerStyle}>
-              <Link href={`/auction/${auctionId}/auction-edit`}>
-                <Button variants="primary">수정하기</Button>
-              </Link>
-              <Button variants="secondary" onClick={handleDelete}>
-                삭제하기
-              </Button>
-            </div>
-          )}
+        <div className={auctionDetailCardStyle.auctionDetailCardBidPriceContainerStyle}>
+          <div>
+            <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceLabelStyle}>
+              현재 입찰가
+            </p>
+            <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceStyle}>
+              {formatPriceNumber(currentBidCost)}원
+            </p>
+          </div>
+          <div className={auctionDetailCardStyle.auctionDetailCardBidPriceRightContainerStyle}>
+            <p className={auctionDetailCardStyle.auctionDetailCardRemainingTimeStyle}>
+              남은 시간 : {remainingTime}
+            </p>
+            <p>최소입찰가 : {formatPriceNumber(minBidCost)}원</p>
+          </div>
         </div>
-        <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceStyle}>
-          {formatPriceNumber(currentBidCost)}원
-        </p>
-        <p className={auctionDetailCardStyle.auctionDetailCardStartPriceStyle}>
-          시작가 {formatPriceNumber(startBidCost)}원
-        </p>
-        <p className={auctionDetailCardStyle.auctionDetailCardRemainingTimeStyle}>
-          남은 시간 : {remainingTime}
-        </p>
+        <div className={auctionDetailCardStyle.auctionDetailCardCurrentPriceNEditButtonContainer}>
+          <p className={auctionDetailCardStyle.auctionDetailCardStartPriceStyle}>
+            시작가 {formatPriceNumber(startBidCost)}원
+          </p>
+          <div className={auctionDetailCardStyle.auctionDetailCardBidUnitStyle}>
+            <p>입찰 단위 : {formatPriceNumber(bidUnit)}원</p>
+          </div>
+        </div>
       </div>
-      <div className={auctionDetailCardStyle.auctionDetailCardBidControlStyle}>
-        <Button variants="outline" onClick={onMinus} disabled={!isProgressing}>
-          <FaMinus />
+      <div className={auctionDetailCardStyle.auctionDetailCardBidSectionStyle}>
+        <div>
+          <p>입찰가</p>
+        </div>
+        <div className={auctionDetailCardStyle.auctionDetailCardBidControlStyle}>
+          <Button variants="outline" onClick={onMinus} disabled={!isProgressing}>
+            <FaMinus />
+          </Button>
+          {formatPriceNumber(bidCost)}원
+          <Button variants="outline" onClick={onPlus} disabled={!isProgressing}>
+            <FaPlus />
+          </Button>
+        </div>
+      </div>
+      {userId === sellerId && !isAuctionStarted ? (
+        <div className={auctionDetailCardStyle.auctionDetailCardEditButtonContainerStyle}>
+          <Link href={`/auction/${auctionId}/auction-edit`} className="w-full">
+            <Button variants="primary" size="thinLg">
+              수정하기
+            </Button>
+          </Link>
+          <Button variants="secondary" size="thinLg" onClick={handleDelete}>
+            삭제하기
+          </Button>
+        </div>
+      ) : (
+        <Button
+          variants="primary"
+          size="thinLg"
+          className={auctionDetailCardStyle.auctionDetailCardBidButtonStyle}
+          onClick={onClick}
+          disabled={!isProgressing}
+        >
+          입찰하기
         </Button>
-        {formatPriceNumber(bidCost)}원
-        <Button variants="outline" onClick={onPlus} disabled={!isProgressing}>
-          <FaPlus />
-        </Button>
-      </div>
-      <div className={auctionDetailCardStyle.auctionDetailCardInfoStyle}>
-        <p>최소입찰가 : {formatPriceNumber(minBidCost)}원</p>
-        <p>입찰 단위 : {formatPriceNumber(bidUnit)}원</p>
-      </div>
-      <Button
-        variants="primary"
-        size="thinLg"
-        className={auctionDetailCardStyle.auctionDetailCardBidButtonStyle}
-        onClick={onClick}
-        disabled={!isProgressing}
-      >
-        입찰하기
-      </Button>
+      )}
     </section>
   );
 };

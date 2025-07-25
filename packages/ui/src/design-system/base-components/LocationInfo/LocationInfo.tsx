@@ -12,7 +12,7 @@ const LocationInfo = ({ address, addressDetail }: LocationInfoProps) => {
     typeof addressDetail === 'string' && addressDetail.trim() !== '' ? ` ${addressDetail}` : '';
 
   return (
-    <div className={locationInfoStyle.locationInfoBasickStyle}>
+    <div className={locationInfoStyle.locationInfoBasicStyle}>
       <FaMapMarkerAlt className={locationInfoStyle.locationInfoIconStyle} />
       <div className={locationInfoStyle.locationInfoTextStyle}>
         {safeAddress}

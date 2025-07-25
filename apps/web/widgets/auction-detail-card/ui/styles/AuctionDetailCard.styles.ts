@@ -1,15 +1,18 @@
 export const auctionDetailCardStyle = {
   auctionDetailCardContainerStyle:
-    'border-neutral-30 bg-neutral-0 flex w-full max-w-md flex-col items-center justify-center rounded-lg border p-4',
-
+    'flex w-full max-w-md flex-col items-center justify-center gap-2',
   auctionDetailCardHeaderStyle: 'mr-auto w-full',
-  auctionDetailCardCurrentPriceNEditButtonContainer: 'relative flex justify-between',
+  auctionDetailCardCurrentPriceNEditButtonContainer: 'relative flex justify-between items-center',
   auctionDetailCardCurrentPriceLabelStyle: 'text-neutral-30 text-sm',
-  auctionDetailCardEditButtonContainerStyle: 'absolute right-0 flex gap-1',
-  auctionDetailCardCurrentPriceStyle: 'text-neutral-70 text-xl font-bold',
+  auctionDetailCardEditButtonContainerStyle: 'w-full flex justify-center gap-2',
+  auctionDetailCardCurrentPriceStyle: 'text-neutral-70 text-xl font-[var(--font-bold)]',
   auctionDetailCardStartPriceStyle: 'text-neutral-30 text-xs',
-  auctionDetailCardRemainingTimeStyle: 'text-xs text-red-500',
-  auctionDetailCardBidControlStyle: 'text-neutral-70 my-6 flex items-center gap-5 font-bold',
-  auctionDetailCardInfoStyle: 'text-neutral-40 mb-2 mr-auto flex flex-col text-xs',
+  auctionDetailCardRemainingTimeStyle: 'text-right text-xs text-red-500',
+  auctionDetailCardBidControlStyle: 'flex items-center gap-4 ',
+  auctionDetailCardInfoStyle: 'text-neutral-40 flex flex-col text-xs',
   auctionDetailCardBidButtonStyle: 'mt-2',
+  auctionDetailCardBidPriceContainerStyle: 'flex justify-between',
+  auctionDetailCardBidPriceRightContainerStyle: 'flex flex-col gap-2 text-right',
+  auctionDetailCardBidUnitStyle: 'flex justify-between',
+  auctionDetailCardBidSectionStyle: 'flex w-full justify-between',
 };

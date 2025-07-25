@@ -27,7 +27,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { NotificationPermissionButton } from '@/features/test/NotificationPermissionButton';
 import GoogleAnalytics from '@/shared/hooks/GoogleAnalyticsEffect';
 import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
 import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';
@@ -42,7 +41,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="ko" className={`${notoSansKR.variable} ${isDark ? 'dark' : ''}`}>
       <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
         <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-          <NotificationPermissionButton />
           <Providers>
             <PushSubscriptionEffect />
             {children}

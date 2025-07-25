@@ -1,7 +1,5 @@
 'use client';
-import 'swiper/css';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { categoryStyle } from './Category.Styles';
 
 export interface CategoryProps {
@@ -19,35 +17,28 @@ export default function Category({
 }: CategoryProps) {
   return (
     <div className={`w-full ${className ?? ''}`}>
-      <Swiper
-        slidesPerView={5}
-        spaceBetween={10} // 자연스러운 간격
-        slidesOffsetAfter={0} // 마지막 오른쪽 여백 제거
-        centeredSlides={false}
-        className="w-full"
-      >
+      <div className={categoryStyle.categoryContainerStyle}>
         {categories.map((item, i) => (
-          <SwiperSlide key={i}>
+          <div
+            key={i}
+            className={categoryStyle.categoryItemStyle}
+            onClick={() => onCategoryClick?.(item.title)}
+          >
             <div
-              className={categoryStyle.categoryItemStyle}
-              onClick={() => onCategoryClick?.(item.title)}
+              className={`${categoryStyle.categoryImageStyle} ${
+                selectedCategory === item.title ? 'border-2' : 'border-1'
+              }`}
             >
-              <div
-                className={`${categoryStyle.categoryImageStyle} ${
-                  selectedCategory === item.title ? 'border-primary-500' : 'border-primary-200'
-                }`}
-              >
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="h-12 w-12 rounded-full object-cover"
-                />
-              </div>
-              <span className={categoryStyle.categoryItemTextStyle}>{item.title}</span>
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                className={categoryStyle.categoryInnerImageStyle}
+              />
             </div>
-          </SwiperSlide>
+            <span className={categoryStyle.categoryItemTextStyle}>{item.title}</span>
+          </div>
         ))}
-      </Swiper>
+      </div>
     </div>
   );
 }

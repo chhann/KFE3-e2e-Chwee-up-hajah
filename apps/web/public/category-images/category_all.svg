@@ -9,19 +9,19 @@
   <!-- Background circle -->
   
   <!-- Grid pattern representing "all" -->
-  <rect x="60" y="60" width="25" height="25" fill="#7251f8" rx="3"/>
-  <rect x="90" y="60" width="25" height="25" fill="#7251f8" rx="3"/>
-  <rect x="120" y="60" width="25" height="25" fill="#7251f8" rx="3"/>
+  <rect x="60" y="60" width="25" height="25" fill="#000000ff" rx="3"/>
+  <rect x="90" y="60" width="25" height="25" fill="#000000ff" rx="3"/>
+  <rect x="120" y="60" width="25" height="25" fill="#000000ff" rx="3"/>
   
-  <rect x="60" y="90" width="25" height="25" fill="#7251f8" rx="3"/>
-  <rect x="90" y="90" width="25" height="25" fill="#7251f8" rx="3"/>
-  <rect x="120" y="90" width="25" height="25" fill="#7251f8" rx="3"/>
+  <rect x="60" y="90" width="25" height="25" fill="#000000ff" rx="3"/>
+  <rect x="90" y="90" width="25" height="25" fill="#000000ff" rx="3"/>
+  <rect x="120" y="90" width="25" height="25" fill="#000000ff" rx="3"/>
   
-  <rect x="60" y="120" width="25" height="25" fill="#7251f8" rx="3"/>
-  <rect x="90" y="120" width="25" height="25" fill="#7251f8" rx="3"/>
-  <rect x="120" y="120" width="25" height="25" fill="#7251f8" rx="3"/>
+  <rect x="60" y="120" width="25" height="25" fill="#000000ff" rx="3"/>
+  <rect x="90" y="120" width="25" height="25" fill="#000000ff" rx="3"/>
+  <rect x="120" y="120" width="25" height="25" fill="#000000ff" rx="3"/>
   
   <!-- Center highlight -->
-  <circle cx="100" cy="100" r="8" fill="#7251f8"/>
+  <circle cx="100" cy="100" r="8" fill="#000000ff"/>
   
 </svg>
