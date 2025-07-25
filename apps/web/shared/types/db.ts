@@ -71,3 +71,25 @@ export type AuctionWithProduct = {
     name: string;
   };
 };
+
+export interface HotDeal {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string;
+  start_time: string;
+  end_time: string;
+  total_quantity: number;
+  current_quantity: number;
+  start_price: number;
+  current_price: number;
+  price_drop_interval_minutes: number;
+  price_drop_amount: number;
+  min_user_grade: string;
+  created_at: string;
+  updated_at: string;
+  last_price_drop_at: string | null;
+  min_price: number;
+  waiting_time: number;
+  is_active: boolean;
+}
