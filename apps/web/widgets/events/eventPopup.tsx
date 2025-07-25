@@ -1,18 +1,18 @@
 'use client';
 
 import { useEventPopupStore } from '@/shared/stores/eventPopupStore';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { getToday } from '@repo/ui/utils/getToday';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
 
 interface EventPopupData {
   id: number;
   title: string;
+  redirect_url: string;
   image_url: string;
-  link_url: string;
 }
 
 const fetchEventPopup = async (): Promise<EventPopupData | null> => {
@@ -71,17 +71,25 @@ export const EventPopup = () => {
       <div className="w-full max-w-sm overflow-hidden rounded-t-lg bg-white shadow-lg">
         <div className="p-4">
           <Link href={event.redirect_url} target="_blank" rel="noopener noreferrer">
-            <Image src={event.image_url} width={400} height={400} className="rounded-t-lg" />
+            <Image
+              src={event.image_url}
+              alt={''}
+              width={400}
+              height={400}
+              className="rounded-t-lg"
+            />
           </Link>
         </div>
         <div className="flex border-t border-gray-200 bg-gray-50">
           <Button
+            variants="primary"
             onClick={handleDontShowToday}
             className="w-1/2 border-r border-gray-200 py-3 text-sm text-gray-600 hover:bg-gray-100"
           >
             오늘 하루 보지 않기
           </Button>
           <Button
+            variants="primary"
             onClick={handleClose}
             className="w-1/2 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-100"
           >
