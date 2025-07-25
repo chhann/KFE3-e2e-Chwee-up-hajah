@@ -8,8 +8,10 @@ import { useModalStore } from '../../../shared/stores/modal';
 
 import { headerStyles as styles } from '../styles/header.styles';
 
-import { IoNotificationsOutline } from 'react-icons/io5';
+import Link from 'next/link';
+import { GoSearch } from 'react-icons/go';
 import { GrLocation } from 'react-icons/gr';
+import { IoLocationOutline, IoNotificationsOutline } from 'react-icons/io5';
 
 export const Header = () => {
   const pathname = usePathname();
@@ -22,11 +24,19 @@ export const Header = () => {
 
   return (
     <header className={styles.header}>
-      {showBackButton && (
-        <div className={styles.backButton.wrapper} onClick={() => router.back()}>
-          <FaArrowLeft className={styles.backButton.icon} />
-        </div>
-      )}
+      <div className="flex w-1/4 items-center pl-2">
+        {showBackButton && (
+          <div className={styles.backButton.wrapper} onClick={() => router.back()}>
+            <FaArrowLeft className={styles.backButton.icon} />
+          </div>
+        )}
+        {!showBackButton && (
+          <Link href="/main" className="flex items-center gap-1">
+            <img src="/turborepo.svg" alt="Logo" className="h-5 w-auto" />
+            <h1 className="whitespace-nowrap text-lg font-bold">타임옥션</h1>
+          </Link>
+        )}
+      </div>
       <div className={styles.buttonArea.container}>
         <Button
           variants="ghost"
@@ -42,8 +52,14 @@ export const Header = () => {
           onClick={() => setOpenModal('location')}
           className={styles.buttonArea.locationButton}
         >
-          <GrLocation className={styles.buttonArea.icon} />
+          <IoLocationOutline className={styles.buttonArea.icon} />
         </Button>
+
+        <Link href="/auction/auction-list">
+          <Button variants="ghost" size="thinMd" className={styles.buttonArea.searchButton}>
+            <GoSearch className={styles.buttonArea.icon} />
+          </Button>
+        </Link>
       </div>
     </header>
   );

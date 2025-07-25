@@ -4,16 +4,21 @@ import { useHotdealCountdownLogic } from '@/features/hotdeal/model/useHotdealCou
 import { useHotdealRealtime } from '@/features/hotdeal/model/useHotdealRealtime';
 import { useHotdealDetailQuery } from '@/shared/api/client/hotdeal/useHotdealDetail';
 import { usePurchaseHotdeal } from '@/shared/api/client/hotdeal/usePurchaseHotdeal';
+import { useUserProfileDataQuery } from '@/shared/api/client/profile/useUserProfileDataQuery';
 import { useAuthStore } from '@/shared/stores/auth';
 import { HotdealInfoCard } from '@/widgets/hotdeal-info-card';
 import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { use } from 'react';
 
+const GRADE_ORDER = ['흙', '돌멩이', '에벌레', '씨앗', '새싹', '나무', '숲'];
+
 export default function Page({ params }: { params: Promise<{ hotdealId: string }> }) {
   const { hotdealId } = use(params);
   const { data, isLoading, isError, error } = useHotdealDetailQuery(hotdealId);
   const userId = useAuthStore((state) => state.userId);
+  const { data: user } = useUserProfileDataQuery(userId ?? '');
+
   const purchaseMutation = usePurchaseHotdeal(hotdealId);
   const { status, countdown } = useHotdealCountdownLogic({ data });
   useHotdealRealtime(hotdealId);
@@ -23,7 +28,24 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
       alert('로그인이 필요합니다.');
       return;
     }
-    if (data) {
+
+    if (data && user) {
+      const userGrade = user.grade;
+      const minGrade = data.min_user_grade;
+
+      if (!userGrade) {
+        alert('사용자 등급 정보를 가져올 수 없습니다.');
+        return;
+      }
+
+      const userGradeIndex = GRADE_ORDER.indexOf(userGrade);
+      const minGradeIndex = GRADE_ORDER.indexOf(minGrade);
+
+      if (userGradeIndex < minGradeIndex) {
+        alert(`핫딜에 참여하려면 ${minGrade} 등급 이상이어야 합니다.`);
+        return;
+      }
+
       purchaseMutation.mutate({ hotdealId, userId, purchasePrice: data.current_price });
     }
   };
