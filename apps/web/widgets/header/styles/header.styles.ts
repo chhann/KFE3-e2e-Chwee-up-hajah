@@ -11,8 +11,9 @@ export const headerStyles = {
   // 버튼 영역
   buttonArea: {
     container: 'grow text-right',
-    notificationButton: 'mr-1 px-2',
+    notificationButton: ' px-2',
     locationButton: 'px-2',
+    searchButton: 'px-2',
     icon: 'size-5',
   },
 };
