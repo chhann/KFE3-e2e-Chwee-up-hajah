@@ -16,14 +16,14 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: 'Chwee-up-hajah',
+  title: 'Time Auction',
   description: '중고 경매 앱',
   manifest: '/manifest.json',
   themeColor: '#ffffff',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Chwee-up-hajah',
+    title: 'Time Auction',
   },
 };
 
