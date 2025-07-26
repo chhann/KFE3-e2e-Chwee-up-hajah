@@ -9,6 +9,8 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ item, layout = 'vertical' }: ProductCardProps) => {
+  // console.log('ProductCard item:', item.timeLeft);
+
   return (
     <Link href={`/auction/${item.id}/auction-detail`}>
       <div className={Styles.container(layout)}>
