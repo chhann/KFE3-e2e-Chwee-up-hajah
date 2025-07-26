@@ -19,16 +19,18 @@ export const AuctionBidHistoryCard = ({ bid }: { bid: Bid }) => {
   return (
     <div className={auctionBidHistoryStyle.auctionBidHistoryCardContainerStyle}>
       <div>
-        <span>{dateStr}</span>
-        <span className="mx-2"></span>
-        <span>{timeStr}</span>
-      </div>
-      <div className={auctionBidHistoryStyle.auctionBidHistoryCardInfoRowStyle}>
-        <span>{bid.user?.username}</span>
-        <span className={auctionBidHistoryStyle.auctionBidHistoryCardDotStyle}>·</span>
-        <span className={auctionBidHistoryStyle.auctionBidHistoryCardPriceStyle}>
-          {formatPriceNumber(bid.bid_price)}원
-        </span>
+        <div>
+          <span>{dateStr}</span>
+          <span className="mx-2"></span>
+          <span>{timeStr}</span>
+        </div>
+        <div className={auctionBidHistoryStyle.auctionBidHistoryCardInfoRowStyle}>
+          <span>{bid.user?.username}</span>
+          <span className={auctionBidHistoryStyle.auctionBidHistoryCardDotStyle}>·</span>
+          <span className={auctionBidHistoryStyle.auctionBidHistoryCardPriceStyle}>
+            {formatPriceNumber(bid.bid_price)}원
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ export const AuctionDescriptionCard = ({
           onClick={() => setTab('bids')}
           className={cn(
             auctionDescriptionCardStyle.auctionDescriptionCardTabStyle,
-            tab === 'bis' && auctionDescriptionCardStyle.auctionDescriptionCardTabActiveStyle
+            tab === 'bids' && auctionDescriptionCardStyle.auctionDescriptionCardTabActiveStyle
           )}
         >
           입찰기록

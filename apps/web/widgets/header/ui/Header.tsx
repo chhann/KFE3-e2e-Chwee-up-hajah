@@ -10,7 +10,6 @@ import { headerStyles as styles } from '../styles/header.styles';
 
 import Link from 'next/link';
 import { GoSearch } from 'react-icons/go';
-import { GrLocation } from 'react-icons/gr';
 import { IoLocationOutline, IoNotificationsOutline } from 'react-icons/io5';
 
 export const Header = () => {

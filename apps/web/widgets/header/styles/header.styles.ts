@@ -1,6 +1,6 @@
 export const headerStyles = {
   // 헤더 컨테이너
-  header: 'text-neutral-70 flex h-[68px] cursor-pointer items-center justify-between pl-2',
+  header: 'text-neutral-70 flex h-[68px] cursor-pointer items-center justify-between p-3',
 
   // 뒤로가기 버튼
   backButton: {

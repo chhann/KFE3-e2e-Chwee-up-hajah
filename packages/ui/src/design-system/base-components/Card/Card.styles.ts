@@ -1,8 +1,7 @@
 export const cardStyle = {
-  cardImageContainerStyle: 'relative',
-  cardImageStyle: 'h-48 w-full rounded-t-lg object-cover',
+  cardImageContainerStyle:
+    'relative flex w-full items-center justify-center overflow-hidden rounded-t-lg flex-grow',
+  cardImageStyle: 'h-full w-full object-cover',
   cardImageBadgeStyle: 'absolute right-2 top-2',
-  cardInfoContainerStyle: 'flex items-center justify-between',
-  cardInfoLeftTimeStyle: 'text-neutral-70 flex items-center gap-1 truncate',
-  cardTitleStyle: 'text-lg font-semibold',
+  cardTitleStyle: 'font-[var(--font-semibold)] text-center h-full flex flex-col',
 };
