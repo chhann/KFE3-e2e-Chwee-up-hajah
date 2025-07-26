@@ -52,7 +52,12 @@ export async function GET(req: NextRequest) {
       })
       .filter((item) => item.status !== 'end');
 
-    return NextResponse.json(result);
+    // 중복 제거 (한 경매에 여러 번 입찰한 경우)
+    const uniqueMyParticipatedAuctions = Array.from(
+      new Map(result.map((item) => [item.auction_id, item])).values()
+    );
+
+    return NextResponse.json(uniqueMyParticipatedAuctions); // 중복 제거된 결과 반환
   } catch (error) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
