@@ -13,9 +13,20 @@ export interface ButtonProps {
 }
 
 const buttonStyle = {
+  buttonVariantClasses: {
+    primary:
+      'bg-purple-500 text-white transition-colors hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2',
+    secondary:
+      'bg-[var(--button-secondary-bg)] text-[var(--button-secondary-text)] hover:bg-[var(--button-secondary-bg-hover)] active:bg-[var(--button-secondary-bg-active)] ',
+    outline:
+      'bg-[var(--button-outline-bg)] text-[var(--button-outline-text)] border border-[var(--button-outline-border)] hover:bg-[var(--button-outline-bg-hover)] ',
+    ghost:
+      'bg-[var(--button-ghost-bg)] text-[var(--button-ghost-text)] hover:bg-[var(--button-ghost-bg-hover)]',
+    custom: '',
+  },
   buttonSizeClasses: {
     lg: 'text-base w-full py-3 px-6',
-    thinLg: 'text-sm px-4 py-2',
+    thinLg: 'w-full text-sm px-4 py-2',
     md: 'text-sm px-4 py-2',
     thinMd: 'text-sm px-4 py-2',
     sm: 'text-xs px-3 py-1.5',
@@ -39,6 +50,7 @@ export const Button = ({
 }: ButtonProps) => {
   // variants는 이제 custom만 사용하므로 로직을 단순화합니다.
   const combinedClassName = cn(
+    buttonStyle.buttonVariantClasses[variants],
     buttonStyle.buttonSizeClasses[size],
     buttonStyle.buttonDisabledClasses,
     'rounded-md font-medium transition-colors duration-200',

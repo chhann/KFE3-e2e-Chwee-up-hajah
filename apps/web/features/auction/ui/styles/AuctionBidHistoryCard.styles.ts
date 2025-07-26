@@ -1,6 +1,6 @@
 export const auctionBidHistoryStyle = {
-  auctionBidHistoryCardContainerStyle: 'mb-3 rounded-lg p-4 shadow-md',
-  auctionBidHistoryCardInfoRowStyle: 'flex items-center',
+  auctionBidHistoryCardContainerStyle: 'flex justify-center p-2',
+  auctionBidHistoryCardInfoRowStyle: 'flex justify-end',
   auctionBidHistoryCardDotStyle: 'mx-1',
-  auctionBidHistoryCardPriceStyle: 'font-semibold',
+  auctionBidHistoryCardPriceStyle: 'font-[var(--font-semibold)]',
 };

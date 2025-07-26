@@ -27,7 +27,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { NotificationPermissionButton } from '@/features/test/NotificationPermissionButton';
 import GoogleAnalytics from '@/shared/hooks/GoogleAnalyticsEffect';
 import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
 import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';

@@ -82,14 +82,14 @@ export const EventPopup = () => {
         </div>
         <div className="flex border-t border-gray-200 bg-gray-50">
           <Button
-            variants="primary"
+            variants="custom"
             onClick={handleDontShowToday}
             className="w-1/2 border-r border-gray-200 py-3 text-sm text-gray-600 hover:bg-gray-100"
           >
             오늘 하루 보지 않기
           </Button>
           <Button
-            variants="primary"
+            variants="custom"
             onClick={handleClose}
             className="w-1/2 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-100"
           >
