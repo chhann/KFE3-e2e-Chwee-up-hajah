@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**', // picsum.photos 도메인의 모든 경로 허용
       },
+      {
+        protocol: 'https',
+        hostname: 'kqyspmbkzwmwfufzydly.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
       // 만약 다른 도메인도 사용한다면 여기에 추가
     ],
   },
