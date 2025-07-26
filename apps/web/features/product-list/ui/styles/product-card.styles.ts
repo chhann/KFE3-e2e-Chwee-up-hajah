@@ -10,12 +10,13 @@ export const Styles = {
     `${
       layout === 'horizontal' ? 'mb-[var(--spacing-2)] h-[77px] w-full' : 'h-[6rem] w-[6rem]'
     } flex-shrink-0 overflow-hidden rounded-[var(--radius-md)] bg-[var(--bg-disabled)]`,
-  image: 'h-full w-full object-cover',
+  image: 'h-full w-full object-contain',
 
   contentContainer: (layout: 'horizontal' | 'vertical') =>
     `${layout === 'horizontal' ? '' : 'flex flex-col justify-between'}`,
 
-  title: 'text-[length:var(--body-small-font-size)] font-[var(--font-semibold)]',
+  title:
+    'text-[length:var(--body-small-font-size)] font-[var(--font-semibold)] line-clamp-1 break-words',
   distance: 'text-[length:var(--text-xs)] text-[var(--text-secondary)]',
   timeLeft: 'text-[length:var(--text-xs)] text-[var(--text-secondary)]',
   priceLabel: 'text-[length:var(--text-xs)] text-[var(--text-disabled)]',

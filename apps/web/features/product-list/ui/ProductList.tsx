@@ -19,7 +19,7 @@ export const ProductList = ({ items, direction }: ProductListProps) => {
       <div className={Styles.horizontalContainer}>
         <Swiper
           slidesPerView={3}
-          spaceBetween={0}
+          spaceBetween={75}
           slidesOffsetAfter={0}
           loop={(items?.length ?? 0) > 3}
           className={Styles.swiper}
