@@ -32,6 +32,11 @@ export function useSendBid(
       alert('경매 ID 또는 입찰자 ID가 없습니다.');
       return;
     }
+    const lastBid = data.bids?.[data.bids.length - 1];
+    if (lastBid && lastBid.bidder_id === bidderId) {
+      alert('이미 최고가 입찰자입니다. 중복 입찰이 불가합니다.');
+      return;
+    }
     mutate({
       auctionId,
       bidderId,
