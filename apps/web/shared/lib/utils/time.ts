@@ -1,17 +1,15 @@
 // 경매 남은 시간
-export const getTimeRemaining = (endTime: string) => {
-  const total = Date.parse(endTime) - Date.now();
-  const seconds = Math.floor((total / 1000) % 60);
-  const minutes = Math.floor((total / 1000 / 60) % 60);
-  const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(total / (1000 * 60 * 60 * 24));
+export const getTimeRemainingUTC = (endTimeStr: string) => {
+  const now = new Date();
+  const endTime = new Date(endTimeStr + 'Z'); // UTC 해석 보정
+  const total = endTime.getTime() - now.getTime();
+
+  const totalHours = Math.floor(total / (1000 * 60 * 60)); // 총 시간
+  const minutes = Math.floor((total / (1000 * 60)) % 60); // 남은 분
 
   return {
     total,
-    days,
-    hours,
+    hours: totalHours,
     minutes,
-    seconds,
-    isEnded: total <= 0,
   };
 };
