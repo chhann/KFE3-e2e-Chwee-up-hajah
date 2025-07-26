@@ -38,9 +38,11 @@ export const HotdealInfoCard = ({ data, countdown }: HotdealInfoCardProps) => {
 
           <div className={HotdealInfoCardStyles.infoPriceNTimeWrapper}>
             <div>
-              <div className={HotdealInfoCardStyles.startPriceStyle}>
-                {data.start_price.toLocaleString()}원
-              </div>
+              {data.start_price !== data.current_price && (
+                <div className={HotdealInfoCardStyles.startPriceStyle}>
+                  {data.start_price.toLocaleString()}원
+                </div>
+              )}
               <div className={HotdealInfoCardStyles.currentPriceWrapperStyle}>
                 <div className={HotdealInfoCardStyles.discountPercentStyle}>
                   {parseFloat(discountPercent.toFixed(2))}%
