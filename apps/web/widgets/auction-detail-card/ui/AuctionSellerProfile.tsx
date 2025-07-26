@@ -28,7 +28,7 @@ export const AuctionSellerProfile = ({ user }: AuctionSellerProfileProps) => {
             </h3>
           </header>
           <div className={auctionSellerProfileStyle.auctionSellerProfileScoreStyle}>
-            등급 : {user.grade}
+            등급: {user.grade}
             {getGradeIcon(user.grade)}
           </div>
 

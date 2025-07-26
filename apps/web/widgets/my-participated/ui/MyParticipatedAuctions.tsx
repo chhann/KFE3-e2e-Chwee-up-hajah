@@ -23,7 +23,7 @@ export const MyParticipatedAuctions = ({ listData }: { listData: MockAuctionCard
             <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
               <AuctionCardBase
                 key={item.id}
-                title={item.title}
+                title={item.title || ''}
                 locationName={item.locationName}
                 imageSrc={item.imageSrc}
                 endTime={item.endTime}
