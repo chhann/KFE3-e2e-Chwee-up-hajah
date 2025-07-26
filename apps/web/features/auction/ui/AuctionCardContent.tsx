@@ -27,7 +27,7 @@ export const AuctionContent = ({
     <section className={auctionCardStyle.auctionCardInfoContainerStyle}>
       <div className={auctionCardStyle.auctionCardInfoContentsSectionStyle}>
         {primaryLabel && (
-          <div>
+          <div className={auctionCardStyle.auctionCardInfoCurrentPriceWrapperStyle}>
             <label className={auctionCardStyle.auctionCardInfoLabelStyle}>{primaryLabel}</label>
             <div>{formattedPrimaryPrice}원</div>
           </div>

@@ -24,7 +24,7 @@ export const MyListings = ({ listData }: { listData: MockAuctionCardProps[] }) =
             <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
               <AuctionCardBase
                 key={item.id}
-                title={item.title}
+                title={item.title ?? ''}
                 locationName={item.locationName}
                 imageSrc={item.imageSrc}
                 endTime={item.endTime}
@@ -32,12 +32,9 @@ export const MyListings = ({ listData }: { listData: MockAuctionCardProps[] }) =
                 badgeVariant={item.badgeVariant}
               >
                 <AuctionContent
-                  primaryLabel="시작가"
-                  primaryPriceValue={item.bidStartPrice}
                   secondaryLabel="현재 입찰가"
                   secondaryPriceValue={item.bidCurrentPrice}
                   bidCount={item.bidCount}
-                  showBidButton={false}
                 />
               </AuctionCardBase>
             </Link>

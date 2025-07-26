@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: { auctionId: s
         `
         *,
         product:product_id (*),
-        seller:seller_id (username, address, score, avatar),
+        seller:seller_id (username, address, grade, avatar),
         bids:auction_id (*, user:bidder_id (username))
       `
       )

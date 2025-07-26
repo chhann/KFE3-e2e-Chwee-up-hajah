@@ -1,6 +1,7 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
+import { getGradeIcon } from '@/shared/lib/points/getGradeIcon';
 import { AuctionDetail } from '@/shared/types/db';
 import { auctionSellerProfileStyle } from './styles/AuctionSellerProfile.styles';
 
@@ -27,7 +28,8 @@ export const AuctionSellerProfile = ({ user }: AuctionSellerProfileProps) => {
             </h3>
           </header>
           <div className={auctionSellerProfileStyle.auctionSellerProfileScoreStyle}>
-            온도 {user.score} · 판매 {user.selling_auction?.length || 0}
+            등급: {user.grade}
+            {getGradeIcon(user.grade)}
           </div>
 
           <LocationInfo address={user.address} />
