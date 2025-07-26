@@ -16,7 +16,7 @@ body {
 
 /* 스크롤바 커스터마이징 (선택사항) */
 ::-webkit-scrollbar {
-  width: 8px;
+  display: none;
 }
 
 ::-webkit-scrollbar-track {

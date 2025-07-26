@@ -58,9 +58,9 @@ const Page = () => {
   const auctionStarted = isAuctionStarted(data.start_time);
 
   return (
-    <main className="relative flex w-full flex-col items-center justify-center gap-2.5" role="main">
-      <ImageBanner images={imageFiles} height={230} />
-      <h1 className="text-neutral-70 mr-auto mt-5 font-semibold">{auctionName}</h1>
+    <main className="relative flex w-full flex-col items-center justify-center gap-2" role="main">
+      <ImageBanner images={imageFiles} height={400} />
+      <h1 className="text-neutral-70 mr-auto font-[var(--font-semibold)]">{auctionName}</h1>
       <AuctionDetailCard
         currentBidCost={displayCurrentPrice}
         startBidCost={startBidCost}
@@ -77,6 +77,7 @@ const Page = () => {
         onClick={sendBid}
       />
       <AuctionSellerProfile user={seller} />
+      {/* <hr className="w-full border border-[var(--border-primary)]" /> */}
       <AuctionDescriptionCard bids={displayBids} description={product.description} />
       {data.status === 'end' &&
         (displayBids.length === 0 && data.seller_id === userId ? (
