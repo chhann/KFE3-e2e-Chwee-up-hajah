@@ -43,7 +43,7 @@ export const AuctionCardBase = ({
         />
       </div>
       <div className={auctionCardStyle.auctionCardInfoSectionContainerStyle}>
-        <span>{title}</span>
+        <span className={auctionCardStyle.auctionCardInfoTitleStyle}>{title}</span>
         <div className={auctionCardStyle.cardInfoContainerStyle}>
           <div className={auctionCardStyle.cardLocationStyle}>
             <LocationInfo address={locationName} />
