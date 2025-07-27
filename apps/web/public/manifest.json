@@ -16,12 +16,12 @@
   ],
   "icons": [
     {
-      "src": "/icon192.png",
+      "src": "/TV.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icon512.png",
+      "src": "/TV.png",
       "sizes": "512x512",
       "type": "image/png"
     }

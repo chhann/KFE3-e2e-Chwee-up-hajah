@@ -41,7 +41,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="ko" className={`${notoSansKR.variable} ${isDark ? 'dark' : ''}`}>
       <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
         <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-          {/* <NotificationPermissionButton /> */}
           <Providers>
             <PushSubscriptionEffect />
             {children}

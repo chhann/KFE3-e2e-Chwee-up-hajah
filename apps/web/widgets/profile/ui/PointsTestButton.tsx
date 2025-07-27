@@ -1,7 +1,7 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
 
-const PointsTestButton = ({ userId }: { userId: string }) => {
+export const PointsTestButton = ({ userId }: { userId: string }) => {
   const pointsAddMutation = useMutation({
     mutationFn: async () => {
       const response = await fetch('/api/point/add-test', {
@@ -119,4 +119,4 @@ const PointsTestButton = ({ userId }: { userId: string }) => {
   );
 };
 
-export default PointsTestButton;
+// export default PointsTestButton;
