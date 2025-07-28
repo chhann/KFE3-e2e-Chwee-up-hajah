@@ -1,14 +1,9 @@
 'use client';
-import {
-  Item,
-  ItemContent,
-  ItemFooter,
-  ItemTitle,
-} from '@repo/ui/design-system/base-components/Item/index';
+import { Item, ItemContent, ItemTitle } from '@repo/ui/design-system/base-components/Item/index';
 
-import { pointsHistoryListStyles as styles } from '../styles/pointsHistory.styles';
 import { usePointsHistory } from '@/shared/api/client/point/usePointsHistory';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { pointsHistoryListStyles as styles } from '../styles/pointsHistory.styles';
 
 import { format } from 'date-fns';
 import { useState } from 'react';

@@ -12,8 +12,8 @@ try {
     t = new e.Error().stack;
   t &&
     ((e._sentryDebugIds = e._sentryDebugIds || {}),
-    (e._sentryDebugIds[t] = '390716e1-2c09-41a5-82cd-e2f5841317e8'),
-    (e._sentryDebugIdIdentifier = 'sentry-dbid-390716e1-2c09-41a5-82cd-e2f5841317e8'));
+    (e._sentryDebugIds[t] = 'ff8d5281-1b1d-4b85-94af-debec9ba6003'),
+    (e._sentryDebugIdIdentifier = 'sentry-dbid-ff8d5281-1b1d-4b85-94af-debec9ba6003'));
 } catch (e) {}
 (() => {
   'use strict';
@@ -25,7 +25,7 @@ try {
           let n = null == (t = e.data) ? void 0 : t.json();
           await self.registration.showNotification(n.title, {
             body: n.body,
-            icon: '/icon512.png',
+            icon: '/TA.png',
             data: { url: n.url },
           });
         } catch (e) {

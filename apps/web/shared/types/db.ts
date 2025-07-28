@@ -35,7 +35,7 @@ export type AuctionDetail = {
     address: string;
     username: string;
     avatar: string;
-    score: number;
+    grade: string;
     selling_auction: string[] | null;
   };
   bids: Bid[];

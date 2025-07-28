@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '../../../widgets/product-section/types';
 import { Styles } from './styles/product-card.styles';
@@ -8,12 +9,22 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ item, layout = 'vertical' }: ProductCardProps) => {
+  // console.log('ProductCard item:', item.timeLeft);
+
   return (
     <Link href={`/auction/${item.id}/auction-detail`}>
       <div className={Styles.container(layout)}>
         {/* 이미지 */}
         <div className={Styles.imageContainer(layout)}>
-          {item.image && <img src={item.image} alt={item.title} className={Styles.image} />}
+          {item.image && (
+            <Image
+              src={item.image}
+              alt={item.title}
+              width={124}
+              height={77}
+              className={Styles.image}
+            />
+          )}
         </div>
 
         {/* 텍스트 정보 */}

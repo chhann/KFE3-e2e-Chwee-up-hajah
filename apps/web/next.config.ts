@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**', // picsum.photos 도메인의 모든 경로 허용
       },
+      {
+        protocol: 'https',
+        hostname: 'kqyspmbkzwmwfufzydly.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
       // 만약 다른 도메인도 사용한다면 여기에 추가
     ],
   },
@@ -30,7 +36,7 @@ const pwaOptions = {
   dest: 'public',
   register: true,
   skipWaiting: true,
-  swSrc: 'public/sw.js',
+  swSrc: 'worker/index.js',
 };
 
 // withPWA를 먼저 적용하고, 그 결과에 nextConfig를 전달

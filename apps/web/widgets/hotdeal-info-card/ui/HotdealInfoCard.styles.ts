@@ -10,7 +10,7 @@ export const HotdealInfoCardStyles = {
   countdownContainerStyle: 'text-right',
   countdownStyle: 'text-[var(--text-error)]',
   quantityContainerStyle: 'flex justify-between',
-  currentQuantityWrapperStyle: 'font-[var(--font-bold)]',
+  currentQuantityWrapperStyle: 'font-[var(--font-bold)] text-right',
   currentQuantityStyle: 'font-[var(--font-bold)]',
   gradeStyle: 'text-sm',
   descriptionContainerStyle: 'mt-8 flex flex-col gap-2',

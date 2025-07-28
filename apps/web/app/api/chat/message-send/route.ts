@@ -4,7 +4,7 @@ import { createApiClient } from '../../../server';
 
 webpush.setVapidDetails(
   'mailto:you@example.com',
-  process.env.VAPID_PUBLIC_KEY!,
+  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   process.env.VAPID_PRIVATE_KEY!
 );
 
@@ -30,22 +30,30 @@ export async function POST(req: NextRequest) {
   }
 
   // ✅ 1. 채팅방 정보 조회
+
+  let room = null;
+
   try {
-    const { data: room, error: roomError } = await supabase
+    const { data, error } = await supabase
       .from('chatroom')
       .select('buyer_id, seller_id')
       .eq('room_id', roomId)
       .single();
 
+    if (error) {
+      console.error('❌ chatroom 조회 오류:', error.message);
+      return NextResponse.json({ error: '채팅방 정보 조회 실패' }, { status: 500 });
+    }
+
+    room = data;
     console.log('📦 room 결과:', room);
-    console.log('⚠️ room error:', roomError);
   } catch (err) {
-    console.error('❌ chatroom 조회 중 에러 발생:', err);
+    console.error('❌ chatroom 조회 중 예외 발생:', err);
     return NextResponse.json({ error: '서버 내부 오류' }, { status: 500 });
   }
 
-  // const receiverId = senderId === room.buyer_id ? room.seller_id : room.buyer_id;
-  const receiverId = senderId;
+  const receiverId = senderId === room.buyer_id ? room.seller_id : room.buyer_id;
+  // const receiverId = senderId; // 본인에게 보내기 push 테스트
   console.log('🔍 receiverId:', receiverId);
 
   // ✅ 2. 수신자 구독 정보 조회

@@ -7,7 +7,7 @@ import { LogoutButton } from '@/widgets/authentication/LogoutButton';
 import { getCurrentUser } from '@/app/session';
 import { getProfile } from '@/shared/api/server/profile/getProfile';
 import { NavigationItem } from '@/shared/types/profile';
-import PointsTestButton from '@/widgets/profile/ui/PointsTestButton';
+import { PointsTestButton } from '@/widgets/profile/ui/PointsTestButton';
 
 const pointItems: NavigationItem[] = [{ label: '적립내역', href: '/profile/points-history' }];
 

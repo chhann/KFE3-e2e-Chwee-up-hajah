@@ -14,7 +14,6 @@ import { useAuctionDetail } from '@/shared/api/client/auction/useAuctionDetail';
 import { categories } from '@/shared/mock/auction';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
-import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 import { Select } from '@repo/ui/design-system/base-components/Select/index';
 import { auctionFormStyle } from './styles/AuctionForm.styles';
 
@@ -56,7 +55,6 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
       <fieldset>
         <AuctionImageUploader images={images} setImages={setImages} />
         <ErrorMessage message={fieldErrors.images} />
-        <LocationInfo address="서울시 강남구" />
       </fieldset>
 
       {/*경매 정보 입력*/}
