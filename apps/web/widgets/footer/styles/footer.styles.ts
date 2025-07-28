@@ -7,11 +7,12 @@ export const footerStyles = {
 
   // 네비게이션 링크
   navLink:
-    'flex flex-col items-center text-sm transition-colors hover:text-[var(--color-primary-500)]',
+    'flex flex-col items-center text-sm transition-colors cursor-pointer hover:text-[var(--color-primary-500)]',
 
   // 아이콘
   icon: 'mb-[6px] size-6',
 
+  isActiveLink: 'text-[var(--color-primary-500)]',
   // 라벨
   label: '',
 };
