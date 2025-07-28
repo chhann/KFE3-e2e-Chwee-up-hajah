@@ -9,7 +9,7 @@ import onlyWarn from 'eslint-plugin-only-warn';
  *
  * @type {import("eslint").Linter.Config}
  * */
-const config = [
+export const config = [
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,

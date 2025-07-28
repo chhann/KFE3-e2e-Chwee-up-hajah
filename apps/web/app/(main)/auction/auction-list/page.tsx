@@ -9,7 +9,7 @@ import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
 import { categories } from '@/shared/mock/auction';
 
 import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
-import { AuctionListings } from '@/widgets/auction-listings';
+import { AuctionListings } from '@/widgets/auction-listings/ui/AuctionListings';
 import { SearchInput } from '@/widgets/search';
 
 const Page = () => {

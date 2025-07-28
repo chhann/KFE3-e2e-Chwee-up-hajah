@@ -11,7 +11,7 @@
     "SENTRY_DSN",
     "SENTRY_ORG",
     "SENTRY_PROJECT",
-    "VAPID_PUBLIC_KEY",
+    "NEXT_PUBLIC_VAPID_PUBLIC_KEY",
     "VAPID_PRIVATE_KEY"
   ],
   "tasks": {
