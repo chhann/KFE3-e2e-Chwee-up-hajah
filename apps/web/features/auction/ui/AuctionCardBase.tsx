@@ -1,8 +1,9 @@
-import { Card, CardProps } from '@repo/ui/design-system/base-components/Card/index';
-import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
-import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { useEffect, useState } from 'react';
+
+import { Card, CardProps } from '@repo/ui/design-system/base-components/Card/index';
+import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { FaRegClock } from 'react-icons/fa6';
+
 import { auctionCardStyle } from './styles/AuctionCard.styles';
 
 export interface AuctionCardBaseProps extends CardProps {
@@ -45,9 +46,6 @@ export const AuctionCardBase = ({
       <div className={auctionCardStyle.auctionCardInfoSectionContainerStyle}>
         <span className={auctionCardStyle.auctionCardInfoTitleStyle}>{title}</span>
         <div className={auctionCardStyle.cardInfoContainerStyle}>
-          <div className={auctionCardStyle.cardLocationStyle}>
-            <LocationInfo address={locationName} />
-          </div>
           <div className={auctionCardStyle.cardInfoLeftTimeStyle}>
             <FaRegClock />
             {displayRemainingTime}
