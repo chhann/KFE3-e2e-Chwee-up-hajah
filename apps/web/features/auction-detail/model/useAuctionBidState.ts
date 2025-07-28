@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useAuctionBid } from '@/shared/api/client/auction/useAuctionBid';
@@ -13,6 +14,7 @@ export function useAuctionBidState(auctionId: string) {
   const { data, isLoading, error } = useAuctionDetail(auctionId); //데이터 가져오기
   const { mutate } = useAuctionBid();
   const bidderId = useAuthStore((state) => state.userId);
+  const queryClient = useQueryClient();
 
   const [displayBids, setDisplayBids] = useState<Bid[]>([]);
   const [displayCurrentPrice, setDisplayCurrentPrice] = useState<number>(0);
@@ -34,10 +36,12 @@ export function useAuctionBidState(auctionId: string) {
 
   useRealtimeBids(
     auctionId,
-    useCallback((newBid: Bid) => {
-      setDisplayBids((prevBids) => [newBid, ...prevBids]);
-      if (newBid.bid_price) setDisplayCurrentPrice(newBid.bid_price);
-    }, [])
+    useCallback(
+      (newBid: Bid) => {
+        queryClient.invalidateQueries({ queryKey: ['auctionDetail', auctionId] });
+      },
+      [auctionId, queryClient]
+    )
   ); // 실시간 입찰 업데이트
 
   const { minusBidCost, plusBidCost } = useBidCostHandlers(
