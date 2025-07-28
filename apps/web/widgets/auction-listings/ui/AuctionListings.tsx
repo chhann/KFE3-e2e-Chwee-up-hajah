@@ -1,11 +1,13 @@
 'use client';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import Link from 'next/link';
 
 import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
 import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+
 import { AuctionCardProps } from '@/shared/types/auction';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
+
 import { auctionListStyle } from './styles/AuctionListings.styles';
 
 interface MockAuctionCardProps extends AuctionCardProps {

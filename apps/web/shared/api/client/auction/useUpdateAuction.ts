@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+
 import { updateAuction } from '../../server/auction/updateAuction';
 
 export const useUpdateAuction = () => {
@@ -20,7 +21,7 @@ export const useUpdateAuction = () => {
 
       // 3. '내가 등록한 경매 목록' 쿼리도 무효화합니다.
       queryClient.invalidateQueries({
-        queryKey: [variables.seller_id, 'auctions', 'my-participated'],
+        queryKey: [variables.seller_id, 'auctions', 'my-listings'],
       });
       router.push(`/auction/${variables.auction_id}/auction-detail`);
     },

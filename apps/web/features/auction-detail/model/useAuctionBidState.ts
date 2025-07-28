@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useAuthStore } from '@/shared/stores/auth';
-import { Bid } from '@/shared/types/db';
-
 import { useAuctionBid } from '@/shared/api/client/auction/useAuctionBid';
 import { useAuctionDetail } from '@/shared/api/client/auction/useAuctionDetail';
 import { useRealtimeBids } from '@/shared/hooks/useRealTimeBid';
+import { useAuthStore } from '@/shared/stores/auth';
+import { Bid } from '@/shared/types/db';
+
 import { useBidCostHandlers } from './useBidCostHandlers';
 import { useSendBid } from './useSendBid';
 
@@ -55,7 +55,7 @@ export function useAuctionBidState(auctionId: string) {
     // eslint-disable-next-line
   }, [minBidCostNumber]); // 입찰 비용이 변경될 때마다 사용자가 변경한 상태를 확인하고, 최소 입찰 비용을 유지합니다.
 
-  const sendBid = useSendBid(data, auctionId, bidderId, bidCost, mutate); // 입찰 전송
+  const sendBid = useSendBid(data, auctionId, bidderId, bidCost, displayBids, mutate); // 입찰 전송
 
   return {
     data,

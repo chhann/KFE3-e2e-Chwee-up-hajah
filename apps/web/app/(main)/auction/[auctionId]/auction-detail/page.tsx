@@ -1,9 +1,9 @@
 'use client';
 
-import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
+import { useEffect, useState } from 'react';
+
 import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 import {
   AuctionDescriptionCard,
@@ -14,6 +14,8 @@ import { ImageBanner } from '@/widgets/image-banner';
 
 import { useAuctionBidState } from '@/features/auction-detail/model/useAuctionBidState';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+
+import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { useAuthStore } from '@/shared/stores/auth';
 
 const Page = () => {

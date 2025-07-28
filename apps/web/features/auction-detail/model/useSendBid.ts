@@ -3,13 +3,14 @@ import { useCallback } from 'react';
 import { MutateOptions } from '@tanstack/react-query';
 
 import { AuctionBidParams, AuctionBidResponse } from '@/shared/types/auction';
-import { AuctionDetail } from '@/shared/types/db';
+import { AuctionDetail, Bid } from '@/shared/types/db';
 
 export function useSendBid(
   data: AuctionDetail | undefined,
   auctionId: string,
   bidderId: string | null,
   bidCost: number,
+  displayBids: Bid[],
   mutate: (
     variables: AuctionBidParams,
     options?: MutateOptions<AuctionBidResponse, Error, AuctionBidParams, unknown> | undefined
@@ -32,7 +33,7 @@ export function useSendBid(
       alert('경매 ID 또는 입찰자 ID가 없습니다.');
       return;
     }
-    const lastBid = data.bids?.[data.bids.length - 1];
+    const lastBid = displayBids[displayBids.length - 1];
     if (lastBid && lastBid.bidder_id === bidderId) {
       alert('이미 최고가 입찰자입니다. 중복 입찰이 불가합니다.');
       return;
@@ -42,5 +43,5 @@ export function useSendBid(
       bidderId,
       bidPrice: bidCost,
     });
-  }, [data, auctionId, bidderId, bidCost, mutate]);
+  }, [data, auctionId, bidderId, bidCost, displayBids, mutate]);
 }
