@@ -6,18 +6,24 @@ import { z } from 'zod';
  * - 각 필드의 유효성 조건을 정의하며,
  * - password와 confirmPassword의 일치 여부도 검사함
  */
-export const SignupSchema = z.object({
+const SignupBaseSchema = z.object({
   /** 이메일 주소 - 올바른 이메일 형식이어야 함 */
   email: z.string().email('올바른 이메일 형식이 아닙니다.'),
 
   /** 비밀번호 - 최소 8자 이상 */
-  password: z.string().min(8, '비밀번호는 8자 이상이어야 합니다.'),
+  password: z
+    .string()
+    .min(8, '비밀번호는 8자 이상이어야 합니다.')
+    .max(16, '비밀번호는 최대 16자 이하입니다.'),
 
   /** 비밀번호 확인 - password와 일치해야 함 (아래 refine에서 비교) */
   confirmPassword: z.string(),
 
   /** 사용자명/닉네임 - 최소 2자 이상 */
-  username: z.string().min(2, '닉네임은 2자 이상이어야 합니다.'),
+  username: z
+    .string()
+    .min(2, '닉네임은 2자 이상이어야 합니다.')
+    .max(16, '닉네임은 최대 16자 이하입니다.'),
 
   /** 주소 - 공백일 수 없음 */
   address: z.string().min(1, '주소를 입력해주세요.'),
@@ -39,17 +45,19 @@ export const SignupSchema = z.object({
   agreedToMarketing: z.boolean().optional(),
 });
 
-// 먼저 omit으로 서버 스키마 생성
-export const SignupServerSchema = SignupSchema.omit({ confirmPassword: true });
-
-// 그 다음 클라이언트 스키마에 refine 추가
-export const SignupClientSchema = SignupSchema.refine(
+export const SignupSchema = SignupBaseSchema.refine(
   (data) => data.password === data.confirmPassword,
   {
     message: '비밀번호가 일치하지 않습니다.',
     path: ['confirmPassword'],
   }
 );
+
+// 먼저 omit으로 서버 스키마 생성
+export const SignupServerSchema = SignupBaseSchema.omit({ confirmPassword: true });
+
+// 그 다음 클라이언트 스키마에 refine 추가
+export const SignupClientSchema = SignupSchema;
 
 /**
  * 회원가입 입력값 타입
