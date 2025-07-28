@@ -1,6 +1,6 @@
 export const footerStyles = {
   // 푸터 컨테이너
-  footer: 'h-20',
+  footer: 'h-20 fixed bottom-0 flex w-full max-w-[375px] justify-between bg-white z-1',
 
   // 네비게이션 리스트
   navList: 'text-neutral-70 flex size-full items-center justify-between px-6 py-4',
