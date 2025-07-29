@@ -3,8 +3,7 @@ import Link from 'next/link';
 
 import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 
-import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
-import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
+import { AuctionListItem } from '@/features/auction/ui/AuctionListItem';
 
 import { AuctionCardProps } from '@/shared/types/auction';
 
@@ -16,32 +15,22 @@ interface MockAuctionCardProps extends AuctionCardProps {
 export const MyParticipatedAuctions = ({ listData }: { listData: MockAuctionCardProps[] }) => {
   return (
     <section className={auctionListStyle.auctionListingContainerStyle}>
-      <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
+      <h2 className={auctionListStyle.auctionListingLabelStyle}>참여한 경매</h2>
 
       {/* 경매 아이템 목록 */}
       <div className={auctionListStyle.auctionListBasicStyle}>
-        {listData.map((item, index) => (
-          <section key={index} className={auctionListStyle.auctionListCardStyle}>
-            <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
-              <AuctionCardBase
-                key={item.id}
-                title={item.title || ''}
-                locationName={item.locationName}
-                imageSrc={item.imageSrc}
-                endTime={item.endTime}
-                startTime={item.startTime}
-                badgeVariant={item.badgeVariant}
-                status={item.status}
-              >
-                <AuctionContent
-                  primaryLabel="내 입찰가"
-                  primaryPriceValue={item.myBidPrice!}
-                  secondaryLabel="현재 입찰가"
-                  secondaryPriceValue={item.bidCurrentPrice}
-                  bidCount={item.bidCount}
-                />
-              </AuctionCardBase>
-            </Link>
+        {listData.map((item) => (
+          <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
+            <AuctionListItem
+              id={item.id}
+              imageSrc={item.imageSrc}
+              title={item.title ?? ''}
+              bidCurrentPrice={item.bidCurrentPrice}
+              bidCount={item.bidCount}
+              startTime={item.startTime}
+              endTime={item.endTime}
+              status={item.status}
+            />
           </section>
         ))}
       </div>

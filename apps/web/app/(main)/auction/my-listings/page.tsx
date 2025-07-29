@@ -26,7 +26,7 @@ const Page = () => {
 
   return (
     <main className="text-neutral-70" role="main">
-      <h1 className="mb-3 text-base font-semibold">판매중인 물품</h1>
+      <h1 className="mb-3">판매중인 물품</h1>
       <div className="w-full text-right">
         <select
           name="listFilter"
