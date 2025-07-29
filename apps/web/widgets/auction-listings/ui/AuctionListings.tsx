@@ -3,9 +3,7 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
-import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
-import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+import { AuctionListItem } from '@/features/auction/ui/AuctionListItem';
 
 import { AuctionCardProps } from '@/shared/types/auction';
 
@@ -51,27 +49,17 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
         // Case 3: listData에 데이터가 있을 때 (경매 목록을 보여줌)
         <div className={auctionListStyle.auctionListBasicStyle}>
           {listData.map((item) => (
-            <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
-              <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
-                <AuctionCardBase
-                  key={item.id}
-                  title={item.title ?? ''}
-                  locationName={item.locationName}
-                  imageSrc={item.imageSrc}
-                  endTime={item.endTime}
-                  startTime={item.startTime}
-                  status={item.status}
-                >
-                  <AuctionContent
-                    primaryPriceValue={item.bidStartPrice}
-                    secondaryLabel="현재 입찰가"
-                    secondaryPriceValue={item.bidCurrentPrice}
-                    bidCount={item.bidCount}
-                  />
-                </AuctionCardBase>
-              </Link>
-              {item.status === 'closed' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
-            </section>
+            <AuctionListItem
+              key={item.id}
+              id={item.id}
+              imageSrc={item.imageSrc}
+              title={item.title ?? ''}
+              bidCurrentPrice={item.bidCurrentPrice}
+              bidCount={item.bidCount}
+              startTime={item.startTime}
+              endTime={item.endTime}
+              status={item.status}
+            />
           ))}
         </div>
       )}

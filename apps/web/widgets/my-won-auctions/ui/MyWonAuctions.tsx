@@ -1,12 +1,12 @@
-import Link from 'next/link';
-
-import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
-import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
-import { AuctionCardProps } from '@/shared/types/auction';
 import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
+
+import { AuctionListItem } from '@/features/auction/ui/AuctionListItem';
+
+import { AuctionCardProps } from '@/shared/types/auction';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
+  status: 'ready' | 'in_progress' | 'closed';
 }
 
 export const MyWonAuctions = ({ listData }: { listData: MockAuctionCardProps[] }) => {
@@ -18,24 +18,16 @@ export const MyWonAuctions = ({ listData }: { listData: MockAuctionCardProps[] }
       <div className={auctionListStyle.auctionListBasicStyle}>
         {listData.map((item) => (
           <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
-            <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
-              <AuctionCardBase
-                key={item.id}
-                title={item.title || ''}
-                locationName={item.locationName}
-                imageSrc={item.imageSrc}
-                endTime={item.endTime}
-                startTime={item.startTime}
-              >
-                <AuctionContent
-                  primaryLabel="시작가"
-                  primaryPriceValue={item.bidStartPrice}
-                  secondaryLabel="낙찰가"
-                  secondaryPriceValue={item.myWonPrice!}
-                  bidCount={item.bidCount}
-                />
-              </AuctionCardBase>
-            </Link>
+            <AuctionListItem
+              id={item.id}
+              imageSrc={item.imageSrc}
+              title={item.title ?? ''}
+              bidCurrentPrice={item.bidCurrentPrice}
+              bidCount={item.bidCount}
+              startTime={item.startTime}
+              endTime={item.endTime}
+              status={item.status}
+            />
           </section>
         ))}
       </div>

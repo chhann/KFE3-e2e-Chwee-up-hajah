@@ -3,8 +3,7 @@ import Link from 'next/link';
 
 import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 
-import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
-import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
+import { AuctionListItem } from '@/features/auction/ui/AuctionListItem';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
 
 import { AuctionCardProps } from '@/shared/types/auction';
@@ -19,35 +18,7 @@ export const MyListings = ({ listData }: { listData: MockAuctionCardProps[] }) =
     <section className={auctionListStyle.auctionListingContainerStyle}>
       <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
 
-      {/* 경매 아이템 목록 */}
-      <div className={auctionListStyle.auctionListBasicStyle}>
-        {listData.map((item) => (
-          <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
-            <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
-              <AuctionCardBase
-                key={item.id}
-                title={item.title ?? ''}
-                locationName={item.locationName}
-                imageSrc={item.imageSrc}
-                endTime={item.endTime}
-                startTime={item.startTime}
-                status={item.status}
-                badgeVariant={item.badgeVariant}
-              >
-                <AuctionContent
-                  secondaryLabel="현재 입찰가"
-                  secondaryPriceValue={item.bidCurrentPrice}
-                  bidCount={item.bidCount}
-                />
-              </AuctionCardBase>
-            </Link>
-            {item.status === 'closed' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
-          </section>
-        ))}
-      </div>
-
-      {/* 빈 상태 처리 */}
-      {listData.length === 0 && (
+      {listData.length === 0 ? (
         <div className={auctionListStyle.emptyListContainerStyle}>
           <h3 className={auctionListStyle.emptyListAddHeaderTextStyle}>
             등록된 경매 상품이 없습니다
@@ -58,6 +29,24 @@ export const MyListings = ({ listData }: { listData: MockAuctionCardProps[] }) =
               상품 등록하기
             </Button>
           </Link>
+        </div>
+      ) : (
+        <div className={auctionListStyle.auctionListBasicStyle}>
+          {listData.map((item) => (
+            <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
+              <AuctionListItem
+                id={item.id}
+                imageSrc={item.imageSrc}
+                title={item.title ?? ''}
+                bidCurrentPrice={item.bidCurrentPrice}
+                bidCount={item.bidCount}
+                startTime={item.startTime}
+                endTime={item.endTime}
+                status={item.status}
+              />
+              {item.status === 'closed' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
+            </section>
+          ))}
         </div>
       )}
     </section>
