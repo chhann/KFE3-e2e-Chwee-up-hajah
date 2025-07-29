@@ -41,11 +41,9 @@ export async function GET(req: NextRequest) {
     const result = (bidData || [])
       .map((item: any) => {
         const { auction, bid_price } = item;
-        const { status: oldStatus, ...auctionRest } = auction;
 
         return {
-          ...auctionRest,
-          status: oldStatus,
+          ...auction,
           my_bid_price: bid_price,
         };
       })

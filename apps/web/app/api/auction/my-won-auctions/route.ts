@@ -49,15 +49,12 @@ export async function GET(req: NextRequest) {
       })
       .map((bid: any) => {
         const { auction, bid_price } = bid;
-        const { status: oldStatus, ...auctionRest } = auction;
 
         return {
-          ...auctionRest,
-          status: 'closed',
+          ...auction,
           my_won_price: bid_price,
         };
       });
-
     // 3. 중복 제거 (한 경매에 여러 번 입찰한 경우)
     const uniqueWonAuctions = Array.from(
       new Map(wonAuctions.map((item) => [item.auction_id, item])).values()
