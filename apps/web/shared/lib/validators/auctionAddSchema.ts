@@ -23,6 +23,27 @@ export const auctionAddSchema = z
           message: '경매 시작가는 1,000원 이상이어야 합니다.',
         }
       ),
+    bidUnitPrice: z
+      .string()
+      .min(1, '경매 입찰 단가를 입력해 주세요.')
+      .refine(
+        (val) => {
+          const price = parseInt(val, 10);
+          return price >= 1000;
+        },
+        {
+          message: '입찰 단가는 1,000원 이상이어야 합니다.',
+        }
+      )
+      .refine(
+        (val) => {
+          const price = parseInt(val, 10);
+          return price % 1000 === 0;
+        },
+        {
+          message: '입찰 단가는 1,000원 단위여야 합니다.',
+        }
+      ),
 
     auctionDescription: z
       .string()
@@ -42,6 +63,17 @@ export const auctionAddSchema = z
     {
       message: '경매 종료일은 시작일 이후여야 합니다.',
       path: ['endDate'],
+    }
+  )
+  .refine(
+    (data) => {
+      const startPrice = parseInt(data.startPrice, 10);
+      const bidUnitPrice = parseInt(data.bidUnitPrice, 10);
+      return bidUnitPrice <= startPrice * 0.5;
+    },
+    {
+      message: '입찰 단가는 시작가의 50%를 초과할 수 없습니다.',
+      path: ['bidUnitPrice'],
     }
   );
 

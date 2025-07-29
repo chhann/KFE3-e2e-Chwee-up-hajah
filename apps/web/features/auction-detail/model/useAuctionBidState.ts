@@ -1,5 +1,6 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useAuctionBid } from '@/shared/api/client/auction/useAuctionBid';
 import { useAuctionDetail } from '@/shared/api/client/auction/useAuctionDetail';
@@ -19,7 +20,7 @@ export function useAuctionBidState(auctionId: string) {
   const [displayBids, setDisplayBids] = useState<Bid[]>([]);
   const [displayCurrentPrice, setDisplayCurrentPrice] = useState<number>(0);
 
-  const bidUnit = 5000;
+  const bidUnit = data?.bid_unit_price || 5000; // 기본 입찰 단위
   const minBidCostNumber = displayCurrentPrice + bidUnit;
 
   const [bidCost, setBidCost] = useState(minBidCostNumber);

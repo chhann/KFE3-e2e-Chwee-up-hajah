@@ -1,10 +1,33 @@
-import { adminClient } from '@/app/admin';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { adminClient } from '@/app/admin';
+
+import { auctionAddSchema } from '@/shared/lib/validators/auctionAddSchema';
 
 export async function PUT(request: NextRequest) {
   const body = await request.json();
 
   const { auction_id, auction_data, product_data } = body;
+
+  const dataToValidate = {
+    images: auction_data.images,
+    auctionName: product_data.name,
+    auctionCategory: product_data.category,
+    startPrice: String(auction_data.start_price || ''),
+    bidUnitPrice: String(auction_data.bid_unit_price || ''),
+    auctionDescription: product_data.description,
+    startDate: auction_data.start_time,
+    endDate: auction_data.end_time,
+  };
+
+  const validationResult = auctionAddSchema.safeParse(dataToValidate);
+
+  if (!validationResult.success) {
+    return NextResponse.json(
+      { error: 'Invalid input', details: validationResult.error.flatten() },
+      { status: 400 }
+    );
+  }
 
   if (!auction_id || !auction_data || !product_data) {
     return NextResponse.json(
