@@ -53,8 +53,8 @@ export const SearchInput = ({ setCategory }: Props) => {
         }}
         className={searchInputStyles.resetSearch}
       >
+        검색어 초기화
         <IoIosClose />
-        검색어 <span>초기화</span>
       </div>
     </>
   );
