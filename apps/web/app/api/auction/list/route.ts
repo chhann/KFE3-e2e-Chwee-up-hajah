@@ -1,6 +1,6 @@
-import { adminClient } from '@/app/admin';
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { adminClient } from '@/app/admin';
 
 const PAGE_SIZE = 5; // 페이지당 아이템 수
 
@@ -66,13 +66,7 @@ export async function GET(req: NextRequest) {
       nextPage = page + 1;
       data.pop(); // 마지막 아이템은 다음 페이지 확인용이므로 제거
     }
-
-    const result = (data || []).map((item: any) => ({
-      ...item,
-      status: getAuctionStatus(item),
-    }));
-
-    return NextResponse.json({ data: result, nextPage });
+    return NextResponse.json({ data, nextPage });
   } catch (err) {
     console.error('서버 에러:', err);
     return NextResponse.json({ error: '데이터를 불러오지 못했습니다' }, { status: 500 });
