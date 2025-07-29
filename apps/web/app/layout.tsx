@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 
 import { Providers } from './providers';
@@ -19,12 +19,15 @@ export const metadata: Metadata = {
   title: 'Time Auction',
   description: '중고 경매 앱',
   manifest: '/manifest.json',
-  themeColor: '#ffffff',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: 'Time Auction',
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
 };
 
 import GoogleAnalytics from '@/shared/hooks/GoogleAnalyticsEffect';
@@ -49,6 +52,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               position="bottom-center"
               toastOptions={{
                 duration: 2300,
+
+                style: {
+                  background: '#484848',
+                  color: '#f5f5f5',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                  fontSize: 12,
+                },
               }}
             />
             <Analytics />
