@@ -3,6 +3,7 @@
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
 import { useDeleteAuction } from '@/shared/api/client/auction/useDeleteAuction';
@@ -52,11 +53,11 @@ export const AuctionDetailCard = ({
 
   const handleDelete = () => {
     if (isAuctionStarted) {
-      alert('경매가 시작되어 삭제가 불가능합니다.');
+      toast.error('경매가 시작되어 삭제가 불가능합니다.');
       return;
     }
     if (userId !== sellerId) {
-      return alert('본인 경매만 삭제할 수 있습니다.');
+      return toast.error('본인 경매만 삭제할 수 있습니다.');
     }
     const isConfirm = window.confirm('경매를 삭제하시겠습니까?');
     if (isConfirm) {

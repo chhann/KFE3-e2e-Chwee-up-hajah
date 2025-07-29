@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import { updateAuction } from '../../server/auction/updateAuction';
 
@@ -27,8 +28,8 @@ export const useUpdateAuction = () => {
     },
 
     onError: (error) => {
-      console.error('업데이트 중 오류 발생:', error);
-      alert(`업데이트 실패: ${error.message}`);
+      console.log('업데이트 중 오류 발생:', error);
+      toast.error(`업데이트 실패: ${error.message}`);
     },
   });
 };

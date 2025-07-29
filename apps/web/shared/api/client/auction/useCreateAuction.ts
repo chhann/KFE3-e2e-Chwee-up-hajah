@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import { CreateAuctionPayload } from '@/shared/types/auction';
 
@@ -18,7 +19,9 @@ export function useCreateAuction() {
         } catch {
           errJson = {};
         }
-        alert('서버 오류: ' + (errJson.error || ''));
+        toast.error('서버에서 오류가 발생했습니다.');
+        console.log(errJson.error || '');
+
         return;
       }
       // 1. 전체 경매 목록 쿼리도 무효화합니다.
@@ -34,7 +37,7 @@ export function useCreateAuction() {
       router.push('/main');
     },
     onError: (error) => {
-      alert('전송 실패' + error.message);
+      toast.error('전송 실패' + error.message);
     },
   });
 }

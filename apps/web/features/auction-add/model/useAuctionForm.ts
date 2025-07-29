@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { getToday } from '@repo/ui/utils/getToday';
+import toast from 'react-hot-toast';
 
 import { useCreateAuction } from '@/shared/api/client/auction/useCreateAuction';
 import { useUpdateAuction } from '@/shared/api/client/auction/useUpdateAuction';
@@ -37,7 +38,7 @@ export function useAuctionForm({
       return false;
     }
     // 경매가 종료되었고, 입찰 기록이 없는 경우 수정 가능 (시작되지 않은 것으로 간주)
-    if (initialData.status === 'end' && initialData.bid_count === 0) {
+    if (initialData.status === 'closed' && initialData.bid_count === 0) {
       return false;
     }
     // 그 외의 경우, 시작 시간을 기준으로 판단
@@ -60,7 +61,7 @@ export function useAuctionForm({
     e.preventDefault();
 
     if (isEdit && isStarted) {
-      alert('경매가 시작되어 수정이 불가능합니다.');
+      toast.error('경매가 시작되어 수정이 불가능합니다.');
       return;
     }
 
@@ -113,7 +114,7 @@ export function useAuctionForm({
 
     if (isEdit) {
       if (sellerId !== initialData?.seller_id) {
-        return alert('본인이 등록한 경매만 수정할 수 있습니다.');
+        return toast('본인이 등록한 경매만 수정할 수 있습니다.');
       }
       if (!initialData) {
         setFormError('수정할 경매 정보가 올바르지 않습니다.');
@@ -144,7 +145,7 @@ export function useAuctionForm({
 
       // JSON.stringify를 이용한 간단한 객체 내용 비교
       if (JSON.stringify(currentEditableValues) === JSON.stringify(initialEditableValues)) {
-        alert('데이터를 수정해 주세요.');
+        toast('데이터를 수정해 주세요.');
         return; // 제출 방지
       }
 

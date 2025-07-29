@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import { deleteAuction } from '../../server/auction/deleteAuction';
 
@@ -22,7 +23,7 @@ export const useDeleteAuction = () => {
       router.push('/main');
     },
     onError: (error) => {
-      alert('삭제 실패' + error.message);
+      toast.error('삭제 실패' + error.message);
     },
   });
 };

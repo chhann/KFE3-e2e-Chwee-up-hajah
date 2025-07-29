@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import { AuctionBidParams, AuctionBidResponse } from '@/shared/types/auction';
 
@@ -18,10 +19,10 @@ export function useAuctionBid() {
         queryKey: [variables.bidderId, 'auctions', 'my-participated'],
       });
 
-      alert('입찰이 완료되었습니다.');
+      toast.success('입찰이 완료되었습니다.');
     },
     onError: (error) => {
-      alert('입찰 실패: ' + error.message);
+      toast.error('입찰 실패: ' + error.message);
     },
   });
 }
