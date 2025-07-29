@@ -26,7 +26,6 @@ export function useAuctionForm({
   const [images, setImages] = useState<string[]>([]);
   const [startDate, setStartDate] = useState(getToday());
   const [endDate, setEndDate] = useState(getToday());
-  console.log(initialData);
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
