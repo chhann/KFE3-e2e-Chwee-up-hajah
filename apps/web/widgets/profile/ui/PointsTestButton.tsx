@@ -1,6 +1,7 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export const PointsTestButton = ({ userId }: { userId: string }) => {
   const router = useRouter();
@@ -22,12 +23,12 @@ export const PointsTestButton = ({ userId }: { userId: string }) => {
     },
     onSuccess: (data) => {
       console.log('포인트 적립 성공:', data);
-      alert(`${data.points}P 적립되었습니다!`);
+      toast.success(`${data.points}P 적립되었습니다!`);
       router.refresh();
     },
     onError: (error) => {
       console.error('포인트 적립 실패:', error);
-      alert('포인트 적립에 실패했습니다.');
+      toast.error('포인트 적립에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
@@ -48,13 +49,12 @@ export const PointsTestButton = ({ userId }: { userId: string }) => {
       return response.json();
     },
     onSuccess: (data) => {
-      console.log('포인트 차감 성공:', data);
-      alert(`${data.points}P 차감되었습니다!`);
+      toast.success(`${data.points}P 차감되었습니다!`);
       router.refresh();
     },
     onError: (error) => {
       console.error('포인트 차감 실패:', error);
-      alert('포인트 차감에 실패했습니다.');
+      toast.error('포인트 차감에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
