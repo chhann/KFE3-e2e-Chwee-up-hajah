@@ -101,7 +101,7 @@ export const PointsHistoryList = () => {
                         <span className={styles.item.pointsLabel}>적립된 포인트: </span>
                         <p className={styles.item.pointsAmount}>
                           {sign}
-                          {amount}원
+                          {amount}P
                         </p>
                       </div>
                     </ItemContent>
