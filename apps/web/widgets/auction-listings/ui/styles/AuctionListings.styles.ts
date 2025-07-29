@@ -1,5 +1,5 @@
 export const auctionListStyle = {
-  auctionListingContainerStyle: 'w-full px-4 py-4',
+  auctionListingContainerStyle: 'w-full',
   auctionListingLabelStyle: 'sr-only',
   auctionListBasicStyle: 'space-y-4',
   auctionListCardStyle: 'relative',

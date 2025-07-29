@@ -53,7 +53,7 @@ const Page = () => {
   }
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center p-1">
+    <main className="flex min-h-screen w-full flex-col items-center">
       <SearchInput setCategory={setSelectedCategory} />
       <Category
         categories={categories}
@@ -62,7 +62,7 @@ const Page = () => {
       <select
         name="listFilter"
         id="actionListFilter"
-        className="text-neutral-70 my-2 ml-auto mr-4 w-1/2 rounded-sm p-1"
+        className="text-neutral-70 my-2 ml-auto w-1/2 rounded-sm"
         value={selectedBadge}
         onChange={(e) => {
           setSelectedBadge(e.target.value);
