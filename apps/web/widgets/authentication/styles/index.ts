@@ -42,8 +42,7 @@ export const SignUpLinkComponentStyles = {
   link: 'text-gray-500 hover:underline',
 };
 
-export const logoutButtonStyles = {
-  // 로그아웃 버튼
-  button:
-    'cursor-pointer rounded bg-[var(--color-error-500)] px-4 py-2 text-[var(--text-inverse)] disabled:opacity-50 hover:bg-red-500/80',
+export const logoutSectionStyles = {
+  nav: 'cursor-pointer rounded-[6px] bg-[var(--color-primary-50)] px-[14px] py-[16px] text-sm text-neutral-30 flex items-center',
+  logoutIcon: 'size-6 mr-2',
 };
