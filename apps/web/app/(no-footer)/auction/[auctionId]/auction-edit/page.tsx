@@ -1,7 +1,8 @@
 'use client';
 
-import { AuctionForm } from '@/widgets/auction-form';
 import { useParams } from 'next/navigation';
+
+import { AuctionForm } from '@/widgets/auction-form';
 
 const Page = () => {
   const params = useParams();

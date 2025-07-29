@@ -56,7 +56,7 @@ const Page = () => {
   const imageFiles = data.images || [];
   const auctionName = product.name;
   const startBidCost = data.start_price;
-  const bidUnit = 5000;
+  const bidUnit = data.bid_unit_price;
   const auctionStarted = isAuctionStarted(data.start_time);
 
   return (

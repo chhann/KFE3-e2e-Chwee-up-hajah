@@ -20,12 +20,12 @@ export function useAuctionForm({
 }) {
   const [auctionName, setAuctionName] = useState('');
   const [startPrice, setStartPrice] = useState('');
+  const [bidUnitPrice, setBidUnitPrice] = useState('1000');
   const [auctionCategory, setAuctionCategory] = useState('');
   const [auctionDescription, setAuctionDescription] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [startDate, setStartDate] = useState(getToday());
   const [endDate, setEndDate] = useState(getToday());
-
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
@@ -52,6 +52,7 @@ export function useAuctionForm({
       setAuctionCategory(initialData.product?.category || '');
       setAuctionDescription(initialData.product?.description || '');
       setImages(initialData.images || []);
+      setBidUnitPrice(String(initialData.bid_unit_price) || '1000');
       setStartDate(formatDateString(initialData.start_time));
       setEndDate(formatDateString(initialData.end_time));
     }
@@ -80,6 +81,7 @@ export function useAuctionForm({
       auctionName,
       auctionCategory,
       startPrice,
+      bidUnitPrice,
       auctionDescription,
       startDate,
       endDate,
@@ -125,6 +127,7 @@ export function useAuctionForm({
       const currentEditableValues = {
         auctionName: auctionName,
         startPrice: Number(startPrice),
+        bidUnitPrice: Number(bidUnitPrice),
         auctionCategory: auctionCategory,
         auctionDescription: auctionDescription,
         images: images,
@@ -136,6 +139,7 @@ export function useAuctionForm({
       const initialEditableValues = {
         auctionName: initialData.product?.name || '',
         startPrice: initialData.start_price,
+        bidUnitPrice: initialData.bid_unit_price,
         auctionCategory: initialData.product?.category || '',
         auctionDescription: initialData.product?.description || '',
         images: initialData.images || [],
@@ -152,6 +156,7 @@ export function useAuctionForm({
       const completeAuctionData = {
         ...initialData,
         start_price: Number(startPrice),
+        bid_unit_price: Number(bidUnitPrice),
         start_time: finalStartDate,
         end_time: finalEndDate,
         images: images,
@@ -175,6 +180,7 @@ export function useAuctionForm({
         category: auctionCategory,
         description: auctionDescription,
         start_price: Number(startPrice),
+        bid_unit_price: Number(bidUnitPrice),
         start_time: finalStartDate,
         end_time: finalEndDate,
         thumbnail: images[0] || '',
@@ -191,6 +197,8 @@ export function useAuctionForm({
     setAuctionName,
     startPrice,
     setStartPrice,
+    bidUnitPrice,
+    setBidUnitPrice,
     auctionCategory,
     setAuctionCategory,
     auctionDescription,

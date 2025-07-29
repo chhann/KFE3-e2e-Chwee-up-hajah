@@ -72,6 +72,24 @@ export const handleStartPriceInput = (
   });
 };
 
+export const handlePriceInput = (
+  e: ChangeEvent<HTMLInputElement>,
+  setValue: (v: string) => void,
+  field: string,
+  setFieldErrors: Dispatch<SetStateAction<Record<string, string>>>
+) => {
+  const value = e.target.value;
+  if (/[^0-9]/.test(value)) {
+    toast.error('숫자만 입력할 수 있습니다.');
+    return;
+  }
+  setValue(value);
+  setFieldErrors((prev) => {
+    const { [field]: removed, ...rest } = prev;
+    return rest;
+  });
+};
+
 export async function handleImageChange(
   e: ChangeEvent<HTMLInputElement>,
   images: string[],
