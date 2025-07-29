@@ -1,11 +1,14 @@
 'use client';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
 import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+
 import { AuctionCardProps } from '@/shared/types/auction';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
+
 import { auctionListStyle } from './styles/AuctionListings.styles';
 
 interface MockAuctionCardProps extends AuctionCardProps {
@@ -14,38 +17,25 @@ interface MockAuctionCardProps extends AuctionCardProps {
 }
 
 export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
+  const params = useSearchParams();
+  const searchParams = params.get('search') || null;
+
   return (
     <section className={auctionListStyle.auctionListingContainerStyle}>
       <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
 
-      {/* 경매 아이템 목록 */}
-      <div className={auctionListStyle.auctionListBasicStyle}>
-        {listData.map((item) => (
-          <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
-            <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
-              <AuctionCardBase
-                key={item.id}
-                title={item.title ?? ''}
-                locationName={item.locationName}
-                imageSrc={item.imageSrc}
-                endTime={item.endTime}
-                startTime={item.startTime}
-              >
-                <AuctionContent
-                  primaryPriceValue={item.bidStartPrice}
-                  secondaryLabel="현재 입찰가"
-                  secondaryPriceValue={item.bidCurrentPrice}
-                  bidCount={item.bidCount}
-                />
-              </AuctionCardBase>
-            </Link>
-            {item.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
-          </section>
-        ))}
-      </div>
-
-      {/* 빈 상태 처리 */}
-      {listData.length === 0 && (
+      {listData.length === 0 && searchParams ? (
+        // Case 1: 검색어가 있고, listData가 비어있을 때 (검색 결과 없음)
+        <div className={auctionListStyle.emptyListContainerStyle}>
+          <h3 className={auctionListStyle.emptySearchListAddHeaderTextStyle}>
+            검색 결과가 없습니다.
+          </h3>
+          <p className={auctionListStyle.emptySearchListAddTextStyle}>
+            &quot;{searchParams}&quot;에 대한 검색 결과가 없습니다.
+          </p>
+        </div>
+      ) : listData.length === 0 && !searchParams ? (
+        // Case 2: 검색어가 없고, listData가 비어있을 때 (경매 상품이 없음)
         <div className={auctionListStyle.emptyListContainerStyle}>
           <h3 className={auctionListStyle.emptyListAddHeaderTextStyle}>
             등록된 경매 상품이 없습니다
@@ -56,6 +46,32 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
               상품 등록하기
             </Button>
           </Link>
+        </div>
+      ) : (
+        // Case 3: listData에 데이터가 있을 때 (경매 목록을 보여줌)
+        <div className={auctionListStyle.auctionListBasicStyle}>
+          {listData.map((item) => (
+            <section key={item.id} className={auctionListStyle.auctionListCardStyle}>
+              <Link href={`/auction/${item.id}/auction-detail`} key={item.id} className="block">
+                <AuctionCardBase
+                  key={item.id}
+                  title={item.title ?? ''}
+                  locationName={item.locationName}
+                  imageSrc={item.imageSrc}
+                  endTime={item.endTime}
+                  startTime={item.startTime}
+                >
+                  <AuctionContent
+                    primaryPriceValue={item.bidStartPrice}
+                    secondaryLabel="현재 입찰가"
+                    secondaryPriceValue={item.bidCurrentPrice}
+                    bidCount={item.bidCount}
+                  />
+                </AuctionCardBase>
+              </Link>
+              {item.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
+            </section>
+          ))}
         </div>
       )}
     </section>
