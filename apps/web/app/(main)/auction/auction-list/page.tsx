@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import { Category } from '@repo/ui/design-system/base-components/Category/index';
+import { useInView } from 'react-intersection-observer';
 
-import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
-import { categories } from '@/shared/mock/auction';
-
-import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
 import { AuctionListings } from '@/widgets/auction-listings/ui/AuctionListings';
 import { SearchInput } from '@/widgets/search';
+
+import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
+import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
+import { categories } from '@/shared/mock/auction';
 
 const Page = () => {
   const {
@@ -36,7 +36,7 @@ const Page = () => {
   const mappedList = allAuctions.map(mapAuctionItem);
 
   // 기본적으로 종료된 경매(status === 'end')는 필터링하여 제외
-  let filteredList = mappedList.filter((item) => item.status !== 'end');
+  let filteredList = mappedList.filter((item) => item.status !== 'closed');
 
   if (!(selectedCategory === 'all' || selectedCategory === '전체')) {
     filteredList = filteredList.filter((item) => item.category === selectedCategory);

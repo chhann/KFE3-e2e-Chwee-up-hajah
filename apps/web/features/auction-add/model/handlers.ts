@@ -1,6 +1,7 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 import { UseMutationResult } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 export const handleInputChange = (
   e: ChangeEvent<HTMLInputElement>,
@@ -61,7 +62,7 @@ export const handleStartPriceInput = (
 ) => {
   const value = e.target.value;
   if (/[^0-9]/.test(value)) {
-    alert('숫자만 입력할 수 있습니다.');
+    toast.error('숫자만 입력할 수 있습니다.');
     return;
   }
   setStartPrice(value);
@@ -82,7 +83,7 @@ export async function handleImageChange(
   const allowed = ['image/jpeg', 'image/png'];
   const validFiles = selectedFiles.filter((f) => allowed.includes(f.type));
   if (validFiles.length < selectedFiles.length) {
-    alert('jpg, png 파일만 업로드할 수 있습니다.');
+    toast.error('jpg, png 파일만 업로드할 수 있습니다.');
   }
   let newUrls: string[] = [];
   for (const file of validFiles) {
@@ -98,7 +99,7 @@ export async function handleImageChange(
   }
   const totalFiles = images.length + newUrls.length;
   if (totalFiles > 5) {
-    alert('사진은 최대 5장까지 등록할 수 있습니다.');
+    toast.error('사진은 최대 5장까지 등록할 수 있습니다.');
     newUrls = newUrls.slice(0, 5 - images.length);
   }
   setImages([...images, ...newUrls].slice(0, 5));

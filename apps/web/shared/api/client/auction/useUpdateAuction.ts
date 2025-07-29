@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+
 import { updateAuction } from '../../server/auction/updateAuction';
 
 export const useUpdateAuction = () => {
@@ -20,14 +22,14 @@ export const useUpdateAuction = () => {
 
       // 3. '내가 등록한 경매 목록' 쿼리도 무효화합니다.
       queryClient.invalidateQueries({
-        queryKey: [variables.seller_id, 'auctions', 'my-participated'],
+        queryKey: [variables.seller_id, 'auctions', 'my-listings'],
       });
       router.push(`/auction/${variables.auction_id}/auction-detail`);
     },
 
     onError: (error) => {
-      console.error('업데이트 중 오류 발생:', error);
-      alert(`업데이트 실패: ${error.message}`);
+      console.log('업데이트 중 오류 발생:', error);
+      toast.error(`업데이트 실패: ${error.message}`);
     },
   });
 };

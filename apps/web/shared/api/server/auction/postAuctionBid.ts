@@ -10,5 +10,10 @@ export async function postAuctionBid({
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ auctionId, bidderId, bidPrice }),
   });
-  return res.json();
+  const data = await res.json();
+  if (!res.ok) {
+    // 서버에서 받은 에러 메시지를 throw
+    throw new Error(data?.error || '입찰 요청 실패');
+  }
+  return data;
 }

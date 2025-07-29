@@ -1,16 +1,18 @@
 'use client';
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import Link from 'next/link';
 
 import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
 import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+
 import { AuctionCardProps } from '@/shared/types/auction';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
+
 import { auctionListStyle } from './styles/AuctionListings.styles';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
-  status: string; // 경매 상태
+  status: 'ready' | 'in_progress' | 'closed';
 }
 
 export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
@@ -30,6 +32,7 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
                 imageSrc={item.imageSrc}
                 endTime={item.endTime}
                 startTime={item.startTime}
+                status={item.status}
               >
                 <AuctionContent
                   primaryPriceValue={item.bidStartPrice}
@@ -39,7 +42,7 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
                 />
               </AuctionCardBase>
             </Link>
-            {item.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
+            {item.status === 'closed' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
           </section>
         ))}
       </div>
