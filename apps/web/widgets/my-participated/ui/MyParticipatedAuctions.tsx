@@ -1,14 +1,16 @@
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import Link from 'next/link';
+
+import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 
 import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
 import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
+
 import { AuctionCardProps } from '@/shared/types/auction';
-import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
-  status: string; // 경매 상태
+  status: 'ready' | 'in_progress' | 'closed'; // 경매 상태
 }
 
 export const MyParticipatedAuctions = ({ listData }: { listData: MockAuctionCardProps[] }) => {
@@ -29,6 +31,7 @@ export const MyParticipatedAuctions = ({ listData }: { listData: MockAuctionCard
                 endTime={item.endTime}
                 startTime={item.startTime}
                 badgeVariant={item.badgeVariant}
+                status={item.status}
               >
                 <AuctionContent
                   primaryLabel="내 입찰가"

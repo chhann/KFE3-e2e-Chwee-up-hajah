@@ -76,22 +76,20 @@ export const AuctionDetailCard = ({
             <p className={auctionDetailCardStyle.auctionDetailCardCurrentPriceStyle}>
               {formatPriceNumber(currentBidCost)}원
             </p>
+            <p className={auctionDetailCardStyle.auctionDetailCardStartPriceStyle}>
+              시작가 {formatPriceNumber(startBidCost)}원
+            </p>
           </div>
           <div className={auctionDetailCardStyle.auctionDetailCardBidPriceRightContainerStyle}>
             <p>{statusText}</p>
             <p className={auctionDetailCardStyle.auctionDetailCardRemainingTimeStyle}>
               {remainingTime}
             </p>
-            <p>최소입찰가 : {formatPriceNumber(minBidCost)}원</p>
+            <p className="text-sm">최소입찰가 : {formatPriceNumber(minBidCost)}원</p>
           </div>
         </div>
-        <div className={auctionDetailCardStyle.auctionDetailCardCurrentPriceNEditButtonContainer}>
-          <p className={auctionDetailCardStyle.auctionDetailCardStartPriceStyle}>
-            시작가 {formatPriceNumber(startBidCost)}원
-          </p>
-          <div className={auctionDetailCardStyle.auctionDetailCardBidUnitStyle}>
-            <p>입찰 단위 : {formatPriceNumber(bidUnit)}원</p>
-          </div>
+        <div className={auctionDetailCardStyle.auctionDetailCardBidUnitStyle}>
+          <p>입찰 단위 : {formatPriceNumber(bidUnit)}원</p>
         </div>
       </div>
       <div className={auctionDetailCardStyle.auctionDetailCardBidSectionStyle}>
