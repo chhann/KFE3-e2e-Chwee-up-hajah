@@ -32,6 +32,7 @@ import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
 import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';
 import * as Sentry from '@sentry/nextjs';
 import Script from 'next/script';
+import { Toaster } from 'react-hot-toast';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const theme = (await cookies()).get('theme')?.value ?? 'light';
@@ -44,6 +45,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Providers>
             <PushSubscriptionEffect />
             {children}
+            <Toaster
+              position="bottom-center"
+              toastOptions={{
+                duration: 2300,
+              }}
+            />
             <Analytics />
             <SpeedInsights />
             <Script
