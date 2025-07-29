@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
-
 import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
@@ -44,11 +42,9 @@ export async function GET(req: NextRequest) {
     const wonAuctions = bidData
       .filter((bid: any) => {
         const auction = bid.auction;
-        const auctionStatus = getAuctionStatus(auction);
 
         return (
-          auctionStatus === 'closed' && // getAuctionStatus로 종료 확인
-          bid.bid_price === auction.current_price // 내 입찰가가 최종 낙찰가와 같음
+          auction.status === 'closed' && bid.bid_price === auction.current_price // 내 입찰가가 최종 낙찰가와 같음
         );
       })
       .map((bid: any) => {

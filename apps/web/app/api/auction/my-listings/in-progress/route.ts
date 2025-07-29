@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
-
 import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
@@ -30,12 +28,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const result = (data || [])
-      .map((item: any) => {
-        const { status: oldStatus, ...rest } = item;
-        return { ...rest, status: getAuctionStatus(item) };
-      })
-      .filter((item) => item.status !== 'closed');
+    const result = (data || []).filter((item) => item.status !== 'closed');
 
     return NextResponse.json(result);
   } catch (error) {

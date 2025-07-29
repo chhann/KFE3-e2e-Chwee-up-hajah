@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
-
 import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
@@ -47,7 +45,7 @@ export async function GET(req: NextRequest) {
 
         return {
           ...auctionRest,
-          status: getAuctionStatus(auction),
+          status: oldStatus,
           my_bid_price: bid_price,
         };
       })
