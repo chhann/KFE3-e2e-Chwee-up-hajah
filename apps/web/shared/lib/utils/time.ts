@@ -9,7 +9,18 @@ export const getTimeRemainingUTC = (endTimeStr: string) => {
 
   return {
     total,
-    hours: totalHours,
-    minutes,
+    hours: String(totalHours).padStart(2, '0'),
+    minutes: String(minutes).padStart(2, '0'),
   };
+};
+
+export const formatToYMD = (dateStr: string) => {
+  const date = new Date(dateStr + 'Z');
+  const target = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  // 한국 시간으로 변환 (UTC+9)
+  const year = target.getFullYear();
+  const month = target.getMonth() + 1;
+  const day = target.getDate();
+
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 };

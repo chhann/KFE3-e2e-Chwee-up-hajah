@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import { Category } from '@repo/ui/design-system/base-components/Category/index';
+import { useInView } from 'react-intersection-observer';
 
-import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
-import { categories } from '@/shared/mock/auction';
-
-import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
 import { AuctionListings } from '@/widgets/auction-listings/ui/AuctionListings';
 import { SearchInput } from '@/widgets/search';
+
+import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
+import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
+import { categories } from '@/shared/mock/auction';
 
 const Page = () => {
   const {

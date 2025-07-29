@@ -1,19 +1,20 @@
 'use client';
 
-import { Category } from '@repo/ui/design-system/base-components/Category/index';
+import { useEffect, useState } from 'react';
 
-import { Event } from '@/shared/types/events';
+import { Category } from '@repo/ui/design-system/base-components/Category/index';
+import { useRouter } from 'next/navigation';
+
+import { BannerBackground } from '@/widgets/banner-bg/ui/BannerBackGround';
+import { EventPopup } from '@/widgets/events/eventPopup';
 import { EventBanner } from '@/widgets/image-banner';
 import { ProductSection } from '@/widgets/product-section';
 import { SectionHeader } from '@/widgets/product-section-header';
 
 import { useProductList } from '@/shared/api/client/product/useProductList';
 import { categories } from '@/shared/mock/auction';
-import { useRouter } from 'next/navigation';
+import { Event } from '@/shared/types/events';
 
-import { EventPopup } from '@/widgets/events/eventPopup';
-
-import { useEffect, useState } from 'react';
 import { Styles } from './styles/main.styles';
 
 const MainHome = () => {
@@ -22,7 +23,7 @@ const MainHome = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>('전체'); // ✅ 선택된 카테고리 상태
 
-  const { data: popularProducts, isLoading: isPopularLoading } = useProductList('popular');
+  const { data: popularProducts, isLoading: isPopularLoading } = useProductList('popular', 10);
   const { data: latestProducts, isLoading: isLatestLoading } = useProductList('latest');
 
   const filteredPopular =
@@ -63,43 +64,30 @@ const MainHome = () => {
   }, []);
 
   return (
-    <div className={Styles.container}>
+    <div>
+      <BannerBackground />
       <EventPopup />
-      {/* 배너 */}
-      <EventBanner events={events} height={172} autoplay={true} />
+      <div className={Styles.bannerContainer}></div>
+      <h2 className={Styles.hotDealTitle}>지금 주목해볼 핫딜!</h2>
+      <EventBanner events={events} height={230} autoplay={true} />
       {/* 카테고리 */}
       <Category
         categories={categories}
-        className={Styles.category}
+        className="mt-12"
         selectedCategory={selectedCategory}
         onCategoryClick={handleCategoryClick}
       />
-      {/* 인기순 상품 리스트 */}
-      <SectionHeader title="인기순" onClickMore={() => router.push(`/auction/auction-list`)} />
-      <ProductSection
-        products={filteredPopular}
-        isLoading={isPopularLoading}
-        direction="horizontal"
-      />
-      {/* 지도 */}
+      {/* 인기순 상품 리스트 헤더*/}
       <SectionHeader
-        title="내 주변 경매"
-        onClickMore={() => console.log('작동함')}
-        location="서울 동작구"
-        className={Styles.mapSectionHeader}
+        title="현재 입찰자 많은 경매 TOP10🔥"
+        subTitle="입찰자가 많은 순으로 확인해보세요!"
+        className="mt-12"
       />
-      <div className={Styles.mapPlaceholder}>지도 영역 (Map Placeholder)</div>
+      {/* 입찰가 많은 순 경매 리스트 */}
+      <ProductSection products={filteredPopular} isLoading={isPopularLoading} />
       {/* 최신순 상품 리스트 */}
-      <SectionHeader
-        title="최신순"
-        onClickMore={() => router.push(`/auction/auction-list`)}
-        className={Styles.latestSectionHeader}
-      />
-      <ProductSection
-        products={filteredLatest}
-        isLoading={isLatestLoading}
-        direction="horizontal"
-      />
+      <SectionHeader title="마감이 임박한 경매 TOP10⏰" className="mt-8" />
+      <ProductSection products={filteredLatest} isLoading={isLatestLoading} />
     </div>
   );
 };

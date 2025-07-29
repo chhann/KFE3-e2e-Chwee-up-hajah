@@ -5,27 +5,26 @@ import { useQuery } from '@tanstack/react-query';
 import { Product } from '@/widgets/product-section/types';
 
 import { fetchProductList, SortOption } from '@/shared/api/server/product/fetchProductList';
-
-import { getTimeRemainingUTC } from '@/shared/lib/utils/time';
+import { formatToYMD, getTimeRemainingUTC } from '@/shared/lib/utils/time';
 import { RawProduct } from '@/shared/types/product';
 
-export const useProductList = (sort: SortOption) => {
+export const useProductList = (sort: SortOption, limit?: number) => {
   return useQuery<Product[]>({
-    queryKey: ['productList', sort],
+    queryKey: ['productList', sort, limit],
     queryFn: async () => {
-      const raw: RawProduct[] = await fetchProductList(sort); // 👈 여기 타입 지정
-      console.log('Fetched products:', typeof raw[0]?.end_time);
+      const raw: RawProduct[] = await fetchProductList(sort, limit); // 👈 여기 타입 지정
 
       const mapped = raw.map((item) => ({
         id: item.auction_id,
         title: item.product_name,
         category: item.category_name,
+        bidCount: item.bid_count,
+        endTime: formatToYMD(item.end_time), // 한국 시간으로 변환
         price: item.current_price,
         image: item.thumbnail,
-        distance: '5km', // TODO: 위치 계산 추가 예정
         timeLeft:
           getTimeRemainingUTC(item.end_time)?.total > 0
-            ? `${getTimeRemainingUTC(item.end_time).hours}시간 ${getTimeRemainingUTC(item.end_time).minutes}분`
+            ? `${getTimeRemainingUTC(item.end_time).hours} : ${getTimeRemainingUTC(item.end_time).minutes}`
             : '경매 종료',
       }));
 
