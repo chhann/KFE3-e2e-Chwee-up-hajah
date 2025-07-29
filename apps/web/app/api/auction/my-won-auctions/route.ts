@@ -1,6 +1,8 @@
-import { adminClient } from '@/app/admin';
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
+
+import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
   try {
@@ -45,7 +47,7 @@ export async function GET(req: NextRequest) {
         const auctionStatus = getAuctionStatus(auction);
 
         return (
-          auctionStatus === 'end' && // getAuctionStatus로 종료 확인
+          auctionStatus === 'closed' && // getAuctionStatus로 종료 확인
           bid.bid_price === auction.current_price // 내 입찰가가 최종 낙찰가와 같음
         );
       })
@@ -55,7 +57,7 @@ export async function GET(req: NextRequest) {
 
         return {
           ...auctionRest,
-          status: 'end',
+          status: 'closed',
           my_won_price: bid_price,
         };
       });

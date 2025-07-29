@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminClient } from '@/app/admin';
+
 import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
+
+import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
   try {
@@ -33,7 +35,7 @@ export async function GET(req: NextRequest) {
         const { status: oldStatus, ...rest } = item;
         return { ...rest, status: getAuctionStatus(item) };
       })
-      .filter((item) => item.status !== 'end');
+      .filter((item) => item.status !== 'closed');
 
     return NextResponse.json(result);
   } catch (error) {
