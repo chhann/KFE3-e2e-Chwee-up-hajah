@@ -13,10 +13,13 @@ const login = async (credentials: LoginRequest): Promise<void> => {
   if (!response.ok) {
     const errorData = await response.json();
     if (errorData.error && errorData.error.message) {
-      if (errorData.error.message.includes('이메일 또는 비밀번호를 확인해주세요.')) {
+      const errorMessage = errorData.error.message;
+      if (errorMessage.includes('Invalid login credentials')) {
         throw new Error('이메일 또는 비밀번호를 확인해주세요.');
+      } else if (errorMessage.includes('is invalid')) {
+        throw new Error('해당 이메일은 존재하지 않는 이메일입니다.');
       } else {
-        throw new Error(errorData.error.message);
+        throw new Error(errorMessage);
       }
     }
     throw new Error(errorData.message || '로그인에 실패했습니다.');
