@@ -283,17 +283,8 @@ export const useSignup = (): UseSignupReturn => {
           agreedToMarketing,
         };
 
-        const signupResult = await AuthService.signup(signupData);
-
-        // 4. 성공 시 UI 상태를 최신화하고 적절한 페이지로 이동
-        if (signupResult.needsVerification) {
-          // 인증 코드를 입력하는 페이지로 리디렉션
-          router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
-        } else {
-          // 이메일 인증이 필요 없는 경우, UI를 새로고침하여 로그인 상태를 반영하고 메인으로 이동
-          router.refresh();
-          router.push('/main');
-        }
+        // 인증 코드를 입력하는 페이지로 리디렉션
+        router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
       } catch (error) {
         // 오류 처리: 오류 메시지에 따라 적절한 필드에 표시
         const message = getErrorMessage(error);
