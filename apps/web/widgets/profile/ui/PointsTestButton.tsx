@@ -49,7 +49,7 @@ export const PointsTestButton = ({ userId }: { userId: string }) => {
       return response.json();
     },
     onSuccess: (data) => {
-      toast.success(`${data.points}P 차감되었습니다!`);
+      toast.error(`${data.points}P 차감되었습니다!`);
       router.refresh();
     },
     onError: (error) => {
