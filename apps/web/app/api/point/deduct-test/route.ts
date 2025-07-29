@@ -8,12 +8,12 @@ export async function POST(req: NextRequest) {
     // const result = await deductPointsWithHistory(userId, '악성후기');
 
     // 예시 2)
-    const result = await deductPointsWithHistory(
-      userId,
-      '위반행위',
-      undefined,
-      '부적절한 위반행위 감지 포인트 차감'
-    );
+    // const result = await deductPointsWithHistory(
+    //   userId,
+    //   '위반행위',
+    //   undefined,
+    //   '부적절한 위반행위 감지 포인트 차감'
+    // );
 
     // 예시 3)
     // const result = await deductPointsWithHistory(
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     // );
 
     // 예시 4)
-    // const result = await deductPointsWithHistory(userId, '포인트 차감');
+    const result = await deductPointsWithHistory(userId, '포인트 차감');
     if (result.status === 200) {
       const { deductedPoints } = result.data!;
       console.log(`${deductedPoints}P 적립`);
