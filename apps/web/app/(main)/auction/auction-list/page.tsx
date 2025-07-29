@@ -54,7 +54,7 @@ const Page = () => {
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center p-1">
-      <SearchInput />
+      <SearchInput setCategory={setSelectedCategory} />
       <Category
         categories={categories}
         onCategoryClick={(cat) => setSelectedCategory(cat === '전체' ? 'all' : cat)}
