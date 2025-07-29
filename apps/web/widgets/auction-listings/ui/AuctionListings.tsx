@@ -13,7 +13,7 @@ import { auctionListStyle } from './styles/AuctionListings.styles';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
-  status: string; // 경매 상태
+  status: 'ready' | 'in_progress' | 'closed';
 }
 
 export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
@@ -60,6 +60,7 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
                   imageSrc={item.imageSrc}
                   endTime={item.endTime}
                   startTime={item.startTime}
+                  status={item.status}
                 >
                   <AuctionContent
                     primaryPriceValue={item.bidStartPrice}
@@ -69,7 +70,7 @@ export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[]
                   />
                 </AuctionCardBase>
               </Link>
-              {item.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
+              {item.status === 'closed' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
             </section>
           ))}
         </div>

@@ -1,8 +1,8 @@
-import { Card, CardProps } from '@repo/ui/design-system/base-components/Card/index';
-import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
-import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { useEffect, useState } from 'react';
-import { FaRegClock } from 'react-icons/fa6';
+
+import { Card, CardProps } from '@repo/ui/design-system/base-components/Card/index';
+import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
+
 import { auctionCardStyle } from './styles/AuctionCard.styles';
 
 export interface AuctionCardBaseProps extends CardProps {
@@ -11,6 +11,7 @@ export interface AuctionCardBaseProps extends CardProps {
   imageSrc: string;
   endTime: Date | string;
   startTime?: Date | string;
+  status?: 'ready' | 'in_progress' | 'closed';
   badgeVariant?: 'best' | 'urgent' | null;
   children: React.ReactNode;
 }
@@ -21,10 +22,17 @@ export const AuctionCardBase = ({
   imageSrc,
   endTime,
   startTime,
+  status,
   badgeVariant,
   children,
 }: AuctionCardBaseProps) => {
   const [displayRemainingTime, setDisplayRemainingTime] = useState(''); // 새로운 상태 추가
+  const statusText =
+    status === 'in_progress'
+      ? '경매 종료까지'
+      : status === 'closed'
+        ? '경매 종료'
+        : '경매 시작까지';
   useEffect(() => {
     const interval = setInterval(() => {
       setDisplayRemainingTime(getTimeLeftString({ endDate: endTime, startDate: startTime }));
@@ -45,12 +53,8 @@ export const AuctionCardBase = ({
       <div className={auctionCardStyle.auctionCardInfoSectionContainerStyle}>
         <span className={auctionCardStyle.auctionCardInfoTitleStyle}>{title}</span>
         <div className={auctionCardStyle.cardInfoContainerStyle}>
-          <div className={auctionCardStyle.cardLocationStyle}>
-            <LocationInfo address={locationName} />
-          </div>
           <div className={auctionCardStyle.cardInfoLeftTimeStyle}>
-            <FaRegClock />
-            {displayRemainingTime}
+            {statusText} - {displayRemainingTime}
           </div>
         </div>
         {children}

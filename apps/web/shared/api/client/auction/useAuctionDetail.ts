@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { AuctionDetail } from '@/shared/types/db';
+
 import { fetchAuctionDetail } from '../../server/auction/fetchAuctionDetail';
 
 export function useAuctionDetail(auctionId: string | null) {

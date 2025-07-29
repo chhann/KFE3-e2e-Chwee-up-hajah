@@ -12,6 +12,7 @@ export interface AuctionBidResponse {
 }
 
 export interface CreateAuctionPayload {
+  seller_id: string | null;
   name: string;
   category: string;
   description: string;

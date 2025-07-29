@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+import toast from 'react-hot-toast';
+
 export function useBidCostHandlers(
   status: string | undefined,
   setIsUserChanged: (v: boolean) => void,
@@ -9,11 +11,11 @@ export function useBidCostHandlers(
 ) {
   const minusBidCost = useCallback(() => {
     if (status === undefined) {
-      alert('경매 상태를 확인할 수 없습니다. 입찰을 진행할 수 없습니다.');
+      toast.error('경매 상태를 확인할 수 없습니다. 입찰을 진행할 수 없습니다.');
       return;
     }
     if (status === 'ready') {
-      alert('경매가 시작되지 않았습니다. 입찰을 진행할 수 없습니다.');
+      toast.error('경매가 시작되지 않았습니다. 입찰을 진행할 수 없습니다.');
       return;
     }
     setIsUserChanged(true);
@@ -27,11 +29,11 @@ export function useBidCostHandlers(
 
   const plusBidCost = useCallback(() => {
     if (status === undefined) {
-      alert('경매 상태를 확인할 수 없습니다. 입찰을 진행할 수 없습니다.');
+      toast.error('경매 상태를 확인할 수 없습니다. 입찰을 진행할 수 없습니다.');
       return;
     }
     if (status === 'ready') {
-      alert('경매가 시작되지 않았습니다. 입찰을 진행할 수 없습니다.');
+      toast.error('경매가 시작되지 않았습니다. 입찰을 진행할 수 없습니다.');
       return;
     }
     setIsUserChanged(true);

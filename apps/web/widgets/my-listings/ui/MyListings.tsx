@@ -1,15 +1,17 @@
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import Link from 'next/link';
+
+import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 
 import { AuctionCardBase } from '@/features/auction/ui/AuctionCardBase';
 import { AuctionContent } from '@/features/auction/ui/AuctionCardContent';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+
 import { AuctionCardProps } from '@/shared/types/auction';
-import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
 
 interface MockAuctionCardProps extends AuctionCardProps {
   id: string;
-  status: string; // 경매 상태
+  status: 'ready' | 'in_progress' | 'closed'; // 경매 상태
 }
 
 export const MyListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
@@ -29,6 +31,7 @@ export const MyListings = ({ listData }: { listData: MockAuctionCardProps[] }) =
                 imageSrc={item.imageSrc}
                 endTime={item.endTime}
                 startTime={item.startTime}
+                status={item.status}
                 badgeVariant={item.badgeVariant}
               >
                 <AuctionContent
@@ -38,7 +41,7 @@ export const MyListings = ({ listData }: { listData: MockAuctionCardProps[] }) =
                 />
               </AuctionCardBase>
             </Link>
-            {item.status === 'end' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
+            {item.status === 'closed' && <AuctionOverlay overlayText="경매가 종료되었습니다." />}
           </section>
         ))}
       </div>

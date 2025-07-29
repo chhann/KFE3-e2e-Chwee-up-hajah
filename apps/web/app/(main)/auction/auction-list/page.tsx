@@ -36,7 +36,7 @@ const Page = () => {
   const mappedList = allAuctions.map(mapAuctionItem);
 
   // 기본적으로 종료된 경매(status === 'end')는 필터링하여 제외
-  let filteredList = mappedList.filter((item) => item.status !== 'end');
+  let filteredList = mappedList.filter((item) => item.status !== 'closed');
 
   if (!(selectedCategory === 'all' || selectedCategory === '전체')) {
     filteredList = filteredList.filter((item) => item.category === selectedCategory);

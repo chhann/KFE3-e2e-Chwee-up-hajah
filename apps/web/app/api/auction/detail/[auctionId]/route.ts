@@ -1,6 +1,6 @@
-import { adminClient } from '@/app/admin';
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { adminClient } from '@/app/admin';
 
 // /api/auction/detail/[auctionId]
 export async function GET(req: NextRequest, { params }: { params: { auctionId: string } }) {
@@ -23,10 +23,7 @@ export async function GET(req: NextRequest, { params }: { params: { auctionId: s
       .single();
     if (error) throw error;
 
-    // status 계산 (기존 status 필드가 있어도 서버 계산값으로 덮어씀)
-    const status = getAuctionStatus(data);
-    const { status: oldStatus, ...rest } = data;
-    return NextResponse.json({ data: { ...rest, status } });
+    return NextResponse.json({ data });
   } catch (error) {
     return NextResponse.json(
       { error: typeof error === 'string' ? error : JSON.stringify(error) },

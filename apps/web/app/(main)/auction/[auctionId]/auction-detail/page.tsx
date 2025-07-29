@@ -1,9 +1,9 @@
 'use client';
 
-import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
+import { useEffect, useState } from 'react';
+
 import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 import {
   AuctionDescriptionCard,
@@ -14,6 +14,8 @@ import { ImageBanner } from '@/widgets/image-banner';
 
 import { useAuctionBidState } from '@/features/auction-detail/model/useAuctionBidState';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
+
+import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { useAuthStore } from '@/shared/stores/auth';
 
 const Page = () => {
@@ -68,7 +70,7 @@ const Page = () => {
         minBidCost={minBidCostNumber}
         bidUnit={bidUnit}
         bidCost={bidCost}
-        isProgressing={data.status === 'in progress'}
+        status={data.status}
         auctionId={auctionId}
         sellerId={data.seller_id}
         isAuctionStarted={auctionStarted}
@@ -79,7 +81,7 @@ const Page = () => {
       <AuctionSellerProfile user={seller} />
       {/* <hr className="w-full border border-[var(--border-primary)]" /> */}
       <AuctionDescriptionCard bids={displayBids} description={product.description} />
-      {data.status === 'end' &&
+      {data.status === 'closed' &&
         (displayBids.length === 0 && data.seller_id === userId ? (
           <AuctionOverlay
             overlayText={`아쉽지만 유찰되었습니다.\n 경매 수정 후 다시 등록해보세요.`}
