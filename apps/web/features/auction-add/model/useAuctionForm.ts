@@ -10,6 +10,7 @@ import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { auctionAddSchema } from '@/shared/lib/validators/auctionAddSchema';
 import { useAuthStore } from '@/shared/stores/auth';
 import { AuctionDetail } from '@/shared/types/db';
+import { useModalStore } from '@/shared/stores/modal';
 
 export function useAuctionForm({
   isEdit = false,
@@ -28,6 +29,7 @@ export function useAuctionForm({
   const [endDate, setEndDate] = useState(getToday());
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const { setOpenModal } = useModalStore();
 
   const createAuctionMutation = useCreateAuction();
   const updateAuctionMutation = useUpdateAuction();
@@ -66,128 +68,136 @@ export function useAuctionForm({
       return;
     }
 
-    const confirmMessage = isEdit
+    const dialogTitle = isEdit ? '경매 수정 확인' : '경매 등록 확인';
+    const dialogDescription = isEdit
       ? '경매 시작 이후로는 수정 및 삭제가 불가능하며\n당일 시작일 경우 10분의 유예시간이 주어집니다.\n경매를 수정하시겠습니까?'
       : '경매 시작 이후로는 수정 및 삭제가 불가능하며\n당일 시작일 경우 10분의 유예시간이 주어집니다.\n경매를 등록하시겠습니까?';
-    if (!window.confirm(confirmMessage)) {
-      return; // 사용자가 취소를 누르면 함수 종료
-    }
+    const dialogConfirmText = isEdit ? '수정' : '등록';
 
-    setFormError(null);
-    setFieldErrors({});
+    setOpenModal('confirm', {
+      title: dialogTitle,
+      description: dialogDescription,
+      confirmText: dialogConfirmText,
+      cancelText: '취소',
+      onConfirm: async () => {
+        // 사용자가 '확인'을 눌렀을 때만 실제 제출 로직을 실행합니다.
+        setFormError(null);
+        setFieldErrors({});
 
-    const result = auctionAddSchema.safeParse({
-      images,
-      auctionName,
-      auctionCategory,
-      startPrice,
-      bidUnitPrice,
-      auctionDescription,
-      startDate,
-      endDate,
+        const result = auctionAddSchema.safeParse({
+          images,
+          auctionName,
+          auctionCategory,
+          startPrice,
+          bidUnitPrice,
+          auctionDescription,
+          startDate,
+          endDate,
+        });
+
+        if (!result.success) {
+          const errors: Record<string, string> = {};
+          result.error.errors.forEach((err) => {
+            if (err.path[0]) errors[err.path[0]] = err.message;
+          });
+          setFieldErrors(errors);
+          setFormError(result.error.errors[0]?.message || '입력값을 확인해 주세요.');
+          return;
+        }
+
+        let finalStartDate = startDate;
+        let finalEndDate = endDate;
+
+        const today = new Date();
+        const todayDateString = today.toISOString().split('T')[0];
+
+        if (startDate.split('T')[0] === todayDateString) {
+          const now = new Date();
+          now.setMinutes(now.getMinutes() + 10);
+
+          finalStartDate = now.toISOString();
+
+          const endDateObj = new Date(endDate);
+          endDateObj.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
+          finalEndDate = endDateObj.toISOString();
+        }
+
+        if (isEdit) {
+          if (sellerId !== initialData?.seller_id) {
+            return toast('본인이 등록한 경매만 수정할 수 있습니다.');
+          }
+          if (!initialData) {
+            setFormError('수정할 경매 정보가 올바르지 않습니다.');
+            return;
+          }
+
+          // 현재 폼의 수정 가능한 필드 값들을 객체로 구성
+          const currentEditableValues = {
+            auctionName: auctionName,
+            startPrice: Number(startPrice),
+            bidUnitPrice: Number(bidUnitPrice),
+            auctionCategory: auctionCategory,
+            auctionDescription: auctionDescription,
+            images: images,
+            startDate: finalStartDate,
+            endDate: finalEndDate,
+          };
+
+          // 초기 데이터에서 수정 가능한 필드 값들을 객체로 구성
+          const initialEditableValues = {
+            auctionName: initialData.product?.name || '',
+            startPrice: initialData.start_price,
+            bidUnitPrice: initialData.bid_unit_price,
+            auctionCategory: initialData.product?.category || '',
+            auctionDescription: initialData.product?.description || '',
+            images: initialData.images || [],
+            startDate: formatDateString(initialData.start_time),
+            endDate: formatDateString(initialData.end_time),
+          };
+
+          // JSON.stringify를 이용한 간단한 객체 내용 비교
+          if (JSON.stringify(currentEditableValues) === JSON.stringify(initialEditableValues)) {
+            toast('데이터를 수정해 주세요.');
+            return; // 제출 방지
+          }
+
+          const completeAuctionData = {
+            ...initialData,
+            start_price: Number(startPrice),
+            bid_unit_price: Number(bidUnitPrice),
+            start_time: finalStartDate,
+            end_time: finalEndDate,
+            images: images,
+            thumbnail: images[0] || '',
+          };
+
+          const updatePayload = {
+            auctionId: initialData.auction_id,
+            auctionData: completeAuctionData,
+            productData: {
+              name: auctionName,
+              category: auctionCategory,
+              description: auctionDescription,
+            },
+          };
+          updateAuctionMutation.mutate(updatePayload);
+        } else {
+          const createPayload = {
+            seller_id: sellerId,
+            name: auctionName,
+            category: auctionCategory,
+            description: auctionDescription,
+            start_price: Number(startPrice),
+            bid_unit_price: Number(bidUnitPrice),
+            start_time: finalStartDate,
+            end_time: finalEndDate,
+            thumbnail: images[0] || '',
+            images,
+          };
+          createAuctionMutation.mutate(createPayload);
+        }
+      },
     });
-
-    if (!result.success) {
-      const errors: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
-        if (err.path[0]) errors[err.path[0]] = err.message;
-      });
-      setFieldErrors(errors);
-      setFormError(result.error.errors[0]?.message || '입력값을 확인해 주세요.');
-      return;
-    }
-
-    let finalStartDate = startDate;
-    let finalEndDate = endDate;
-
-    const today = new Date();
-    const todayDateString = today.toISOString().split('T')[0];
-
-    if (startDate.split('T')[0] === todayDateString) {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 10);
-
-      finalStartDate = now.toISOString();
-
-      const endDateObj = new Date(endDate);
-      endDateObj.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
-      finalEndDate = endDateObj.toISOString();
-    }
-
-    if (isEdit) {
-      if (sellerId !== initialData?.seller_id) {
-        return toast('본인이 등록한 경매만 수정할 수 있습니다.');
-      }
-      if (!initialData) {
-        setFormError('수정할 경매 정보가 올바르지 않습니다.');
-        return;
-      }
-
-      // 현재 폼의 수정 가능한 필드 값들을 객체로 구성
-      const currentEditableValues = {
-        auctionName: auctionName,
-        startPrice: Number(startPrice),
-        bidUnitPrice: Number(bidUnitPrice),
-        auctionCategory: auctionCategory,
-        auctionDescription: auctionDescription,
-        images: images,
-        startDate: finalStartDate,
-        endDate: finalEndDate,
-      };
-
-      // 초기 데이터에서 수정 가능한 필드 값들을 객체로 구성
-      const initialEditableValues = {
-        auctionName: initialData.product?.name || '',
-        startPrice: initialData.start_price,
-        bidUnitPrice: initialData.bid_unit_price,
-        auctionCategory: initialData.product?.category || '',
-        auctionDescription: initialData.product?.description || '',
-        images: initialData.images || [],
-        startDate: formatDateString(initialData.start_time),
-        endDate: formatDateString(initialData.end_time),
-      };
-
-      // JSON.stringify를 이용한 간단한 객체 내용 비교
-      if (JSON.stringify(currentEditableValues) === JSON.stringify(initialEditableValues)) {
-        toast('데이터를 수정해 주세요.');
-        return; // 제출 방지
-      }
-
-      const completeAuctionData = {
-        ...initialData,
-        start_price: Number(startPrice),
-        bid_unit_price: Number(bidUnitPrice),
-        start_time: finalStartDate,
-        end_time: finalEndDate,
-        images: images,
-        thumbnail: images[0] || '',
-      };
-
-      const updatePayload = {
-        auctionId: initialData.auction_id,
-        auctionData: completeAuctionData,
-        productData: {
-          name: auctionName,
-          category: auctionCategory,
-          description: auctionDescription,
-        },
-      };
-      updateAuctionMutation.mutate(updatePayload);
-    } else {
-      const createPayload = {
-        seller_id: sellerId,
-        name: auctionName,
-        category: auctionCategory,
-        description: auctionDescription,
-        start_price: Number(startPrice),
-        bid_unit_price: Number(bidUnitPrice),
-        start_time: finalStartDate,
-        end_time: finalEndDate,
-        thumbnail: images[0] || '',
-        images,
-      };
-      createAuctionMutation.mutate(createPayload);
-    }
   };
 
   const mutationStatus = isEdit ? updateAuctionMutation : createAuctionMutation;
