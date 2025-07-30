@@ -13,6 +13,7 @@ interface AuctionListItemProps {
   startTime: string;
   endTime: string;
   status: 'ready' | 'in_progress' | 'closed';
+  showTimeLeftSeconds?: boolean;
 }
 
 export const AuctionListItem = ({
@@ -24,10 +25,15 @@ export const AuctionListItem = ({
   startTime,
   endTime,
   status,
+  showTimeLeftSeconds = false,
 }: AuctionListItemProps) => {
   const auctionStausText =
     status === 'ready' ? '시작까지' : status === 'in_progress' ? '종료까지' : '경매 종료';
-  const timeLeft = getTimeLeftString({ endDate: endTime, startDate: startTime });
+  const timeLeft = getTimeLeftString({
+    endDate: endTime,
+    startDate: startTime,
+    showSeconds: showTimeLeftSeconds,
+  });
 
   return (
     <Link
