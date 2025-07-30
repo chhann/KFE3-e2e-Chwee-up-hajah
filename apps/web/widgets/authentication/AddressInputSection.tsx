@@ -67,6 +67,7 @@ export const AddressInputSection: React.FC<AddressInputSectionProps> = ({
           <Input
             type="text"
             value={address}
+            onClick={handleAddressSearch} // 입력창 클릭 시 주소 검색 실행
             onChange={onChangeAddress}
             placeholder="주소를 입력해주세요"
             required={false}

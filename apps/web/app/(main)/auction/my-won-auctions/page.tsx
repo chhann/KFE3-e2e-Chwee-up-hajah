@@ -1,9 +1,10 @@
 'use client';
 
+import { MyWonAuctions } from '@/widgets/my-won-auctions/ui/MyWonAuctions';
+
 import { useMyWonAuctions } from '@/shared/api/client/auction/useMyWonAuctions';
 import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
 import { useAuthStore } from '@/shared/stores/auth';
-import { MyWonAuctions } from '@/widgets/my-won-auctions/ui/MyWonAuctions';
 
 const Page = () => {
   const { userId } = useAuthStore();
@@ -22,7 +23,7 @@ const Page = () => {
 
   return (
     <main className="text-neutral-70" role="main">
-      <h1 className="mb-3 text-base font-semibold">낙찰된 물품</h1>
+      <h1 className="mb-3">낙찰된 물품</h1>
       <MyWonAuctions listData={filteredList} />
     </main>
   );

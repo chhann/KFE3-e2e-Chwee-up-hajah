@@ -1,5 +1,6 @@
-import { adminClient } from '@/app/admin';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { adminClient } from '@/app/admin';
 
 // /api/hotdeal/[hotdealId]/detail
 export async function GET(req: NextRequest, { params }: { params: { hotdealId: string } }) {

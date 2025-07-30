@@ -1,5 +1,5 @@
 export function getAuctionStatus(item: { start_time?: string; end_time?: string }) {
-  let status: 'ready' | 'in progress' | 'end' = 'ready';
+  let status: 'ready' | 'in_progress' | 'closed' = 'ready';
   const now = new Date();
 
   const parseUTCDate = (dateString?: string): Date | null => {
@@ -17,8 +17,8 @@ export function getAuctionStatus(item: { start_time?: string; end_time?: string 
 
   if (start && end) {
     if (now < start) status = 'ready';
-    else if (now >= start && now <= end) status = 'in progress';
-    else if (now > end) status = 'end';
+    else if (now >= start && now <= end) status = 'in_progress';
+    else if (now > end) status = 'closed';
   }
   return status;
 }

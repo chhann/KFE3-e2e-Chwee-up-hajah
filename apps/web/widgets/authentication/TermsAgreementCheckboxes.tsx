@@ -1,11 +1,10 @@
 'use client';
 
 import { UseSignupReturn } from '@/shared/types/auth/types';
-import React from 'react';
-// CustomCheckbox 컴포넌트 경로가 다르다면 실제 경로로 수정해주세요.
 import { CustomCheckbox } from '@repo/ui/design-system/base-components/CustomCheckbox/index';
+import React from 'react';
 
-export const TermsSection = (
+export const TermsAgreementCheckboxes = (
   props: Pick<
     UseSignupReturn,
     | 'agreedToTermsOfService'
@@ -14,7 +13,7 @@ export const TermsSection = (
     | 'onChangeAgreedToPrivacyPolicy'
     | 'agreedToMarketing'
     | 'onChangeAgreedToMarketing'
-  > & { openTermsModal: () => void }
+  > & { openTermsModal: (type: 'termsOfService' | 'privacyPolicy' | 'marketing') => void }
 ) => {
   const { agreedToTermsOfService, agreedToPrivacyPolicy, agreedToMarketing, openTermsModal } =
     props;
@@ -49,20 +48,21 @@ export const TermsSection = (
         label="이용 약관 동의 (필수)"
         checked={agreedToTermsOfService}
         onChange={props.onChangeAgreedToTermsOfService}
-        onDetailClick={openTermsModal}
+        onDetailClick={() => openTermsModal('termsOfService')}
       />
       <CustomCheckbox
         id="privacy-policy"
         label="개인정보 수집 동의 (필수)"
         checked={agreedToPrivacyPolicy}
         onChange={props.onChangeAgreedToPrivacyPolicy}
-        onDetailClick={openTermsModal}
+        onDetailClick={() => openTermsModal('privacyPolicy')}
       />
       <CustomCheckbox
         id="marketing-consent"
         label="마케팅 정보 수신 동의 (선택)"
         checked={agreedToMarketing}
         onChange={props.onChangeAgreedToMarketing}
+        onDetailClick={() => openTermsModal('marketing')} // <-- 여기 추가
       />
     </div>
   );

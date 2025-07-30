@@ -1,7 +1,6 @@
-import { adminClient } from '@/app/admin';
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
-
 import { NextRequest, NextResponse } from 'next/server';
+
+import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
   try {
@@ -42,15 +41,13 @@ export async function GET(req: NextRequest) {
     const result = (bidData || [])
       .map((item: any) => {
         const { auction, bid_price } = item;
-        const { status: oldStatus, ...auctionRest } = auction;
 
         return {
-          ...auctionRest,
-          status: getAuctionStatus(auction),
+          ...auction,
           my_bid_price: bid_price,
         };
       })
-      .filter((item) => item.status !== 'end');
+      .filter((item) => item.status !== 'closed');
 
     // 중복 제거 (한 경매에 여러 번 입찰한 경우)
     const uniqueMyParticipatedAuctions = Array.from(

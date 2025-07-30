@@ -1,7 +1,7 @@
+import ModalProvider from '@/widgets/modal/ui/ModalProvider';
 import { ScrollButton } from '@/widgets/scroll-button/ScrollButton';
 import { Footer } from '../../widgets/footer';
 import { Header } from '../../widgets/header';
-import ModalProvider from '@/widgets/modal/ui/ModalProvider';
 
 interface Props {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ const layout = ({ children }: Props) => {
     <div className="flex h-screen flex-col">
       <Header />
       <ModalProvider />
-      <div id="main-scroll-container" className="relative flex-1 overflow-y-auto px-4">
+      <div id="main-scroll-container" className="relative flex-1 overflow-y-auto px-4 pb-10">
         {children}
         <ScrollButton />
       </div>

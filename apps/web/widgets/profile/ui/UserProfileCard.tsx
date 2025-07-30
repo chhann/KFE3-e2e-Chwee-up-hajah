@@ -3,10 +3,10 @@ import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInf
 import Link from 'next/link';
 import { IoSettingsOutline } from 'react-icons/io5';
 
+import { getGradeIcon } from '@/shared/lib/points/getGradeIcon';
 import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
 import { UserProfileType } from '@/shared/types/profile';
 import { userProfileCardStyles as styles } from '../styles/useProfileCard.styles';
-import { getGradeIcon } from '@/shared/lib/points/getGradeIcon';
 
 export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
   const avatarSrc = getCacheBustingUrl(user.avatar);
@@ -48,9 +48,9 @@ export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
             </span>
           </div>
           <div>
-            <p className={styles.pointsSection.pointsLabel}>포인트</p>
+            <p className={styles.pointsSection.pointsLabel}>등급 포인트</p>
             <span className={styles.pointsSection.pointsAmount}>
-              {user.points?.toLocaleString() || 0}원
+              {user.points?.toLocaleString() || 0}P
             </span>
           </div>
         </div>

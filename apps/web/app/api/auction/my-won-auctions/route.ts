@@ -1,6 +1,6 @@
-import { adminClient } from '@/app/admin';
-import { getAuctionStatus } from '@/shared/lib/utils/auctionStatus';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
   try {
@@ -42,24 +42,19 @@ export async function GET(req: NextRequest) {
     const wonAuctions = bidData
       .filter((bid: any) => {
         const auction = bid.auction;
-        const auctionStatus = getAuctionStatus(auction);
 
         return (
-          auctionStatus === 'end' && // getAuctionStatus로 종료 확인
-          bid.bid_price === auction.current_price // 내 입찰가가 최종 낙찰가와 같음
+          auction.status === 'closed' && bid.bid_price === auction.current_price // 내 입찰가가 최종 낙찰가와 같음
         );
       })
       .map((bid: any) => {
         const { auction, bid_price } = bid;
-        const { status: oldStatus, ...auctionRest } = auction;
 
         return {
-          ...auctionRest,
-          status: 'end',
+          ...auction,
           my_won_price: bid_price,
         };
       });
-
     // 3. 중복 제거 (한 경매에 여러 번 입찰한 경우)
     const uniqueWonAuctions = Array.from(
       new Map(wonAuctions.map((item) => [item.auction_id, item])).values()

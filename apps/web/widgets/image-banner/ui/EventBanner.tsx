@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -40,7 +41,13 @@ export const EventBanner = ({ events, autoplay = false, height = 230 }: EventBan
           <SwiperSlide key={event.id}>
             <Link href={event.redirectUrl}>
               <div className={Styles.slideContainer}>
-                <img src={event.imageUrl} alt={`banner-${event.id}`} className={Styles.image} />
+                <Image
+                  src={event.imageUrl}
+                  alt={`banner-${event.id}`}
+                  width={124}
+                  height={77}
+                  className={Styles.image}
+                />
               </div>
             </Link>
           </SwiperSlide>

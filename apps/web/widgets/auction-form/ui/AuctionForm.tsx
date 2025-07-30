@@ -1,20 +1,24 @@
+import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import { Input } from '@repo/ui/design-system/base-components/Input/index';
+import { Select } from '@repo/ui/design-system/base-components/Select/index';
+
 import {
   handleDateChange,
   handleInputChange,
   handleSelectChange,
   handleStartPriceInput,
   handleTextareaChange,
+  handlePriceInput,
 } from '@/features/auction-add/model/handlers';
 import { useAuctionForm } from '@/features/auction-add/model/useAuctionForm';
 import { AuctionDateSelector } from '@/features/auction-add/ui/AuctionDateSelector';
 import { AuctionImageUploader } from '@/features/auction-add/ui/AuctionImageUploader';
 import { ErrorMessage } from '@/features/auction-add/ui/ErrorMessage';
 import { ProductDescriptionInput } from '@/features/auction-add/ui/ProductDescriptionInput';
+
 import { useAuctionDetail } from '@/shared/api/client/auction/useAuctionDetail';
 import { categories } from '@/shared/mock/auction';
-import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import { Input } from '@repo/ui/design-system/base-components/Input/index';
-import { Select } from '@repo/ui/design-system/base-components/Select/index';
+
 import { auctionFormStyle } from './styles/AuctionForm.styles';
 
 type AuctionFormProps =
@@ -28,6 +32,8 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
     setAuctionName,
     startPrice,
     setStartPrice,
+    bidUnitPrice,
+    setBidUnitPrice,
     auctionCategory,
     setAuctionCategory,
     auctionDescription,
@@ -87,6 +93,14 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
           onChange={(e) => handleStartPriceInput(e, setStartPrice, setFieldErrors)}
         />
         <ErrorMessage message={fieldErrors.startPrice} />
+      </fieldset>
+      <fieldset>
+        <Input
+          label="경매 입찰 단가"
+          value={bidUnitPrice}
+          onChange={(e) => handlePriceInput(e, setBidUnitPrice, 'bidUnitPrice', setFieldErrors)}
+        />
+        <ErrorMessage message={fieldErrors.bidUnitPrice} />
       </fieldset>
 
       {/* 날짜 선택 컴포넌트 */}
