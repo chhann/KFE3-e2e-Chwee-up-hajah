@@ -29,14 +29,12 @@ const ModalProvider = () => {
       {isModalOpen('confirm') && (
         <Suspense fallback={null}>
           <ConfirmDialog
-            isOpen={true} // 항상 true로 설정, Zustand 상태로 제어
             onClose={closeModal} // Zustand의 closeModal 사용
             onConfirm={confirmDialogProps.onConfirm || (() => {})} // onConfirm 함수 전달
             title={confirmDialogProps.title}
             description={confirmDialogProps.description}
             confirmText={confirmDialogProps.confirmText}
             cancelText={confirmDialogProps.cancelText}
-            variant={confirmDialogProps.variant}
           />
         </Suspense>
       )}

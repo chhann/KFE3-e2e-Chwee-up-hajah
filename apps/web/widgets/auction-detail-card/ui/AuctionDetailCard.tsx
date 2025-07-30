@@ -10,6 +10,7 @@ import { useDeleteAuction } from '@/shared/api/client/auction/useDeleteAuction';
 import { useAuthStore } from '@/shared/stores/auth';
 
 import { auctionDetailCardStyle } from './styles/AuctionDetailCard.styles';
+import { useModalStore } from '@/shared/stores/modal';
 
 interface AuctionDetailCardProps {
   currentBidCost: number;
@@ -43,6 +44,7 @@ export const AuctionDetailCard = ({
   onClick,
 }: AuctionDetailCardProps) => {
   const userId = useAuthStore().userId;
+  const { setOpenModal } = useModalStore();
   const { mutate } = useDeleteAuction();
   const statusText =
     status === 'in_progress'
@@ -59,13 +61,18 @@ export const AuctionDetailCard = ({
     if (userId !== sellerId) {
       return toast.error('본인 경매만 삭제할 수 있습니다.');
     }
-    const isConfirm = window.confirm('경매를 삭제하시겠습니까?');
-    if (isConfirm) {
-      mutate(auctionId);
-    } else {
-      return;
-    }
+    setOpenModal('confirm', {
+      title: '경매 삭제',
+      description: '정말 경매를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.',
+      confirmText: '삭제',
+      cancelText: '취소',
+      onConfirm: () => {
+        // 사용자가 '삭제'를 눌렀을 때 실행될 로직
+        mutate(auctionId); // 경매 삭제 뮤테이션 호출
+      },
+    });
   };
+
   return (
     <section className={auctionDetailCardStyle.auctionDetailCardContainerStyle}>
       <div className={auctionDetailCardStyle.auctionDetailCardHeaderStyle}>
