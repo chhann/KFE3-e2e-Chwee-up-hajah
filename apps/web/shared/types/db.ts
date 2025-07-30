@@ -15,8 +15,9 @@ export type AuctionDetail = {
   end_time: string;
   start_price: number;
   current_price: number;
+  bid_unit_price: number;
   bid_count: number;
-  status: string;
+  status: 'ready' | 'in_progress' | 'closed';
   seller_confirm: boolean;
   buyer_confirm: boolean;
   thumbnail: string;

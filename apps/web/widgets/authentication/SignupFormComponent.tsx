@@ -71,7 +71,7 @@ export const SignupFormComponent = (props: UseSignupReturn) => {
           password={props.password}
           confirmPassword={props.confirmPassword}
           emailError={props.fieldErrors.email}
-          agreedToTerms={props.agreedToTermsOfService}
+          agreedToTerms={props.agreedToTermsOfService && props.agreedToPrivacyPolicy}
         />
         <LoginLink />
       </form>

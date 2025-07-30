@@ -1,9 +1,8 @@
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
+import { Toaster } from 'react-hot-toast';
 
 import GoogleAnalytics from '@/shared/hooks/GoogleAnalyticsEffect';
 import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
@@ -12,6 +11,10 @@ import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';
 import { Providers } from './providers';
 
 import '@repo/ui/styles';
+
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 import './globals.css';
 
 const notoSansKR = Noto_Sans_KR({
@@ -45,6 +48,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Providers>
             <PushSubscriptionEffect />
             {children}
+            <Toaster
+              position="bottom-center"
+              toastOptions={{
+                duration: 2300,
+                style: {
+                  background: '#484848',
+                  color: '#f5f5f5',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                  fontSize: 12,
+                },
+              }}
+            />
             <Analytics />
             <SpeedInsights />
             <Script

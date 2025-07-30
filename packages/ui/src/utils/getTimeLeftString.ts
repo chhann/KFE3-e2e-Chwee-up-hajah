@@ -16,16 +16,16 @@ export function getTimeLeftString({ endDate, startDate }: TimeLeftProps): string
   };
 
   const formatTime = (diff: number): string => {
-    const totalHours = Math.floor(diff / (1000 * 60 * 60)); // 총 시간을 계산
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+    const totalHours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    let timeString = '';
-    if (totalHours > 0) timeString += `${totalHours}시간 `;
-    if (minutes > 0 || totalHours > 0) timeString += `${minutes}분 `;
-    timeString += `${seconds}초`;
+    const pad = (num: number) => num.toString().padStart(2, '0');
 
-    return timeString.trim();
+    if (totalHours > 0) {
+      return `${pad(totalHours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+    return `${pad(minutes)}:${pad(seconds)}`;
   };
 
   const start = parseDate(startDate);
@@ -35,17 +35,11 @@ export function getTimeLeftString({ endDate, startDate }: TimeLeftProps): string
     return '유효하지 않은 종료 날짜';
   }
 
-  // 경매 시작 전
-  if (start && start.getTime() > now.getTime()) {
-    const diff = start.getTime() - now.getTime();
-    return `시작까지 ${formatTime(diff)}`;
-  }
-
   // 경매 진행 중 또는 종료
   const diff = end.getTime() - now.getTime();
 
   if (diff <= 0) {
-    return '경매 종료';
+    return '00:00';
   }
 
   return formatTime(diff);

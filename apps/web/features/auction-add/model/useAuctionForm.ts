@@ -1,3 +1,8 @@
+import { useEffect, useState } from 'react';
+
+import { getToday } from '@repo/ui/utils/getToday';
+import toast from 'react-hot-toast';
+
 import { useCreateAuction } from '@/shared/api/client/auction/useCreateAuction';
 import { useUpdateAuction } from '@/shared/api/client/auction/useUpdateAuction';
 import { formatDateString } from '@/shared/lib/utils/formatDateString';
@@ -5,8 +10,6 @@ import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { auctionAddSchema } from '@/shared/lib/validators/auctionAddSchema';
 import { useAuthStore } from '@/shared/stores/auth';
 import { AuctionDetail } from '@/shared/types/db';
-import { getToday } from '@repo/ui/utils/getToday';
-import { useEffect, useState } from 'react';
 
 export function useAuctionForm({
   isEdit = false,
@@ -17,12 +20,12 @@ export function useAuctionForm({
 }) {
   const [auctionName, setAuctionName] = useState('');
   const [startPrice, setStartPrice] = useState('');
+  const [bidUnitPrice, setBidUnitPrice] = useState('1000');
   const [auctionCategory, setAuctionCategory] = useState('');
   const [auctionDescription, setAuctionDescription] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [startDate, setStartDate] = useState(getToday());
   const [endDate, setEndDate] = useState(getToday());
-
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
@@ -35,7 +38,7 @@ export function useAuctionForm({
       return false;
     }
     // 경매가 종료되었고, 입찰 기록이 없는 경우 수정 가능 (시작되지 않은 것으로 간주)
-    if (initialData.status === 'end' && initialData.bid_count === 0) {
+    if (initialData.status === 'closed' && initialData.bid_count === 0) {
       return false;
     }
     // 그 외의 경우, 시작 시간을 기준으로 판단
@@ -49,6 +52,7 @@ export function useAuctionForm({
       setAuctionCategory(initialData.product?.category || '');
       setAuctionDescription(initialData.product?.description || '');
       setImages(initialData.images || []);
+      setBidUnitPrice(String(initialData.bid_unit_price) || '1000');
       setStartDate(formatDateString(initialData.start_time));
       setEndDate(formatDateString(initialData.end_time));
     }
@@ -58,7 +62,7 @@ export function useAuctionForm({
     e.preventDefault();
 
     if (isEdit && isStarted) {
-      alert('경매가 시작되어 수정이 불가능합니다.');
+      toast.error('경매가 시작되어 수정이 불가능합니다.');
       return;
     }
 
@@ -77,6 +81,7 @@ export function useAuctionForm({
       auctionName,
       auctionCategory,
       startPrice,
+      bidUnitPrice,
       auctionDescription,
       startDate,
       endDate,
@@ -111,7 +116,7 @@ export function useAuctionForm({
 
     if (isEdit) {
       if (sellerId !== initialData?.seller_id) {
-        return alert('본인이 등록한 경매만 수정할 수 있습니다.');
+        return toast('본인이 등록한 경매만 수정할 수 있습니다.');
       }
       if (!initialData) {
         setFormError('수정할 경매 정보가 올바르지 않습니다.');
@@ -122,6 +127,7 @@ export function useAuctionForm({
       const currentEditableValues = {
         auctionName: auctionName,
         startPrice: Number(startPrice),
+        bidUnitPrice: Number(bidUnitPrice),
         auctionCategory: auctionCategory,
         auctionDescription: auctionDescription,
         images: images,
@@ -133,6 +139,7 @@ export function useAuctionForm({
       const initialEditableValues = {
         auctionName: initialData.product?.name || '',
         startPrice: initialData.start_price,
+        bidUnitPrice: initialData.bid_unit_price,
         auctionCategory: initialData.product?.category || '',
         auctionDescription: initialData.product?.description || '',
         images: initialData.images || [],
@@ -142,13 +149,14 @@ export function useAuctionForm({
 
       // JSON.stringify를 이용한 간단한 객체 내용 비교
       if (JSON.stringify(currentEditableValues) === JSON.stringify(initialEditableValues)) {
-        alert('데이터를 수정해 주세요.');
+        toast('데이터를 수정해 주세요.');
         return; // 제출 방지
       }
 
       const completeAuctionData = {
         ...initialData,
         start_price: Number(startPrice),
+        bid_unit_price: Number(bidUnitPrice),
         start_time: finalStartDate,
         end_time: finalEndDate,
         images: images,
@@ -172,6 +180,7 @@ export function useAuctionForm({
         category: auctionCategory,
         description: auctionDescription,
         start_price: Number(startPrice),
+        bid_unit_price: Number(bidUnitPrice),
         start_time: finalStartDate,
         end_time: finalEndDate,
         thumbnail: images[0] || '',
@@ -188,6 +197,8 @@ export function useAuctionForm({
     setAuctionName,
     startPrice,
     setStartPrice,
+    bidUnitPrice,
+    setBidUnitPrice,
     auctionCategory,
     setAuctionCategory,
     auctionDescription,

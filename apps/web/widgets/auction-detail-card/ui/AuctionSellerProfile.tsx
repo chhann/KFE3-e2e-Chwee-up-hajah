@@ -1,8 +1,8 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
-import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
 
 import { getGradeIcon } from '@/shared/lib/points/getGradeIcon';
 import { AuctionDetail } from '@/shared/types/db';
+
 import { auctionSellerProfileStyle } from './styles/AuctionSellerProfile.styles';
 
 interface AuctionSellerProfileProps {
@@ -31,8 +31,6 @@ export const AuctionSellerProfile = ({ user }: AuctionSellerProfileProps) => {
             등급: {user.grade}
             {getGradeIcon(user.grade)}
           </div>
-
-          <LocationInfo address={user.address} />
         </div>
       </div>
     </section>
