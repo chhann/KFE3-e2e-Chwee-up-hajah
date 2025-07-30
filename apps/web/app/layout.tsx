@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
@@ -12,6 +12,7 @@ import { Providers } from './providers';
 
 import '@repo/ui/styles';
 
+import * as Sentry from '@sentry/nextjs';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -27,7 +28,6 @@ export const metadata: Metadata = {
   title: 'Time Auction',
   description: '중고 경매 앱',
   manifest: '/manifest.json',
-  themeColor: '#ffffff',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -35,7 +35,9 @@ export const metadata: Metadata = {
   },
 };
 
-import * as Sentry from '@sentry/nextjs';
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const theme = (await cookies()).get('theme')?.value ?? 'light';

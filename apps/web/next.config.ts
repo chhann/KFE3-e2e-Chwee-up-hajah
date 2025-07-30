@@ -2,6 +2,11 @@ import withPWA from '@ducanh2912/next-pwa';
 import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from 'next';
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: true,
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   images: {
@@ -44,7 +49,7 @@ const withPwaApplied = withPWA(pwaOptions)(nextConfig);
 
 // withSentryConfig를 마지막으로 적용
 const sentryConfig = withSentryConfig(
-  withPwaApplied, // PWA가 적용된 nextConfig를 전달
+  withBundleAnalyzer(withPwaApplied), // PWA가 적용된 nextConfig를 전달
   {
     // Sentry Webpack Plugin options
     silent: true,
