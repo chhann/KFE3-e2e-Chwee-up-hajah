@@ -1,17 +1,19 @@
 export const MarketingContent = () => {
   return (
     <div className="space-y-4">
-      <h4>개요</h4>
+      <h4>
+        <strong>개요</strong>
+      </h4>
       <p>
         '우리동네마켓'이 제공하는 '핫딜' 프로모션, 이벤트, 쿠폰, 맞춤형 상품 추천 등 사용자에게
         유용한 혜택을 제공합니다.
       </p>
       <h4>
-        <strong>1. 수신 채널:</strong>
+        <strong>수신 채널</strong>
       </h4>
       <p>앱 푸시 알림, SMS, 이메일 이벤트, 프로모션 정보 안내, 맞춤형 광고 및 혜택 제공</p>
       <h4>
-        <strong>2. 발송 정보:</strong>
+        <strong>발송 정보</strong>
       </h4>
 
       <ul>
