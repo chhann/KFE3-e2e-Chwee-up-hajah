@@ -24,7 +24,7 @@ const MainHome = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>('전체'); // ✅ 선택된 카테고리 상태
 
   const { data: popularProducts, isLoading: isPopularLoading } = useProductList('popular', 10);
-  const { data: latestProducts, isLoading: isLatestLoading } = useProductList('latest');
+  const { data: latestProducts, isLoading: isLatestLoading } = useProductList('endingSoon');
 
   const filteredPopular =
     selectedCategory === '전체'
@@ -67,13 +67,14 @@ const MainHome = () => {
     <div>
       <BannerBackground />
       <EventPopup />
-      <div className={Styles.bannerContainer}></div>
-      <h2 className={Styles.hotDealTitle}>지금 주목해볼 핫딜!</h2>
+      <div className={Styles.bannerContainer}>지금 주목 해볼 핫딜!</div>
+
       <EventBanner events={events} height={230} autoplay={true} />
+
       {/* 카테고리 */}
       <Category
         categories={categories}
-        className="mt-12"
+        className="mt-4"
         selectedCategory={selectedCategory}
         onCategoryClick={handleCategoryClick}
       />
@@ -81,7 +82,7 @@ const MainHome = () => {
       <SectionHeader
         title="현재 입찰자 많은 경매 TOP10🔥"
         subTitle="입찰자가 많은 순으로 확인해보세요!"
-        className="mt-12"
+        className="mt-8"
       />
       {/* 입찰가 많은 순 경매 리스트 */}
       <ProductSection products={filteredPopular} isLoading={isPopularLoading} />

@@ -58,8 +58,8 @@ export default function Category({
               <div
                 className={`${categoryStyle.categoryImageStyle} ${
                   selectedCategory === item.title
-                    ? 'border-[2px] border-[#484848] bg-[#ffffff] text-[#484848]'
-                    : 'bg-[#484848] text-[#ffffff]'
+                    ? 'border-[2px] border-[#484848] bg-[#484848] text-[#ffffff]'
+                    : 'border-[2px] border-[#484848] bg-[#ffffff] text-[#484848]'
                 }`}
               >
                 {/* 4. 아이콘 컴포넌트 렌더링 */}

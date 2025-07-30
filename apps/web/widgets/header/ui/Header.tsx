@@ -13,19 +13,16 @@ export const Header = () => {
   const router = useRouter();
   const { setOpenModal } = useModalStore();
 
-  // 1. 현재 경로가 /main인지 확인합니다.
-  const isMainPage = pathname === '/main';
-
   const noBackButtonRoutes = ['/main'];
   const showBackButton = !noBackButtonRoutes.includes(pathname);
 
   // 2. 조건부 스타일 클래스를 정의합니다.
-  const headerBgClass = isMainPage ? 'bg-[#484848]' : '';
-  const mainPageTextClass = isMainPage ? 'text-white' : '!text-[#484848]';
+  const headerBgClass = 'bg-[#fdfdfd]';
+  const mainPageTextClass = 'text-[#484848]';
 
   return (
     <header className={`${styles.header} ${headerBgClass}`}>
-      <div className="flex w-1/4 items-center pl-2">
+      <div className="flex w-1/4 items-center">
         {showBackButton && (
           <div className={styles.backButton.wrapper} onClick={() => router.back()}>
             <ArrowLeft className={styles.backButton.icon} />
@@ -33,7 +30,7 @@ export const Header = () => {
         )}
         {!showBackButton && (
           <Link href="/main" className="flex items-center gap-1">
-            <img src="/TA.png" alt="Logo" className="h-8 w-auto" />
+            <img src="/TA.webp" alt="Logo" className="h-8 w-auto" />
             {/* 3. '타임옥션' 텍스트에 조건부 클래스를 적용합니다. */}
             <div className={`whitespace-nowrap text-lg font-bold ${mainPageTextClass}`}>
               타임옥션

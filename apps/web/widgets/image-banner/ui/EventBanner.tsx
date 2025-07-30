@@ -23,10 +23,15 @@ interface EventBannerProps {
   autoplay?: boolean;
 }
 
-export const EventBanner = ({ events, autoplay = false, height = 230 }: EventBannerProps) => {
+export const EventBanner = ({ events, autoplay = false, height = 100 }: EventBannerProps) => {
   return (
     <Swiper
-      style={{ height }}
+      style={{
+        height,
+        width: 'calc(100% + 2rem)',
+        marginLeft: '-1rem',
+        marginRight: '-1rem',
+      }}
       slidesPerView={1}
       loop={true}
       navigation={false}

@@ -20,9 +20,16 @@ export async function GET(req: NextRequest) {
     case 'latest':
       query = query.order('start_time', { ascending: false });
       break;
-    case 'endingSoon':
-      query = query.order('end_time', { ascending: true });
+    case 'endingSoon': {
+      const now = new Date();
+      const sixHoursLater = new Date(now.getTime() + 6 * 60 * 60 * 1000);
+      query = query
+        .gt('end_time', now.toISOString())
+        .lt('end_time', sixHoursLater.toISOString())
+        .order('end_time', { ascending: true })
+        .limit(10);
       break;
+    }
     default:
       break;
   }
