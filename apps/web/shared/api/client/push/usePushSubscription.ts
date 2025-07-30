@@ -10,7 +10,7 @@ export const usePushSubscription = () => {
     },
 
     onError: (error) => {
-      console.error('❌ 푸시 구독 정보 서버 전송 실패:', error);
+      // console.error('❌ 푸시 구독 정보 서버 전송 실패:', error);
     },
   });
 };

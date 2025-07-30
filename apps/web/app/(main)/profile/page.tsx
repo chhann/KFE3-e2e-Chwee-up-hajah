@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation';
 
-import { Navigation, UserProfileCard } from '@/widgets/profile';
-
 import { LogoutButton } from '@/widgets/authentication/LogoutButton';
+import { Navigation, UserProfileCard } from '@/widgets/profile';
+import { PointsTestButton } from '@/widgets/profile/ui/PointsTestButton';
 
-import { getCurrentUser } from '@/app/session';
 import { getProfile } from '@/shared/api/server/profile/getProfile';
 import { NavigationItem } from '@/shared/types/profile';
-import { PointsTestButton } from '@/widgets/profile/ui/PointsTestButton';
+
+import { getCurrentUser } from '@/app/session';
 
 const pointItems: NavigationItem[] = [{ label: '적립내역', href: '/profile/points-history' }];
 
@@ -25,7 +25,6 @@ const Page = async () => {
   }
 
   const userProfile = await getProfile(userData.id!);
-  console.log('userProfile:', userProfile);
 
   return (
     <main className="text-neutral-70" role="main">

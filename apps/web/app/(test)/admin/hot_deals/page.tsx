@@ -1,24 +1,18 @@
 'use client';
 
-import { productDescriptionStyle } from '@/features/auction-add/ui/styles/ProductDescriptionInput.styles';
+import { useState } from 'react';
 
-import { type HotDeal, hotDealSchema } from '@/shared/lib/validators/hot-deal';
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Card } from '@repo/ui/design-system/base-components/Card/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import { Select } from '@repo/ui/design-system/base-components/Select/index';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { useState } from 'react';
 
-// API 호출 함수
-const getHotDeals = async (): Promise<HotDeal[]> => {
-  const response = await fetch('/api/hot-deals');
-  if (!response.ok) {
-    throw new Error('핫딜 목록을 불러오는 데 실패했습니다.');
-  }
-  return response.json();
-};
+import { productDescriptionStyle } from '@/features/auction-add/ui/styles/ProductDescriptionInput.styles';
+
+import { fetchHotdealList } from '@/shared/api/server/hotdeal/fetchHotdealList';
+import { type HotDeal, hotDealSchema } from '@/shared/lib/validators/hot-deal';
 
 const createHotDeal = async (
   newHotDeal: Omit<HotDeal, 'id' | 'created_at' | 'updated_at'>
@@ -31,6 +25,7 @@ const createHotDeal = async (
     body: JSON.stringify(newHotDeal),
   });
   if (!response.ok) {
+    console.error('Failed to create hot deal:', response);
     throw new Error('핫딜을 생성하는 데 실패했습니다.');
   }
   return response.json();
@@ -90,7 +85,7 @@ export default function HotDealsClient() {
     error,
   } = useQuery<HotDeal[]>({
     queryKey: ['hotDeals'],
-    queryFn: getHotDeals,
+    queryFn: fetchHotdealList,
   });
 
   const createMutation = useMutation({
@@ -331,7 +326,7 @@ export default function HotDealsClient() {
           />
           <Select
             label="최소 사용자 등급"
-            options={['새싹', '열매', '나무', '숲']}
+            options={['씨앗', '새싹', '나무', '숲']}
             value={newHotDeal.min_user_grade}
             onChange={(e) => handleSelectChange('min_user_grade', e, setNewHotDeal)}
           />

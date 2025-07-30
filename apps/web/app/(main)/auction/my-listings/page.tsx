@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
+
+import { MyListings } from '@/widgets/my-listings/ui/MyListings';
+
 import { useMyListings } from '@/shared/api/client/auction/useMyListings';
 import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
 import { useAuthStore } from '@/shared/stores/auth';
-import { MyListings } from '@/widgets/my-listings/ui/MyListings';
-import { useState } from 'react';
 
 const Page = () => {
   const [filter, setFilter] = useState('in-progress');
@@ -24,7 +26,7 @@ const Page = () => {
 
   return (
     <main className="text-neutral-70" role="main">
-      <h1 className="mb-3 text-base font-semibold">판매중인 물품</h1>
+      <h1 className="mb-3">판매중인 물품</h1>
       <div className="w-full text-right">
         <select
           name="listFilter"
@@ -34,7 +36,7 @@ const Page = () => {
           onChange={(e) => setFilter(e.target.value)}
         >
           <option value="in-progress">판매중</option>
-          <option value="ended">종료</option>
+          <option value="closed">종료</option>
         </select>
       </div>
       <MyListings listData={filteredList} />

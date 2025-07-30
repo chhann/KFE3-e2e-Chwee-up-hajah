@@ -1,6 +1,8 @@
-import { adminClient } from '@/app/admin';
-import { AuctionWithProduct } from '@/shared/types/db';
 import webpush from 'web-push';
+
+import { adminClient } from '@/app/admin';
+
+import { AuctionWithProduct } from '@/shared/types/db';
 
 interface NotificationConfig {
   userId: string;

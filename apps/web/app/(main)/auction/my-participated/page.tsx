@@ -1,9 +1,10 @@
 'use client';
 
+import { MyParticipatedAuctions } from '@/widgets/my-participated/ui/MyParticipatedAuctions';
+
 import { useMyParticipatedAuction } from '@/shared/api/client/auction/useMyParticipatedAuctions';
 import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
 import { useAuthStore } from '@/shared/stores/auth';
-import { MyParticipatedAuctions } from '@/widgets/my-participated/ui/MyParticipatedAuctions';
 
 const Page = () => {
   const { userId } = useAuthStore();
@@ -22,7 +23,7 @@ const Page = () => {
 
   return (
     <main className="text-neutral-70" role="main">
-      <h1 className="mb-3 text-base font-semibold">참여중인 경매</h1>
+      <h1 className="mb-3">참여중인 경매</h1>
       <MyParticipatedAuctions listData={filteredList} />
     </main>
   );

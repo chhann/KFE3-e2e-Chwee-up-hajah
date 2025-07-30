@@ -1,5 +1,7 @@
-import { HotDeal } from '@/shared/types/db';
 import { useMemo } from 'react';
+
+import { HotDeal } from '@/shared/types/db';
+
 import { CountdownStatus, useCountdown } from './useCountdown';
 
 interface UseHotdealCountdownLogicProps {

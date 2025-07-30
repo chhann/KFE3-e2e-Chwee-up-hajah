@@ -1,11 +1,16 @@
-import { createApiClient, createSSRClient } from '@/app/server';
-import { hotDealSchema } from '@/shared/lib/validators/hot-deal';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { createApiClient, createSSRClient } from '@/app/server';
+
+import { hotDealSchema } from '@/shared/lib/validators/hot-deal';
+
 export async function GET() {
   const supabase = await createSSRClient();
-  const { data, error } = await supabase.from('hot_deals').select('*');
+  const { data, error } = await supabase
+    .from('hot_deals')
+    .select('*')
+    .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Supabase GET error:', error);
@@ -39,7 +44,9 @@ export async function POST(request: NextRequest) {
   const supabase = await createApiClient(request);
   const body = await request.json();
 
-  const validation = hotDealSchema.safeParse(body);
+  const validation = hotDealSchema
+    .omit({ id: true, created_at: true, updated_at: true })
+    .safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json({ error: validation.error.format() }, { status: 400 });

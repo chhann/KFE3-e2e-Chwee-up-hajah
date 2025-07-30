@@ -1,5 +1,3 @@
-import { CardProps } from '@repo/ui/design-system/base-components/Card/index';
-
 export interface AuctionBidParams {
   auctionId: string;
   bidderId: string;
@@ -12,6 +10,7 @@ export interface AuctionBidResponse {
 }
 
 export interface CreateAuctionPayload {
+  seller_id: string | null;
   name: string;
   category: string;
   description: string;
@@ -21,7 +20,12 @@ export interface CreateAuctionPayload {
   thumbnail: string;
   images: string[];
 }
-export interface AuctionCardProps extends CardProps {
+export interface AuctionCardProps {
+  title: string;
+  imageSrc: string;
+  endTime: string;
+  startTime: string;
+  status: 'ready' | 'in_progress' | 'closed';
   badgeVariant?: 'best' | 'urgent' | null;
   bidStartPrice: number;
   bidCurrentPrice: number;
