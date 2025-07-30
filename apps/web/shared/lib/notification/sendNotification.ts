@@ -1,7 +1,5 @@
 import webpush from 'web-push';
-
 import { adminClient } from '@/app/admin';
-
 import { AuctionWithProduct } from '@/shared/types/db';
 
 interface NotificationConfig {
@@ -18,6 +16,8 @@ const vapidKeys = {
   privateKey: process.env.VAPID_PRIVATE_KEY,
 };
 
+console.log('VAPID Public Key (Server):', vapidKeys.publicKey);
+
 webpush.setVapidDetails(
   'mailto:your-email@example.com',
   vapidKeys.publicKey!,
@@ -27,6 +27,10 @@ webpush.setVapidDetails(
 export const sendNotificationAsync = (config: NotificationConfig) => {
   setImmediate(async () => {
     try {
+      console.log(
+        `[sendNotificationAsync] 알림 전송 시작. userId: ${config.userId}, auctionId: ${config.auctionId}, type: ${config.type}`
+      );
+
       // 1. 경매 정보 조회
       const { data: auctionData, error: auctionError } = (await adminClient
         .from('auction')
@@ -42,13 +46,14 @@ export const sendNotificationAsync = (config: NotificationConfig) => {
         .single()) as { data: AuctionWithProduct | null; error: any };
 
       if (auctionError || !auctionData) {
-        console.error('경매 정보 조회 실패:', auctionError);
+        console.error('[sendNotificationAsync] 경매 정보 조회 실패:', auctionError);
         return;
       }
 
       const productName = auctionData.product.name;
 
       // 2. 구독 정보 조회
+      console.log(`[sendNotificationAsync] 사용자 ${config.userId}의 푸시 구독 정보 조회 시도`);
       const { data: subscriptionData, error: subscriptionError } = await adminClient
         .from('push_subscriptions')
         .select('endpoint, p256dh, auth')
@@ -70,13 +75,23 @@ export const sendNotificationAsync = (config: NotificationConfig) => {
       };
 
       if (subscriptionError || !subscriptionData) {
+        console.warn(
+          `[sendNotificationAsync] 사용자 ${config.userId}는 푸시 알림 구독 정보가 없거나 조회 실패. Error:`,
+          subscriptionError
+        );
         await adminClient.from('notification').insert({
           ...notificationData,
           delivery_status: 'not_subscribed',
         });
-        console.log(`사용자 ${config.userId}는 푸시 알림 구독하지 않음`);
+        console.log(
+          `[sendNotificationAsync] 알림 상태 기록: not_subscribed for userId: ${config.userId}`
+        );
         return;
       }
+
+      console.log(
+        `[sendNotificationAsync] 사용자 ${config.userId}의 푸시 구독 정보 발견. Endpoint: ${subscriptionData.endpoint}`
+      );
 
       // 4. 푸시 알림 전송
       try {
@@ -94,24 +109,51 @@ export const sendNotificationAsync = (config: NotificationConfig) => {
           url: `/auction/${config.auctionId}/auction-detail`,
         });
 
+        console.log(`[sendNotificationAsync] 푸시 알림 전송 시도 중... userId: ${config.userId}`);
         await webpush.sendNotification(pushSubscription, pushPayload);
+        console.log(`[sendNotificationAsync] 푸시 알림 전송 성공! userId: ${config.userId}`);
 
         await adminClient.from('notification').insert({
           ...notificationData,
           delivery_status: 'sent',
         });
 
-        console.log(`${config.type} 알림 전송 성공: ${config.userId}`);
-      } catch (pushError) {
+        console.log(
+          `[sendNotificationAsync] ${config.type} 알림 전송 성공 및 상태 기록: sent for userId: ${config.userId}`
+        );
+      } catch (pushError: any) {
+        // pushError 타입을 any로 명시하여 statusCode 접근 용이
+        console.error(`[sendNotificationAsync] 푸시 전송 실패 (${config.userId}):`, pushError);
+
+        let deliveryStatus = 'failed';
+        if (pushError.statusCode) {
+          console.error(`[sendNotificationAsync] Push API Status Code: ${pushError.statusCode}`);
+          if (pushError.statusCode === 410 || pushError.statusCode === 404) {
+            console.warn(
+              `[sendNotificationAsync] 구독 만료 또는 찾을 수 없음. DB에서 해당 구독 삭제 필요:`
+            );
+            // TODO: 여기에 DB에서 해당 pushSubscription을 삭제하는 로직을 추가해야 합니다.
+            // 예: await adminClient.from('push_subscriptions').delete().eq('endpoint', pushSubscription.endpoint);
+            deliveryStatus = 'expired_or_not_found'; // 새로운 상태 추가
+          } else if (pushError.code === 'ECONNRESET') {
+            console.error(
+              `[sendNotificationAsync] ECONNRESET 발생. VAPID 키 또는 네트워크 문제 가능성. `
+            );
+            deliveryStatus = 'network_error'; // 새로운 상태 추가
+          }
+        }
+
         await adminClient.from('notification').insert({
           ...notificationData,
-          delivery_status: 'failed',
+          delivery_status: deliveryStatus, // 상세한 실패 상태 기록
         });
 
-        console.error(`푸시 전송 실패 (${config.userId}):`, pushError);
+        console.error(
+          `[sendNotificationAsync] 알림 상태 기록: ${deliveryStatus} for userId: ${config.userId}`
+        );
       }
     } catch (error) {
-      console.error('알림 처리 중 오류:', error);
+      console.error('[sendNotificationAsync] 알림 처리 중 예상치 못한 오류:', error);
     }
   });
 };
