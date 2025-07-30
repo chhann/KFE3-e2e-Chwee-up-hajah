@@ -5,10 +5,11 @@ import { urlBase64ToUint8Array } from '../utils/urlBase64ToUint8Array';
 export const registerPushSubscription = async (): Promise<PushSubscription | null> => {
   try {
     const isDev = process.env.NODE_ENV === 'development';
-    // if (isDev) {
-    //   console.warn('개발 환경에서는 푸시 구독을 등록하지 않습니다.');
-    //   return null;
-    // } C + S + R 누르기 귀찮으시면 개발환경때 주석 해제해서 사용해 주시면 됩니다 !
+    if (isDev) {
+      console.warn('개발 환경에서는 푸시 구독을 등록하지 않습니다.');
+      return null;
+    }
+    // C + S + R 누르기 귀찮으시면 개발환경때 주석 해제해서 사용해 주시면 됩니다 !
 
     if (!('serviceWorker' in navigator)) {
       console.warn('❌ ServiceWorker 미지원 브라우저');

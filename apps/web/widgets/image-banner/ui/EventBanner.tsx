@@ -6,6 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
 import { Styles } from './styles/image-banner.styles';
 import './styles/swiper-custom.css';
 
@@ -22,10 +23,15 @@ interface EventBannerProps {
   autoplay?: boolean;
 }
 
-export const EventBanner = ({ events, autoplay = false, height = 230 }: EventBannerProps) => {
+export const EventBanner = ({ events, autoplay = false, height = 100 }: EventBannerProps) => {
   return (
     <Swiper
-      style={{ height }}
+      style={{
+        height,
+        width: 'calc(100% + 2rem)',
+        marginLeft: '-1rem',
+        marginRight: '-1rem',
+      }}
       slidesPerView={1}
       loop={true}
       navigation={false}
@@ -40,7 +46,7 @@ export const EventBanner = ({ events, autoplay = false, height = 230 }: EventBan
           <SwiperSlide key={event.id}>
             <Link href={event.redirectUrl}>
               <div className={Styles.slideContainer}>
-                <img src={event.imageUrl} alt={`banner-${event.id}`} className={Styles.image} />
+                <img src="/exbanner1.png" alt="banner" className={Styles.image} />
               </div>
             </Link>
           </SwiperSlide>

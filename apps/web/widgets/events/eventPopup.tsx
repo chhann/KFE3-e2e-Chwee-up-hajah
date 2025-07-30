@@ -1,12 +1,14 @@
 'use client';
 
-import { useEventPopupStore } from '@/shared/stores/eventPopupStore';
+import { useEffect, useState } from 'react';
+
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { getToday } from '@repo/ui/utils/getToday';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+
+import { useEventPopupStore } from '@/shared/stores/eventPopupStore';
 
 interface EventPopupData {
   id: number;

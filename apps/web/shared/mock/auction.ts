@@ -35,17 +35,28 @@ export const mockListings = [
 ];
 
 export const categories = [
-  { title: '전체', imageUrl: '/category-images/category_all.svg' },
-  { title: '가전/전자', imageUrl: '/category-images/refrigerator.avif' },
-  { title: '도서/티켓', imageUrl: '/category-images/book.avif' },
-  { title: '뷰티', imageUrl: '/category-images/cosmetics.avif' },
-  { title: '사무/잡화', imageUrl: '/category-images/office-supplies.avif' },
-  { title: '스포츠용품', imageUrl: '/category-images/dumbbell.avif' },
-  { title: '악세서리', imageUrl: '/category-images/clock.avif' },
-  { title: '의류', imageUrl: '/category-images/clothes.avif' },
-  { title: '생활/주방', imageUrl: '/category-images/kitchen.avif' },
-  { title: '기타', imageUrl: '/category-images/etc.svg' },
+  { title: '전체' },
+  { title: '가전/전자' },
+  { title: '도서/티켓' },
+  { title: '뷰티' },
+  { title: '사무/잡화' },
+  { title: '스포츠용품' },
+  { title: '악세서리' },
+  { title: '의류' },
+  { title: '생활/주방' },
+  { title: '기타' },
 ];
+
+//  { title: '전체', imageUrl: '/category-images/category_all.svg' },                                                                                                  │
+//  { title: '가전/전자', imageUrl: '/category-images/refrigerator.avif' },                                                                                            │
+//  { title: '도서/티켓', imageUrl: '/category-images/book.avif' },                                                                                                    │
+//  { title: '뷰티', imageUrl: '/category-images/cosmetics.avif' },                                                                                                    │
+//  { title: '사무/잡화', imageUrl: '/category-images/office-supplies.avif' },                                                                                         │
+//  { title: '스포츠용품', imageUrl: '/category-images/dumbbell.avif' },                                                                                               │
+//  { title: '악세서리', imageUrl: '/category-images/clock.avif' },                                                                                                    │
+//  { title: '의류', imageUrl: '/category-images/clothes.avif' },                                                                                                      │
+//  { title: '생활/주방', imageUrl: '/category-images/kitchen.avif' },                                                                                                 │
+//  { title: '기타', imageUrl: '/category-images/etc.svg' },
 
 export const auctionMockData = {
   auctionName: '빈티지시계 - 한정판',
