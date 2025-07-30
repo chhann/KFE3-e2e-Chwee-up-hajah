@@ -6,6 +6,7 @@ import { GoSearch } from 'react-icons/go';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { IoChatbubbleEllipsesOutline, IoHomeOutline } from 'react-icons/io5';
 import { LuUserRound } from 'react-icons/lu';
+
 import { footerStyles as styles } from '../styles/footer.styles';
 interface NavigationItem {
   label: string;
@@ -19,7 +20,7 @@ export const Footer = () => {
 
   const items: NavigationItem[] = [
     { label: '홈', href: '/main', icon: IoHomeOutline },
-    { label: '검색', href: '/auction/auction-list', icon: GoSearch },
+    { label: '핫딜', href: '/hotdeal', icon: GoSearch },
     { label: '등록', href: '/auction/auction-add', icon: IoIosAddCircleOutline },
     { label: '대화', href: '/chat', icon: IoChatbubbleEllipsesOutline },
     { label: '프로필', href: '/profile', icon: LuUserRound },
