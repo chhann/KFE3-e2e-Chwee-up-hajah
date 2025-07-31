@@ -79,7 +79,6 @@ const Page = () => {
         onClick={sendBid}
       />
       <AuctionSellerProfile user={seller} />
-      {/* <hr className="w-full border border-[var(--border-primary)]" /> */}
       <AuctionDescriptionCard bids={displayBids} description={product.description} />
       {data.status === 'closed' &&
         (displayBids.length === 0 && data.seller_id === userId ? (
