@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
 
+import { cn } from '@repo/ui/utils/cn';
+
 import { AuctionBidHistoryCard } from '@/features/auction/ui/AuctionBidHistoryCard';
 
 import { Bid } from '@/shared/types/db';
-import { cn } from '@repo/ui/utils/cn';
+
 import { auctionDescriptionCardStyle } from './styles/AuctionDescriptionCard.styles';
 
 export const AuctionDescriptionCard = ({
@@ -31,7 +33,7 @@ export const AuctionDescriptionCard = ({
               auctionDescriptionCardStyle.auctionDescriptionCardTabActiveStyle
           )}
         >
-          상품설명
+          상품 설명
         </div>
         <div
           onClick={() => setTab('bids')}
@@ -40,7 +42,7 @@ export const AuctionDescriptionCard = ({
             tab === 'bids' && auctionDescriptionCardStyle.auctionDescriptionCardTabActiveStyle
           )}
         >
-          입찰기록
+          최근 입찰
         </div>
       </div>
 
@@ -57,7 +59,9 @@ export const AuctionDescriptionCard = ({
               첫번째 입찰자가 되어보세요!
             </div>
           ) : (
-            sortedBids.map((bid) => <AuctionBidHistoryCard key={bid.bid_id} bid={bid} />)
+            sortedBids
+              .slice(0, 5)
+              .map((bid) => <AuctionBidHistoryCard key={bid.bid_id} bid={bid} />)
           )}
         </div>
       )}
