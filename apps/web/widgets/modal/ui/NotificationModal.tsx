@@ -53,8 +53,8 @@ const NotificationModal = () => {
                       key={item.notification_id}
                       className={notificationModalStyles.notificationItemWrapper}
                       onClick={() => {
-                        router.push(`/auction/${item.auction_id}/auction-detail`);
                         closeModal();
+                        router.push(`/auction/${item.auction_id}/auction-detail`);
                       }}
                     >
                       <NotificationModalItem item={item} />
