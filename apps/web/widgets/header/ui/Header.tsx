@@ -5,6 +5,8 @@ import { ArrowLeft, Bell, Search } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
+import { useAuthStore } from '@/shared/stores/auth';
+
 import { useModalStore } from '../../../shared/stores/modal';
 import { headerStyles as styles } from '../styles/header.styles';
 
@@ -12,6 +14,7 @@ export const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpenModal } = useModalStore();
+  const { userId } = useAuthStore();
 
   const noBackButtonRoutes = ['/main'];
   const showBackButton = !noBackButtonRoutes.includes(pathname);
@@ -39,22 +42,30 @@ export const Header = () => {
         )}
       </div>
       <div className={styles.buttonArea.container}>
-        <Link href="/auction/auction-list">
-          <Button variants="ghost" size="thinMd" className={styles.buttonArea.searchButton}>
-            {/* 5. 검색 아이콘에 조건부 클래스를 적용합니다. */}
-            <Search className={`${styles.buttonArea.icon} ${mainPageTextClass}`} />
-          </Button>
-        </Link>
+        {pathname !== '/hotdeal' && (
+          <Link href="/auction/auction-list">
+            <Button variants="ghost" size="thinMd" className={styles.buttonArea.searchButton}>
+              {/* 5. 검색 아이콘에 조건부 클래스를 적용합니다. */}
+              <Search className={`${styles.buttonArea.icon} ${mainPageTextClass}`} />
+            </Button>
+          </Link>
+        )}
 
-        <Button
-          variants="ghost"
-          size="thinMd"
-          onClick={() => setOpenModal('notification')}
-          className={styles.buttonArea.notificationButton}
-        >
-          {/* 4. 알림 아이콘에 조건부 클래스를 적용합니다. */}
-          <Bell className={`${styles.buttonArea.icon} ${mainPageTextClass}`} />
-        </Button>
+        {userId ? (
+          <Button
+            variants="ghost"
+            size="thinMd"
+            onClick={() => setOpenModal('notification')}
+            className={styles.buttonArea.notificationButton}
+          >
+            {/* 4. 알림 아이콘에 조건부 클래스를 적용합니다. */}
+            <Bell className={`${styles.buttonArea.icon} ${mainPageTextClass}`} />
+          </Button>
+        ) : (
+          <Button variants="ghost" size="thinMd" onClick={() => router.replace('/login')}>
+            로그인
+          </Button>
+        )}
       </div>
     </header>
   );
