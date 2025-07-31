@@ -1,3 +1,6 @@
+import * as Sentry from '@sentry/nextjs';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import { cookies } from 'next/headers';
@@ -9,12 +12,6 @@ import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
 import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';
 
 import { Providers } from './providers';
-
-import '@repo/ui/styles';
-
-import * as Sentry from '@sentry/nextjs';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import './globals.css';
 
