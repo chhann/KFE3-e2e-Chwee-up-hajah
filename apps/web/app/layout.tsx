@@ -1,5 +1,7 @@
+import * as Sentry from '@sentry/nextjs';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
-import { Noto_Sans_KR } from 'next/font/google';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
 import { Toaster } from 'react-hot-toast';
@@ -10,19 +12,7 @@ import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';
 
 import { Providers } from './providers';
 
-import '@repo/ui/styles';
-
-import * as Sentry from '@sentry/nextjs';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-
 import './globals.css';
-
-const notoSansKR = Noto_Sans_KR({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-noto-sans-kr',
-});
 
 export const metadata: Metadata = {
   title: 'Time Auction',
@@ -44,8 +34,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const isDark = theme === 'dark';
 
   return (
-    <html lang="ko" className={`${notoSansKR.variable} ${isDark ? 'dark' : ''} bg-[#F5F5F5]`}>
-      <body className={`${notoSansKR.className} mx-auto max-w-[375px]`}>
+    <html lang="ko" className={`${isDark ? 'dark' : ''} bg-[#F5F5F5]`}>
+      <body className={`mx-auto max-w-[375px]`}>
         <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
           <Providers>
             <PushSubscriptionEffect />

@@ -1,5 +1,6 @@
-import { createApiClient } from '@/app/server';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { createApiClient } from '@/app/server';
 
 export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get('userId');
@@ -11,9 +12,9 @@ export async function GET(req: NextRequest) {
   const supabase = createApiClient(req);
 
   const { data, error } = await supabase
-    .from('view_chatroom_with_last_message')
+    .from('view_chatlist_with_thumbnail') // ✅ 뷰 이름 정확히!
     .select('*')
-    .or(`buyer_id.eq.${userId},seller_id.eq.${userId}`)
+    .eq('user_id', userId) // ✅ user_id 기준 필터
     .order('last_sent_at', { ascending: false });
 
   if (error) {
