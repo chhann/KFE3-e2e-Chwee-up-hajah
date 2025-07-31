@@ -18,16 +18,16 @@ export interface MessageWithSender {
 
 export interface ChatRoom {
   room_id: string;
-  product_id: string;
-  product_name: string;
   buyer_id: string;
-  buyer_nickname: string;
   seller_id: string;
-  seller_nickname: string;
-  seller_location: string;
-  winning_bid_price: number;
-  last_sent_at: string;
-  created_at: string;
+  opponent_id: string;
+  opponent_username: string;
+  opponent_avatar: string | null;
+  opponent_grade: string | null;
+  opponent_score: number | null;
+  product_thumbnail: string | null;
+  last_message: string | null;
+  last_sent_at: string | null;
 }
 
 export interface Message {
