@@ -8,11 +8,7 @@ export async function POST(request: NextRequest) {
   const supabase = createApiClient(request);
 
   const body = await request.json();
-  const {
-    endpoint,
-    keys: { p256dh, auth },
-    user_agent,
-  } = body;
+  const { endpoint, user_agent } = body;
 
   // 현재 로그인된 유저 확인
   const {
@@ -24,26 +20,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // 디바이스 ID 생성
+  // 현재 기기의 device_id 생성
   const deviceId = generateDeviceId(user_agent, endpoint);
 
-  // user_id + device_id 조합으로 UPSERT
-  const { error: upsertError } = await supabase.from('push_subscriptions').upsert(
-    {
-      user_id: user.id,
-      device_id: deviceId,
-      endpoint,
-      p256dh,
-      auth,
-      user_agent,
-      is_active: true,
+  // 해당 유저의 해당 기기만 구독 해제
+  const { error: updateError } = await supabase
+    .from('push_subscriptions')
+    .update({
+      is_active: false,
       updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'user_id,device_id' }
-  );
+    })
+    .eq('user_id', user.id)
+    .eq('device_id', deviceId);
 
-  if (upsertError) {
-    return NextResponse.json({ error: upsertError.message }, { status: 500 });
+  if (updateError) {
+    return NextResponse.json({ error: updateError.message }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });

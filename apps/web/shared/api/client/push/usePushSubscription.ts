@@ -1,4 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+
 import { sendSubscriptionToServer } from '../../server/push/sendSubscriptionToServer';
 
 export const usePushSubscription = () => {
@@ -6,11 +8,12 @@ export const usePushSubscription = () => {
     mutationFn: sendSubscriptionToServer,
 
     onSuccess: () => {
-      console.log('📬 푸시 구독 정보 서버 전송 성공');
+      toast.success('알림 구독이 완료되었습니다!');
     },
 
     onError: (error) => {
-      // console.error('❌ 푸시 구독 정보 서버 전송 실패:', error);
+      toast.error('알림 구독에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      console.error('❌ 푸시 구독 정보 서버 전송 실패:', error);
     },
   });
 };

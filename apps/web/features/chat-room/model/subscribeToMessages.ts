@@ -1,11 +1,10 @@
 import { RealtimePostgresChangesFilter } from '@supabase/supabase-js';
-import { Message } from '@/shared/types/chat';
-import useChatSubscriptionStore from '@/shared/stores/chatSubscriptionStore';
 
-type Mode = 'room' | 'all';
+import useChatSubscriptionStore from '@/shared/stores/chatSubscriptionStore';
+import { Message } from '@/shared/types/chat';
 
 type subscribeToMessagesProps = {
-  mode: Mode;
+  mode: 'room' | 'all';
   roomId?: string; // mode === 'room'일 때만 필요
   onMessageInsert: (message: Message) => void;
   onMessageUpdate: (message: Message) => void;

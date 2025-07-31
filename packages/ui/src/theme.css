@@ -143,7 +143,7 @@
   /* ============================= */
 
   --font-family-primary:
-    var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Monaco, Consolas, monospace;
 
   --text-xs: 0.8rem;
