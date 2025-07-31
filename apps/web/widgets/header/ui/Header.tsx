@@ -39,6 +39,13 @@ export const Header = () => {
         )}
       </div>
       <div className={styles.buttonArea.container}>
+        <Link href="/auction/auction-list">
+          <Button variants="ghost" size="thinMd" className={styles.buttonArea.searchButton}>
+            {/* 5. 검색 아이콘에 조건부 클래스를 적용합니다. */}
+            <Search className={`${styles.buttonArea.icon} ${mainPageTextClass}`} />
+          </Button>
+        </Link>
+
         <Button
           variants="ghost"
           size="thinMd"
@@ -48,13 +55,6 @@ export const Header = () => {
           {/* 4. 알림 아이콘에 조건부 클래스를 적용합니다. */}
           <Bell className={`${styles.buttonArea.icon} ${mainPageTextClass}`} />
         </Button>
-
-        <Link href="/auction/auction-list">
-          <Button variants="ghost" size="thinMd" className={styles.buttonArea.searchButton}>
-            {/* 5. 검색 아이콘에 조건부 클래스를 적용합니다. */}
-            <Search className={`${styles.buttonArea.icon} ${mainPageTextClass}`} />
-          </Button>
-        </Link>
       </div>
     </header>
   );

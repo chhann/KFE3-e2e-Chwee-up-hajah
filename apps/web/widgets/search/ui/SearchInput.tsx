@@ -2,9 +2,8 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import { Search, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { GoSearch } from 'react-icons/go';
-import { IoIosClose } from 'react-icons/io';
 
 import { Input } from '../../../../../packages/ui/src/design-system/base-components/Input/Input';
 import { searchInputStyles } from '../styles/searchInput.styles';
@@ -41,7 +40,7 @@ export const SearchInput = ({ setCategory }: Props) => {
             type="submit"
             className={`${searchInputStyles.button.base}`}
           >
-            <GoSearch className={searchInputStyles.icon} />
+            <Search className={searchInputStyles.icon} />
           </Button>
         </div>
       </form>
@@ -54,7 +53,7 @@ export const SearchInput = ({ setCategory }: Props) => {
         className={searchInputStyles.resetSearch}
       >
         검색어 초기화
-        <IoIosClose />
+        <X size={20} />
       </div>
     </>
   );

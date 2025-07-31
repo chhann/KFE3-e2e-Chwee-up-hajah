@@ -1,7 +1,9 @@
 'use client';
 
+import { MapPin } from 'lucide-react';
+
 import { ChatRoom } from '@/shared/types/chat';
-import { FaLocationDot } from 'react-icons/fa6';
+
 import { chatHeaderStyles } from '../styles/ChatRoomHeader.styles';
 
 interface Props {
@@ -30,7 +32,7 @@ export const ChatRoomHeader = ({ room, currentUserId }: Props) => {
 
       <div className={chatHeaderStyles.bottomSection}>
         <div className={chatHeaderStyles.locationWrapper}>
-          <FaLocationDot className={chatHeaderStyles.locationIcon} />
+          <MapPin className={chatHeaderStyles.locationIcon} />
           <span className="truncate">{room.seller_location}</span>
         </div>
 

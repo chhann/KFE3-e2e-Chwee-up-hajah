@@ -1,4 +1,4 @@
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import { MapPin } from 'lucide-react';
 import { locationInfoStyle } from './LocationInfo.styles';
 
 interface LocationInfoProps {
@@ -13,7 +13,7 @@ const LocationInfo = ({ address, addressDetail }: LocationInfoProps) => {
 
   return (
     <div className={locationInfoStyle.locationInfoBasicStyle}>
-      <FaMapMarkerAlt className={locationInfoStyle.locationInfoIconStyle} />
+      <MapPin className={locationInfoStyle.locationInfoIconStyle} />
       <div className={locationInfoStyle.locationInfoTextStyle}>
         {safeAddress}
         {safeDetail}
