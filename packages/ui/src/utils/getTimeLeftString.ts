@@ -1,9 +1,14 @@
 interface TimeLeftProps {
   endDate: Date | string;
   startDate?: Date | string | null;
+  showSeconds?: boolean;
 }
 
-export function getTimeLeftString({ endDate, startDate }: TimeLeftProps): string {
+export function getTimeLeftString({
+  endDate,
+  startDate,
+  showSeconds = true,
+}: TimeLeftProps): string {
   const now = new Date();
 
   const parseDate = (date: Date | string | null | undefined): Date | null => {
@@ -22,10 +27,20 @@ export function getTimeLeftString({ endDate, startDate }: TimeLeftProps): string
 
     const pad = (num: number) => num.toString().padStart(2, '0');
 
-    if (totalHours > 0) {
-      return `${pad(totalHours)}:${pad(minutes)}:${pad(seconds)}`;
+    if (showSeconds) {
+      if (totalHours > 0) {
+        return `${pad(totalHours)}:${pad(minutes)}:${pad(seconds)}`;
+      }
+      return `${pad(minutes)}:${pad(seconds)}`;
     }
-    return `${pad(minutes)}:${pad(seconds)}`;
+
+    if (totalHours > 0) {
+      return `${pad(totalHours)}시간 ${pad(minutes)}분`;
+    }
+    if (minutes === 0) {
+      return '1분 미만';
+    }
+    return `${pad(minutes)}분`;
   };
 
   const start = parseDate(startDate);

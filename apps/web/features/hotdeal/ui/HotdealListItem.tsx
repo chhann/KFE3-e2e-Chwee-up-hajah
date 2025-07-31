@@ -25,7 +25,13 @@ export const HotdealListItem = ({ hotdeal }: HotdealListItemProps) => {
       className={AuctionListItemStyles.itemContainerStyle}
     >
       <div className={AuctionListItemStyles.itemImageContainerStyle}>
-        <Image src={hotdeal.image_url} alt={hotdeal.name} layout="fill" objectFit="cover" />
+        <Image
+          src={hotdeal.image_url}
+          alt={hotdeal.name}
+          fill
+          style={{ objectFit: 'cover' }}
+          sizes="96px"
+        />
       </div>
       <div className={AuctionListItemStyles.itemContentsContainerStyle}>
         <p className={AuctionListItemStyles.itemTitleStyle}>{hotdeal.name}</p>
