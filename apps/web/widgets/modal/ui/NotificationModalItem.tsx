@@ -1,5 +1,4 @@
-import { NotificationItem } from '@/shared/types/notification';
-import { notificationModalStyles as styles } from '../styles/notificationModal.styles';
+import { useEffect, useState } from 'react';
 
 import {
   Item,
@@ -7,7 +6,10 @@ import {
   ItemFooter,
   ItemTitle,
 } from '@repo/ui/design-system/base-components/Item/index';
-import { useEffect, useState } from 'react';
+
+import { NotificationItem } from '@/shared/types/notification';
+
+import { notificationModalStyles as styles } from '../styles/notificationModal.styles';
 
 interface NotificationModalItemProps {
   item: NotificationItem;
@@ -62,7 +64,7 @@ export const NotificationModalItem = ({ item }: NotificationModalItemProps) => {
       <ItemContent className={styles.itemContent}>{item.title}</ItemContent>
       <ItemFooter className={styles.itemFooter}>
         {priceInfo && (
-          <div>
+          <div className="flex flex-1 items-end">
             <span className={styles.price.label}>{priceInfo.label}</span>
             <strong className={styles.price.amount}>{priceInfo.amount.toLocaleString()}원</strong>
           </div>
