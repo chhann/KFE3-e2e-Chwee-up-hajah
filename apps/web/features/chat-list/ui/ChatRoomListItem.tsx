@@ -27,7 +27,7 @@ export const ChatRoomListItem = ({ room, unreadCount }: Props) => {
     <div
       role="button"
       tabIndex={0}
-      className={cn(itemStyles.base)}
+      className={cn(itemStyles.base, 'transition-colors hover:bg-[#eeeeee]')}
       onClick={() => router.push(`/chat/${room.room_id}`)}
     >
       <div className="flex h-full w-full items-center gap-3">

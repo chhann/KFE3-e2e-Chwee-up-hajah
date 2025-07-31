@@ -12,7 +12,7 @@ import { subscribeToMessages } from '@/features/chat-room/model/subscribeToMessa
 import { useChatList } from '@/shared/api/client/chat/useChatList';
 import { useUnreadCountMap } from '@/shared/api/client/chat/useUnreadMessageCount';
 
-import { containerStyles, errorStyles } from '../styles/ChatRoomList.styles';
+import { errorStyles } from '../styles/ChatRoomList.styles';
 
 import { ChatRoomListItem } from './ChatRoomListItem';
 
@@ -80,13 +80,13 @@ export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
       : chatRooms?.filter((room) => room.seller_id === currentUserId);
 
   return (
-    <div className={containerStyles}>
+    <div>
       {/* 탭 버튼 */}
       <div className="mb-[12px] bg-white">
         <div className="flex">
           {/* 판매 탭 */}
           <button
-            className={`w-full py-3 text-center font-semibold outline-none transition-all ${
+            className={`w-full cursor-pointer py-3 text-center font-semibold outline-none transition-all ${
               tab === 'selling' ? 'border-b border-[#8F8F8F] text-black' : 'text-gray-400'
             }`}
             onClick={() => setTab('selling')}
@@ -96,7 +96,7 @@ export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
 
           {/* 구매 탭 */}
           <button
-            className={`w-full py-3 text-center font-semibold outline-none transition-all ${
+            className={`w-full cursor-pointer py-3 text-center font-semibold outline-none transition-all ${
               tab === 'buying' ? 'border-b border-[#8F8F8F] text-black' : 'text-gray-400'
             }`}
             onClick={() => setTab('buying')}
