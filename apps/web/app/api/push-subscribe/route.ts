@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { createApiClient } from '@/app/server';
+import { generateDeviceId } from '@/shared/lib/push/generateDeviceId';
 
-// 디바이스 식별을 위한 간단한 해시 생성
-function generateDeviceId(userAgent: string, endpoint: string): string {
-  // UserAgent + endpoint의 일부로 디바이스 구분
-  const deviceInfo = userAgent + endpoint.slice(-20);
-  return Buffer.from(deviceInfo).toString('base64').slice(0, 16);
-}
+import { createApiClient } from '@/app/server';
 
 export async function POST(request: NextRequest) {
   const supabase = createApiClient(request);

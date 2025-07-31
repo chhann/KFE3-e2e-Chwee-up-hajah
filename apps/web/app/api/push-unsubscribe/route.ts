@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { createApiClient } from '@/app/server';
+import { generateDeviceId } from '@/shared/lib/push/generateDeviceId';
 
-function generateDeviceId(userAgent: string, endpoint: string): string {
-  const deviceInfo = userAgent + endpoint.slice(-20);
-  return Buffer.from(deviceInfo).toString('base64').slice(0, 16);
-}
+import { createApiClient } from '@/app/server';
 
 export async function POST(request: NextRequest) {
   const supabase = createApiClient(request);
