@@ -1,4 +1,4 @@
-export const containerStyles = 'p-4';
+export const containerStyles = '';
 export const errorStyles = 'p-4 text-[var(--text-error)]';
 export const listStyles = 'space-y-2';
 export const tabWrapperStyles = 'flex gap-2 mb-2';
