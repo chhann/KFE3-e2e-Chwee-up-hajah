@@ -9,7 +9,7 @@ export const notificationModalStyles = {
   loading: 'flex items-center justify-center p-8',
 
   // 빈 상태 메시지
-  emptyMessage: 'text-center text-neutral-50 py-8',
+  emptyMessage: 'text-center py-8',
 
   // 섹션 배지
   sectionBadge: 'text-neutral-70 mb-2',
@@ -18,7 +18,7 @@ export const notificationModalStyles = {
   sectionIcon: 'mr-1 size-5',
 
   // 알림 아이템 래퍼
-  notificationItemWrapper: 'cursor-pointer',
+  notificationItemWrapper: 'cursor-pointer h-content',
 
   // 알림 아이템
   notificationItem: 'text-neutral-80 bg-white border-b border-gray-200 hover:bg-gray-200',

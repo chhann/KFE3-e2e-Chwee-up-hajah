@@ -10,6 +10,8 @@ import { Gavel } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
+import { NotificationSettings } from '@/widgets/profile/ui/NotificationSettings';
+
 import { useNotificationList } from '@/shared/api/client/notification/useNotificationList';
 import { NotificationItem } from '@/shared/types/notification';
 
@@ -27,6 +29,7 @@ const NotificationModal = () => {
     <Modal className={notificationModalStyles.modal}>
       <ModalContent className={notificationModalStyles.content}>
         <ModalHeader title="알림" onClose={closeModal} />
+        <NotificationSettings />
         {isLoading ? (
           <div className={notificationModalStyles.loading}>
             <AiOutlineLoading3Quarters className="animate-spin" />
