@@ -62,7 +62,7 @@ export async function sendHotDealNotificationToEligibleUsers(
   if (!users || users.length === 0) return;
 
   // 3. 알림 발송 (URL 경로를 일관되게 수정)
-  const url = `/hot-deals/${deal.id}`;
+  const url = `/hotdeal/${deal.id}/detail`;
   for (const user of users) {
     await sendPushNotification(user.user_id, { ...payload, url });
   }
