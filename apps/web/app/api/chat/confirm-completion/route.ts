@@ -45,7 +45,7 @@ export async function PATCH(req: NextRequest) {
         title: notificationTitle,
         body: notificationBody,
         room_id: roomId,
-        delivery_status: 'not_subscribed',
+        delivery_status: 'sent',
       });
 
       // 판매자에게 알림
@@ -55,7 +55,7 @@ export async function PATCH(req: NextRequest) {
         title: notificationTitle,
         body: notificationBody,
         room_id: roomId,
-        delivery_status: 'not_subscribed',
+        delivery_status: 'sent',
       });
     } catch (notificationError) {
       console.error(
