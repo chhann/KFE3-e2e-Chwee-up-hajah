@@ -79,6 +79,8 @@ export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
       ? chatRooms?.filter((room) => room.buyer_id === currentUserId)
       : chatRooms?.filter((room) => room.seller_id === currentUserId);
 
+  console.log(chatRooms, 'chatRooms');
+
   return (
     <div>
       {/* 탭 버튼 */}

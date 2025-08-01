@@ -55,7 +55,6 @@ const MainHome = () => {
       } catch (err: any) {
         console.error(err.message);
       } finally {
-        // 데이터 요청이 성공하든 실패하든 로딩 상태를 false로 변경
         setIsEventsLoading(false);
       }
     };

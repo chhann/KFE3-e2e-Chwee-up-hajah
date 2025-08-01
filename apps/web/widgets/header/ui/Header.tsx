@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { useAuthStore } from '@/shared/stores/auth';
+import { useHeaderStore } from '@/shared/stores/headerStore';
 
 import { useModalStore } from '../../../shared/stores/modal';
 import { headerStyles as styles } from '../styles/header.styles';
@@ -15,6 +16,8 @@ export const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpenModal } = useModalStore();
+  const { headerTitle } = useHeaderStore();
+
   const { userId } = useAuthStore();
 
   const noBackButtonRoutes = ['/main'];
@@ -67,6 +70,13 @@ export const Header = () => {
           )
         )}
       </div>
+
+      {headerTitle && (
+        <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold">
+          {headerTitle}
+        </div>
+      )}
+
       <div className={styles.buttonArea.container}>
         {pathname !== '/hotdeal' && (
           <Link href="/auction/auction-list">

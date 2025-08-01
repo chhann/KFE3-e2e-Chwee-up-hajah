@@ -6,12 +6,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { formatGetMessageTime } from '@/shared/lib/utils/time';
-import { ChatRoom } from '@/shared/types/chat';
+import { ChatRoomList } from '@/shared/types/chat';
 
 import { itemStyles, textStyles } from '../styles/ChatRoomItem.styles';
 
 interface Props {
-  room: ChatRoom;
+  room: ChatRoomList;
   currentUserId: string;
   unreadCount: number; // 읽지 않은 메시지 수
 }
