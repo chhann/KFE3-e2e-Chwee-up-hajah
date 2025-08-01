@@ -10,7 +10,7 @@ export const userProfileCardStyles = {
     wrapper: 'w-[220px]',
     header: 'flex items-end justify-between mb-1',
     username: 'text-base font-semibold',
-    settingsIcon: 'size-4',
+    settingsIcon: 'size-5 top-1',
     email: 'mb-2 mb-1 text-xs not-italic',
   },
 

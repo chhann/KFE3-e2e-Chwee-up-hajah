@@ -1,6 +1,6 @@
 'use client';
-import { Authenticated } from '@/features/chat-list/model/Authenticated';
 import { ChatRoomList } from '@/features/chat-list/ui/ChatRoomList';
+
 import { useAuthStore } from '@/shared/stores/auth';
 
 const ChatRoomsPage = () => {

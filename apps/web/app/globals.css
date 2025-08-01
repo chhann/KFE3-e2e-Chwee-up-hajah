@@ -1,5 +1,7 @@
+@import './font.css';
 @import 'tailwindcss';
 @import '@repo/ui/theme';
+@import '@repo/ui/styles';
 
 /* 기본 body 스타일 - theme.css의 토큰 활용 */
 body {

@@ -1,13 +1,15 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaChevronUp } from 'react-icons/fa6';
+
+import { ChevronUp } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+
 import { ScrollButtonStyle } from './ScrollButton.styles';
 
 const SCROLL_THRESHOLD = 0; // 사용자가 수정한 스크롤 감지 임계값 유지
 
-export function ScrollButton() {
+export const ScrollButton = () => {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -61,9 +63,9 @@ export function ScrollButton() {
     <div className={ScrollButtonStyle.container}>
       {isVisible && (
         <div onClick={scrollToTop} className={ScrollButtonStyle.button} aria-label="Go to top">
-          <FaChevronUp />
+          <ChevronUp size={20} />
         </div>
       )}
     </div>
   );
-}
+};

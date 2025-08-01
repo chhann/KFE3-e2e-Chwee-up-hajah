@@ -1,6 +1,6 @@
 'use client';
 
-import { IoCheckmark, IoChevronForward } from 'react-icons/io5';
+import { Check, ChevronRight } from 'lucide-react';
 
 export interface CustomCheckboxProps {
   id: string;
@@ -34,7 +34,7 @@ export const CustomCheckbox = ({
         {/* 커스텀 체크박스 UI */}
         <div className="relative flex h-6 w-6 items-center justify-center rounded border-2 border-gray-300 bg-white transition-all peer-checked:border-indigo-600 peer-checked:bg-indigo-600">
           {/* [핵심 수정] CSS 투명도 대신, checked 상태에 따라 아이콘을 직접 렌더링합니다. */}
-          {checked && <IoCheckmark className="h-5 w-5 text-white" />}
+          {checked && <Check className="h-5 w-5 text-gray-400" />}
         </div>
 
         {/* 레이블 텍스트 */}
@@ -55,7 +55,7 @@ export const CustomCheckbox = ({
           className="text-gray-400 hover:text-gray-600"
           aria-label={`${label} 상세보기`}
         >
-          <IoChevronForward className="h-6 w-6" />
+          <ChevronRight className="h-6 w-6" />
         </button>
       )}
     </div>

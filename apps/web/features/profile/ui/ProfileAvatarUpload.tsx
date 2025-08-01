@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
-import { FaCamera } from 'react-icons/fa6';
+import { Camera } from 'lucide-react';
 
 interface AvatarUploadProps {
   username: string;
@@ -61,9 +61,9 @@ export const ProfileAvatarUpload = ({
           onClick={imageClick}
           role="button"
           aria-label="camera"
-          className="border-3 absolute -right-[7px] bottom-0 inline-block cursor-pointer rounded-full border-solid border-white bg-neutral-500 p-1"
+          className="absolute -right-[7px] bottom-0 inline-block cursor-pointer rounded-full bg-neutral-300 p-1"
         >
-          <FaCamera className="size-3.5 text-white" />
+          <Camera size={20} color="white" />
         </p>
       </div>
     </div>

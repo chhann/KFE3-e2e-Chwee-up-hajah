@@ -2,10 +2,12 @@
 
 import React, { useRef } from 'react';
 
-import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
+import { CirclePlus, CircleX } from 'lucide-react';
 
 import { useAuctionImage } from '@/shared/api/client/auction/useAuctionImage';
+
 import { handleImageChange } from '../model/handlers';
+
 import { auctionImageUploaderStyle } from './styles/AuctionImageUploader.styles';
 
 interface AuctionImageUploaderProps {
@@ -31,7 +33,7 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
   return (
     <div className={auctionImageUploaderStyle.auctionImageUploaderContainerStyle}>
       <div className={auctionImageUploaderStyle.imageUploaderStyle} onClick={handleImageClick}>
-        <IoIosAddCircleOutline className={auctionImageUploaderStyle.imageUploaderIconStyle} />
+        <CirclePlus className={auctionImageUploaderStyle.imageUploaderIconStyle} />
         <input
           ref={fileInputRef}
           type="file"
@@ -53,7 +55,7 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
               onClick={() => handleRemoveImage(idx)}
               tabIndex={-1}
             >
-              <IoMdCloseCircle size={24} />
+              <CircleX size={24} fill="white" />
             </button>
           </div>
         ))}
