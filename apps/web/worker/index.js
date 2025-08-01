@@ -6,7 +6,7 @@ self.addEventListener('push', function (event) {
         // console.log('🔔 알림 데이터:', data);
         await self.registration.showNotification(data.title, {
           body: data.body,
-          icon: '/TA.png',
+          icon: '/TA.webp',
           data: { url: data.url },
         });
       } catch (err) {
