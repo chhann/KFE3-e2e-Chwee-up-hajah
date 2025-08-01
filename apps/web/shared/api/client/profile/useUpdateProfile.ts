@@ -20,7 +20,7 @@ export const useUpdateProfile = () => {
     onSuccess: () => {
       toast.success('프로필 정보가 성공적으로 업데이트되었습니다.');
       router.refresh();
-      router.push('/profile');
+      router.replace('/profile');
     },
     onError: (error) => {
       console.error('Profile update failed:', error);
