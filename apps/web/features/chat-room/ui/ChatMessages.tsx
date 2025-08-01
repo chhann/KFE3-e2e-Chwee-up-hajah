@@ -3,14 +3,15 @@
 import { useEffect, useRef } from 'react';
 
 import { cn } from '@repo/ui/utils/cn';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useMessages } from '@/shared/api/client/chat/useMessages';
 import { useMessagesAsRead } from '@/shared/api/client/chat/useMessagesAsRead';
-import { useQueryClient } from '@tanstack/react-query';
-import { subscribeToMessages } from '../model/subscribeToMessages';
 
 import { formatDateLabel, formatMessageTime, shouldShowDateLabel } from '../model/dateUtils';
+import { subscribeToMessages } from '../model/subscribeToMessages';
 import { containerStyles, messageRowStyles } from '../styles/ChatMessages.styles';
+
 import { MyMessage } from './MyMessage';
 import { TheirMessage } from './TheirMessage';
 
@@ -88,7 +89,7 @@ export const ChatMessages = ({
             {/* 날짜 */}
             {showDateLabel && (
               <div className="my-5 flex w-full justify-center">
-                <div className="h-[14px] w-[179px] rounded-[7px] border border-[rgba(143,143,143,0.6)] bg-white text-center text-[10px] leading-[14px] text-gray-400">
+                <div className="h-[14px] w-[179px] bg-white text-center text-[10px] leading-[14px] text-gray-400">
                   {formatDateLabel(msg.sent_at)}
                 </div>
               </div>

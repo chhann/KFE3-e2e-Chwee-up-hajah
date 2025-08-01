@@ -1,16 +1,18 @@
 'use client';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { subscribeToMessages } from '@/features/chat-room/model/subscribeToMessages';
 
 import { useChatList } from '@/shared/api/client/chat/useChatList';
 import { useUnreadCountMap } from '@/shared/api/client/chat/useUnreadMessageCount';
 
-import { subscribeToMessages } from '@/features/chat-room/model/subscribeToMessages';
-import { ChatRoomListItem } from './ChatRoomListItem';
-
-import { AnimatePresence, motion } from 'framer-motion';
 import { containerStyles, errorStyles, listStyles } from '../styles/ChatRoomList.styles';
+
+import { ChatRoomListItem } from './ChatRoomListItem';
 
 export const ChatRoomList = ({ currentUserId }: { currentUserId: string }) => {
   const [tab, setTab] = useState<'buying' | 'selling'>('buying');

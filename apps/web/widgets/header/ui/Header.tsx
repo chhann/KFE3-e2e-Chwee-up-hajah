@@ -5,6 +5,8 @@ import { ArrowLeft, Bell, Search } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
+import { useHeaderStore } from '@/shared/stores/headerStore';
+
 import { useModalStore } from '../../../shared/stores/modal';
 import { headerStyles as styles } from '../styles/header.styles';
 
@@ -12,6 +14,7 @@ export const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpenModal } = useModalStore();
+  const { headerTitle } = useHeaderStore();
 
   const noBackButtonRoutes = ['/main'];
   const showBackButton = !noBackButtonRoutes.includes(pathname);
@@ -28,7 +31,7 @@ export const Header = () => {
             <ArrowLeft className={styles.backButton.icon} />
           </div>
         )}
-        {!showBackButton && (
+        {!showBackButton && !headerTitle && (
           <Link href="/main" className="flex items-center gap-1">
             <img src="/TA.webp" alt="Logo" className="h-8 w-auto" />
             {/* 3. '타임옥션' 텍스트에 조건부 클래스를 적용합니다. */}
@@ -38,6 +41,13 @@ export const Header = () => {
           </Link>
         )}
       </div>
+
+      {headerTitle && (
+        <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold">
+          {headerTitle}
+        </div>
+      )}
+
       <div className={styles.buttonArea.container}>
         <Button
           variants="ghost"

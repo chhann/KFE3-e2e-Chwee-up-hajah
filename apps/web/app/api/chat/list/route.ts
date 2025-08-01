@@ -1,5 +1,6 @@
-import { createApiClient } from '@/app/server';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { createApiClient } from '@/app/server';
 
 export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get('userId');

@@ -1,4 +1,4 @@
-export const containerStyles = 'flex flex-col gap-y-[22px] px-4 py-3';
+export const containerStyles = 'flex flex-col gap-y-[22px]  py-3';
 
 export const messageRowStyles = {
   base: 'flex',

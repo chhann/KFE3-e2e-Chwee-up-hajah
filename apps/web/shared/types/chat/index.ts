@@ -27,6 +27,8 @@ export interface ChatRoom {
   seller_location: string;
   winning_bid_price: number;
   last_sent_at: string;
+  thumbnail: string | null;
+  trade_status: 'ongoing' | 'requested' | 'completed';
   created_at: string;
 }
 
