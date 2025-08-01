@@ -11,7 +11,7 @@ export interface BaseNotification {
   title: string;
   body: string;
   sent_at: string;
-  delivery_status: 'not_subscribe' | 'sent' | 'failed';
+  delivery_status: 'not_subscribe' | 'sent' | 'failed' | 'partial';
 }
 
 export interface AuctionOutbidNotification extends BaseNotification {

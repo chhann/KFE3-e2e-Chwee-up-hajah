@@ -1,6 +1,8 @@
 import webpush from 'web-push';
-import { adminClient } from '@/app/admin';
+
 import { AuctionWithProduct } from '@/shared/types/db';
+
+import { adminClient } from '@/app/admin';
 
 interface NotificationConfig {
   userId: string;
@@ -16,8 +18,6 @@ const vapidKeys = {
   privateKey: process.env.VAPID_PRIVATE_KEY,
 };
 
-console.log('VAPID Public Key (Server):', vapidKeys.publicKey);
-
 webpush.setVapidDetails(
   'mailto:your-email@example.com',
   vapidKeys.publicKey!,
@@ -27,10 +27,6 @@ webpush.setVapidDetails(
 export const sendNotificationAsync = (config: NotificationConfig) => {
   setImmediate(async () => {
     try {
-      console.log(
-        `[sendNotificationAsync] 알림 전송 시작. userId: ${config.userId}, auctionId: ${config.auctionId}, type: ${config.type}`
-      );
-
       // 1. 경매 정보 조회
       const { data: auctionData, error: auctionError } = (await adminClient
         .from('auction')
@@ -52,37 +48,39 @@ export const sendNotificationAsync = (config: NotificationConfig) => {
 
       const productName = auctionData.product.name;
 
-      // 2. 구독 정보 조회
-      console.log(`[sendNotificationAsync] 사용자 ${config.userId}의 푸시 구독 정보 조회 시도`);
-      const { data: subscriptionData, error: subscriptionError } = await adminClient
+      // 2. 모든 활성 구독 정보 조회 (single 제거)
+      const { data: subscriptionsData, error: subscriptionError } = await adminClient
         .from('push_subscriptions')
-        .select('endpoint, p256dh, auth')
+        .select('endpoint, p256dh, auth, user_agent')
         .eq('user_id', config.userId)
-        .single();
+        .eq('is_active', true); // 활성 구독만
 
-      // 3. 알림 내역 저장용 데이터 (auction_id는 별도 필드로, data에서 제거)
+      // 3. 알림 내역 저장용 데이터 (한 번만 저장)
       const notificationData = {
         user_id: config.userId,
-        auction_id: config.auctionId, // 별도 필드로 저장
+        auction_id: config.auctionId,
         title: config.title,
         body: config.body,
         type: config.type,
         data: {
           ...config.data,
-          product_name: productName, // product_name만 data에 포함
+          product_name: productName,
         },
         sent_at: new Date().toISOString(),
       };
 
-      if (subscriptionError || !subscriptionData) {
+      if (subscriptionError || !subscriptionsData || subscriptionsData.length === 0) {
         console.warn(
-          `[sendNotificationAsync] 사용자 ${config.userId}는 푸시 알림 구독 정보가 없거나 조회 실패. Error:`,
+          `[sendNotificationAsync] 사용자 ${config.userId}는 활성 푸시 알림 구독이 없음. Error:`,
           subscriptionError
         );
+
+        // 알림 히스토리에 1개만 저장
         await adminClient.from('notification').insert({
           ...notificationData,
           delivery_status: 'not_subscribed',
         });
+
         console.log(
           `[sendNotificationAsync] 알림 상태 기록: not_subscribed for userId: ${config.userId}`
         );
@@ -90,68 +88,80 @@ export const sendNotificationAsync = (config: NotificationConfig) => {
       }
 
       console.log(
-        `[sendNotificationAsync] 사용자 ${config.userId}의 푸시 구독 정보 발견. Endpoint: ${subscriptionData.endpoint}`
+        `[sendNotificationAsync] 사용자 ${config.userId}의 활성 구독 ${subscriptionsData.length}개 발견`
       );
 
-      // 4. 푸시 알림 전송
-      try {
-        const pushSubscription = {
-          endpoint: subscriptionData.endpoint,
-          keys: {
-            p256dh: subscriptionData.p256dh,
-            auth: subscriptionData.auth,
-          },
-        };
+      // 4. 모든 기기에 푸시 알림 전송
+      const pushResults = await Promise.allSettled(
+        subscriptionsData.map(async (subscription) => {
+          try {
+            const pushSubscription = {
+              endpoint: subscription.endpoint,
+              keys: {
+                p256dh: subscription.p256dh,
+                auth: subscription.auth,
+              },
+            };
 
-        const pushPayload = JSON.stringify({
-          title: config.title,
-          body: config.body,
-          url: `/auction/${config.auctionId}/auction-detail`,
-        });
+            const pushPayload = JSON.stringify({
+              title: config.title,
+              body: config.body,
+              url: `/auction/${config.auctionId}/auction-detail`,
+            });
+            await webpush.sendNotification(pushSubscription, pushPayload);
 
-        console.log(`[sendNotificationAsync] 푸시 알림 전송 시도 중... userId: ${config.userId}`);
-        await webpush.sendNotification(pushSubscription, pushPayload);
-        console.log(`[sendNotificationAsync] 푸시 알림 전송 성공! userId: ${config.userId}`);
-
-        await adminClient.from('notification').insert({
-          ...notificationData,
-          delivery_status: 'sent',
-        });
-
-        console.log(
-          `[sendNotificationAsync] ${config.type} 알림 전송 성공 및 상태 기록: sent for userId: ${config.userId}`
-        );
-      } catch (pushError: any) {
-        // pushError 타입을 any로 명시하여 statusCode 접근 용이
-        console.error(`[sendNotificationAsync] 푸시 전송 실패 (${config.userId}):`, pushError);
-
-        let deliveryStatus = 'failed';
-        if (pushError.statusCode) {
-          console.error(`[sendNotificationAsync] Push API Status Code: ${pushError.statusCode}`);
-          if (pushError.statusCode === 410 || pushError.statusCode === 404) {
-            console.warn(
-              `[sendNotificationAsync] 구독 만료 또는 찾을 수 없음. DB에서 해당 구독 삭제 필요:`
+            console.log(
+              `[sendNotificationAsync] 푸시 전송 성공: ${subscription.endpoint.slice(-10)}...`
             );
-            // TODO: 여기에 DB에서 해당 pushSubscription을 삭제하는 로직을 추가해야 합니다.
-            // 예: await adminClient.from('push_subscriptions').delete().eq('endpoint', pushSubscription.endpoint);
-            deliveryStatus = 'expired_or_not_found'; // 새로운 상태 추가
-          } else if (pushError.code === 'ECONNRESET') {
+            return { success: true, endpoint: subscription.endpoint };
+          } catch (pushError: any) {
             console.error(
-              `[sendNotificationAsync] ECONNRESET 발생. VAPID 키 또는 네트워크 문제 가능성. `
+              `[sendNotificationAsync] 푸시 전송 실패: ${subscription.endpoint.slice(-10)}...`,
+              pushError
             );
-            deliveryStatus = 'network_error'; // 새로운 상태 추가
+
+            // 구독 만료된 경우 비활성화
+            if (pushError.statusCode === 410 || pushError.statusCode === 404) {
+              console.warn(
+                `[sendNotificationAsync] 구독 만료, 비활성화 처리: ${subscription.endpoint.slice(-10)}...`
+              );
+
+              await adminClient
+                .from('push_subscriptions')
+                .update({ is_active: false })
+                .eq('endpoint', subscription.endpoint);
+            }
+
+            return { success: false, endpoint: subscription.endpoint, error: pushError };
           }
-        }
+        })
+      );
 
-        await adminClient.from('notification').insert({
-          ...notificationData,
-          delivery_status: deliveryStatus, // 상세한 실패 상태 기록
-        });
+      // 5. 결과 분석 및 알림 히스토리 저장
+      const successCount = pushResults.filter(
+        (result) => result.status === 'fulfilled' && result.value.success
+      ).length;
 
-        console.error(
-          `[sendNotificationAsync] 알림 상태 기록: ${deliveryStatus} for userId: ${config.userId}`
-        );
+      const totalCount = subscriptionsData.length;
+
+      let deliveryStatus: string;
+      if (successCount === totalCount) {
+        deliveryStatus = 'sent'; // 모든 기기 성공
+      } else if (successCount > 0) {
+        deliveryStatus = 'partial'; // 일부 기기 성공
+      } else {
+        deliveryStatus = 'failed'; // 모든 기기 실패
       }
+
+      // 알림 히스토리에 1개 레코드만 저장
+      await adminClient.from('notification').insert({
+        ...notificationData,
+        delivery_status: deliveryStatus,
+      });
+
+      console.log(
+        `[sendNotificationAsync] 알림 전송 완료! userId: ${config.userId}, 성공: ${successCount}/${totalCount}, 상태: ${deliveryStatus}`
+      );
     } catch (error) {
       console.error('[sendNotificationAsync] 알림 처리 중 예상치 못한 오류:', error);
     }
