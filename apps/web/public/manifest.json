@@ -7,7 +7,9 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "display_override": ["window-controls-overlay"],
+  "display_override": [
+    "window-controls-overlay"
+  ],
   "protocol_handlers": [
     {
       "protocol": "web+myapp",
@@ -16,27 +18,27 @@
   ],
   "icons": [
     {
-      "src": "/TV.png",
+      "src": "/TA_192x192.webp",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/webp"
     },
     {
-      "src": "/TV.png",
+      "src": "/TA_512x512.webp",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/webp"
     }
   ],
   "screenshots": [
     {
-      "src": "/maik.jpg",
-      "sizes": "1200x800",
-      "type": "image/jpg",
+      "src": "/TA_Main_Wide.webp",
+      "sizes": "956x792",
+      "type": "image/webp",
       "form_factor": "wide"
     },
     {
-      "src": "/maik-narrow.jpg",
-      "sizes": "800x1200",
-      "type": "image/jpeg",
+      "src": "/TA_Main.webp",
+      "sizes": "351x792",
+      "type": "image/webp",
       "form_factor": "narrow"
     }
   ]
