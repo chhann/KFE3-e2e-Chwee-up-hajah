@@ -26,19 +26,20 @@ export const Header = () => {
   return (
     <header className={`${styles.header} ${headerBgClass}`}>
       <div className="flex w-1/4 items-center">
-        {showBackButton && (
+        {showBackButton ? (
           <div className={styles.backButton.wrapper} onClick={() => router.back()}>
             <ArrowLeft className={styles.backButton.icon} />
           </div>
-        )}
-        {!showBackButton && (
-          <Link href="/main" className="flex items-center gap-1">
-            <img src="/TA.webp" alt="Logo" className="h-8 w-auto" />
-            {/* 3. '타임옥션' 텍스트에 조건부 클래스를 적용합니다. */}
-            <div className={`whitespace-nowrap text-lg font-bold ${mainPageTextClass}`}>
-              타임옥션
-            </div>
-          </Link>
+        ) : (
+          !showBackButton && (
+            <Link href="/main" className="flex items-center gap-1">
+              <img src="/TA.webp" alt="Logo" className="h-8 w-auto" />
+              {/* 3. '타임옥션' 텍스트에 조건부 클래스를 적용합니다. */}
+              <div className={`whitespace-nowrap text-lg font-bold ${mainPageTextClass}`}>
+                타임옥션
+              </div>
+            </Link>
+          )
         )}
       </div>
       <div className={styles.buttonArea.container}>

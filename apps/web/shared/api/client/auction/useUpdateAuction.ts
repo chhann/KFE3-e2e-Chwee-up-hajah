@@ -24,7 +24,7 @@ export const useUpdateAuction = () => {
       queryClient.invalidateQueries({
         queryKey: [variables.seller_id, 'auctions', 'my-listings'],
       });
-      router.push(`/auction/${variables.auction_id}/auction-detail`);
+      router.replace(`/auction/${variables.auction_id}/auction-detail`);
     },
 
     onError: (error) => {
