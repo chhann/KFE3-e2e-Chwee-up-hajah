@@ -18,7 +18,7 @@ export const Header = () => {
   const { userId } = useAuthStore();
 
   const noBackButtonRoutes = ['/main'];
-  const showBackButton = window.history.length === 1 || !noBackButtonRoutes.includes(pathname);
+  const showBackButton = !noBackButtonRoutes.includes(pathname);
 
   // 2. 조건부 스타일 클래스를 정의합니다.
   const headerBgClass = 'bg-[#fdfdfd]';
