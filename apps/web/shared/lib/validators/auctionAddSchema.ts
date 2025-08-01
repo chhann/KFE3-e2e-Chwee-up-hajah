@@ -83,9 +83,9 @@ export const auctionAddSchema = z
     (data) => {
       const startDate = new Date(data.startDate);
       const endDate = new Date(data.endDate);
-      const differenceInMs = endDate.getTime() - startDate.getTime();
-      const oneDayInMs = 24 * 60 * 60 * 1000;
-      return differenceInMs >= oneDayInMs;
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      return endDate >= startDate;
     },
     {
       message: '경매 종료일은 시작일 이후여야 합니다.',
