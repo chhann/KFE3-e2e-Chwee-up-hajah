@@ -34,7 +34,7 @@ export function useCreateAuction() {
         });
       }
       // 성공 시 루트 페이지로 이동
-      router.push('/main');
+      router.replace('/main');
     },
     onError: (error) => {
       toast.error('전송 실패' + error.message);

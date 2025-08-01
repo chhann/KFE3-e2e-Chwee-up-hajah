@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 
+import { LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { MdLogout } from 'react-icons/md';
 
 import { useLogout } from '@/shared/hooks/useLogout';
 import { useModalStore } from '@/shared/stores/modal';
@@ -36,7 +36,7 @@ export const LogoutButton = () => {
   return (
     <>
       <div onClick={handleLogout} className={logoutSectionStyles.nav}>
-        <MdLogout className={logoutSectionStyles.logoutIcon} aria-hidden="true" />
+        <LogOut className={logoutSectionStyles.logoutIcon} aria-hidden="true" />
         <span className={navigationStyles.link}>로그아웃</span>
       </div>
     </>

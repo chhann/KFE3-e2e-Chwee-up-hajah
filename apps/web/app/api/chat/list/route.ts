@@ -12,9 +12,9 @@ export async function GET(req: NextRequest) {
   const supabase = createApiClient(req);
 
   const { data, error } = await supabase
-    .from('view_chatlist_with_thumbnail') // ✅ 뷰 이름 정확히!
+    .from('view_chatlist_with_thumbnail')
     .select('*')
-    .eq('user_id', userId) // ✅ user_id 기준 필터
+    .eq('user_id', userId) // user_id 기준 필터
     .order('last_sent_at', { ascending: false });
 
   if (error) {

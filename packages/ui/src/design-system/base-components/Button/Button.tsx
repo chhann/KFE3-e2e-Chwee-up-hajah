@@ -5,7 +5,7 @@ export interface ButtonProps {
   children: React.ReactNode;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
-  variants: 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
+  variants?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
   size?: 'lg' | 'thinLg' | 'md' | 'thinMd' | 'sm';
   disabled?: boolean;
   onClick?: (e: React.MouseEvent) => void;
@@ -40,7 +40,7 @@ const buttonStyle = {
 
 export const Button = ({
   children,
-  variants,
+  variants = 'custom',
   type = 'button',
   size = 'md',
   className = '',

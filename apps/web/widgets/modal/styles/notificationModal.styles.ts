@@ -5,9 +5,6 @@ export const notificationModalStyles = {
   // 모달 콘텐츠
   content: 'h-[500px] w-[340px] bg-white p-4',
 
-  // 로딩 컨테이너 (추가)
-  loading: 'flex items-center justify-center p-8',
-
   // 빈 상태 메시지
   emptyMessage: 'text-center py-8',
 

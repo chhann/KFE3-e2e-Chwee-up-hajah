@@ -1,5 +1,5 @@
 import { cn } from '@repo/ui/utils/cn';
-import { IoMdClose } from 'react-icons/io';
+import { X } from 'lucide-react';
 import { Button } from '../Button';
 import { modalStyle } from './Modal.styles';
 
@@ -65,7 +65,7 @@ const ModalCloseButton = ({ onClose, className = '' }: ModalCloseButtonProps) =>
       className={cn(modalStyle.modalCloseButtonStyle, className)}
       onClick={onClose}
     >
-      <IoMdClose className={modalStyle.modalCloseButtonIconStyle} />
+      <X className={modalStyle.modalCloseButtonIconStyle} />
     </Button>
   );
 };

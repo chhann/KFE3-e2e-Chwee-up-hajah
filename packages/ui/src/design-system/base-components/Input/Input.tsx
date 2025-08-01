@@ -1,5 +1,5 @@
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import React, { forwardRef, useId, useState } from 'react';
-import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { cn } from '../../../utils/cn';
 import { inputStyle } from './Input.styles';
 
@@ -57,10 +57,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const renderLeftIcon = () => {
       if (leftIcon === 'email') {
-        return <MdEmail className={inputStyle.inputIconStyle} />;
+        return <Mail className={inputStyle.inputIconStyle} />;
       }
       if (leftIcon === 'password') {
-        return <MdLock className={inputStyle.inputIconStyle} />;
+        return <Lock className={inputStyle.inputIconStyle} />;
       }
       return null;
     };
@@ -125,9 +125,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
               >
                 {showPassword ? (
-                  <MdVisibilityOff className={inputStyle.inputIconStyle} />
+                  <Eye className={inputStyle.inputIconStyle} />
                 ) : (
-                  <MdVisibility className={inputStyle.inputIconStyle} />
+                  <EyeOff className={inputStyle.inputIconStyle} />
                 )}
               </button>
             )}

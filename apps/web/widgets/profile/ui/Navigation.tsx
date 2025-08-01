@@ -1,7 +1,8 @@
+import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { IoChevronForward } from 'react-icons/io5';
 
 import { NavigationItem } from '@/shared/types/profile';
+
 import { navigationStyles as styles } from '../styles/navigation.styles';
 
 interface NavigationProps {
@@ -17,7 +18,7 @@ export const Navigation = ({ title, items }: NavigationProps) => {
           <li key={item.href}>
             <Link href={item.href} className={styles.link}>
               <span className={styles.label}>{item.label}</span>
-              <IoChevronForward className={styles.chevronIcon} aria-hidden="true" />
+              <ChevronRight className={styles.chevronIcon} aria-hidden="true" />
             </Link>
             {index < items.length - 1 && <hr className={styles.divider} aria-hidden="true" />}
           </li>

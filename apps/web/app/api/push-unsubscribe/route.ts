@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { generateDeviceId } from '@/shared/lib/push/generateDeviceId';
-
 import { createApiClient } from '@/app/server';
 
 export async function POST(request: NextRequest) {
   const supabase = createApiClient(request);
 
   const body = await request.json();
-  const { endpoint, user_agent } = body;
+  const { user_agent } = body;
 
   // 현재 로그인된 유저 확인
   const {
@@ -20,10 +18,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // 현재 기기의 device_id 생성
-  const deviceId = generateDeviceId(user_agent, endpoint);
-
-  // 해당 유저의 해당 기기만 구독 해제
   const { error: updateError } = await supabase
     .from('push_subscriptions')
     .update({
@@ -31,11 +25,16 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString(),
     })
     .eq('user_id', user.id)
-    .eq('device_id', deviceId);
+    .eq('user_agent', user_agent); // user_agent로 기기 구분
 
   if (updateError) {
     return NextResponse.json({ error: updateError.message }, { status: 500 });
   }
+
+  console.log('✅ 구독 해제 완료:', {
+    userId: user.id,
+    userAgent: user_agent?.slice(0, 30) + '...',
+  });
 
   return NextResponse.json({ success: true });
 }

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { generateDeviceId } from '@/shared/lib/push/generateDeviceId';
-
 import { createApiClient } from '@/app/server';
 
 export async function POST(request: NextRequest) {
@@ -24,22 +22,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // 디바이스 ID 생성
-  const deviceId = generateDeviceId(user_agent, endpoint);
-
-  // user_id + device_id 조합으로 UPSERT
   const { error: upsertError } = await supabase.from('push_subscriptions').upsert(
     {
       user_id: user.id,
-      device_id: deviceId,
+      user_agent, // 이것만으로 기기 구분
       endpoint,
       p256dh,
       auth,
-      user_agent,
       is_active: true,
       updated_at: new Date().toISOString(),
     },
-    { onConflict: 'user_id,device_id' }
+    { onConflict: 'user_id,user_agent' } // user_id + user_agent 조합
   );
 
   if (upsertError) {
