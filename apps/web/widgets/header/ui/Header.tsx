@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { cn } from '@repo/ui/utils/cn';
 import { ArrowLeft, Bell, Search } from 'lucide-react';
@@ -24,8 +26,12 @@ export const Header = () => {
   const headerBgClass = 'bg-[#fdfdfd]';
   const mainPageTextClass = 'text-[#484848]';
 
+  const [historyLength, setHistoryLength] = useState(0);
+  useEffect(() => {
+    setHistoryLength(window.history.length);
+  }, []);
+
   const handleBackButtonClick = () => {
-    const historyLength = window.history.length;
     // 히스토리에 이전 페이지가 없는 경우 (예: Push 알림)
     if (historyLength <= 1) {
       // 뒤로 가기 대신 메인 페이지로 리디렉션
