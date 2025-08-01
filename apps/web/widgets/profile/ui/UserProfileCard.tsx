@@ -1,11 +1,12 @@
 import { Avatar } from '@repo/ui/design-system/base-components/Avatar/index';
 import { LocationInfo } from '@repo/ui/design-system/base-components/LocationInfo/index';
+import { Settings } from 'lucide-react';
 import Link from 'next/link';
-import { IoSettingsOutline } from 'react-icons/io5';
 
 import { getGradeIcon } from '@/shared/lib/points/getGradeIcon';
 import { getCacheBustingUrl } from '@/shared/lib/utils/avatar';
 import { UserProfileType } from '@/shared/types/profile';
+
 import { userProfileCardStyles as styles } from '../styles/useProfileCard.styles';
 
 export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
@@ -25,7 +26,7 @@ export const UserProfileCard = ({ user }: { user: UserProfileType }) => {
           <header className={styles.userInfo.header}>
             <h3 className={styles.userInfo.username}>{user.username}</h3>
             <Link href="/profile/update">
-              <IoSettingsOutline className={styles.userInfo.settingsIcon} aria-hidden="true" />
+              <Settings className={styles.userInfo.settingsIcon} aria-hidden="true" />
             </Link>
           </header>
           <address className={styles.userInfo.email}>{user.email}</address>

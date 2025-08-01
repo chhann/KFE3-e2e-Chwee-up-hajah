@@ -11,12 +11,6 @@ export const pointsHistoryListStyles = {
   filterContainer: 'mb-2 w-full text-right',
   filterSelect: 'text-neutral-70 my-2 w-1/2 rounded-sm p-1 shadow-md',
 
-  // 로딩 상태
-  loading: {
-    container: 'flex items-center justify-center p-8',
-    spinner: 'animate-spin',
-  },
-
   // 빈 상태 메시지
   emptyMessage: 'py-8 text-center text-gray-500',
 

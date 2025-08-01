@@ -6,16 +6,16 @@ import {
   ModalContent,
   ModalHeader,
 } from '@repo/ui/design-system/base-components/Modal/index';
-import { Gavel } from 'lucide-react';
+import { Hammer } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { NotificationSettings } from '@/widgets/profile/ui/NotificationSettings';
 
 import { useNotificationList } from '@/shared/api/client/notification/useNotificationList';
+import { useModalStore } from '@/shared/stores/modal';
 import { NotificationItem } from '@/shared/types/notification';
 
-import { useModalStore } from '../../../shared/stores/modal';
 import { notificationModalStyles } from '../styles/notificationModal.styles';
 
 import { NotificationModalItem } from './NotificationModalItem';
@@ -31,8 +31,8 @@ const NotificationModal = () => {
         <ModalHeader title="알림" onClose={closeModal} />
         <NotificationSettings />
         {isLoading ? (
-          <div className={notificationModalStyles.loading}>
-            <AiOutlineLoading3Quarters className="animate-spin" />
+          <div className="flex h-full items-center justify-center">
+            <LoadingSpinner />
           </div>
         ) : (
           <>
@@ -42,7 +42,7 @@ const NotificationModal = () => {
               <>
                 <ItemBadge className={notificationModalStyles.sectionBadge}>
                   <span className={notificationModalStyles.sectionIcon}>
-                    <Gavel className="mr-1 size-5" />
+                    <Hammer className="mr-1 size-5" />
                   </span>
                   <h3>{items.length}개의 경매가 있습니다.</h3>
                 </ItemBadge>

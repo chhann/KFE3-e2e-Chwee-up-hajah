@@ -1,12 +1,14 @@
 'use client';
+import { useState } from 'react';
+
 import { Item, ItemContent, ItemTitle } from '@repo/ui/design-system/base-components/Item/index';
+import { format } from 'date-fns';
+
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 
 import { usePointsHistory } from '@/shared/api/client/point/usePointsHistory';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { pointsHistoryListStyles as styles } from '../styles/pointsHistory.styles';
 
-import { format } from 'date-fns';
-import { useState } from 'react';
+import { pointsHistoryListStyles as styles } from '../styles/pointsHistory.styles';
 
 export type PointHistoryData = {
   id: string;
@@ -44,8 +46,8 @@ export const PointsHistoryList = () => {
 
   if (isLoading) {
     return (
-      <div className={styles.loading.container}>
-        <AiOutlineLoading3Quarters className={styles.loading.spinner} />
+      <div className="flex h-full items-center justify-center">
+        <LoadingSpinner />
       </div>
     );
   }

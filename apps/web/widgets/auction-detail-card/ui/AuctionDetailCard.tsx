@@ -2,15 +2,15 @@
 
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { formatPriceNumber } from '@repo/ui/utils/formatNumberWithComma';
+import { Minus, Plus } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { FaMinus, FaPlus } from 'react-icons/fa';
 
 import { useDeleteAuction } from '@/shared/api/client/auction/useDeleteAuction';
 import { useAuthStore } from '@/shared/stores/auth';
+import { useModalStore } from '@/shared/stores/modal';
 
 import { auctionDetailCardStyle } from './styles/AuctionDetailCard.styles';
-import { useModalStore } from '@/shared/stores/modal';
 
 interface AuctionDetailCardProps {
   currentBidCost: number;
@@ -106,11 +106,11 @@ export const AuctionDetailCard = ({
         </div>
         <div className={auctionDetailCardStyle.auctionDetailCardBidControlStyle}>
           <Button variants="outline" onClick={onMinus} disabled={status !== 'in_progress'}>
-            <FaMinus />
+            <Minus size={20} />
           </Button>
           {formatPriceNumber(bidCost)}원
           <Button variants="outline" onClick={onPlus} disabled={status !== 'in_progress'}>
-            <FaPlus />
+            <Plus size={20} />
           </Button>
         </div>
       </div>

@@ -2,8 +2,8 @@
 import { useState } from 'react';
 
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
+import { X } from 'lucide-react';
 import Link from 'next/link';
-import { IoMdClose } from 'react-icons/io';
 
 import { overlayStyle } from './styles/AuctionOverlay';
 
@@ -31,7 +31,7 @@ export const AuctionOverlay = ({
     >
       {/* 닫기 버튼 */}
       {isCanClose && (
-        <IoMdClose
+        <X
           className={overlayStyle.closeIconStyle}
           onClick={(e) => {
             e.stopPropagation();
