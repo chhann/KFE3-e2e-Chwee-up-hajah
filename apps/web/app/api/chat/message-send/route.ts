@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import webpush from 'web-push';
+
 import { createApiClient } from '../../../server';
 
 webpush.setVapidDetails(
@@ -57,20 +58,23 @@ export async function POST(req: NextRequest) {
   console.log('🔍 receiverId:', receiverId);
 
   // ✅ 2. 수신자 구독 정보 조회
-  const { data: subscriptions } = await supabase
+  const { data: subscriptions, error: subscriptionError } = await supabase
     .from('push_subscriptions')
     .select('endpoint, p256dh, auth')
     .eq('user_id', receiverId)
     .eq('is_active', true)
-    .order('updated_at', { ascending: false })
-    .limit(1);
+    .order('updated_at', { ascending: false });
 
-  const subscription = subscriptions?.[0];
-  console.log('📦 subscription:', subscription);
+  if (subscriptionError) {
+    console.error('❌ 푸시 구독 조회 오류:', subscriptionError.message);
+    return NextResponse.json({ error: '푸시 구독 조회 실패' }, { status: 500 });
+  }
 
-  if (!subscription) {
+  if (!subscriptions || subscriptions.length === 0) {
     return NextResponse.json({ success: true, message: '구독 정보 없음, 푸시 생략' });
   }
+
+  console.log('📦 subscriptions:', subscriptions);
 
   // ✅ 3. 푸시 알림 전송
   const pushPayload = JSON.stringify({
@@ -79,22 +83,29 @@ export async function POST(req: NextRequest) {
     url: `/chat/${roomId}`,
   });
 
-  try {
-    await webpush.sendNotification(
-      {
-        endpoint: subscription.endpoint,
-        keys: {
-          p256dh: subscription.p256dh,
-          auth: subscription.auth,
+  const results = await Promise.allSettled(
+    subscriptions.map((subscription) =>
+      webpush.sendNotification(
+        {
+          endpoint: subscription.endpoint,
+          keys: {
+            p256dh: subscription.p256dh,
+            auth: subscription.auth,
+          },
         },
-      },
-      pushPayload
-    );
-    console.log('✅ 푸시 알림 전송 성공:', pushPayload);
-  } catch (pushError) {
-    console.error('❌ 푸시 전송 실패:', pushError);
-    // 푸시 실패는 메시지 전송과 독립적이므로 상태 200 그대로 유지
-  }
+        pushPayload
+      )
+    )
+  );
+
+  // 실패 로그 출력
+  results.forEach((result, idx) => {
+    if (result.status === 'rejected') {
+      console.error(`❌ [${idx}] 푸시 전송 실패:`, result.reason);
+    }
+  });
+
+  console.log('✅ 푸시 알림 전송 시도 완료');
 
   return NextResponse.json({ success: true }, { status: 200 });
 }

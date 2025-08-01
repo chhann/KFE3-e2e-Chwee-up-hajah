@@ -58,12 +58,18 @@ export const NotificationModalItem = ({ item }: NotificationModalItemProps) => {
 
   const priceInfo = getPriceInfo(item);
 
+  const isAuctionNotification = item.type.startsWith('auction_');
+
   return (
     <Item className={styles.notificationItem}>
-      <ItemTitle className={styles.itemTitle}>{item.data['product_name']}</ItemTitle>
-      <ItemContent className={styles.itemContent}>{item.title}</ItemContent>
+      <ItemTitle className={styles.itemTitle}>
+        {isAuctionNotification ? item.data.product_name : item.title}
+      </ItemTitle>
+      <ItemContent className={styles.itemContent}>
+        {isAuctionNotification ? item.title : item.body}
+      </ItemContent>
       <ItemFooter className={styles.itemFooter}>
-        {priceInfo && (
+        {isAuctionNotification && priceInfo && priceInfo.amount && (
           <div className="flex flex-1 items-end">
             <span className={styles.price.label}>{priceInfo.label}</span>
             <strong className={styles.price.amount}>{priceInfo.amount.toLocaleString()}원</strong>

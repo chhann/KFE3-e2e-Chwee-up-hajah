@@ -16,20 +16,29 @@ export interface MessageWithSender {
   sender_score: number | null;
 }
 
-export interface ChatRoom {
+export interface ChatRoomList {
   room_id: string;
-  product_id: string;
-  product_name: string;
   buyer_id: string;
-  buyer_nickname: string;
   seller_id: string;
-  seller_nickname: string;
-  seller_location: string;
-  winning_bid_price: number;
-  last_sent_at: string;
-  thumbnail: string | null;
-  trade_status: 'ongoing' | 'requested' | 'completed';
-  created_at: string;
+  buyer_nickname: string; // 구매자 닉네임
+  seller_nickname: string; // 판매자 닉네임
+  opponent_username: string; // 상대방의 닉네임
+  opponent_avatar: string | null;
+  product_thumbnail: string | null; // 제품 썸네일 이미지
+  last_message: string | null; // 마지막 메시지 내용
+  last_sent_at: string; // 마지막 메시지 전송 시간 (timestamp)
+}
+
+export interface ChatRoomHeaderProps {
+  room_id: string;
+  product_name: string; // 제품 이름
+  thumbnail: string | null; // 제품 썸네일 이미지
+  winning_bid_price: number | null; // 낙찰가
+  trade_status: 'ongoing' | 'requested' | 'completed'; // 거래 상태
+  buyer_id: string; // 구매자 ID
+  seller_id: string; // 판매자 ID
+  buyer_nickname: string; // 구매자 닉네임
+  seller_nickname: string; // 판매자 닉네임
 }
 
 export interface Message {

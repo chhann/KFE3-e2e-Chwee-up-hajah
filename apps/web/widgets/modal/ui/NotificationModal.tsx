@@ -44,7 +44,9 @@ const NotificationModal = () => {
                   <span className={notificationModalStyles.sectionIcon}>
                     <Hammer className="mr-1 size-5" />
                   </span>
-                  <h3>{items.length}개의 경매가 있습니다.</h3>
+                  <h3>
+                    {items.filter((item) => item.auction_id).length}개의 경매 알림이 있습니다.
+                  </h3>
                 </ItemBadge>
 
                 {items.map((item: NotificationItem) => (
@@ -54,7 +56,11 @@ const NotificationModal = () => {
                       className={notificationModalStyles.notificationItemWrapper}
                       onClick={() => {
                         closeModal();
-                        router.push(`/auction/${item.auction_id}/auction-detail`);
+                        if (item.auction_id) {
+                          router.push(`/auction/${item.auction_id}/auction-detail`);
+                        } else if (item.room_id) {
+                          router.push(`/chat/${item.room_id}`);
+                        }
                       }}
                     >
                       <NotificationModalItem item={item} />

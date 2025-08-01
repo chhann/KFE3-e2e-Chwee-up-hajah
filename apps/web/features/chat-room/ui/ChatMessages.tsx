@@ -105,7 +105,11 @@ export const ChatMessages = ({
               {isMine ? (
                 <MyMessage msg={msg} time={time} />
               ) : (
-                <TheirMessage msg={msg} time={time} />
+                <TheirMessage
+                  msg={msg}
+                  time={time}
+                  showAvatar={!prevMsg || prevMsg.sender_id !== msg.sender_id}
+                />
               )}
             </div>
           </div>
