@@ -1,6 +1,5 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-import { UseMutationResult } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 export const handleInputChange = (
@@ -58,13 +57,21 @@ export const handleDateChange = (
 export const handleStartPriceInput = (
   e: ChangeEvent<HTMLInputElement>,
   setStartPrice: (v: string) => void,
-  setFieldErrors: Dispatch<SetStateAction<Record<string, string>>>
+  setFieldErrors: Dispatch<SetStateAction<Record<string, string>>>,
+  minPrice?: number,
+  bidCount?: number
 ) => {
   const value = e.target.value;
   if (/[^0-9]/.test(value)) {
     toast.error('숫자만 입력할 수 있습니다.');
     return;
   }
+
+  if (minPrice && bidCount && bidCount > 0 && Number(value) < minPrice) {
+    toast.error(`시작가는 현재가(${minPrice.toLocaleString()}원)보다 낮을 수 없습니다.`);
+    return;
+  }
+
   setStartPrice(value);
   setFieldErrors((prev) => {
     const { startPrice, ...rest } = prev;
@@ -90,11 +97,9 @@ export const handlePriceInput = (
   });
 };
 
-export async function handleImageChange(
+export function handleImageChange(
   e: ChangeEvent<HTMLInputElement>,
-  images: string[],
-  setImages: (urls: string[]) => void,
-  auctionImageMutation: UseMutationResult<string, Error, File>
+  setFiles: Dispatch<SetStateAction<File[]>>
 ) {
   if (!e.target.files) return;
   const selectedFiles = Array.from(e.target.files);
@@ -103,23 +108,20 @@ export async function handleImageChange(
   if (validFiles.length < selectedFiles.length) {
     toast.error('jpg, png 파일만 업로드할 수 있습니다.');
   }
-  let newUrls: string[] = [];
-  for (const file of validFiles) {
-    try {
-      const url = await auctionImageMutation.mutateAsync(file);
-      if (url && !images.includes(url) && !newUrls.includes(url)) {
-        newUrls.push(url);
+
+  if (validFiles.length > 0) {
+    setFiles((prevFiles) => {
+      const newFiles = [...prevFiles, ...validFiles].filter(
+        (file, index, self) =>
+          index === self.findIndex((f) => f.name === file.name && f.size === file.size)
+      );
+
+      if (newFiles.length > 5) {
+        toast.error('사진은 최대 5장까지 등록할 수 있습니다.');
+        return newFiles.slice(0, 5);
       }
-    } catch (err) {
-      // 에러 처리는 useAuctionImage에서 alert로 처리됨
-      continue;
-    }
+      return newFiles;
+    });
   }
-  const totalFiles = images.length + newUrls.length;
-  if (totalFiles > 5) {
-    toast.error('사진은 최대 5장까지 등록할 수 있습니다.');
-    newUrls = newUrls.slice(0, 5 - images.length);
-  }
-  setImages([...images, ...newUrls].slice(0, 5));
   e.target.value = '';
 }
