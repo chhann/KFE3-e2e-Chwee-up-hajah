@@ -82,8 +82,8 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
       <HotdealInfoCard data={data} countdown={countdown} />
 
       <Button
-        variants="custom"
-        className="bg-primary-500 hover:bg-primary-600 sticky bottom-1 text-white transition-colors"
+        variants="primary"
+        className="sticky bottom-1"
         size="thinLg"
         onClick={handlePurchase}
         disabled={status !== 'ACTIVE' || purchaseMutation.isPending}

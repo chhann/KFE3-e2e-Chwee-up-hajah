@@ -2,13 +2,15 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import { Select } from '@repo/ui/design-system/base-components/Select/index';
 
+import { LoadingSpinner } from '@/widgets/loading-spiner';
+
 import {
   handleDateChange,
   handleInputChange,
+  handlePriceInput,
   handleSelectChange,
   handleStartPriceInput,
   handleTextareaChange,
-  handlePriceInput,
 } from '@/features/auction-add/model/handlers';
 import { useAuctionForm } from '@/features/auction-add/model/useAuctionForm';
 import { AuctionDateSelector } from '@/features/auction-add/ui/AuctionDateSelector';
@@ -17,6 +19,7 @@ import { ErrorMessage } from '@/features/auction-add/ui/ErrorMessage';
 import { ProductDescriptionInput } from '@/features/auction-add/ui/ProductDescriptionInput';
 
 import { useAuctionDetail } from '@/shared/api/client/auction/useAuctionDetail';
+import { useAuctionImage } from '@/shared/api/client/auction/useAuctionImage';
 import { categories } from '@/shared/mock/auction';
 
 import { auctionFormStyle } from './styles/AuctionForm.styles';
@@ -26,6 +29,7 @@ type AuctionFormProps =
   | { isEdit?: false; auctionId?: undefined };
 export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
   const { data: auctionData, isLoading } = useAuctionDetail(isEdit ? auctionId : null);
+  const imageMutation = useAuctionImage();
 
   const {
     auctionName,
@@ -38,8 +42,9 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
     setAuctionCategory,
     auctionDescription,
     setAuctionDescription,
+    files,
+    setFiles,
     images,
-    setImages,
     startDate,
     setStartDate,
     endDate,
@@ -49,21 +54,38 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
     handleSubmit,
   } = useAuctionForm({
     isEdit: isEdit,
-    initialData: isEdit ? auctionData : null, // isEdit일 때만 auctionData를 전달
+    initialData: isEdit ? auctionData : null,
   });
 
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    let uploadedImageUrls: string[] = [];
+    if (files.length > 0) {
+      const uploadPromises = files.map((file) => imageMutation.mutateAsync(file));
+      const results = await Promise.all(uploadPromises);
+      uploadedImageUrls = results.filter((url): url is string => !!url);
+    }
+
+    const finalImages = [...images, ...uploadedImageUrls];
+
+    handleSubmit(e, finalImages);
+  };
+
   if (isLoading) {
-    return <div>로딩중...</div>; // return 문 추가
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
   return (
-    <form onSubmit={handleSubmit} className={auctionFormStyle.formContainer}>
-      {/*사진 등록 및 위치*/}
+    <form onSubmit={handleFormSubmit} className={auctionFormStyle.formContainer}>
       <fieldset>
-        <AuctionImageUploader images={images} setImages={setImages} />
+        <AuctionImageUploader files={files} setFiles={setFiles} />
         <ErrorMessage message={fieldErrors.images} />
       </fieldset>
 
-      {/*경매 정보 입력*/}
       <fieldset>
         <Input
           label="경매 이름"
@@ -90,7 +112,15 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
         <Input
           label="경매 시작가"
           value={startPrice}
-          onChange={(e) => handleStartPriceInput(e, setStartPrice, setFieldErrors)}
+          onChange={(e) =>
+            handleStartPriceInput(
+              e,
+              setStartPrice,
+              setFieldErrors,
+              isEdit ? auctionData?.current_price : undefined,
+              isEdit ? auctionData?.bid_count : undefined
+            )
+          }
         />
         <ErrorMessage message={fieldErrors.startPrice} />
       </fieldset>
@@ -103,7 +133,6 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
         <ErrorMessage message={fieldErrors.bidUnitPrice} />
       </fieldset>
 
-      {/* 날짜 선택 컴포넌트 */}
       <fieldset>
         <AuctionDateSelector
           startDate={startDate}
@@ -114,7 +143,6 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
         <ErrorMessage message={fieldErrors.startDate || fieldErrors.endDate} />
       </fieldset>
 
-      {/* 상품 정보 입력 */}
       <fieldset>
         <ProductDescriptionInput
           value={auctionDescription}
@@ -125,7 +153,7 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
         <ErrorMessage message={fieldErrors.auctionDescription} />
       </fieldset>
 
-      <Button variants="primary" type="submit" size="thinLg">
+      <Button variants="primary" type="submit" size="thinLg" disabled={imageMutation.isPending}>
         {isEdit ? '수정 하기' : '경매 등록'}
       </Button>
     </form>

@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { MyParticipatedAuctions } from '@/widgets/my-participated/ui/MyParticipatedAuctions';
 
 import { useMyParticipatedAuction } from '@/shared/api/client/auction/useMyParticipatedAuctions';
@@ -12,7 +13,11 @@ const Page = () => {
   const { data: listings, isLoading, isError } = useMyParticipatedAuction(userId!);
 
   if (isLoading) {
-    return <div>참여 경매 목록 불러오는 중...</div>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {

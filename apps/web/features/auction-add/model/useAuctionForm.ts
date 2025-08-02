@@ -9,8 +9,8 @@ import { formatDateString } from '@/shared/lib/utils/formatDateString';
 import { isAuctionStarted } from '@/shared/lib/utils/isAuctionStarted';
 import { auctionAddSchema } from '@/shared/lib/validators/auctionAddSchema';
 import { useAuthStore } from '@/shared/stores/auth';
-import { AuctionDetail } from '@/shared/types/db';
 import { useModalStore } from '@/shared/stores/modal';
+import { AuctionDetail } from '@/shared/types/db';
 
 export function useAuctionForm({
   isEdit = false,
@@ -24,7 +24,8 @@ export function useAuctionForm({
   const [bidUnitPrice, setBidUnitPrice] = useState('1000');
   const [auctionCategory, setAuctionCategory] = useState('');
   const [auctionDescription, setAuctionDescription] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]); // For existing image URLs on edit
+  const [files, setFiles] = useState<File[]>([]); // For new image files
   const [startDate, setStartDate] = useState(getToday());
   const [endDate, setEndDate] = useState(getToday());
   const [formError, setFormError] = useState<string | null>(null);
@@ -39,11 +40,9 @@ export function useAuctionForm({
     if (!initialData || !initialData.start_time) {
       return false;
     }
-    // 경매가 종료되었고, 입찰 기록이 없는 경우 수정 가능 (시작되지 않은 것으로 간주)
     if (initialData.status === 'closed' && initialData.bid_count === 0) {
       return false;
     }
-    // 그 외의 경우, 시작 시간을 기준으로 판단
     return isAuctionStarted(initialData.start_time);
   })();
 
@@ -53,14 +52,14 @@ export function useAuctionForm({
       setStartPrice(String(initialData.start_price) || '');
       setAuctionCategory(initialData.product?.category || '');
       setAuctionDescription(initialData.product?.description || '');
-      setImages(initialData.images || []);
+      setImages(initialData.images || []); // Keep existing images
       setBidUnitPrice(String(initialData.bid_unit_price) || '1000');
       setStartDate(formatDateString(initialData.start_time));
       setEndDate(formatDateString(initialData.end_time));
     }
   }, [isEdit, initialData]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, finalImages: string[]) => {
     e.preventDefault();
 
     if (isEdit && isStarted) {
@@ -80,12 +79,11 @@ export function useAuctionForm({
       confirmText: dialogConfirmText,
       cancelText: '취소',
       onConfirm: async () => {
-        // 사용자가 '확인'을 눌렀을 때만 실제 제출 로직을 실행합니다.
         setFormError(null);
         setFieldErrors({});
 
         const result = auctionAddSchema.safeParse({
-          images,
+          images: finalImages, // Validate with the final list of URLs
           auctionName,
           auctionCategory,
           startPrice,
@@ -114,9 +112,7 @@ export function useAuctionForm({
         if (startDate.split('T')[0] === todayDateString) {
           const now = new Date();
           now.setMinutes(now.getMinutes() + 10);
-
           finalStartDate = now.toISOString();
-
           const endDateObj = new Date(endDate);
           endDateObj.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
           finalEndDate = endDateObj.toISOString();
@@ -131,19 +127,17 @@ export function useAuctionForm({
             return;
           }
 
-          // 현재 폼의 수정 가능한 필드 값들을 객체로 구성
           const currentEditableValues = {
             auctionName: auctionName,
             startPrice: Number(startPrice),
             bidUnitPrice: Number(bidUnitPrice),
             auctionCategory: auctionCategory,
             auctionDescription: auctionDescription,
-            images: images,
+            images: finalImages,
             startDate: finalStartDate,
             endDate: finalEndDate,
           };
 
-          // 초기 데이터에서 수정 가능한 필드 값들을 객체로 구성
           const initialEditableValues = {
             auctionName: initialData.product?.name || '',
             startPrice: initialData.start_price,
@@ -155,20 +149,21 @@ export function useAuctionForm({
             endDate: formatDateString(initialData.end_time),
           };
 
-          // JSON.stringify를 이용한 간단한 객체 내용 비교
           if (JSON.stringify(currentEditableValues) === JSON.stringify(initialEditableValues)) {
             toast('데이터를 수정해 주세요.');
-            return; // 제출 방지
+            return;
           }
 
           const completeAuctionData = {
             ...initialData,
             start_price: Number(startPrice),
+            current_price:
+              initialData.bid_count === 0 ? Number(startPrice) : initialData.current_price,
             bid_unit_price: Number(bidUnitPrice),
             start_time: finalStartDate,
             end_time: finalEndDate,
-            images: images,
-            thumbnail: images[0] || '',
+            images: finalImages,
+            thumbnail: finalImages[0] || '',
           };
 
           const updatePayload = {
@@ -191,8 +186,8 @@ export function useAuctionForm({
             bid_unit_price: Number(bidUnitPrice),
             start_time: finalStartDate,
             end_time: finalEndDate,
-            thumbnail: images[0] || '',
-            images,
+            thumbnail: finalImages[0] || '',
+            images: finalImages,
           };
           createAuctionMutation.mutate(createPayload);
         }
@@ -215,6 +210,8 @@ export function useAuctionForm({
     setAuctionDescription,
     images,
     setImages,
+    files,
+    setFiles,
     startDate,
     setStartDate,
     endDate,

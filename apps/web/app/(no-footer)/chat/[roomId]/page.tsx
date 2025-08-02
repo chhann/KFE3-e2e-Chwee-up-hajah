@@ -20,7 +20,7 @@ const ChatPage = () => {
   if (typeof roomId !== 'string') return <div>잘못된 접근입니다</div>;
   if (isLoading || !chatRooms)
     return (
-      <div>
+      <div className="flex h-full w-full items-center justify-center">
         <LoadingSpinner />
       </div>
     );

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { MyListings } from '@/widgets/my-listings/ui/MyListings';
 
 import { useMyListings } from '@/shared/api/client/auction/useMyListings';
@@ -15,7 +16,11 @@ const Page = () => {
   const { data: listings, isLoading, isError } = useMyListings(userId!, filter);
 
   if (isLoading) {
-    return <div>판매 물품 불러오는 중...</div>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
