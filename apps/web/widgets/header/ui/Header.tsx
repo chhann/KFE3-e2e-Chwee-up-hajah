@@ -32,12 +32,11 @@ export const Header = () => {
       !document.referrer || new URL(document.referrer).hostname !== window.location.hostname;
 
     if (isFirstAccess) {
-      // URL 경로에 따라 리디렉션
-      if (pathname.includes('hotdeal')) {
+      if (/^\/hotdeal(\/\d+\/detail)?/.test(pathname)) {
         router.replace('/hotdeal');
-      } else if (pathname.includes('chat')) {
+      } else if (/^\/chat(\/\d+)?/.test(pathname)) {
         router.replace('/chat');
-      } else if (pathname.includes('/auction')) {
+      } else if (/^\/auction(\/\d+\/auction-detail)?/.test(pathname)) {
         router.replace('/auction/auction-list');
       } else {
         router.replace('/main');

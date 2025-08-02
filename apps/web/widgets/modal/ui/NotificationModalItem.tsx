@@ -69,13 +69,14 @@ export const NotificationModalItem = ({ item }: NotificationModalItemProps) => {
         {isAuctionNotification ? item.title : item.body}
       </ItemContent>
       <ItemFooter className={styles.itemFooter}>
-        {isAuctionNotification && priceInfo && priceInfo.amount && (
-          <div className="flex flex-1 items-end">
-            <span className={styles.price.label}>{priceInfo.label}</span>
-            <strong className={styles.price.amount}>{priceInfo.amount.toLocaleString()}원</strong>
-          </div>
-        )}
-
+        <div className="flex flex-1 items-end">
+          {isAuctionNotification && priceInfo && priceInfo.amount && (
+            <>
+              <span className={styles.price.label}>{priceInfo.label}</span>
+              <strong className={styles.price.amount}>{priceInfo.amount.toLocaleString()}원</strong>
+            </>
+          )}
+        </div>
         {formattedDate && <p className={styles.timestamp}>{formattedDate}</p>}
       </ItemFooter>
     </Item>
