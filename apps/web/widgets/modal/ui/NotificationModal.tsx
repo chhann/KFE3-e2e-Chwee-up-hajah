@@ -31,7 +31,7 @@ const NotificationModal = () => {
         <ModalHeader title="알림" onClose={closeModal} />
         <NotificationSettings />
         {isLoading ? (
-          <div className="flex h-full items-center justify-center">
+          <div className="flex items-center justify-center pt-4">
             <LoadingSpinner />
           </div>
         ) : (
