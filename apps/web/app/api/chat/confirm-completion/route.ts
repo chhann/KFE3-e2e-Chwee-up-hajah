@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import webpush from 'web-push';
 
 import { adminClient } from '@/app/admin';
 import { createApiClient } from '@/app/server';
-
-webpush.setVapidDetails(
-  `mailto:${process.env.VAPID_MAILTO_EMAIL!}`,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
+import { sendPushNotification } from '@/shared/lib/notification/pushService';
 
 export async function PATCH(req: NextRequest) {
   const { roomId } = await req.json();
@@ -38,25 +32,25 @@ export async function PATCH(req: NextRequest) {
 
     // 1. 데이터베이스에 알림 저장
     try {
-      // 구매자에게 알림
-      await adminClient.from('notification').insert({
-        user_id: buyer_id,
-        type: 'trade_completed',
-        title: notificationTitle,
-        body: notificationBody,
-        room_id: roomId,
-        delivery_status: 'sent',
-      });
-
-      // 판매자에게 알림
-      await adminClient.from('notification').insert({
-        user_id: seller_id,
-        type: 'trade_completed',
-        title: notificationTitle,
-        body: notificationBody,
-        room_id: roomId,
-        delivery_status: 'sent',
-      });
+      const notifications = [
+        {
+          user_id: buyer_id,
+          type: 'trade_completed',
+          title: notificationTitle,
+          body: notificationBody,
+          room_id: roomId,
+          delivery_status: 'sent',
+        },
+        {
+          user_id: seller_id,
+          type: 'trade_completed',
+          title: notificationTitle,
+          body: notificationBody,
+          room_id: roomId,
+          delivery_status: 'sent',
+        },
+      ];
+      await adminClient.from('notification').insert(notifications);
     } catch (notificationError) {
       console.error(
         '[PATCH /api/chat/confirm-completion] Failed to insert notification:',
@@ -65,53 +59,23 @@ export async function PATCH(req: NextRequest) {
     }
 
     // 2. 푸시 알림 전송
-    const pushPayload = JSON.stringify({
+    const pushPayload = {
       title: notificationTitle,
       body: notificationBody,
       url: `/chat/${roomId}`,
-    });
+    };
 
     const usersToNotify = [buyer_id, seller_id];
 
     for (const userId of usersToNotify) {
-      const { data: subscriptions, error: subscriptionError } = await supabase
-        .from('push_subscriptions')
-        .select('endpoint, p256dh, auth')
-        .eq('user_id', userId)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false });
-
-      if (subscriptionError) {
-        console.error(`❌ ${userId}에 대한 푸시 구독 조회 오류:`, subscriptionError.message);
-        continue; // 다음 사용자로 넘어감
-      }
-
-      if (subscriptions && subscriptions.length > 0) {
-        console.log(`📦 ${userId}에 대한 구독 정보:`, subscriptions);
-
-        const results = await Promise.allSettled(
-          subscriptions.map((subscription) =>
-            webpush.sendNotification(
-              {
-                endpoint: subscription.endpoint,
-                keys: {
-                  p256dh: subscription.p256dh,
-                  auth: subscription.auth,
-                },
-              },
-              pushPayload
-            )
-          )
-        );
-
-        results.forEach((result, idx) => {
-          if (result.status === 'rejected') {
-            console.error(`❌ [${userId}-${idx}] 푸시 전송 실패:`, result.reason);
-          }
-        });
-        console.log(`✅ ${userId}에게 푸시 알림 전송 시도 완료`);
-      } else {
-        console.log(`${userId}에 대한 구독 정보 없음, 푸시 생략`);
+      try {
+        const pushResult = await sendPushNotification(userId, pushPayload);
+        console.log(`✅ [${userId}] 푸시 알림 전송 결과:`, pushResult.status);
+        if (pushResult.status === 'failed') {
+          console.error(`❌ [${userId}] 푸시 전송 실패 상세:`, pushResult.error);
+        }
+      } catch (err) {
+        console.error(`❌ [${userId}] 푸시 알림 전송 중 예외 발생:`, err);
       }
     }
   }
