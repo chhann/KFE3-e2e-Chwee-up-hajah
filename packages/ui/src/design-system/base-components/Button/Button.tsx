@@ -15,9 +15,9 @@ export interface ButtonProps {
 const buttonStyle = {
   buttonVariantClasses: {
     primary:
-      'bg-purple-500 text-white transition-colors hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2',
+      'bg-primary-500 text-white transition-colors hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
     secondary:
-      'bg-[var(--button-secondary-bg)] text-[var(--button-secondary-text)] hover:bg-[var(--button-secondary-bg-hover)] active:bg-[var(--button-secondary-bg-active)] ',
+      'bg-[var(--button-secondary-bg)] text-white hover:bg-[var(--button-secondary-bg-hover)] active:bg-[var(--button-secondary-bg-active)] ',
     outline:
       'bg-[var(--button-outline-bg)] text-[var(--button-outline-text)] border border-[var(--button-outline-border)] hover:bg-[var(--button-outline-bg-hover)] ',
     ghost:
