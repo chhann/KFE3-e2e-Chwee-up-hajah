@@ -1,24 +1,12 @@
 export const chatHeaderStyles = {
-  container: 'rounded-[6px] p-4 bg-[var(--bg-disabled)] text-[var(--text-primary)] shadow-sm',
-
-  topSection: 'flex items-start justify-between',
-
-  productInfo: 'flex flex-col gap-1 overflow-hidden',
-
+  container:
+    'flex flex-col  p-2 bg-[#eeeeee] text-[var(--text-primary)] w-[calc(100%+2rem)] ml-[-1rem] mr-[-1rem]',
+  topSection: 'flex w-full items-start gap-4',
+  thumbnail: 'h-14 w-14 flex-shrink-0 rounded-[8px] object-cover',
+  productDetails: 'flex flex-1 flex-col overflow-hidden',
   productName: 'truncate text-base font-semibold',
-
-  nickname: 'truncate text-sm text-[var(--text-secondary)]',
-
-  bidInfo: 'whitespace-nowrap text-right text-sm font-semibold text-[var(--text-primary)]',
-
-  bidAmount: 'text-base',
-
-  bottomSection: 'mt-2 flex items-center justify-between text-sm text-[var(--text-secondary)]',
-
-  locationWrapper: 'flex items-center gap-1',
-
-  locationIcon: 'text-[var(--color-error-500)]',
-
-  doneButton:
-    'rounded-[6px] bg-[var(--color-primary-600)] px-3 py-1 text-sm text-[var(--text-inverse)]',
+  bidSection: 'flex items-center justify-between',
+  bidAmount: 'text-sm font-medium text-[var(--text-secondary)]',
+  statusBadge: 'rounded-md px-2 py-0.5 text-xs font-semibold',
+  transactionSection: 'w-full',
 };

@@ -31,8 +31,8 @@ const ChatPage = () => {
 
   return (
     <div className="flex h-full flex-col">
-      {/* ✅ 상단 헤더 */}
-      <ChatRoomHeader room={room} currentUserId={currentUserId} />
+      {/* 상단 헤더 */}
+      <ChatRoomHeader roomId={roomId} currentUserId={currentUserId} />
 
       {/* 메시지 리스트 영역 */}
       <div className="flex-1 overflow-y-auto px-2">

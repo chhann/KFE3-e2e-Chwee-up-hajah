@@ -3,19 +3,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createApiClient } from '@/app/server';
 
 export async function GET(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get('userId');
+  const roomId = req.nextUrl.searchParams.get('roomId');
 
-  if (!userId) {
-    return NextResponse.json({ error: 'userId is required' }, { status: 400 });
+  if (!roomId) {
+    return NextResponse.json({ error: 'roomId is required' }, { status: 400 });
   }
 
   const supabase = createApiClient(req);
 
   const { data, error } = await supabase
-    .from('view_chatlist_with_thumbnail')
+    .from('view_chatroom_header')
     .select('*')
-    .eq('user_id', userId) // user_id 기준 필터
-    .order('last_sent_at', { ascending: false });
+    .eq('room_id', roomId)
+    .single();
 
   if (error) {
     console.error('[GET /api/chat/list]', error.message);

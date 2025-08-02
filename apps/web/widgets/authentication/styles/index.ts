@@ -6,7 +6,7 @@ export const LoginFormComponentStyles = {
 };
 
 export const SignupFormComponentStyles = {
-  container: 'mx-auto w-full rounded-lg bg-white p-4',
+  container: 'mx-auto w-full rounded-lg bg-white',
   title: 'mb-14 text-center text-2xl font-bold',
   form: 'space-y-4',
   emailInputSection: {

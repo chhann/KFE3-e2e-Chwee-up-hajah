@@ -1,4 +1,6 @@
-export const fetchNotificationList = async () => {
+import { NotificationItem } from '@/shared/types/notification';
+
+export const fetchNotificationList = async (): Promise<NotificationItem[]> => {
   try {
     const response = await fetch('/api/notification/list');
 
