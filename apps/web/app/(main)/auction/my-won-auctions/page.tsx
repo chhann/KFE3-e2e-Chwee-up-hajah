@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { MyWonAuctions } from '@/widgets/my-won-auctions/ui/MyWonAuctions';
 
 import { useMyWonAuctions } from '@/shared/api/client/auction/useMyWonAuctions';
@@ -12,7 +13,11 @@ const Page = () => {
   const { data: listings, isLoading, isError } = useMyWonAuctions(userId!);
 
   if (isLoading) {
-    return <div>낙찰된 경매 목록 불러오는 중...</div>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {

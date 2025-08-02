@@ -6,6 +6,7 @@ import { Category } from '@repo/ui/design-system/base-components/Category/index'
 import { useInView } from 'react-intersection-observer';
 
 import { AuctionListings } from '@/widgets/auction-listings/ui/AuctionListings';
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { SearchInput } from '@/widgets/search';
 
 import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
@@ -46,7 +47,11 @@ const Page = () => {
   }
 
   if (isLoading) {
-    return <div className="my-8">경매 목록을 불러오는 중...</div>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
   if (isError) {
     return <div className="my-8 text-red-500">경매 목록을 불러오지 못했습니다.</div>;
@@ -74,7 +79,11 @@ const Page = () => {
       </select>
       <AuctionListings listData={filteredList} />
       <div ref={ref} style={{ height: '1px' }} />
-      {isFetchingNextPage && <div className="my-8">더 많은 경매를 불러오는 중...</div>}
+      {isFetchingNextPage && (
+        <div>
+          <LoadingSpinner />
+        </div>
+      )}
     </main>
   );
 };

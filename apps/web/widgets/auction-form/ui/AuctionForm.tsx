@@ -2,6 +2,8 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import { Input } from '@repo/ui/design-system/base-components/Input/index';
 import { Select } from '@repo/ui/design-system/base-components/Select/index';
 
+import { LoadingSpinner } from '@/widgets/loading-spiner';
+
 import {
   handleDateChange,
   handleInputChange,
@@ -71,7 +73,11 @@ export const AuctionForm = ({ isEdit, auctionId }: AuctionFormProps) => {
   };
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
   return (
     <form onSubmit={handleFormSubmit} className={auctionFormStyle.formContainer}>

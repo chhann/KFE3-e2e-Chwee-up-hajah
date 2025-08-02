@@ -11,6 +11,7 @@ import {
   AuctionSellerProfile,
 } from '@/widgets/auction-detail-card';
 import { ImageBanner } from '@/widgets/image-banner';
+import { LoadingSpinner } from '@/widgets/loading-spiner';
 
 import { useAuctionBidState } from '@/features/auction-detail/model/useAuctionBidState';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
@@ -48,7 +49,12 @@ const Page = () => {
     }
   }, [data]);
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   if (error) return <div>에러: {error.message}</div>;
   if (!data) return <div>데이터가 없습니다.</div>;
 
