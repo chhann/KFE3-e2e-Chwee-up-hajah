@@ -56,7 +56,6 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
             onImageError?.();
           }}
           priority={false}
-          quality={75}
         />
       </div>
     );
