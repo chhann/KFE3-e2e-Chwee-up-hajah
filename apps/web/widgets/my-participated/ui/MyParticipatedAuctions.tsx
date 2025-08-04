@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 
 import { AuctionListItem } from '@/features/auction/ui/AuctionListItem';
+import { AuctionListItemSkeleton } from '@/features/auction/ui/AuctionListItemSkeleton';
 
 import { AuctionCardProps } from '@/shared/types/auction';
 
@@ -12,7 +13,25 @@ interface MockAuctionCardProps extends AuctionCardProps {
   status: 'ready' | 'in_progress' | 'closed'; // 경매 상태
 }
 
-export const MyParticipatedAuctions = ({ listData }: { listData: MockAuctionCardProps[] }) => {
+export const MyParticipatedAuctions = ({
+  listData,
+  isLoading,
+}: {
+  listData: MockAuctionCardProps[];
+  isLoading: boolean;
+}) => {
+  if (isLoading) {
+    return (
+      <section className={auctionListStyle.auctionListingContainerStyle}>
+        <h2 className={auctionListStyle.auctionListingLabelStyle}>참여한 경매</h2>
+        <div className={auctionListStyle.auctionListBasicStyle}>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <AuctionListItemSkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
   return (
     <section className={auctionListStyle.auctionListingContainerStyle}>
       <h2 className={auctionListStyle.auctionListingLabelStyle}>참여한 경매</h2>
