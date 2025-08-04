@@ -27,24 +27,6 @@ export const Header = () => {
   const headerBgClass = 'bg-[#fdfdfd]';
   const mainPageTextClass = 'text-[#484848]';
 
-  const handleBackButtonClick = () => {
-    const isFirstAccess =
-      !document.referrer || new URL(document.referrer).hostname !== window.location.hostname;
-
-    if (isFirstAccess) {
-      if (/^\/hotdeal(\/\d+\/detail)?/.test(pathname)) {
-        router.replace('/hotdeal');
-      } else if (/^\/chat(\/\d+)?/.test(pathname)) {
-        router.replace('/chat');
-      } else if (/^\/auction(\/\d+\/auction-detail)?/.test(pathname)) {
-        router.replace('/auction/auction-list');
-      } else {
-        router.replace('/main');
-      }
-    } else {
-      router.back();
-    }
-  };
   return (
     <header className={cn(styles.header, headerBgClass)}>
       <div className="flex w-1/4 items-center">
@@ -52,7 +34,7 @@ export const Header = () => {
           <Button
             variants="ghost"
             size="thinMd"
-            onClick={handleBackButtonClick}
+            onClick={() => router.back()}
             className={styles.buttonArea.button}
           >
             <ArrowLeft className={cn(styles.buttonArea.icon, mainPageTextClass)} />
