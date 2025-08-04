@@ -30,7 +30,7 @@ export const AuctionListings = ({
       <section className={auctionListStyle.auctionListingContainerStyle}>
         <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
         <div className={auctionListStyle.auctionListBasicStyle}>
-          {Array.from({ length: 8 }).map((_, index) => (
+          {Array.from({ length: 4 }).map((_, index) => (
             <AuctionListItemSkeleton key={index} />
           ))}
         </div>

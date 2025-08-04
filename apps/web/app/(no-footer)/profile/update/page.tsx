@@ -2,20 +2,19 @@ import { redirect } from 'next/navigation';
 
 import { ProfileForm } from '@/widgets/profile/ui/ProfileForm';
 
-import { getCurrentUser } from '@/app/session';
-
 import { getProfile } from '@/shared/api/server/profile/getProfile';
 
 const Page = async () => {
-  const userData = await getCurrentUser();
+  try {
+    const userProfile = await getProfile();
 
-  if (!userData) {
-    redirect('/login');
+    return <ProfileForm user={userProfile} />;
+  } catch (error) {
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      redirect('/login');
+    }
+    console.error('Profile page error:', error);
   }
-
-  const userProfile = await getProfile(userData.id!);
-
-  return <ProfileForm user={userProfile} />;
 };
 
 export default Page;

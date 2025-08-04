@@ -6,8 +6,9 @@ import { Category } from '@repo/ui/design-system/base-components/Category/index'
 import { useInView } from 'react-intersection-observer';
 
 import { AuctionListings } from '@/widgets/auction-listings/ui/AuctionListings';
-import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { SearchInput } from '@/widgets/search';
+
+import { AuctionListItemSkeleton } from '@/features/auction/ui/AuctionListItemSkeleton';
 
 import { useAuctionList } from '@/shared/api/client/auction/useAuctionList';
 import { mapAuctionItem } from '@/shared/lib/utils/mapAuctionItem';
@@ -71,11 +72,7 @@ const Page = () => {
       </select>
       <AuctionListings listData={filteredList} isLoading={isLoading} />
       <div ref={ref} style={{ height: '1px' }} />
-      {isFetchingNextPage && (
-        <div>
-          <LoadingSpinner />
-        </div>
-      )}
+      {isFetchingNextPage && <AuctionListItemSkeleton />}
     </main>
   );
 };
