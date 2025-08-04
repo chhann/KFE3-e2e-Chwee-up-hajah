@@ -1,4 +1,3 @@
-// /app/admin/test-cron/page.tsx
 'use client';
 
 import { useEffect } from 'react';
