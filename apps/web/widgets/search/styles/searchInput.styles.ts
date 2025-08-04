@@ -14,9 +14,6 @@ export const searchInputStyles = {
     base: 'h-7 cursor-pointer absolute right-3 top-1/2 size-5 -translate-y-1/2 text-neutral-500 flex items-center justify-center',
   },
 
-  resetSearch:
-    'mb-1 flex w-full cursor-pointer items-center pl-2 text-left text-sm text-gray-500 hover:text-gray-700 hover:underline',
-
   // 검색 아이콘
   icon: 'absolute  top-1/2 size-5 -translate-y-1/2 text-neutral-500',
 };
