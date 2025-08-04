@@ -9,6 +9,10 @@
     {
       "path": "/api/cron/daily-deal-notifications",
       "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/cron/check-auctions",
+      "schedule": "* 0-16,23 * * *"
     }
   ]
 }
