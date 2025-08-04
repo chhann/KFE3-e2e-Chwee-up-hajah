@@ -45,14 +45,6 @@ const Page = () => {
   if (selectedBadge !== 'all') {
     filteredList = filteredList.filter((item) => item.badgeVariant === selectedBadge);
   }
-
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
   if (isError) {
     return <div className="my-8 text-red-500">경매 목록을 불러오지 못했습니다.</div>;
   }
@@ -77,7 +69,7 @@ const Page = () => {
         <option value="best">인기</option>
         <option value="urgent">마감 임박</option>
       </select>
-      <AuctionListings listData={filteredList} />
+      <AuctionListings listData={filteredList} isLoading={isLoading} />
       <div ref={ref} style={{ height: '1px' }} />
       {isFetchingNextPage && (
         <div>
