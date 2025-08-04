@@ -11,9 +11,7 @@ const Page = () => {
 
   const { data: listings, isLoading, isError } = useMyWonAuctions(userId!);
 
-  if (isLoading) {
-    return <div>낙찰된 경매 목록 불러오는 중...</div>;
-  }
+  const isPageLoading = isLoading || !userId;
 
   if (isError) {
     return <div className="my-8 text-red-500">낙찰된 경매 목록을 불러오지 못했습니다.</div>;
@@ -24,7 +22,7 @@ const Page = () => {
   return (
     <main className="text-neutral-70" role="main">
       <h1 className="mb-3">낙찰된 물품</h1>
-      <MyWonAuctions listData={filteredList} />
+      <MyWonAuctions listData={filteredList} isLoading={isPageLoading} />
     </main>
   );
 };

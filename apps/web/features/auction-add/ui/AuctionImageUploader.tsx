@@ -1,33 +1,39 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { CirclePlus, CircleX } from 'lucide-react';
-
-import { useAuctionImage } from '@/shared/api/client/auction/useAuctionImage';
+import Image from 'next/image';
 
 import { handleImageChange } from '../model/handlers';
 
 import { auctionImageUploaderStyle } from './styles/AuctionImageUploader.styles';
 
 interface AuctionImageUploaderProps {
-  images: string[];
-  setImages: React.Dispatch<React.SetStateAction<string[]>>;
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
-export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
-  images,
-  setImages,
-}) => {
+export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({ files, setFiles }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const imageMutation = useAuctionImage();
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+  useEffect(() => {
+    const newImagePreviews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews(newImagePreviews);
+
+    return () => {
+      newImagePreviews.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [files]);
+
   const handleImageClick = () => {
-    if (images.length >= 5) return;
+    if (files.length >= 5) return;
     fileInputRef.current?.click();
   };
 
   const handleRemoveImage = (idx: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== idx));
+    setFiles((prev) => prev.filter((_, i) => i !== idx));
   };
 
   return (
@@ -40,15 +46,21 @@ export const AuctionImageUploader: React.FC<AuctionImageUploaderProps> = ({
           accept="image/jpeg,image/png"
           multiple
           className="hidden"
-          onChange={(e) => handleImageChange(e, images, setImages, imageMutation)}
-          disabled={images.length >= 5}
+          onChange={(e) => handleImageChange(e, setFiles)}
+          disabled={files.length >= 5}
         />
       </div>
       {/* 미리보기 썸네일 */}
       <div className={auctionImageUploaderStyle.imagePreviewContainerStyle}>
-        {images.map((url, idx) => (
+        {imagePreviews.map((url, idx) => (
           <div key={idx} className={auctionImageUploaderStyle.imagePreviewStyle}>
-            <img src={url} alt="미리보기" className={auctionImageUploaderStyle.imageStyle} />
+            <Image
+              src={url}
+              alt="미리보기"
+              fill
+              className={auctionImageUploaderStyle.imageStyle}
+              sizes="90"
+            />
             <button
               type="button"
               className={auctionImageUploaderStyle.delateButtonStyle}

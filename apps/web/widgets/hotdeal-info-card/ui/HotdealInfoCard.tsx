@@ -1,6 +1,10 @@
+import Image from 'next/image';
+
+import { ProgressBar } from '@/widgets/progress-bar';
+
 import { getGradeIcon } from '@/shared/lib/points/getGradeIcon';
 import { HotDeal } from '@/shared/types/db';
-import { ProgressBar } from '@/widgets/progress-bar';
+
 import { HotdealInfoCardStyles } from './HotdealInfoCard.styles';
 
 interface HotdealInfoCardProps {
@@ -32,7 +36,15 @@ export const HotdealInfoCard = ({ data, countdown }: HotdealInfoCardProps) => {
   return (
     <div>
       <div className={HotdealInfoCardStyles.infoContainerStyle}>
-        <img src={data.image_url} alt={data.name} />
+        <div className="relative h-52 w-full">
+          <Image
+            src={data.image_url}
+            alt={data.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: 'contain' }}
+          />
+        </div>
         <div className={HotdealInfoCardStyles.infoCardContainerStyle}>
           <div className={HotdealInfoCardStyles.infoNameStyle}>{data.name}</div>
 

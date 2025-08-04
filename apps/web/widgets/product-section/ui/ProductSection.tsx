@@ -1,9 +1,6 @@
-'use client';
-
-import { LoadingSpinner } from '@/widgets/loading-spiner';
+import { ProductCardSkeleton } from '@/features/product-list/ui/ProductCardSkeleton';
 
 import { ProductList } from '../../../features/product-list/ui/ProductList';
-import { Styles as ProductSectionStyles } from '../styles/product-section.styles';
 import type { Product } from '../types';
 
 interface ProductSectionProps {
@@ -14,11 +11,7 @@ interface ProductSectionProps {
 
 export const ProductSection = ({ products, isLoading, className = '' }: ProductSectionProps) => {
   if (isLoading || !products) {
-    return (
-      <div className={`${ProductSectionStyles.loading(className)} h-[211px]`}>
-        <LoadingSpinner />
-      </div>
-    );
+    return <ProductCardSkeleton />;
   }
 
   return <ProductList items={products} />;

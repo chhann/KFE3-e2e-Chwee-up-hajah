@@ -16,6 +16,8 @@ import { usePurchaseHotdeal } from '@/shared/api/client/hotdeal/usePurchaseHotde
 import { useUserProfileDataQuery } from '@/shared/api/client/profile/useUserProfileDataQuery';
 import { useAuthStore } from '@/shared/stores/auth';
 
+import { HotdealInfoCardSkeleton } from '@/widgets/hotdeal-info-card/ui/HotdealInfoCardSkeleton';
+
 const GRADE_ORDER = ['흙', '돌멩이', '에벌레', '씨앗', '새싹', '나무', '숲'];
 
 export default function Page({ params }: { params: Promise<{ hotdealId: string }> }) {
@@ -57,8 +59,8 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <LoadingSpinner />
+      <div className="flex w-full flex-col gap-2">
+        <HotdealInfoCardSkeleton />
       </div>
     );
   }
@@ -82,8 +84,8 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
       <HotdealInfoCard data={data} countdown={countdown} />
 
       <Button
-        variants="custom"
-        className="bg-primary-500 hover:bg-primary-600 sticky bottom-1 text-white transition-colors"
+        variants="primary"
+        className="sticky bottom-1"
         size="thinLg"
         onClick={handlePurchase}
         disabled={status !== 'ACTIVE' || purchaseMutation.isPending}
