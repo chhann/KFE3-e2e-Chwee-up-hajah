@@ -17,7 +17,7 @@ export const ProductList = ({ items }: ProductListProps) => {
       slidesPerView={'auto'}
       spaceBetween={-70}
       slidesOffsetAfter={0}
-      loop={(items?.length ?? 0) > 3}
+      loop={(items?.length ?? 0) > 2}
     >
       {items.map((item) => (
         <SwiperSlide key={item.id} className="h-[211px]">

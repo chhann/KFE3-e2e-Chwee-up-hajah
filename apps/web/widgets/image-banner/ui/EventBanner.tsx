@@ -7,23 +7,21 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
 import { Styles } from './styles/image-banner.styles';
 import './styles/swiper-custom.css';
 
-export interface EventProps {
-  id: number;
-  imageUrl: string;
-  redirectUrl: string;
-  is_active: boolean;
-}
-
 interface EventBannerProps {
-  events: EventProps[];
   height?: number | string;
   autoplay?: boolean;
 }
 
-export const EventBanner = ({ events, autoplay = false, height = 230 }: EventBannerProps) => {
+export const EventBanner = ({ autoplay = false, height = 230 }: EventBannerProps) => {
+  const events = [
+    { id: 1, imageUrl: '/hotdealItem1.webp', redirectUrl: '/hotdeal' },
+    { id: 2, imageUrl: '/hotdealItem2.webp', redirectUrl: '/hotdeal' },
+  ];
+
   return (
     <Swiper
       style={{ height }}
@@ -35,23 +33,23 @@ export const EventBanner = ({ events, autoplay = false, height = 230 }: EventBan
       modules={[Navigation, Pagination, Autoplay]}
       className={Styles.swiperContainer}
     >
-      {events
-        .filter((event) => event.is_active)
-        .map((event) => (
-          <SwiperSlide key={event.id}>
-            <Link href={event.redirectUrl}>
-              <div className={Styles.slideContainer}>
-                <Image
-                  src={event.imageUrl}
-                  alt={`banner-${event.id}`}
-                  width={124}
-                  height={77}
-                  className={Styles.image}
-                />
-              </div>
-            </Link>
-          </SwiperSlide>
-        ))}
+      {events.map((event) => (
+        <SwiperSlide key={event.id}>
+          <Link href={event.redirectUrl}>
+            <div className={Styles.slideContainer}>
+              <Image
+                src={event.imageUrl}
+                alt={`banner-${event.id}`}
+                width={343}
+                height={318}
+                className={Styles.image}
+                priority={true} // ✅ LCP 요소로 preload
+                loading="eager"
+              />
+            </div>
+          </Link>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };
