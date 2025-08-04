@@ -2,6 +2,7 @@
 
 import { VariantProps } from 'class-variance-authority';
 import React from 'react';
+import { cn } from '../../../utils/cn';
 import { getSkeletonVariants } from './Skeleton.styles';
 
 interface SkeletonProps
@@ -10,7 +11,7 @@ interface SkeletonProps
 
 const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   ({ className, variant, ...props }, ref) => {
-    return <div className={getSkeletonVariants({ variant, className })} ref={ref} {...props} />;
+    return <div className={cn(getSkeletonVariants({ variant }), className)} ref={ref} {...props} />;
   }
 );
 
