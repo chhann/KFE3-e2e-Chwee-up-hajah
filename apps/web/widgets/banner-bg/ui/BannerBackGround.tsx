@@ -6,7 +6,7 @@ export const BannerBackground = () => {
     <div
       style={{
         width: 'calc(100% + 2rem)',
-        height: '300px',
+        height: '200px',
         backgroundColor: '#484848',
         marginLeft: '-1rem',
         marginRight: '-1rem',
@@ -14,7 +14,7 @@ export const BannerBackground = () => {
         color: 'white',
       }}
     >
-      <div
+      {/* <div
         style={{
           position: 'absolute',
           top: '32px',
@@ -24,7 +24,7 @@ export const BannerBackground = () => {
       >
         <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>반가워요, {userName}님👋</h1>
         <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>좋은 하루 보내세요!</p>
-      </div>
+      </div> */}
     </div>
   );
 };

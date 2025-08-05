@@ -1,7 +1,10 @@
-import { adminClient } from '@/app/admin';
-import { processExpiredAuctions } from '@/features/auction/services/auctionNotificationService';
-import { isToday, parseUTCDate } from '@/shared/lib/utils/parseUTCDate';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { processExpiredAuctions } from '@/features/auction/services/auctionNotificationService';
+
+import { isToday, parseUTCDate } from '@/shared/lib/utils/parseUTCDate';
+
+import { adminClient } from '@/app/admin';
 
 export async function GET(req: NextRequest) {
   try {

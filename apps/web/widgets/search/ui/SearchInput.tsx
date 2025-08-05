@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Button } from '@repo/ui/design-system/base-components/Button/index';
-import { Search, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { Input } from '../../../../../packages/ui/src/design-system/base-components/Input/Input';
@@ -37,24 +37,18 @@ export const SearchInput = ({ setCategory }: Props) => {
           <Button
             size="sm"
             variants="ghost"
-            type="submit"
+            type="button"
             className={`${searchInputStyles.button.base}`}
+            onClick={() => {
+              setValue('');
+              setCategory('all');
+              router.push('/auction/auction-list');
+            }}
           >
-            <Search className={searchInputStyles.icon} />
+            <X size={20} className={searchInputStyles.icon} />
           </Button>
         </div>
       </form>
-      <div
-        onClick={() => {
-          setValue('');
-          setCategory('all');
-          router.push('/auction/auction-list');
-        }}
-        className={searchInputStyles.resetSearch}
-      >
-        검색어 초기화
-        <X size={20} />
-      </div>
     </>
   );
 };

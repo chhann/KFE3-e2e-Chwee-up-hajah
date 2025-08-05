@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { forwardRef } from 'react';
 import { cn } from '../../../utils/cn'; // 클래스명 유틸리티 함수
 import { AVATAR_SIZES, avatarStyle } from './Avatar.styles';
@@ -42,19 +43,19 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         )}
         {...props}
       >
-        <img
+        <Image
           src={cleanSrc ?? fallbackSrc}
+          className={avatarStyle.avatarImageStyle}
           alt={alt}
+          sizes={`${sizeConfig.pixels}px`}
           width={sizeConfig.pixels}
           height={sizeConfig.pixels}
-          className={avatarStyle.avatarImageStyle}
-          // 이미지 최적화 설정
-          sizes={`${sizeConfig.pixels}px`}
           onError={(e) => {
             e.currentTarget.onerror = null; // 무한 루프 방지
             e.currentTarget.src = fallbackSrc;
             onImageError?.();
           }}
+          priority={false}
         />
       </div>
     );

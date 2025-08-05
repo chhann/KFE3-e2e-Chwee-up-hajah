@@ -6,7 +6,7 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import toast from 'react-hot-toast';
 
 import { HotdealInfoCard } from '@/widgets/hotdeal-info-card';
-import { LoadingSpinner } from '@/widgets/loading-spiner';
+import { HotdealInfoCardSkeleton } from '@/widgets/hotdeal-info-card/ui/HotdealInfoCardSkeleton';
 
 import { useHotdealCountdownLogic } from '@/features/hotdeal/model/useHotdealCountdownLogic';
 import { useHotdealRealtime } from '@/features/hotdeal/model/useHotdealRealtime';
@@ -57,8 +57,8 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <LoadingSpinner />
+      <div className="flex w-full flex-col gap-2">
+        <HotdealInfoCardSkeleton />
       </div>
     );
   }
@@ -83,7 +83,7 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
 
       <Button
         variants="primary"
-        className="sticky bottom-1"
+        className="sticky bottom-20"
         size="thinLg"
         onClick={handlePurchase}
         disabled={status !== 'ACTIVE' || purchaseMutation.isPending}

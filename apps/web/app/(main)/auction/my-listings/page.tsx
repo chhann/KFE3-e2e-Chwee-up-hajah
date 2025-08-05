@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import { LoadingSpinner } from '@/widgets/loading-spiner';
 import { MyListings } from '@/widgets/my-listings/ui/MyListings';
 
 import { useMyListings } from '@/shared/api/client/auction/useMyListings';
@@ -14,14 +13,6 @@ const Page = () => {
   const { userId } = useAuthStore();
 
   const { data: listings, isLoading, isError } = useMyListings(userId!, filter);
-
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
 
   if (isError) {
     return <div className="my-8 text-red-500">내 판매 물품을 불러오지 못했습니다.</div>;
@@ -44,7 +35,7 @@ const Page = () => {
           <option value="closed">종료</option>
         </select>
       </div>
-      <MyListings listData={filteredList} />
+      <MyListings listData={filteredList} isLoading={isLoading} />
     </main>
   );
 };

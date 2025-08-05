@@ -2,6 +2,7 @@ import { getTimeLeftString } from '@repo/ui/utils/getTimeLeftString';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { AuctionListItemSkeleton } from './AuctionListItemSkeleton';
 import { AuctionListItemStyles } from './styles/AuctionListItem.styles';
 
 interface AuctionListItemProps {
@@ -14,6 +15,7 @@ interface AuctionListItemProps {
   endTime: string;
   status: 'ready' | 'in_progress' | 'closed';
   showTimeLeftSeconds?: boolean;
+  isLoading?: boolean;
 }
 
 export const AuctionListItem = ({
@@ -26,7 +28,11 @@ export const AuctionListItem = ({
   endTime,
   status,
   showTimeLeftSeconds = false,
+  isLoading = false,
 }: AuctionListItemProps) => {
+  if (isLoading) {
+    return <AuctionListItemSkeleton />;
+  }
   const auctionStausText =
     status === 'ready' ? '시작까지' : status === 'in_progress' ? '종료까지' : '경매 종료';
   const timeLeft = getTimeLeftString({
