@@ -37,12 +37,9 @@ export function useAuctionBidState(auctionId: string) {
 
   useRealtimeBids(
     auctionId,
-    useCallback(
-      (newBid: Bid) => {
-        queryClient.invalidateQueries({ queryKey: ['auctionDetail', auctionId] });
-      },
-      [auctionId, queryClient]
-    )
+    useCallback(() => {
+      queryClient.invalidateQueries({ queryKey: ['auctionDetail', auctionId] });
+    }, [auctionId, queryClient])
   ); // 실시간 입찰 업데이트
 
   const { minusBidCost, plusBidCost } = useBidCostHandlers(

@@ -14,10 +14,6 @@ const Page = () => {
 
   const { data: listings, isLoading, isError } = useMyListings(userId!, filter);
 
-  if (isLoading) {
-    return <div>판매 물품 불러오는 중...</div>;
-  }
-
   if (isError) {
     return <div className="my-8 text-red-500">내 판매 물품을 불러오지 못했습니다.</div>;
   }
@@ -39,7 +35,7 @@ const Page = () => {
           <option value="closed">종료</option>
         </select>
       </div>
-      <MyListings listData={filteredList} />
+      <MyListings listData={filteredList} isLoading={isLoading} />
     </main>
   );
 };

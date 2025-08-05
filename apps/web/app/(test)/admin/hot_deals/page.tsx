@@ -9,6 +9,8 @@ import { Select } from '@repo/ui/design-system/base-components/Select/index';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 
+import { LoadingSpinner } from '@/widgets/loading-spiner';
+
 import { productDescriptionStyle } from '@/features/auction-add/ui/styles/ProductDescriptionInput.styles';
 
 import { fetchHotdealList } from '@/shared/api/server/hotdeal/fetchHotdealList';
@@ -225,7 +227,12 @@ export default function HotDealsClient() {
     createMutation.mutate(validation.data);
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   if (isError) return <div>오류가 발생했습니다: {error.message}</div>;
 
   return (

@@ -1,6 +1,7 @@
 import { auctionListStyle } from '@/widgets/auction-listings/ui/styles/AuctionListings.styles';
 
 import { AuctionListItem } from '@/features/auction/ui/AuctionListItem';
+import { AuctionListItemSkeleton } from '@/features/auction/ui/AuctionListItemSkeleton';
 
 import { AuctionCardProps } from '@/shared/types/auction';
 
@@ -9,7 +10,25 @@ interface MockAuctionCardProps extends AuctionCardProps {
   status: 'ready' | 'in_progress' | 'closed';
 }
 
-export const MyWonAuctions = ({ listData }: { listData: MockAuctionCardProps[] }) => {
+export const MyWonAuctions = ({
+  listData,
+  isLoading,
+}: {
+  listData: MockAuctionCardProps[];
+  isLoading: boolean;
+}) => {
+  if (isLoading) {
+    return (
+      <section className={auctionListStyle.auctionListingContainerStyle}>
+        <h2 className={auctionListStyle.auctionListingLabelStyle}>낙찰된 물품</h2>
+        <div className={auctionListStyle.auctionListBasicStyle}>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <AuctionListItemSkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
   return (
     <section className={auctionListStyle.auctionListingContainerStyle}>
       <h2 className={auctionListStyle.auctionListingLabelStyle}>낙찰된 물품</h2>

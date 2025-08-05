@@ -50,8 +50,8 @@ export function getTimeLeftString({
     return '유효하지 않은 종료 날짜';
   }
 
-  // 경매 진행 중 또는 종료
-  const diff = end.getTime() - now.getTime();
+  const targetDate = start && now < start ? start : end;
+  const diff = targetDate.getTime() - now.getTime();
 
   if (diff <= 0) {
     return '00:00';

@@ -7,8 +7,6 @@ import { PointsTestButton } from '@/widgets/profile/ui/PointsTestButton';
 import { getProfile } from '@/shared/api/server/profile/getProfile';
 import { NavigationItem } from '@/shared/types/profile';
 
-import { getCurrentUser } from '@/app/session';
-
 const pointItems: NavigationItem[] = [{ label: '적립내역', href: '/profile/points-history' }];
 
 const auctionItems: NavigationItem[] = [
@@ -18,41 +16,43 @@ const auctionItems: NavigationItem[] = [
 ];
 
 const Page = async () => {
-  const userData = await getCurrentUser();
+  try {
+    const userProfile = await getProfile();
 
-  if (!userData) {
-    redirect('/login');
+    return (
+      <main className="text-neutral-70" role="main">
+        <h1 className="mb-3 text-base font-semibold">프로필</h1>
+        <UserProfileCard user={userProfile} />
+
+        <section className="mb-7" aria-labelledby="point-management-title">
+          <h2 id="point-management-title" className="mb-3 text-base font-semibold">
+            포인트 내역 관리
+          </h2>
+          <Navigation title="포인트 내역 메뉴" items={pointItems} />
+        </section>
+
+        <section className="mb-7" aria-labelledby="auction-status-title">
+          <h2 id="auction-status-title" className="mb-3 text-base font-semibold">
+            내 경매 현황
+          </h2>
+          <Navigation title="경매 현황 메뉴" items={auctionItems} />
+        </section>
+
+        <section className="mb-7" aria-labelledby="account-settings-title">
+          <h2 id="account-settings-title" className="mb-3 text-base font-semibold">
+            계정 설정
+          </h2>
+          <LogoutButton />
+          <PointsTestButton userId={userProfile.user_id} />
+        </section>
+      </main>
+    );
+  } catch (error) {
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      redirect('/login');
+    }
+    console.error('Profile page error:', error);
   }
-
-  const userProfile = await getProfile(userData.id!);
-
-  return (
-    <main className="text-neutral-70" role="main">
-      <h1 className="mb-3 text-base font-semibold">프로필</h1>
-      <UserProfileCard user={userProfile!} />
-
-      <section className="mb-7" aria-labelledby="point-management-title">
-        <h2 id="point-management-title" className="mb-3 text-base font-semibold">
-          포인트 내역 관리
-        </h2>
-        <Navigation title="포인트 내역 메뉴" items={pointItems} />
-      </section>
-
-      <section className="mb-7" aria-labelledby="auction-status-title">
-        <h2 id="auction-status-title" className="mb-3 text-base font-semibold">
-          내 경매 현황
-        </h2>
-        <Navigation title="경매 현황 메뉴" items={auctionItems} />
-      </section>
-      <section className="mb-7" aria-labelledby="account-settings-title">
-        <h2 id="account-settings-title" className="mb-3 text-base font-semibold">
-          계정 설정
-        </h2>
-        <LogoutButton />
-        <PointsTestButton userId={userData.id} />
-      </section>
-    </main>
-  );
 };
 
 export default Page;

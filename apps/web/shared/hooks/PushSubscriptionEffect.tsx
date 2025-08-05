@@ -1,7 +1,9 @@
 'use client';
 
+import { usePushSubscription } from '../api/client/push/usePushSubscription';
+
 export const PushSubscriptionEffect = () => {
-  // const { mutateAsync } = usePushSubscription();
+  const { mutateAsync } = usePushSubscription();
 
   // useEffect(() => {
   //   const setupPush = async () => {
@@ -11,7 +13,7 @@ export const PushSubscriptionEffect = () => {
   //         await mutateAsync(subscription);
   //         console.log('✅ 서버에 푸시 구독 정보 전송 완료');
   //       } catch (err) {
-  //         // console.error('❌ 서버 전송 실패:', err);
+  //         console.error('❌ 서버 전송 실패:', err);
   //       }
   //     }
   //   };

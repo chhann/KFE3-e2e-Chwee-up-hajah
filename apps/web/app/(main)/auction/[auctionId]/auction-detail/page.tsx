@@ -10,7 +10,11 @@ import {
   AuctionDetailCard,
   AuctionSellerProfile,
 } from '@/widgets/auction-detail-card';
+import { AuctionDescriptionCardSkeleton } from '@/widgets/auction-detail-card/ui/AuctionDescriptionCardSkeleton';
+import { AuctionDetailCardSkeleton } from '@/widgets/auction-detail-card/ui/AuctionDetailCardSkeleton';
+import { AuctionSellerProfileSkeleton } from '@/widgets/auction-detail-card/ui/AuctionSellerProfileSkeleton';
 import { ImageBanner } from '@/widgets/image-banner';
+import { ImageBannerSkeleton } from '@/widgets/image-banner/ui/ImageBannerSkeleton';
 
 import { useAuctionBidState } from '@/features/auction-detail/model/useAuctionBidState';
 import { AuctionOverlay } from '@/features/auction/ui/AuctionOverlay';
@@ -48,7 +52,16 @@ const Page = () => {
     }
   }, [data]);
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) {
+    return (
+      <main className="relative flex w-full flex-col items-center justify-center gap-2" role="main">
+        <ImageBannerSkeleton />
+        <AuctionDetailCardSkeleton />
+        <AuctionSellerProfileSkeleton />
+        <AuctionDescriptionCardSkeleton />
+      </main>
+    );
+  }
   if (error) return <div>에러: {error.message}</div>;
   if (!data) return <div>데이터가 없습니다.</div>;
 

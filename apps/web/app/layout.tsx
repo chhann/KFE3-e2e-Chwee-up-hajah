@@ -1,14 +1,10 @@
 import * as Sentry from '@sentry/nextjs';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
-import Script from 'next/script';
 import { Toaster } from 'react-hot-toast';
 
-import GoogleAnalytics from '@/shared/hooks/GoogleAnalyticsEffect';
+import AnalyticsWrapper from '@/shared/components/AnalyticsWrapper';
 import { PushSubscriptionEffect } from '@/shared/hooks/PushSubscriptionEffect';
-import { GA_TRACKING_ID } from '@/shared/lib/ga4/gtag';
 
 import { Providers } from './providers';
 
@@ -53,23 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 },
               }}
             />
-            <Analytics />
-            <SpeedInsights />
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_TRACKING_ID}', {
-                  page_path: window.location.pathname,
-              });
-                  `}
-            </Script>
-            <GoogleAnalytics />
+            <AnalyticsWrapper />
           </Providers>
         </Sentry.ErrorBoundary>
       </body>

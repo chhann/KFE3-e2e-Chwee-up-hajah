@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       break;
     case 'endingSoon': {
       const now = new Date();
-      const sixHoursLater = new Date(now.getTime() + 6 * 60 * 60 * 1000);
+      const sixHoursLater = new Date(now.getTime() + 36 * 60 * 60 * 1000);
       query = query
         .gt('end_time', now.toISOString())
         .lt('end_time', sixHoursLater.toISOString())

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { AuctionListItem } from '@/features/auction/ui/AuctionListItem';
+import { AuctionListItemSkeleton } from '@/features/auction/ui/AuctionListItemSkeleton';
 
 import { AuctionCardProps } from '@/shared/types/auction';
 
@@ -14,14 +15,32 @@ interface MockAuctionCardProps extends AuctionCardProps {
   status: 'ready' | 'in_progress' | 'closed';
 }
 
-export const AuctionListings = ({ listData }: { listData: MockAuctionCardProps[] }) => {
+export const AuctionListings = ({
+  listData,
+  isLoading,
+}: {
+  listData: MockAuctionCardProps[];
+  isLoading: boolean;
+}) => {
   const params = useSearchParams();
   const searchParams = params.get('search') || null;
+
+  if (isLoading) {
+    return (
+      <section className={auctionListStyle.auctionListingContainerStyle}>
+        <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
+        <div className={auctionListStyle.auctionListBasicStyle}>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <AuctionListItemSkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={auctionListStyle.auctionListingContainerStyle}>
       <h2 className={auctionListStyle.auctionListingLabelStyle}>판매중인물품</h2>
-
       {listData.length === 0 && searchParams ? (
         // Case 1: 검색어가 있고, listData가 비어있을 때 (검색 결과 없음)
         <div className={auctionListStyle.emptyListContainerStyle}>
