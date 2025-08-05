@@ -6,7 +6,7 @@ import { Button } from '@repo/ui/design-system/base-components/Button/index';
 import toast from 'react-hot-toast';
 
 import { HotdealInfoCard } from '@/widgets/hotdeal-info-card';
-import { LoadingSpinner } from '@/widgets/loading-spiner';
+import { HotdealInfoCardSkeleton } from '@/widgets/hotdeal-info-card/ui/HotdealInfoCardSkeleton';
 
 import { useHotdealCountdownLogic } from '@/features/hotdeal/model/useHotdealCountdownLogic';
 import { useHotdealRealtime } from '@/features/hotdeal/model/useHotdealRealtime';
@@ -15,8 +15,6 @@ import { useHotdealDetailQuery } from '@/shared/api/client/hotdeal/useHotdealDet
 import { usePurchaseHotdeal } from '@/shared/api/client/hotdeal/usePurchaseHotdeal';
 import { useUserProfileDataQuery } from '@/shared/api/client/profile/useUserProfileDataQuery';
 import { useAuthStore } from '@/shared/stores/auth';
-
-import { HotdealInfoCardSkeleton } from '@/widgets/hotdeal-info-card/ui/HotdealInfoCardSkeleton';
 
 const GRADE_ORDER = ['흙', '돌멩이', '에벌레', '씨앗', '새싹', '나무', '숲'];
 
@@ -85,7 +83,7 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
 
       <Button
         variants="primary"
-        className="sticky bottom-1"
+        className="sticky bottom-20"
         size="thinLg"
         onClick={handlePurchase}
         disabled={status !== 'ACTIVE' || purchaseMutation.isPending}
