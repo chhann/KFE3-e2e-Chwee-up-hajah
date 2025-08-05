@@ -26,6 +26,13 @@ export async function POST(request: NextRequest) {
   }
 
   // 성공적으로 검증되면, Supabase는 사용자의 `email_confirmed_at`을 업데이트하고
-  // 사용자는 인증된 것으로 간주됩니다.
-  return NextResponse.json({ data }, { status: 200 });
+  // `response` 객체에 세션 쿠키를 설정합니다.
+  // 이 쿠키가 포함된 헤더를 사용하여 최종 응답을 반환해야 합니다.
+  return NextResponse.json(
+    { data },
+    {
+      status: 200,
+      headers: response.headers,
+    }
+  );
 }
