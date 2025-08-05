@@ -1,5 +1,6 @@
-import { adminClient } from '@/app/admin';
 import { sendNotificationAsync } from '@/shared/lib/notification/sendNotification';
+
+import { adminClient } from '@/app/admin';
 
 export async function processExpiredAuctions(auctions: any[]) {
   const results = [];
