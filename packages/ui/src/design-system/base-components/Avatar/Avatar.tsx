@@ -26,6 +26,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     const cleanSrc = typeof src === 'string' && src.trim() !== '' ? src : undefined;
     const sizeConfig = AVATAR_SIZES[size];
     const fallbackSrc = generateFallbackAvatar(name || alt);
+    const isUsingFallback = !cleanSrc;
 
     return (
       <div
@@ -50,8 +51,9 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
           sizes={`${sizeConfig.pixels}px`}
           width={sizeConfig.pixels}
           height={sizeConfig.pixels}
+          unoptimized={isUsingFallback} // src가 없어서 fallback을 쓸 경우만 최적화 비활성화
           onError={(e) => {
-            e.currentTarget.onerror = null; // 무한 루프 방지
+            e.currentTarget.onerror = null;
             e.currentTarget.src = fallbackSrc;
             onImageError?.();
           }}
