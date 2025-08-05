@@ -40,8 +40,9 @@ function VerifyOtpFormComponent() {
 
   return (
     <div style={{ maxWidth: '400px', margin: 'auto', textAlign: 'center' }}>
-      <h2>이메일 인증</h2>
-      <p>{email}으로 전송된 6자리 코드를 입력해주세요.</p>
+      <h1 className="mb-4 mt-4 text-2xl">이메일 인증</h1>
+      <p>{email} </p>
+      <p className="mb-4"> 전송된 6자리 코드를 입력해주세요.</p>
       <form
         onSubmit={handleSubmit}
         style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}

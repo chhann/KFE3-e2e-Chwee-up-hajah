@@ -32,7 +32,7 @@ export const CustomCheckbox = ({
         />
 
         {/* 커스텀 체크박스 UI */}
-        <div className="relative flex h-6 w-6 items-center justify-center rounded border-2 border-gray-300 bg-white transition-all peer-checked:border-indigo-600 peer-checked:bg-indigo-600">
+        <div className="peer-checked:border-primary-600 peer-checked:bg-primary-600 relative flex h-6 w-6 items-center justify-center rounded border-2 border-gray-300 bg-white transition-all">
           {/* [핵심 수정] CSS 투명도 대신, checked 상태에 따라 아이콘을 직접 렌더링합니다. */}
           {checked && <Check className="h-5 w-5 text-gray-400" />}
         </div>
