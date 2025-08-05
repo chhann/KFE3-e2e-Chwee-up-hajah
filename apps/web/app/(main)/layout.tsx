@@ -13,13 +13,10 @@ const layout = ({ children }: Props) => {
     <div className="flex h-screen flex-col">
       <Header />
       <ModalProvider />
-      <div
-        id="main-scroll-container"
-        className="relative h-[calc(100dvh-68px-80px)] overflow-y-auto px-4"
-      >
+      <main id="main-scroll-container" className="relative flex-1 overflow-y-auto px-4">
         {children}
         <ScrollButton />
-      </div>
+      </main>
       <Footer />
     </div>
   );
