@@ -6,7 +6,7 @@ export const LoginFormComponentStyles = {
 };
 
 export const SignupFormComponentStyles = {
-  container: 'mx-auto w-full rounded-lg bg-white',
+  container: 'mx-auto w-full max-w-sm rounded-lg bg-white p-1',
   title: 'mb-14 text-center text-2xl font-bold',
   form: 'space-y-4',
   emailInputSection: {
@@ -26,7 +26,7 @@ export const SignupFormComponentStyles = {
   },
   formError: 'text-center text-sm text-red-500',
   loginLinkContainer: 'mt-8 text-center',
-  loginLink: 'text-gray-500 hover:underline',
+  loginLink: 'text-gray-500 transition-colors hover:text-primary-900',
 };
 
 export const SocialLoginSectionStyles = {

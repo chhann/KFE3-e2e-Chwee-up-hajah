@@ -283,8 +283,14 @@ export const useSignup = (): UseSignupReturn => {
           agreedToMarketing,
         };
 
-        // 인증 코드를 입력하는 페이지로 리디렉션
-        router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
+        const signupResult = await AuthService.signup(signupData);
+        if (signupResult.needsVerification) {
+          // 인증 코드를 입력하는 페이지로 리디렉션
+          router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
+        } else {
+          router.refresh();
+          router.push('/main');
+        }
       } catch (error) {
         // 오류 처리: 오류 메시지에 따라 적절한 필드에 표시
         const message = getErrorMessage(error);

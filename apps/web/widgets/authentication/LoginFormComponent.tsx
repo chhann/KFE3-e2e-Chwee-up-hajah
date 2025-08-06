@@ -48,24 +48,24 @@ export const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
         </div>
         {error && <p className="mb-4 text-center text-sm text-red-600">{error}</p>}
 
-        <div className="mb-8 flex justify-center space-x-4 text-sm text-gray-500">
-          {' '}
-          {/* 폰트 크기 조정 */}
-          <Link href="/find-id" className="transition-colors hover:text-purple-600">
-            계정 찾기
-          </Link>
-          <span className="text-gray-300">|</span>
-          <Link href="/reset-password" className="transition-colors hover:text-purple-600">
+        <div className="relative mb-8 flex w-full items-center justify-center text-sm text-gray-500">
+          <Link
+            href="/password-reset"
+            className="hover:text-primary-900 absolute left-9 transition-colors"
+          >
             비밀번호 찾기
           </Link>
           <span className="text-gray-300">|</span>
-          <Link href="/signup" className="transition-colors hover:text-purple-600">
+          <Link
+            href="/signup"
+            className="hover:text-primary-900 absolute right-14 transition-colors"
+          >
             회원가입
           </Link>
         </div>
         <Button
           type="submit"
-          className="w-full rounded-lg bg-purple-500 font-bold text-white transition-colors hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          className="bg-primary-500 hover:bg-primary-600 focus:ring-primary-500 w-full rounded-lg font-bold text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
           size="lg"
           variants="primary"
           disabled={!email || !password || isPending}

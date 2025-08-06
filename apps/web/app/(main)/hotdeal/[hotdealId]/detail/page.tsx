@@ -83,7 +83,7 @@ export default function Page({ params }: { params: Promise<{ hotdealId: string }
 
       <Button
         variants="primary"
-        className="sticky bottom-20"
+        className="sticky bottom-0"
         size="thinLg"
         onClick={handlePurchase}
         disabled={status !== 'ACTIVE' || purchaseMutation.isPending}
