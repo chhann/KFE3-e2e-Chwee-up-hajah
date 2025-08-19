@@ -8,8 +8,8 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { useAuthStore } from '@/shared/stores/auth';
 import { useHeaderStore } from '@/shared/stores/headerStore';
+import { useModalStore } from '@/shared/stores/modal';
 
-import { useModalStore } from '../../../shared/stores/modal';
 import { headerStyles as styles } from '../styles/header.styles';
 
 export const Header = () => {
@@ -21,6 +21,12 @@ export const Header = () => {
   const { userId } = useAuthStore();
 
   const noBackButtonRoutes = ['/main'];
+
+  const noSearchButtonRoutes =
+    pathname.startsWith('/hotdeal') ||
+    pathname.endsWith('/auction-add') ||
+    pathname.endsWith('/auction-edit');
+
   const showBackButton = !noBackButtonRoutes.includes(pathname);
 
   // 2. 조건부 스타일 클래스를 정의합니다.
@@ -59,7 +65,7 @@ export const Header = () => {
       )}
 
       <div className={styles.buttonArea.container}>
-        {pathname !== '/hotdeal' && (
+        {!noSearchButtonRoutes && (
           <Link href="/auction/auction-list">
             <Button variants="ghost" size="thinMd" className={styles.buttonArea.button}>
               {/* 5. 검색 아이콘에 조건부 클래스를 적용합니다. */}
